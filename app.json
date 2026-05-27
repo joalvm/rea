@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Mensu",
+    "slug": "mensu",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "mensu",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.mensu.personal"
+    },
+    "android": {
+      "package": "app.mensu.personal",
+      "adaptiveIcon": {
+        "backgroundColor": "#E8F8FE"
+      }
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-notifications",
+      "expo-status-bar"
+    ]
+  }
+}

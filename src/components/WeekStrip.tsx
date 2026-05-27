@@ -1,0 +1,80 @@
+import { StyleSheet, Text, View } from "react-native";
+
+import { colors, radii, type } from "../theme";
+import { CycleSnapshot } from "../types";
+
+interface WeekStripProps {
+  week: CycleSnapshot["week"];
+}
+
+export function WeekStrip({ week }: WeekStripProps) {
+  return (
+    <View style={styles.wrap}>
+      {week.map((day) => (
+        <View key={day.iso} style={styles.day}>
+          <Text style={[styles.weekday, day.isToday && styles.todayText]}>{day.weekday}</Text>
+          <View
+            style={[
+              styles.circle,
+              day.isToday && styles.todayCircle,
+              day.isPeriod && !day.isToday && styles.periodCircle,
+              day.isFertile && !day.isToday && styles.fertileCircle
+            ]}
+          >
+            <Text style={[styles.dayText, day.isToday && styles.todayDayText]}>{day.day}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  wrap: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 8
+  },
+  day: {
+    alignItems: "center",
+    gap: 6,
+    flex: 1
+  },
+  weekday: {
+    color: colors.primaryInk,
+    opacity: 0.56,
+    fontSize: type.tiny,
+    fontWeight: "800"
+  },
+  todayText: {
+    opacity: 1
+  },
+  circle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  todayCircle: {
+    backgroundColor: colors.primaryDeep
+  },
+  periodCircle: {
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: colors.period
+  },
+  fertileCircle: {
+    backgroundColor: colors.fertileSoft,
+    borderWidth: 1,
+    borderColor: colors.fertile
+  },
+  dayText: {
+    color: colors.ink,
+    fontSize: type.body,
+    fontWeight: "800"
+  },
+  todayDayText: {
+    color: colors.surface
+  }
+});
