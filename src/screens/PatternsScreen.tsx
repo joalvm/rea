@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { DimensionValue, ScrollView, StyleSheet, Text, View } from "react-native";
+import { DimensionValue, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { SoftCard } from "../components/SoftCard";
 import {
@@ -12,6 +12,8 @@ import {
 } from "../cycle";
 import { colors, radii, type } from "../theme";
 import { AppSettings, Cycle, DailyLog, EducationalAlert, MoodCheckIn, PatternInsight } from "../types";
+
+const brandVertical = require("../../assets/branding/logo-vertical.png");
 
 interface PatternsScreenProps {
     settings: AppSettings | null;
@@ -42,10 +44,12 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={styles.header}>
+                <Image resizeMode="contain" source={brandVertical} style={styles.brandImage} />
                 <Text style={styles.kicker}>Patrones propios</Text>
-                <Text style={styles.title}>Señales que sí te sirven.</Text>
+                <Text style={styles.title}>Cuaderno de señales.</Text>
                 <Text style={styles.subtitle}>
-                    Rea separa lo observado de lo estimado. Esto orienta decisiones de seguimiento, no hace diagnóstico.
+                    Lectura tranquila de dolor, energía, síntomas y cambios entre ciclos. Observa repeticiones, no
+                    certezas.
                 </Text>
             </View>
 
@@ -276,12 +280,18 @@ const styles = StyleSheet.create({
         gap: 22,
     },
     header: {
-        gap: 8,
+        gap: 10,
+    },
+    brandImage: {
+        width: 118,
+        height: 152,
+        marginBottom: 4,
     },
     kicker: {
         color: colors.primaryDeep,
         fontSize: type.small,
         fontWeight: "900",
+        textTransform: "uppercase",
     },
     title: {
         color: colors.ink,
@@ -297,13 +307,14 @@ const styles = StyleSheet.create({
     statusCard: {
         flexDirection: "row",
         gap: 14,
-        backgroundColor: colors.primarySoft,
     },
     statusIcon: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: colors.surface,
+        borderRadius: radii.md,
+        backgroundColor: colors.surfaceSoft,
+        borderWidth: 1,
+        borderColor: colors.line,
         alignItems: "center",
         justifyContent: "center",
     },

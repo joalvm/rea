@@ -2,9 +2,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { SoftCard } from "../components/SoftCard";
 import { SoftButton } from "../components/SoftButton";
 import { generateMonthDays, monthTitle, toIsoDate } from "../cycle";
-import { colors, radii, shadow, type } from "../theme";
+import { colors, radii, type } from "../theme";
 import { AppSettings, Cycle, CycleSnapshot, DailyLog, PhaseKey } from "../types";
 
 interface CalendarScreenProps {
@@ -23,6 +24,18 @@ export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCh
         [cycles, dailyLogs, month, settings],
     );
     const loggedDates = useMemo(() => new Set(dailyLogs.map((log) => log.date)), [dailyLogs]);
+    const monthSummary = useMemo(() => {
+        const inMonthDays = days.filter((day) => day.inMonth);
+
+        return {
+            loggedCount: inMonthDays.filter((day) => loggedDates.has(day.iso)).length,
+            observedPeriodDays: inMonthDays.filter((day) => day.phase === "menstrual" && day.phaseSource === "observed")
+                .length,
+            estimatedPeriodDays: inMonthDays.filter(
+                (day) => day.phase === "menstrual" && day.phaseSource !== "observed",
+            ).length,
+        };
+    }, [days, loggedDates]);
 
     const shiftMonth = (delta: number) => {
         setMonth((current) => new Date(current.getFullYear(), current.getMonth() + delta, 1, 12));
@@ -31,14 +44,56 @@ export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCh
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={styles.header}>
-                <Pressable accessibilityRole="button" onPress={() => shiftMonth(-1)} style={styles.monthButton}>
-                    <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-left" size={26} />
-                </Pressable>
-                <Text style={styles.title}>{monthTitle(month)}</Text>
-                <Pressable accessibilityRole="button" onPress={() => shiftMonth(1)} style={styles.monthButton}>
-                    <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-right" size={26} />
-                </Pressable>
+                <View>
+                    <Text style={styles.kicker}>Calendario</Text>
+                    <Text style={styles.title}>{monthTitle(month)}</Text>
+                </View>
+                <View style={styles.monthActions}>
+                    <Pressable accessibilityRole="button" onPress={() => shiftMonth(-1)} style={styles.monthButton}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-left" size={24} />
+                    </Pressable>
+                    <Pressable accessibilityRole="button" onPress={() => shiftMonth(1)} style={styles.monthButton}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-right" size={24} />
+                    </Pressable>
+                </View>
             </View>
+
+            <SoftCard style={styles.summaryCard}>
+                <View style={styles.summaryTop}>
+                    <View>
+                        <Text style={styles.summaryTitle}>Qué pesa más este mes</Text>
+                        <Text style={styles.summaryText}>
+                            {snapshot.sourceLabel} y {snapshot.confidenceLabel.toLowerCase()} para leer este tramo.
+                        </Text>
+                    </View>
+                    <View style={styles.summaryBadge}>
+                        <Text style={styles.summaryBadgeText}>{monthSummary.loggedCount} registros</Text>
+                    </View>
+                </View>
+                <View style={styles.summaryMetrics}>
+                    {monthSummary.observedPeriodDays > 0 ? (
+                        <Legend
+                            color={colors.period}
+                            icon="water"
+                            label={`${monthSummary.observedPeriodDays} días observados`}
+                        />
+                    ) : null}
+                    {monthSummary.estimatedPeriodDays > 0 ? (
+                        <Legend
+                            color={colors.period}
+                            icon="circle-outline"
+                            label={`${monthSummary.estimatedPeriodDays} días estimados`}
+                        />
+                    ) : null}
+                    {monthSummary.observedPeriodDays === 0 && monthSummary.estimatedPeriodDays === 0 ? (
+                        <Legend
+                            color={colors.primaryDeep}
+                            icon="calendar-blank-outline"
+                            label="Sin periodo en este mes"
+                        />
+                    ) : null}
+                </View>
+            </SoftCard>
 
             <View style={styles.calendarPanel}>
                 <View style={styles.weekHeader}>
@@ -113,14 +168,11 @@ function DayCell({
                     styles.dayCircle,
                     isToday && styles.todayCircle,
                     isObservedPeriod && !isToday && styles.observedPeriodCircle,
+                    isEstimatedPeriod && !isToday && styles.estimatedPeriodCircle,
                     phase === "fertile" && !isToday && styles.fertileCircle,
                 ]}
             >
-                {periodDay && isEstimatedPeriod ? (
-                    <View style={styles.periodBadge}>
-                        <Text style={styles.periodBadgeText}>{periodDay}</Text>
-                    </View>
-                ) : null}
+                {periodDay && isEstimatedPeriod ? <View style={styles.periodBadge} /> : null}
                 {isLogged ? <View style={[styles.loggedBadge, isToday && styles.loggedBadgeToday]} /> : null}
                 <Text
                     style={[
@@ -157,36 +209,88 @@ const phaseStyles: Record<PhaseKey, { soft: string; ink: string; line: string }>
 const styles = StyleSheet.create({
     content: {
         backgroundColor: colors.background,
-        paddingTop: 56,
-        paddingHorizontal: 18,
+        paddingTop: 44,
+        paddingHorizontal: 20,
         paddingBottom: 32,
-        gap: 18,
+        gap: 16,
     },
     header: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
     },
+    kicker: {
+        color: colors.muted,
+        fontSize: type.small,
+        fontWeight: "900",
+        textTransform: "uppercase",
+    },
+    monthActions: {
+        flexDirection: "row",
+        gap: 8,
+    },
     monthButton: {
         width: 44,
         height: 44,
-        borderRadius: 22,
+        borderRadius: radii.md,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.primarySoft,
+        backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.line,
     },
     title: {
         color: colors.ink,
-        fontSize: type.title,
-        fontWeight: "800",
+        fontSize: 28,
+        fontWeight: "900",
+        marginTop: 4,
+    },
+    summaryCard: {
+        gap: 14,
+    },
+    summaryTop: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: 12,
+    },
+    summaryTitle: {
+        color: colors.ink,
+        fontSize: type.subtitle,
+        fontWeight: "900",
+    },
+    summaryText: {
+        color: colors.muted,
+        fontSize: type.body,
+        lineHeight: 22,
+        marginTop: 4,
+        maxWidth: 240,
+    },
+    summaryBadge: {
+        minHeight: 32,
+        borderRadius: 16,
+        paddingHorizontal: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.surfaceSoft,
+        borderWidth: 1,
+        borderColor: colors.line,
+    },
+    summaryBadgeText: {
+        color: colors.primaryDeep,
+        fontSize: type.small,
+        fontWeight: "900",
+    },
+    summaryMetrics: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 10,
     },
     calendarPanel: {
         backgroundColor: colors.surface,
         borderRadius: radii.md,
-        padding: 12,
+        padding: 14,
         borderWidth: 1,
-        borderColor: "rgba(8,124,155,0.08)",
-        ...shadow,
+        borderColor: colors.line,
     },
     weekHeader: {
         flexDirection: "row",
@@ -229,6 +333,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.period,
     },
+    estimatedPeriodCircle: {
+        borderWidth: 1,
+        borderStyle: "dashed",
+        borderColor: colors.period,
+        backgroundColor: colors.surface,
+    },
     fertileCircle: {
         borderWidth: 1,
         borderStyle: "dashed",
@@ -247,20 +357,12 @@ const styles = StyleSheet.create({
     },
     periodBadge: {
         position: "absolute",
-        top: -2,
-        right: -2,
-        minWidth: 14,
-        height: 14,
-        borderRadius: 7,
+        top: 5,
+        right: 5,
+        width: 7,
+        height: 7,
+        borderRadius: 4,
         backgroundColor: colors.period,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 4,
-    },
-    periodBadgeText: {
-        color: colors.surface,
-        fontSize: 8,
-        fontWeight: "800",
     },
     loggedBadge: {
         position: "absolute",
@@ -291,10 +393,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: 2,
         alignItems: "center",
-        backgroundColor: colors.surface,
+        backgroundColor: colors.surfaceSoft,
         borderRadius: 16,
         paddingHorizontal: 11,
         minHeight: 32,
+        borderWidth: 1,
+        borderColor: colors.line,
     },
     legendText: {
         color: colors.muted,
@@ -307,7 +411,7 @@ const styles = StyleSheet.create({
         padding: 18,
         gap: 12,
         borderWidth: 1,
-        borderColor: "rgba(8,124,155,0.08)",
+        borderColor: colors.line,
     },
     panelTitle: {
         color: colors.ink,

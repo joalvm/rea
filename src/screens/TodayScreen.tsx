@@ -1,15 +1,16 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { FloatingBubbles } from "../components/FloatingBubbles";
 import { IconButton } from "../components/IconButton";
 import { QuickActionCard } from "../components/QuickActionCard";
 import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
 import { WeekStrip } from "../components/WeekStrip";
 import { buildEducationalAlerts, buildPatternInsights } from "../cycle";
-import { colors, radii, shadow, type } from "../theme";
+import { colors, radii, type } from "../theme";
 import { AppSettings, Cycle, CycleSnapshot, DailyLog, EducationalAlert, MoodCheckIn, PhaseKey } from "../types";
+
+const brandMark = require("../../assets/branding/logo-mark.png");
 
 interface TodayScreenProps {
     settings: AppSettings | null;
@@ -43,45 +44,47 @@ export function TodayScreen({
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={styles.hero}>
-                <FloatingBubbles />
-                <View pointerEvents="none" style={styles.heroCurve} />
-
-                <View style={styles.heroContent}>
-                    <View style={styles.topRow}>
+                <View style={styles.topRow}>
+                    <View style={styles.brandLockup}>
                         <View style={styles.logo}>
-                            <MaterialCommunityIcons color={colors.primaryDeep} name="moon-waning-crescent" size={22} />
+                            <Image resizeMode="contain" source={brandMark} style={styles.logoImage} />
                         </View>
-                        <Text style={styles.date}>
-                            {new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long" })}
-                        </Text>
-                        <IconButton icon="cog-outline" label="Abrir ajustes" onPress={onOpenSettings} />
-                    </View>
-
-                    <WeekStrip week={snapshot.week} />
-
-                    <View style={styles.phaseBlock}>
-                        <View style={styles.phaseMetaRow}>
-                            <MetaPill label={snapshot.sourceLabel} tone={snapshot.source} />
-                            <MetaPill label={snapshot.confidenceLabel} tone="confidence" />
+                        <View style={styles.brandCopy}>
+                            <Text style={styles.brandName}>Rea</Text>
+                            <Text style={styles.date}>
+                                {new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long" })}
+                            </Text>
                         </View>
-                        <Text style={styles.phaseLabel}>{snapshot.phaseLabel}</Text>
-                        <Text style={styles.phaseDay}>Día {snapshot.cycleDay}</Text>
-                        <Text style={styles.phaseMessage}>{snapshot.phaseMessage}</Text>
-                        <Text style={styles.phaseSupport}>{snapshot.confidenceNote}</Text>
                     </View>
-
-                    <View style={styles.heroStats}>
-                        <MiniStat icon="calendar-clock" label="Próxima regla" value={snapshot.nextPeriodLabel} />
-                        <View style={styles.statDivider} />
-                        <MiniStat
-                            icon="leaf"
-                            label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
-                            value={snapshot.fertilityStatusLabel}
-                        />
-                    </View>
-
-                    <SoftButton label="Registrar mi día" onPress={onOpenCheckIn} style={styles.heroButton} />
+                    <IconButton icon="cog-outline" label="Abrir ajustes" onPress={onOpenSettings} />
                 </View>
+
+                <Text style={styles.heroEyebrow}>Lectura de hoy</Text>
+                <Text style={styles.phaseDay}>Día {snapshot.cycleDay}</Text>
+                <Text style={styles.phaseLabel}>{snapshot.phaseLabel}</Text>
+                <Text style={styles.phaseMessage}>{snapshot.phaseMessage}</Text>
+
+                <View style={styles.phaseMetaRow}>
+                    <MetaPill label={snapshot.sourceLabel} tone={snapshot.source} />
+                    <MetaPill label={snapshot.confidenceLabel} tone="confidence" />
+                </View>
+                <Text style={styles.phaseSupport}>{snapshot.confidenceNote}</Text>
+
+                <SoftCard style={styles.weekCard}>
+                    <WeekStrip week={snapshot.week} />
+                </SoftCard>
+
+                <View style={styles.heroStats}>
+                    <MiniStat icon="calendar-clock" label="Próxima regla" value={snapshot.nextPeriodLabel} />
+                    <View style={styles.statDivider} />
+                    <MiniStat
+                        icon="leaf"
+                        label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
+                        value={snapshot.fertilityStatusLabel}
+                    />
+                </View>
+
+                <SoftButton label="Registrar mi día" onPress={onOpenCheckIn} style={styles.heroButton} />
             </View>
 
             <View style={styles.section}>
@@ -311,59 +314,70 @@ function getCareTips(phase: PhaseKey) {
 
 const styles = StyleSheet.create({
     content: {
+        paddingTop: 26,
         paddingBottom: 32,
         backgroundColor: colors.background,
     },
     hero: {
-        minHeight: 474,
-        backgroundColor: colors.primarySoft,
-        overflow: "hidden",
-    },
-    heroCurve: {
-        position: "absolute",
-        left: -38,
-        right: -38,
-        bottom: -120,
-        height: 180,
-        borderTopLeftRadius: 180,
-        borderTopRightRadius: 180,
-        backgroundColor: colors.background,
-        zIndex: 1,
-    },
-    heroContent: {
-        zIndex: 2,
-        paddingTop: 54,
+        marginHorizontal: 20,
+        borderRadius: radii.xl,
+        borderWidth: 1,
+        borderColor: colors.line,
+        backgroundColor: colors.surface,
+        paddingTop: 24,
         paddingHorizontal: 20,
         paddingBottom: 24,
+        gap: 12,
     },
     topRow: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 24,
+        marginBottom: 8,
+    },
+    brandLockup: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
     },
     logo: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
-        backgroundColor: "rgba(255,255,255,0.86)",
+        width: 48,
+        height: 48,
+        borderRadius: 18,
+        backgroundColor: colors.primarySoft,
+        borderWidth: 1,
+        borderColor: colors.line,
         alignItems: "center",
         justifyContent: "center",
-        ...shadow,
+    },
+    logoImage: {
+        width: 28,
+        height: 28,
+    },
+    brandCopy: {
+        gap: 2,
+    },
+    brandName: {
+        color: colors.primaryDeep,
+        fontSize: type.small,
+        fontWeight: "900",
+        textTransform: "uppercase",
     },
     date: {
         color: colors.ink,
         fontSize: type.subtitle,
         fontWeight: "900",
     },
-    phaseBlock: {
-        alignItems: "center",
-        marginTop: 38,
+    heroEyebrow: {
+        color: colors.muted,
+        fontSize: type.small,
+        fontWeight: "900",
+        textTransform: "uppercase",
     },
     phaseMetaRow: {
         flexDirection: "row",
         gap: 8,
-        marginBottom: 12,
+        marginTop: 2,
     },
     metaPill: {
         minHeight: 28,
@@ -372,7 +386,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
-        borderColor: "rgba(8,124,155,0.08)",
+        borderColor: colors.line,
     },
     metaPillText: {
         fontSize: type.small,
@@ -380,46 +394,39 @@ const styles = StyleSheet.create({
     },
     phaseLabel: {
         color: colors.ink,
-        fontSize: type.subtitle,
+        fontSize: type.title,
         fontWeight: "800",
     },
     phaseDay: {
         color: colors.ink,
-        fontSize: 44,
-        lineHeight: 52,
+        fontSize: 46,
+        lineHeight: 50,
         fontWeight: "900",
-        marginTop: 4,
     },
     phaseMessage: {
         color: colors.primaryInk,
         fontSize: type.body,
         lineHeight: 22,
-        textAlign: "center",
-        marginTop: 12,
-        maxWidth: 314,
+        maxWidth: 320,
     },
     phaseSupport: {
         color: colors.muted,
         fontSize: type.small,
         lineHeight: 18,
-        textAlign: "center",
-        marginTop: 10,
         maxWidth: 320,
     },
+    weekCard: {
+        paddingVertical: 14,
+    },
     heroStats: {
-        alignSelf: "center",
-        marginTop: 20,
         minHeight: 64,
-        width: "100%",
-        maxWidth: 342,
         borderRadius: radii.lg,
-        backgroundColor: "rgba(255,255,255,0.72)",
+        backgroundColor: colors.surfaceSoft,
         borderWidth: 1,
-        borderColor: "rgba(255,255,255,0.72)",
+        borderColor: colors.line,
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 14,
-        ...shadow,
     },
     miniStat: {
         flex: 1,
@@ -446,17 +453,15 @@ const styles = StyleSheet.create({
     statDivider: {
         width: 1,
         height: 36,
-        backgroundColor: "rgba(8,124,155,0.12)",
+        backgroundColor: colors.line,
         marginHorizontal: 12,
     },
     heroButton: {
-        alignSelf: "center",
-        marginTop: 18,
-        minWidth: 184,
+        width: "100%",
     },
     section: {
         paddingHorizontal: 20,
-        marginTop: 24,
+        marginTop: 28,
         gap: 12,
     },
     sectionTitle: {

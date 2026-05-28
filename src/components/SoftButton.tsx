@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, ViewStyle } from "react-native";
 
-import { colors, type } from "../theme";
+import { colors, radii, type } from "../theme";
 
 interface SoftButtonProps {
     label: string;
@@ -41,22 +41,25 @@ export function SoftButton({ label, onPress, variant = "primary", disabled, load
 
 const styles = StyleSheet.create({
     base: {
-        minHeight: 52,
-        borderRadius: 26,
+        minHeight: 50,
+        borderRadius: radii.md,
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
         gap: 8,
         paddingHorizontal: 22,
+        borderWidth: 1,
+        borderColor: colors.line,
     },
     primary: {
         backgroundColor: colors.primary,
+        borderColor: colors.primary,
     },
     secondary: {
-        backgroundColor: colors.primarySoft,
+        backgroundColor: colors.surfaceSoft,
     },
     ghost: {
-        backgroundColor: "rgba(255,255,255,0.76)",
+        backgroundColor: colors.surface,
     },
     disabled: {
         opacity: 0.45,

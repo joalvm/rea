@@ -73,23 +73,47 @@ npm run typecheck
 npm run lint
 ```
 
-## Builds con EAS
+## Build local Android sin cuenta Expo
 
-Para compilar binarios instalables o de tienda, el proyecto queda preparado con perfiles de EAS Build.
+Para instalar APK en tu telefono o en telefono de tu novia no hace falta cuenta Expo.
+
+1. Si cambias referencias de logo, regenera branding:
+
+```bash
+npm run assets:brand
+```
+
+2. Genera APK local:
+
+```bash
+npm run build:android:apk
+```
+
+3. APK queda copiada en `dist/rea-release.apk`.
+
+Este flujo hace `expo prebuild` local y luego `gradlew assembleRelease`. Si Android SDK y Java ya estan listos, no hace falta Expo account.
+
+Si luego quieres bundle local para Play Store:
+
+```bash
+npm run build:android:aab
+```
+
+## Builds con EAS opcionales
+
+Si luego quieres builds remotos o iOS firmado, el proyecto tambien queda preparado con perfiles de EAS Build.
 
 1. Inicia sesion en Expo o usa `npx eas-cli@latest login`.
 2. Ejecuta una vez `npm run build:configure` si todavia no vinculaste el proyecto a tu cuenta.
 3. Usa el perfil que corresponda:
 
 ```bash
-npm run build:android:apk
-npm run build:android:aab
+npm run build:android:eas
 npm run build:ios:sim
 npm run build:ios:device
 ```
 
-- `build:android:apk`: genera un APK instalable para emulador o telefono Android.
-- `build:android:aab`: genera el bundle para Play Store.
+- `build:android:eas`: genera APK remoto con perfil preview.
 - `build:ios:sim`: genera build para simulador iOS.
 - `build:ios:device`: genera build para dispositivo iOS o distribucion interna.
 

@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, type } from "../theme";
+import { colors, radii, type } from "../theme";
 import { TabKey } from "../types";
 
 const TABS: { key: TabKey; label: string; icon: string }[] = [
@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     wrap: {
         flexDirection: "row",
         borderTopWidth: 1,
-        borderTopColor: "rgba(8, 124, 155, 0.08)",
-        backgroundColor: "rgba(255,255,255,0.96)",
+        borderTopColor: colors.line,
+        backgroundColor: colors.background,
         paddingTop: 8,
-        paddingBottom: 14,
+        paddingBottom: 18,
         paddingHorizontal: 10,
     },
     item: {
@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 3,
-        borderRadius: 18,
+        borderRadius: radii.md,
     },
     activeItem: {
-        backgroundColor: colors.primarySoft,
+        backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.line,
     },
     label: {
         color: colors.muted,

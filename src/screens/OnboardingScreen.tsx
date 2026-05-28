@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { NumberPicker } from "../components/NumberPicker";
 import { SoftButton } from "../components/SoftButton";
@@ -10,6 +10,8 @@ import { createDefaultNotificationMoments } from "../notifications";
 import { GOALS, REGULARITY } from "../onboarding/options";
 import { colors, radii, type } from "../theme";
 import { AppSettings, Goal, NotificationMoment, Regularity } from "../types";
+
+const brandHorizontal = require("../../assets/branding/logo-horizontal.png");
 
 interface OnboardingScreenProps {
     onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
@@ -53,10 +55,8 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
     return (
         <View style={styles.screen}>
             <View style={styles.brand}>
-                <View style={styles.logo}>
-                    <MaterialCommunityIcons color={colors.primaryDeep} name="moon-waning-crescent" size={28} />
-                </View>
-                <Text style={styles.brandText}>Rea</Text>
+                <Image resizeMode="contain" source={brandHorizontal} style={styles.brandImage} />
+                <Text style={styles.brandText}>Privada, local y sin nube.</Text>
             </View>
 
             <View style={styles.progressTrack}>
@@ -248,31 +248,27 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         backgroundColor: colors.background,
-        paddingTop: 54,
+        paddingTop: 42,
     },
     brand: {
         alignItems: "center",
-        gap: 8,
+        gap: 10,
     },
-    logo: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.primarySoft,
+    brandImage: {
+        width: 176,
+        height: 58,
     },
     brandText: {
-        color: colors.ink,
-        fontSize: type.title,
-        fontWeight: "900",
+        color: colors.muted,
+        fontSize: type.body,
+        fontWeight: "700",
     },
     progressTrack: {
         height: 5,
         marginHorizontal: 34,
-        marginTop: 28,
+        marginTop: 24,
         borderRadius: 999,
-        backgroundColor: "rgba(8, 124, 155, 0.1)",
+        backgroundColor: colors.surfaceSoft,
     },
     progressFill: {
         height: 5,
@@ -301,7 +297,7 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: colors.surface,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.1)",
+        borderColor: colors.line,
     },
     optionActive: {
         backgroundColor: colors.primary,
@@ -332,6 +328,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.line,
     },
     segmentActive: {
         backgroundColor: colors.primary,
@@ -348,6 +346,8 @@ const styles = StyleSheet.create({
         minHeight: 58,
         borderRadius: radii.lg,
         backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.line,
         paddingHorizontal: 16,
         flexDirection: "row",
         alignItems: "center",
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: colors.surface,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.1)",
+        borderColor: colors.line,
     },
     goalActive: {
         borderColor: colors.primary,
@@ -399,6 +399,8 @@ const styles = StyleSheet.create({
         borderRadius: radii.lg,
         padding: 16,
         backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: colors.line,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",

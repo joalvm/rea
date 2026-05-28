@@ -5,7 +5,13 @@
         "version": "0.1.0",
         "orientation": "portrait",
         "scheme": "rea",
+        "icon": "./assets/branding/icon.png",
         "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/branding/splash-icon.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#E8F8FE"
+        },
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "app.rea.personal",
@@ -15,8 +21,12 @@
             "package": "app.rea.personal",
             "versionCode": 1,
             "adaptiveIcon": {
+                "foregroundImage": "./assets/branding/adaptive-foreground.png",
                 "backgroundColor": "#E8F8FE"
             }
+        },
+        "web": {
+            "favicon": "./assets/branding/favicon.ico"
         },
         "plugins": ["expo-sqlite", "expo-notifications", "expo-status-bar"]
     }

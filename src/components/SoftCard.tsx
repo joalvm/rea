@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: radii.lg,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.08)",
-        padding: 18,
+        borderColor: colors.line,
+        padding: 20,
         ...shadow,
     },
 });
