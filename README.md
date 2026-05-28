@@ -1,4 +1,4 @@
-# Mensu
+# Rea
 
 App personal para seguimiento menstrual local. Sin login, sin backend, sin nube.
 
