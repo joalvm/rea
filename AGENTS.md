@@ -6,6 +6,13 @@
 - Prioridad: utilidad real, honestidad clinica, privacidad y tono sereno.
 - No convertir producto en diagnostico ni en predictor fertil con precision falsa.
 
+## Estado actual
+
+- Motor base ya diferencia observado, estimado y confianza; usa historial real para dar contexto mejor que una heuristica fija.
+- Pantalla Hoy ya tiene direccion aprobada: hero editorial con tema por fase, burbujas discretas, lectura principal clara y CTA emocional. No rehacer esa estructura desde cero sin pedido explicito.
+- Patrones y alertas educativas ya existen, pero siguen pendientes spotting entre periodos, fiebre y tendencia de empeoramiento si esos datos no se capturan mejor.
+- Build local Android sin cuenta Expo ya fue validado para uso personal.
+
 ## Reglas de diseño
 
 - Mantener UX suave, minimalista, aire editorial, baja densidad visual.
@@ -27,6 +34,12 @@
 - Antes de refactors estructurales amplios, comparar proyecto con convenciones actuales de Expo y React Native.
 - No mover carpetas o entrypoints por inercia antigua; justificar cualquier desviacion del template y guias vigentes.
 - Corregir raiz del problema. Evitar parches cosmeticos si modelo de datos o flujo siguen debiles.
+
+## Reglas de documentacion
+
+- README debe explicar que es Rea, que hace, que no promete y como se protege privacidad.
+- README no debe convertirse en manual tecnico; dejar detalle tecnico solo en tramo final para contribuidores.
+- ROADMAP.md sigue siendo archivo local de trabajo. Mantenerlo breve y borrarlo cuando ya no tenga pendientes reales.
 
 ## Flujo de trabajo
 

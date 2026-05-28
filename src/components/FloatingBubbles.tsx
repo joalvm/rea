@@ -9,13 +9,31 @@ interface BubbleProps {
     style: ViewStyle;
 }
 
-export function FloatingBubbles() {
+interface FloatingBubblesProps {
+    palette?: string[];
+}
+
+const defaultPalette: [string, string, string, string] = [
+    "rgba(255,255,255,0.30)",
+    "rgba(207,194,235,0.18)",
+    "rgba(255,255,255,0.18)",
+    "rgba(255,231,238,0.22)",
+];
+
+export function FloatingBubbles({ palette }: FloatingBubblesProps) {
+    const bubblePalette: [string, string, string, string] = [
+        palette?.[0] ?? defaultPalette[0],
+        palette?.[1] ?? defaultPalette[1],
+        palette?.[2] ?? defaultPalette[2],
+        palette?.[3] ?? defaultPalette[3],
+    ];
+
     return (
         <>
-            <Bubble color="rgba(255,255,255,0.46)" delay={0} size={118} style={styles.one} travel={16} />
-            <Bubble color="rgba(124,217,249,0.38)" delay={260} size={76} style={styles.two} travel={12} />
-            <Bubble color="rgba(143,220,195,0.28)" delay={520} size={54} style={styles.three} travel={10} />
-            <Bubble color="rgba(255,231,238,0.58)" delay={780} size={68} style={styles.four} travel={14} />
+            <Bubble color={bubblePalette[0]} delay={10} size={86} style={styles.one} travel={12} />
+            <Bubble color={bubblePalette[1]} delay={210} size={52} style={styles.two} travel={9} />
+            <Bubble color={bubblePalette[2]} delay={420} size={40} style={styles.three} travel={8} />
+            <Bubble color={bubblePalette[3]} delay={640} size={48} style={styles.four} travel={10} />
         </>
     );
 }
@@ -28,13 +46,13 @@ function Bubble({ size, color, delay, travel, style }: BubbleProps) {
             Animated.sequence([
                 Animated.delay(delay),
                 Animated.timing(progress, {
-                    duration: 3800,
+                    duration: 3300,
                     easing: Easing.inOut(Easing.quad),
                     toValue: 1,
                     useNativeDriver: true,
                 }),
                 Animated.timing(progress, {
-                    duration: 3800,
+                    duration: 3300,
                     easing: Easing.inOut(Easing.quad),
                     toValue: 0,
                     useNativeDriver: true,
@@ -71,19 +89,19 @@ const styles = StyleSheet.create({
         position: "absolute",
     },
     one: {
-        left: -36,
-        top: 128,
+        left: -10,
+        top: 138,
     },
     two: {
-        right: 22,
-        top: 124,
+        left: 22,
+        bottom: 150,
     },
     three: {
-        right: 92,
-        bottom: 84,
+        right: 82,
+        bottom: 122,
     },
     four: {
-        left: 74,
-        bottom: 104,
+        left: 72,
+        bottom: 126,
     },
 });

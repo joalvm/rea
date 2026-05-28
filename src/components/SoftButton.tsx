@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, ViewStyle } from "react-native";
+import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from "react-native";
 
 import { colors, radii, type } from "../theme";
 
@@ -11,9 +11,21 @@ interface SoftButtonProps {
     loading?: boolean;
     icon?: ReactNode;
     style?: StyleProp<ViewStyle>;
+    labelStyle?: StyleProp<TextStyle>;
+    loadingColor?: string;
 }
 
-export function SoftButton({ label, onPress, variant = "primary", disabled, loading, icon, style }: SoftButtonProps) {
+export function SoftButton({
+    label,
+    onPress,
+    variant = "primary",
+    disabled,
+    loading,
+    icon,
+    style,
+    labelStyle,
+    loadingColor,
+}: SoftButtonProps) {
     return (
         <Pressable
             accessibilityRole="button"
@@ -28,11 +40,15 @@ export function SoftButton({ label, onPress, variant = "primary", disabled, load
             ]}
         >
             {loading ? (
-                <ActivityIndicator color={variant === "primary" ? colors.primaryInk : colors.primaryDeep} />
+                <ActivityIndicator
+                    color={loadingColor ?? (variant === "primary" ? colors.primaryInk : colors.primaryDeep)}
+                />
             ) : (
                 icon
             )}
-            <Text style={[styles.label, variant === "primary" ? styles.primaryLabel : styles.secondaryLabel]}>
+            <Text
+                style={[styles.label, variant === "primary" ? styles.primaryLabel : styles.secondaryLabel, labelStyle]}
+            >
                 {label}
             </Text>
         </Pressable>

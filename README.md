@@ -1,126 +1,50 @@
 # Rea
 
-Rea es una app movil privada para registrar el ciclo menstrual y notar como cambia el cuerpo, el animo y la energia a lo largo del mes. La idea central es simple: ayudarte a observarte mejor sin cuenta, sin nube y sin convertir tus datos en un servicio externo.
+Rea es una app movil privada para registrar ciclo menstrual, sintomas y cambios cotidianos sin convertir esa informacion en una promesa de precision falsa. Su idea central es simple: ayudar a observar mejor lo que pasa en el cuerpo, con calma, sin cuenta, sin nube y sin volver la experiencia invasiva.
 
-Hoy Rea funciona como una app local-first. Todo se guarda en el dispositivo. Si no quieres recordatorios, puedes usarla igual. Si aceptas notificaciones, solo recibiras preguntas breves y discretas, sin mostrar informacion sensible en pantalla bloqueada.
+## Que hace hoy
 
-## Que es hoy
+Rea acompana un uso diario y sereno. Empieza con un onboarding corto para tomar un punto de partida y luego organiza la experiencia en cuatro espacios faciles de leer:
 
-Rea esta pensada para acompanar un uso cotidiano y tranquilo. Al abrirla por primera vez, la app hace un onboarding corto para entender desde donde empezar: fecha de ultima regla, duracion aproximada del ciclo, duracion del sangrado, regularidad, uso de anticonceptivos hormonales y prioridad personal. Con eso construye una primera estimacion. Esa estimacion no pretende adivinar con precision clinica; sirve como punto de partida y mejora en la medida en que hay mas registros.
-
-Despues del inicio, la app se organiza en cuatro espacios faciles de entender:
-
-- `Hoy`: muestra la fase estimada, el dia del ciclo, una referencia de cuando podria llegar la siguiente regla y una ventana fertil orientativa.
-- `Calendario`: deja ver el mes completo, los dias con registro y la distribucion estimada de fases.
-- `Diario`: guarda momentos rapidos y registros completos para que luego tengan contexto.
-- `Patrones`: resume tendencias suaves a partir de tus propios datos, sin afirmar causas medicas.
+- Hoy: muestra una lectura clara del momento actual, con fase, dia del ciclo y referencias orientativas segun datos reales o estimados.
+- Calendario: deja ver historia reciente, dias marcados y distribucion del ciclo de forma mas comprensible.
+- Diario: permite registrar check-ins rapidos y cierres mas completos del dia.
+- Patrones: resume tendencias que se repiten en tus propios datos sin venderlas como diagnostico.
 
 ## Que puedes registrar
 
-Rea tiene dos formas de uso. La primera es un check-in rapido para registrar como te sientes en ese momento. La segunda es un registro mas completo para cerrar el dia. En ambos casos puedes guardar animo, energia, dolor, estres y una nota opcional. En el registro completo tambien puedes marcar nivel de sangrado y sintomas frecuentes como colicos, migrana, acne, hinchazon, sensibilidad, antojos, insomnio o nauseas.
+La app permite guardar animo, energia, dolor, estres y notas breves. En registros mas completos tambien puedes anotar sangrado, sintomas frecuentes e impacto funcional para que luego esos datos sirvan en el calendario, la pantalla de hoy y la lectura de patrones.
 
-La app tambien permite configurar recordatorios por la manana, por la noche y en horarios personalizados. Cada recordatorio puede activarse o apagarse, mover la hora y elegir dias de la semana.
-
-## Que no hace
-
-Rea no reemplaza atencion medica. No diagnostica, no promete precision fertil, no interpreta sintomas como evidencia clinica y no sustituye seguimiento profesional. Tampoco tiene funciones de cuenta, sincronizacion entre dispositivos, analitica, contenido editorial, inteligencia artificial ni backup automatico.
-
-Esto tiene una consecuencia importante: si desinstalas la app, limpias sus datos o cambias de telefono, los registros no se moveran solos contigo.
+Los recordatorios son opcionales. Si quieres usarlos, Rea puede preguntar de forma breve y discreta. Si no quieres activarlos, la app sigue siendo totalmente util.
 
 ## Privacidad
 
-La privacidad es parte del producto, no un agregado. Los datos viven dentro del dispositivo en una base local. No hace falta iniciar sesion para usar la app. No hay backend, no hay nube y no hay envio de informacion personal a terceros dentro de esta version del proyecto.
+La privacidad es parte del producto. Los datos viven en el dispositivo. No hace falta iniciar sesion. No hay backend, no hay nube y no hay analitica en esta version del proyecto.
 
-Las notificaciones estan pensadas para ser discretas. Si el sistema operativo no concede permiso, Rea sigue funcionando, solo que sin recordatorios programados.
+Si el telefono no concede permisos de notificacion, Rea sigue funcionando. Si borras los datos o desinstalas la app, los registros no se recuperan solos porque no existe sincronizacion remota.
 
-Desde Ajustes existe una opcion para borrar todo y volver al inicio. Esa accion elimina los registros guardados en ese dispositivo.
+## Lo que no promete
 
-## Compatibilidad actual
+Rea no reemplaza atencion medica. No diagnostica, no promete precision fertil, no convierte sintomas en conclusiones clinicas y no sustituye seguimiento profesional. Cuando estima algo, debe sentirse como orientacion, no como certeza.
 
-Segun la configuracion actual del proyecto, Rea esta pensada primero para movil y en orientacion vertical.
+## Para aportar al proyecto
 
-- `Android`: es el camino mas directo para pruebas hoy. Ya queda preparado un flujo con EAS para sacar un APK instalable en emulador o telefono Android. Un equipo moderno como Redmi Note 14 Pro no requiere una adaptacion nativa especial para esta app; lo importante sera validar permisos de notificacion y restricciones de bateria de HyperOS en pruebas reales.
-- `iPhone y iPad`: el proyecto esta configurado para iOS y declara soporte de tablet, pero eso no equivale a una publicacion ni a una validacion final de tienda.
-- `Web`: existe script de arranque web, pero la experiencia fue disenada para movil. Conviene tratar web como vista de desarrollo o revision, no como soporte equivalente al telefono.
-- `Sin internet`: el uso principal no depende de conexion. La app puede funcionar offline porque guarda la informacion de manera local.
+Si vas a colaborar en el desarrollo, este repo trabaja hoy con Expo, React Native y TypeScript, con almacenamiento local y recordatorios locales.
 
-## Estado real del proyecto
-
-Rea esta en estado de desarrollo. Este repositorio contiene el codigo fuente, no una version distribuida en App Store o Play Store. La identidad de build ya queda alineada a `Rea` en nombre, `slug`, `scheme` y paquetes moviles. La carpeta local del repo puede seguir llamandose `mensu`, pero la app ya se prepara para publicarse como Rea.
-
-## Si quieres usarla sin meterte al codigo
-
-Lo importante es esto:
-
-1. Abres la app.
-2. Completar el onboarding toma pocos pasos.
-3. Puedes registrar como te sientes una o varias veces al dia.
-4. El calendario y la pantalla de patrones se vuelven mas utiles con el tiempo.
-5. Si no quieres notificaciones, la app sigue siendo totalmente usable.
-
-## Desarrollo
-
-Si vas a desarrollar Rea, el stack actual es Expo + React Native + TypeScript, con almacenamiento local en `expo-sqlite` y recordatorios en `expo-notifications`.
-
-Comandos principales:
+Comandos base:
 
 ```bash
+npm install
 npm run start
 npm run android
-npm run ios
-npm run web
 npm run typecheck
 npm run lint
 ```
 
-## Build local Android sin cuenta Expo
+Criterios de aporte:
 
-Para instalar APK en tu telefono o en telefono de tu novia no hace falta cuenta Expo.
-
-1. Si cambias referencias de logo, regenera branding:
-
-```bash
-npm run assets:brand
-```
-
-2. Genera APK local:
-
-```bash
-npm run build:android:apk
-```
-
-3. APK queda copiada en `dist/rea-release.apk`.
-
-Este flujo hace `expo prebuild` local y luego `gradlew assembleRelease`. Si Android SDK y Java ya estan listos, no hace falta Expo account.
-
-Si luego quieres bundle local para Play Store:
-
-```bash
-npm run build:android:aab
-```
-
-## Builds con EAS opcionales
-
-Si luego quieres builds remotos o iOS firmado, el proyecto tambien queda preparado con perfiles de EAS Build.
-
-1. Inicia sesion en Expo o usa `npx eas-cli@latest login`.
-2. Ejecuta una vez `npm run build:configure` si todavia no vinculaste el proyecto a tu cuenta.
-3. Usa el perfil que corresponda:
-
-```bash
-npm run build:android:eas
-npm run build:ios:sim
-npm run build:ios:device
-```
-
-- `build:android:eas`: genera APK remoto con perfil preview.
-- `build:ios:sim`: genera build para simulador iOS.
-- `build:ios:device`: genera build para dispositivo iOS o distribucion interna.
-
-Nota importante: en iOS no existe APK. El binario instalable sera una build de simulador o un `.ipa`, segun el perfil y las credenciales disponibles.
-
-En Windows hay un instalador para preparar emulador Android sin Android Studio completo:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-android-emulator.ps1
-```
+- mantener enfoque local-first y privado
+- no tocar `colors.primary` en `src/theme.ts`
+- diferenciar siempre entre dato observado, estimado y desconocido
+- evitar copy o UI que sugiera precision clinica falsa
+- no commitear `ROADMAP.md` ni archivos equivalentes de plan local

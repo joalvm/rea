@@ -5,18 +5,45 @@ import { CycleSnapshot } from "../types";
 
 interface WeekStripProps {
     week: CycleSnapshot["week"];
+    palette?: {
+        weekdayColor?: string;
+        todayWeekdayColor?: string;
+        dayTextColor?: string;
+        todayBackgroundColor?: string;
+        todayDayTextColor?: string;
+    };
 }
 
-export function WeekStrip({ week }: WeekStripProps) {
+const defaultPalette = {
+    weekdayColor: colors.primaryInk,
+    todayWeekdayColor: colors.primaryInk,
+    dayTextColor: colors.ink,
+    todayBackgroundColor: colors.primaryDeep,
+    todayDayTextColor: colors.surface,
+};
+
+export function WeekStrip({ week, palette }: WeekStripProps) {
+    const resolvedPalette = { ...defaultPalette, ...palette };
+
     return (
         <View style={styles.wrap}>
             {week.map((day) => (
                 <View key={day.iso} style={styles.day}>
-                    <Text style={[styles.weekday, day.isToday && styles.todayText]}>{day.weekday}</Text>
+                    <Text
+                        style={[
+                            styles.weekday,
+                            { color: resolvedPalette.weekdayColor },
+                            day.isToday && styles.todayText,
+                            day.isToday && { color: resolvedPalette.todayWeekdayColor },
+                        ]}
+                    >
+                        {day.weekday}
+                    </Text>
                     <View
                         style={[
                             styles.circle,
                             day.isToday && styles.todayCircle,
+                            day.isToday && { backgroundColor: resolvedPalette.todayBackgroundColor },
                             day.isPeriod &&
                                 day.periodSource === "observed" &&
                                 !day.isToday &&
@@ -28,7 +55,16 @@ export function WeekStrip({ week }: WeekStripProps) {
                             day.isFertile && !day.isToday && styles.fertileCircle,
                         ]}
                     >
-                        <Text style={[styles.dayText, day.isToday && styles.todayDayText]}>{day.day}</Text>
+                        <Text
+                            style={[
+                                styles.dayText,
+                                { color: resolvedPalette.dayTextColor },
+                                day.isToday && styles.todayDayText,
+                                day.isToday && { color: resolvedPalette.todayDayTextColor },
+                            ]}
+                        >
+                            {day.day}
+                        </Text>
                     </View>
                 </View>
             ))}

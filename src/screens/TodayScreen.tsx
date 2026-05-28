@@ -1,16 +1,15 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { FloatingBubbles } from "../components/FloatingBubbles";
 import { IconButton } from "../components/IconButton";
 import { QuickActionCard } from "../components/QuickActionCard";
 import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
 import { WeekStrip } from "../components/WeekStrip";
 import { buildEducationalAlerts, buildPatternInsights } from "../cycle";
-import { colors, radii, type } from "../theme";
+import { colors, radii, shadow, type } from "../theme";
 import { AppSettings, Cycle, CycleSnapshot, DailyLog, EducationalAlert, MoodCheckIn, PhaseKey } from "../types";
-
-const brandMark = require("../../assets/branding/logo-mark.png");
 
 interface TodayScreenProps {
     settings: AppSettings | null;
@@ -37,57 +36,115 @@ export function TodayScreen({
     onOpenPatterns,
     onOpenSettings,
 }: TodayScreenProps) {
+    const heroTheme = getHeroTheme(snapshot.phase);
     const insights = buildPatternInsights(settings, cycles, dailyLogs, moodCheckIns);
     const alerts = buildEducationalAlerts(settings, cycles, dailyLogs, moodCheckIns).slice(0, 2);
     const careTips = getCareTips(snapshot.phase);
+    const heroSupport = getHeroSupport(snapshot);
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-            <View style={styles.hero}>
-                <View style={styles.topRow}>
-                    <View style={styles.brandLockup}>
-                        <View style={styles.logo}>
-                            <Image resizeMode="contain" source={brandMark} style={styles.logoImage} />
-                        </View>
-                        <View style={styles.brandCopy}>
-                            <Text style={styles.brandName}>Rea</Text>
-                            <Text style={styles.date}>
-                                {new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long" })}
+            <View style={[styles.hero, { backgroundColor: heroTheme.background }]}>
+                <FloatingBubbles palette={heroTheme.bubbleColors} />
+                <View pointerEvents="none" style={[styles.heroGlow, { backgroundColor: heroTheme.glow }]} />
+                <View pointerEvents="none" style={[styles.heroCurve, { backgroundColor: heroTheme.background }]} />
+
+                <View style={styles.heroContent}>
+                    <View style={styles.topRow}>
+                        <Text style={[styles.date, { color: heroTheme.dateColor }]}>
+                            {new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long" })}
+                        </Text>
+                        <IconButton
+                            backgroundColor={heroTheme.iconButtonBackground}
+                            color={heroTheme.iconButtonColor}
+                            icon="cog-outline"
+                            label="Abrir ajustes"
+                            onPress={onOpenSettings}
+                        />
+                    </View>
+
+                    <WeekStrip palette={heroTheme.weekPalette} week={snapshot.week} />
+
+                    <View style={styles.phaseBlock}>
+                        <View style={styles.phaseHeading}>
+                            <MaterialCommunityIcons
+                                color={heroTheme.scenePillColor}
+                                name={heroTheme.phaseIcon as never}
+                                size={20}
+                            />
+                            <Text style={[styles.phaseHeadingText, { color: heroTheme.scenePillColor }]}>
+                                {snapshot.phaseLabel}
                             </Text>
                         </View>
+
+                        <View style={styles.phaseDayRow}>
+                            <View
+                                style={[
+                                    styles.dayBadge,
+                                    {
+                                        backgroundColor: heroTheme.dayBadgeBackground,
+                                        borderColor: heroTheme.dayBadgeBorder,
+                                    },
+                                ]}
+                            >
+                                <Text style={[styles.dayBadgeText, { color: heroTheme.dayBadgeColor }]}>Día</Text>
+                            </View>
+                            <Text style={[styles.phaseDay, { color: heroTheme.titleColor }]}>{snapshot.cycleDay}</Text>
+                        </View>
+                        <Text style={[styles.phaseMessage, { color: heroTheme.messageColor }]}>
+                            {snapshot.phaseMessage}
+                        </Text>
+                        {heroSupport ? (
+                            <Text style={[styles.phaseSupport, { color: heroTheme.supportColor }]}>{heroSupport}</Text>
+                        ) : null}
                     </View>
-                    <IconButton icon="cog-outline" label="Abrir ajustes" onPress={onOpenSettings} />
-                </View>
 
-                <Text style={styles.heroEyebrow}>Lectura de hoy</Text>
-                <Text style={styles.phaseDay}>Día {snapshot.cycleDay}</Text>
-                <Text style={styles.phaseLabel}>{snapshot.phaseLabel}</Text>
-                <Text style={styles.phaseMessage}>{snapshot.phaseMessage}</Text>
+                    <View
+                        style={[
+                            styles.heroStats,
+                            {
+                                backgroundColor: heroTheme.statCardBackground,
+                                borderColor: heroTheme.statCardBorder,
+                            },
+                        ]}
+                    >
+                        <MiniStat
+                            icon="calendar-clock"
+                            iconColor={heroTheme.statIconColor}
+                            label="Próxima regla"
+                            labelColor={heroTheme.statLabelColor}
+                            value={snapshot.nextPeriodLabel}
+                            valueColor={heroTheme.statValueColor}
+                        />
+                        <View style={[styles.statDivider, { backgroundColor: heroTheme.dividerColor }]} />
+                        <MiniStat
+                            icon="leaf"
+                            iconColor={heroTheme.statIconColor}
+                            label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
+                            labelColor={heroTheme.statLabelColor}
+                            value={snapshot.fertilityStatusLabel}
+                            valueColor={heroTheme.statValueColor}
+                        />
+                    </View>
 
-                <View style={styles.phaseMetaRow}>
-                    <MetaPill label={snapshot.sourceLabel} tone={snapshot.source} />
-                    <MetaPill label={snapshot.confidenceLabel} tone="confidence" />
-                </View>
-                <Text style={styles.phaseSupport}>{snapshot.confidenceNote}</Text>
-
-                <SoftCard style={styles.weekCard}>
-                    <WeekStrip week={snapshot.week} />
-                </SoftCard>
-
-                <View style={styles.heroStats}>
-                    <MiniStat icon="calendar-clock" label="Próxima regla" value={snapshot.nextPeriodLabel} />
-                    <View style={styles.statDivider} />
-                    <MiniStat
-                        icon="leaf"
-                        label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
-                        value={snapshot.fertilityStatusLabel}
+                    <SoftButton
+                        icon={<MaterialCommunityIcons color={heroTheme.buttonTextColor} name="heart-pulse" size={18} />}
+                        label="Hoy me siento"
+                        labelStyle={{ color: heroTheme.buttonTextColor }}
+                        loadingColor={heroTheme.buttonTextColor}
+                        onPress={onOpenCheckIn}
+                        style={[
+                            styles.heroButton,
+                            {
+                                backgroundColor: heroTheme.buttonBackground,
+                                borderColor: heroTheme.buttonBorder,
+                            },
+                        ]}
                     />
                 </View>
-
-                <SoftButton label="Registrar mi día" onPress={onOpenCheckIn} style={styles.heroButton} />
             </View>
 
-            <View style={styles.section}>
+            <View style={[styles.section, styles.firstSection]}>
                 <Text style={styles.sectionTitle}>Acciones rápidas</Text>
                 <ScrollView horizontal contentContainerStyle={styles.quickCards} showsHorizontalScrollIndicator={false}>
                     <QuickActionCard
@@ -205,38 +262,172 @@ function getAlertTone(severity: EducationalAlert["severity"]) {
     return { label: "Info", background: colors.surfaceSoft, ink: colors.muted };
 }
 
-function MetaPill({ label, tone }: { label: string; tone: CycleSnapshot["source"] | "confidence" }) {
-    const backgroundColor =
-        tone === "observed"
-            ? colors.periodSoft
-            : tone === "estimated"
-              ? colors.primarySoft
-              : tone === "confidence"
-                ? colors.surface
-                : colors.surfaceSoft;
-    const textColor =
-        tone === "observed"
-            ? colors.period
-            : tone === "estimated"
-              ? colors.primaryDeep
-              : tone === "confidence"
-                ? colors.ink
-                : colors.muted;
+function getHeroTheme(phase: PhaseKey) {
+    const baseTheme = {
+        background: colors.lutealSoft,
+        glow: "rgba(122,94,201,0.08)",
+        bubbleColors: [
+            "rgba(255,255,255,0.22)",
+            "rgba(207,194,235,0.16)",
+            "rgba(255,255,255,0.16)",
+            "rgba(233,226,248,0.18)",
+        ],
+        dateColor: colors.ink,
+        iconButtonColor: "#6C59A8",
+        iconButtonBackground: "rgba(255,255,255,0.82)",
+        phaseIcon: "circle-outline",
+        scenePillBackground: "rgba(255,255,255,0.76)",
+        scenePillBorder: "rgba(122,94,201,0.14)",
+        scenePillColor: "#6C59A8",
+        titleColor: "#5B4C7E",
+        messageColor: "#5E5279",
+        supportColor: "#7D7097",
+        dayBadgeBackground: "rgba(122,94,201,0.08)",
+        dayBadgeBorder: "rgba(122,94,201,0.12)",
+        dayBadgeColor: "#8D7DAF",
+        statCardBackground: "rgba(255,255,255,0.78)",
+        statCardBorder: "rgba(255,255,255,0.72)",
+        statIconColor: "#6C59A8",
+        statLabelColor: "#7D7097",
+        statValueColor: colors.ink,
+        dividerColor: "rgba(122,94,201,0.12)",
+        buttonBackground: "rgba(255,255,255,0.88)",
+        buttonBorder: "rgba(122,94,201,0.32)",
+        buttonTextColor: "#6C59A8",
+        weekPalette: {
+            weekdayColor: "#7D7097",
+            todayWeekdayColor: "#5E5279",
+            dayTextColor: colors.ink,
+            todayBackgroundColor: "#6C59A8",
+            todayDayTextColor: colors.surface,
+        },
+    };
 
-    return (
-        <View style={[styles.metaPill, { backgroundColor }]}>
-            <Text style={[styles.metaPillText, { color: textColor }]}>{label}</Text>
-        </View>
-    );
+    if (phase === "menstrual") {
+        return {
+            ...baseTheme,
+            background: colors.periodSoft,
+            glow: "rgba(248,111,143,0.10)",
+            bubbleColors: [
+                "rgba(255,255,255,0.22)",
+                "rgba(248,111,143,0.10)",
+                "rgba(255,255,255,0.14)",
+                "rgba(255,208,219,0.16)",
+            ],
+            iconButtonColor: colors.danger,
+            phaseIcon: "water-outline",
+            scenePillBorder: "rgba(248,111,143,0.16)",
+            scenePillColor: colors.danger,
+            titleColor: "#B24662",
+            messageColor: "#7A4957",
+            supportColor: "#9B6B79",
+            dayBadgeBackground: "rgba(219,79,102,0.08)",
+            dayBadgeBorder: "rgba(219,79,102,0.12)",
+            dayBadgeColor: "#B97084",
+            statIconColor: colors.danger,
+            statLabelColor: "#9B6B79",
+            dividerColor: "rgba(219,79,102,0.12)",
+            buttonBorder: "rgba(219,79,102,0.32)",
+            buttonTextColor: colors.danger,
+            weekPalette: {
+                weekdayColor: "#9B6B79",
+                todayWeekdayColor: "#7A4957",
+                dayTextColor: colors.ink,
+                todayBackgroundColor: colors.danger,
+                todayDayTextColor: colors.surface,
+            },
+        };
+    }
+
+    if (phase === "follicular") {
+        return {
+            ...baseTheme,
+            phaseIcon: "sprout-outline",
+        };
+    }
+
+    if (phase === "fertile") {
+        return {
+            ...baseTheme,
+            background: colors.fertileSoft,
+            glow: "rgba(61,190,134,0.10)",
+            bubbleColors: [
+                "rgba(255,255,255,0.22)",
+                "rgba(61,190,134,0.10)",
+                "rgba(255,255,255,0.14)",
+                "rgba(203,239,224,0.18)",
+            ],
+            iconButtonColor: colors.success,
+            phaseIcon: "leaf",
+            scenePillBorder: "rgba(61,190,134,0.16)",
+            scenePillColor: colors.success,
+            titleColor: "#2E8A62",
+            messageColor: "#3D6F5F",
+            supportColor: "#6D8E83",
+            dayBadgeBackground: "rgba(61,190,134,0.08)",
+            dayBadgeBorder: "rgba(61,190,134,0.12)",
+            dayBadgeColor: "#72A791",
+            statIconColor: colors.success,
+            statLabelColor: "#6D8E83",
+            dividerColor: "rgba(61,190,134,0.12)",
+            buttonBorder: "rgba(61,190,134,0.32)",
+            buttonTextColor: colors.success,
+            weekPalette: {
+                weekdayColor: "#6D8E83",
+                todayWeekdayColor: "#3D6F5F",
+                dayTextColor: colors.ink,
+                todayBackgroundColor: colors.success,
+                todayDayTextColor: colors.surface,
+            },
+        };
+    }
+
+    return baseTheme;
 }
 
-function MiniStat({ icon, label, value }: { icon: string; label: string; value: string }) {
+function getHeroSupport(snapshot: CycleSnapshot) {
+    if (snapshot.source === "observed") {
+        return snapshot.confidence === "high"
+            ? null
+            : "Base actual: usando tus registros, pero aún puede ajustarse un poco.";
+    }
+
+    if (snapshot.source === "estimated") {
+        if (snapshot.confidence === "low") {
+            return "Base actual: estimación inicial. Se ajusta mejor cuando marques más periodos reales.";
+        }
+
+        if (snapshot.confidence === "medium") {
+            return "Base actual: estimación provisional. Se afina con más registros.";
+        }
+
+        return "Base actual: estimación ya bastante alineada con tus registros recientes.";
+    }
+
+    return snapshot.confidenceNote ? `Base actual: ${snapshot.confidenceNote}` : null;
+}
+
+function MiniStat({
+    icon,
+    label,
+    value,
+    iconColor,
+    labelColor,
+    valueColor,
+}: {
+    icon: string;
+    label: string;
+    value: string;
+    iconColor: string;
+    labelColor: string;
+    valueColor: string;
+}) {
     return (
         <View style={styles.miniStat}>
-            <MaterialCommunityIcons color={colors.primaryDeep} name={icon as never} size={18} />
+            <MaterialCommunityIcons color={iconColor} name={icon as never} size={18} />
             <View style={styles.miniStatCopy}>
-                <Text style={styles.miniStatLabel}>{label}</Text>
-                <Text numberOfLines={1} style={styles.miniStatValue}>
+                <Text style={[styles.miniStatLabel, { color: labelColor }]}>{label}</Text>
+                <Text numberOfLines={1} style={[styles.miniStatValue, { color: valueColor }]}>
                     {value}
                 </Text>
             </View>
@@ -314,119 +505,119 @@ function getCareTips(phase: PhaseKey) {
 
 const styles = StyleSheet.create({
     content: {
-        paddingTop: 26,
         paddingBottom: 32,
         backgroundColor: colors.background,
     },
     hero: {
-        marginHorizontal: 20,
-        borderRadius: radii.xl,
-        borderWidth: 1,
-        borderColor: colors.line,
-        backgroundColor: colors.surface,
-        paddingTop: 24,
+        minHeight: 492,
+        marginBottom: 92,
+        overflow: "visible",
+    },
+    heroGlow: {
+        position: "absolute",
+        width: 196,
+        height: 196,
+        borderRadius: 98,
+        right: -18,
+        top: 116,
+    },
+    heroCurve: {
+        position: "absolute",
+        left: -36,
+        right: -36,
+        bottom: -78,
+        height: 124,
+        borderBottomLeftRadius: 150,
+        borderBottomRightRadius: 150,
+        zIndex: 1,
+    },
+    heroContent: {
+        zIndex: 2,
+        paddingTop: 54,
         paddingHorizontal: 20,
-        paddingBottom: 24,
-        gap: 12,
+        paddingBottom: 12,
     },
     topRow: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 8,
-    },
-    brandLockup: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-    },
-    logo: {
-        width: 48,
-        height: 48,
-        borderRadius: 18,
-        backgroundColor: colors.primarySoft,
-        borderWidth: 1,
-        borderColor: colors.line,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    logoImage: {
-        width: 28,
-        height: 28,
-    },
-    brandCopy: {
-        gap: 2,
-    },
-    brandName: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-        textTransform: "uppercase",
+        marginBottom: 24,
     },
     date: {
         color: colors.ink,
         fontSize: type.subtitle,
         fontWeight: "900",
     },
-    heroEyebrow: {
-        color: colors.muted,
-        fontSize: type.small,
-        fontWeight: "900",
-        textTransform: "uppercase",
+    phaseBlock: {
+        alignItems: "center",
+        marginTop: 34,
     },
-    phaseMetaRow: {
+    phaseHeading: {
         flexDirection: "row",
+        alignItems: "center",
         gap: 8,
-        marginTop: 2,
     },
-    metaPill: {
-        minHeight: 28,
-        borderRadius: 14,
-        paddingHorizontal: 12,
+    phaseHeadingText: {
+        fontSize: 22,
+        lineHeight: 26,
+        fontWeight: "900",
+    },
+    phaseDayRow: {
+        flexDirection: "row",
+        alignItems: "flex-end",
+        gap: 10,
+        marginTop: 8,
+    },
+    dayBadge: {
+        position: "absolute",
+        top: 10,
+        left: -25,
+        minHeight: 22,
+        borderRadius: 12,
+        paddingHorizontal: 0,
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
-        borderColor: colors.line,
+        marginBottom: 8,
     },
-    metaPillText: {
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    phaseLabel: {
-        color: colors.ink,
-        fontSize: type.title,
+    dayBadgeText: {
+        fontSize: type.tiny,
         fontWeight: "800",
+        paddingHorizontal: 4,
     },
     phaseDay: {
-        color: colors.ink,
-        fontSize: 46,
-        lineHeight: 50,
+        fontSize: 64,
+        lineHeight: 66,
         fontWeight: "900",
     },
     phaseMessage: {
-        color: colors.primaryInk,
         fontSize: type.body,
         lineHeight: 22,
-        maxWidth: 320,
+        textAlign: "center",
+        marginTop: 12,
+        maxWidth: 314,
     },
     phaseSupport: {
-        color: colors.muted,
         fontSize: type.small,
         lineHeight: 18,
+        textAlign: "center",
+        marginTop: 10,
         maxWidth: 320,
     },
-    weekCard: {
-        paddingVertical: 14,
-    },
     heroStats: {
+        alignSelf: "center",
+        marginTop: 18,
         minHeight: 64,
+        width: "100%",
+        maxWidth: 342,
         borderRadius: radii.lg,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: "rgba(255,255,255,0.72)",
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: "rgba(255,255,255,0.72)",
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 14,
+        ...shadow,
     },
     miniStat: {
         flex: 1,
@@ -453,16 +644,21 @@ const styles = StyleSheet.create({
     statDivider: {
         width: 1,
         height: 36,
-        backgroundColor: colors.line,
+        backgroundColor: "rgba(8,124,155,0.12)",
         marginHorizontal: 12,
     },
     heroButton: {
-        width: "100%",
+        alignSelf: "center",
+        marginTop: 26,
+        minWidth: 184,
     },
     section: {
         paddingHorizontal: 20,
-        marginTop: 28,
+        marginTop: 20,
         gap: 12,
+    },
+    firstSection: {
+        marginTop: 4,
     },
     sectionTitle: {
         color: colors.ink,
