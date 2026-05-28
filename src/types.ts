@@ -6,75 +6,75 @@ export type PhaseKey = "menstrual" | "follicular" | "fertile" | "luteal";
 export type BleedingLevel = "none" | "spotting" | "light" | "medium" | "heavy";
 
 export interface AppSettings {
-  onboarded: boolean;
-  lastPeriodStart: string;
-  cycleLength: number;
-  periodLength: number;
-  regularity: Regularity;
-  hormonalContraception: boolean;
-  goal: Goal;
-  createdAt: string;
+    onboarded: boolean;
+    lastPeriodStart: string;
+    cycleLength: number;
+    periodLength: number;
+    regularity: Regularity;
+    hormonalContraception: boolean;
+    goal: Goal;
+    createdAt: string;
 }
 
 export interface Cycle {
-  id?: number;
-  startDate: string;
-  endDate?: string | null;
-  predicted: boolean;
-  createdAt: string;
+    id?: number;
+    startDate: string;
+    endDate?: string | null;
+    predicted: boolean;
+    createdAt: string;
 }
 
 export interface MoodCheckIn {
-  id?: number;
-  datetime: string;
-  momentType: MomentType;
-  mood: number;
-  energy: number;
-  pain: number;
-  stress: number;
-  note?: string | null;
+    id?: number;
+    datetime: string;
+    momentType: MomentType;
+    mood: number;
+    energy: number;
+    pain: number;
+    stress: number;
+    note?: string | null;
 }
 
 export interface DailyLog {
-  date: string;
-  bleedingLevel: BleedingLevel;
-  symptoms: string[];
-  notes?: string | null;
-  updatedAt: string;
+    date: string;
+    bleedingLevel: BleedingLevel;
+    symptoms: string[];
+    notes?: string | null;
+    updatedAt: string;
 }
 
 export interface NotificationMoment {
-  id: string;
-  label: string;
-  time: string;
-  enabled: boolean;
-  days: number[];
-  type: MomentType;
-  question: string;
-  notificationIds?: string[];
+    id: string;
+    label: string;
+    time: string;
+    enabled: boolean;
+    days: number[];
+    type: MomentType;
+    question: string;
+    notificationIds?: string[];
 }
 
 export interface AppData {
-  settings: AppSettings | null;
-  cycles: Cycle[];
-  moodCheckIns: MoodCheckIn[];
-  dailyLogs: DailyLog[];
-  notificationMoments: NotificationMoment[];
+    settings: AppSettings | null;
+    cycles: Cycle[];
+    moodCheckIns: MoodCheckIn[];
+    dailyLogs: DailyLog[];
+    notificationMoments: NotificationMoment[];
 }
 
 export interface CycleSnapshot {
-  cycleDay: number;
-  phase: PhaseKey;
-  phaseLabel: string;
-  phaseMessage: string;
-  nextPeriodInDays: number;
-  fertileWindowLabel: string;
-  week: Array<{
-    iso: string;
-    day: number;
-    weekday: string;
-    isToday: boolean;
-    isPeriod: boolean;
-    isFertile: boolean;
-  }>;
+    cycleDay: number;
+    phase: PhaseKey;
+    phaseLabel: string;
+    phaseMessage: string;
+    nextPeriodInDays: number;
+    fertileWindowLabel: string;
+    week: {
+        iso: string;
+        day: number;
+        weekday: string;
+        isToday: boolean;
+        isPeriod: boolean;
+        isFertile: boolean;
+    }[];
 }

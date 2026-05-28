@@ -1,27 +1,38 @@
 {
-  "name": "mensu",
-  "version": "0.1.0",
-  "private": true,
-  "main": "index.ts",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@expo/vector-icons": "^15.1.1",
-    "expo": "~56.0.5",
-    "expo-notifications": "~56.0.14",
-    "expo-sqlite": "~56.0.4",
-    "expo-status-bar": "~56.0.4",
-    "react": "19.2.3",
-    "react-native": "0.85.3"
-  },
-  "devDependencies": {
-    "@types/react": "^19.2.15",
-    "babel-preset-expo": "^56.0.13",
-    "typescript": "~6.0.3"
-  }
+    "name": "mensu",
+    "version": "0.1.0",
+    "private": true,
+    "main": "index.ts",
+    "scripts": {
+        "start": "expo start",
+        "android": "expo start --android",
+        "ios": "expo start --ios",
+        "web": "expo start --web",
+        "lint": "expo lint",
+        "lint:fix": "expo lint --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@expo/vector-icons": "^15.1.1",
+        "expo": "~56.0.5",
+        "expo-notifications": "~56.0.14",
+        "expo-sqlite": "~56.0.4",
+        "expo-status-bar": "~56.0.4",
+        "react": "19.2.3",
+        "react-native": "0.85.3"
+    },
+    "devDependencies": {
+        "@expo/metro-config": "^56.0.13",
+        "@types/react": "^19.2.15",
+        "babel-preset-expo": "^56.0.13",
+        "eslint": "^9.39.4",
+        "eslint-config-expo": "~56.0.4",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.5",
+        "globals": "^17.6.0",
+        "prettier": "^3.8.3",
+        "typescript": "~6.0.3"
+    }
 }

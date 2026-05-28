@@ -1,72 +1,78 @@
 import { ReactNode } from "react";
 import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, ViewStyle } from "react-native";
 
-import { colors, radii, type } from "../theme";
+import { colors, type } from "../theme";
 
 interface SoftButtonProps {
-  label: string;
-  onPress: () => void;
-  variant?: "primary" | "secondary" | "ghost";
-  disabled?: boolean;
-  loading?: boolean;
-  icon?: ReactNode;
-  style?: StyleProp<ViewStyle>;
+    label: string;
+    onPress: () => void;
+    variant?: "primary" | "secondary" | "ghost";
+    disabled?: boolean;
+    loading?: boolean;
+    icon?: ReactNode;
+    style?: StyleProp<ViewStyle>;
 }
 
 export function SoftButton({ label, onPress, variant = "primary", disabled, loading, icon, style }: SoftButtonProps) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      disabled={disabled || loading}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.base,
-        styles[variant],
-        disabled && styles.disabled,
-        pressed && !disabled && styles.pressed,
-        style
-      ]}
-    >
-      {loading ? <ActivityIndicator color={variant === "primary" ? colors.primaryInk : colors.primaryDeep} /> : icon}
-      <Text style={[styles.label, variant === "primary" ? styles.primaryLabel : styles.secondaryLabel]}>{label}</Text>
-    </Pressable>
-  );
+    return (
+        <Pressable
+            accessibilityRole="button"
+            disabled={disabled || loading}
+            onPress={onPress}
+            style={({ pressed }) => [
+                styles.base,
+                styles[variant],
+                disabled && styles.disabled,
+                pressed && !disabled && styles.pressed,
+                style,
+            ]}
+        >
+            {loading ? (
+                <ActivityIndicator color={variant === "primary" ? colors.primaryInk : colors.primaryDeep} />
+            ) : (
+                icon
+            )}
+            <Text style={[styles.label, variant === "primary" ? styles.primaryLabel : styles.secondaryLabel]}>
+                {label}
+            </Text>
+        </Pressable>
+    );
 }
 
 const styles = StyleSheet.create({
-  base: {
-    minHeight: 52,
-    borderRadius: 26,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    gap: 8,
-    paddingHorizontal: 22
-  },
-  primary: {
-    backgroundColor: colors.primary
-  },
-  secondary: {
-    backgroundColor: colors.primarySoft
-  },
-  ghost: {
-    backgroundColor: "rgba(255,255,255,0.76)"
-  },
-  disabled: {
-    opacity: 0.45
-  },
-  pressed: {
-    transform: [{ scale: 0.98 }]
-  },
-  label: {
-    fontFamily: type.family,
-    fontSize: type.body,
-    fontWeight: "800"
-  },
-  primaryLabel: {
-    color: colors.primaryInk
-  },
-  secondaryLabel: {
-    color: colors.primaryDeep
-  }
+    base: {
+        minHeight: 52,
+        borderRadius: 26,
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+        gap: 8,
+        paddingHorizontal: 22,
+    },
+    primary: {
+        backgroundColor: colors.primary,
+    },
+    secondary: {
+        backgroundColor: colors.primarySoft,
+    },
+    ghost: {
+        backgroundColor: "rgba(255,255,255,0.76)",
+    },
+    disabled: {
+        opacity: 0.45,
+    },
+    pressed: {
+        transform: [{ scale: 0.98 }],
+    },
+    label: {
+        fontFamily: type.family,
+        fontSize: type.body,
+        fontWeight: "800",
+    },
+    primaryLabel: {
+        color: colors.primaryInk,
+    },
+    secondaryLabel: {
+        color: colors.primaryDeep,
+    },
 });
