@@ -87,7 +87,7 @@ function getPhaseLabel(phase: PhaseKey): string {
 function getPhaseMessage(phase: PhaseKey, nextPeriodInDays: number): string {
     switch (phase) {
         case "menstrual":
-            return "Cuéntame flujo, dolor y energía para entender cómo cambia este inicio de ciclo.";
+            return "Cuéntame tú flujo, dolor y energía para entender cómo cambia este inicio de ciclo.";
         case "follicular":
             return "Puede sentirse como una etapa de recuperación. Lo iremos comparando con tus registros.";
         case "fertile":

@@ -164,11 +164,11 @@ const styles = StyleSheet.create({
     title: {
         color: colors.ink,
         fontSize: type.title,
-        fontWeight: "900",
+        fontWeight: "800",
     },
     calendarPanel: {
         backgroundColor: colors.surface,
-        borderRadius: radii.xl,
+        borderRadius: radii.md,
         padding: 12,
         borderWidth: 1,
         borderColor: "rgba(8,124,155,0.08)",
@@ -203,9 +203,9 @@ const styles = StyleSheet.create({
         opacity: 0.28,
     },
     dayCircle: {
-        width: 42,
-        height: 42,
-        borderRadius: 21,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -219,8 +219,8 @@ const styles = StyleSheet.create({
     },
     dayText: {
         color: colors.ink,
-        fontSize: type.subtitle,
-        fontWeight: "900",
+        fontSize: type.body - 2,
+        fontWeight: "800",
     },
     dayTextMuted: {
         color: colors.muted,
@@ -230,11 +230,11 @@ const styles = StyleSheet.create({
     },
     periodBadge: {
         position: "absolute",
-        top: -3,
-        right: -1,
-        minWidth: 18,
-        height: 18,
-        borderRadius: 9,
+        top: -2,
+        right: -2,
+        minWidth: 14,
+        height: 14,
+        borderRadius: 7,
         backgroundColor: colors.period,
         alignItems: "center",
         justifyContent: "center",
@@ -242,8 +242,8 @@ const styles = StyleSheet.create({
     },
     periodBadgeText: {
         color: colors.surface,
-        fontSize: 10,
-        fontWeight: "900",
+        fontSize: 8,
+        fontWeight: "800",
     },
     loggedBadge: {
         position: "absolute",
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     },
     legendItem: {
         flexDirection: "row",
-        gap: 6,
+        gap: 2,
         alignItems: "center",
         backgroundColor: colors.surface,
         borderRadius: 16,

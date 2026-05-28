@@ -29,18 +29,18 @@ export const radii = {
 
 export const shadow = {
     shadowColor: "#05586F",
-    shadowOpacity: 0.08,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 1,
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 0,
 };
 
 export const type = {
     family: "System",
     display: 34,
-    title: 22,
-    subtitle: 17,
+    title: 20,
+    subtitle: 16,
     body: 15,
-    small: 12,
-    tiny: 10,
+    small: 11,
+    tiny: 9,
 };
