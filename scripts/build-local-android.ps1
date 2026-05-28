@@ -8,6 +8,44 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Invoke-NativeStep {
+    param(
+        [string]$Label,
+        [scriptblock]$Command
+    )
+
+    & $Command
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Fallo paso nativo: $Label (exit code $LASTEXITCODE)."
+    }
+}
+
+function Stop-GradleDaemonsIfPresent {
+    param([string]$AndroidDir)
+
+    $javaDaemons = Get-CimInstance Win32_Process -Filter "name = 'java.exe'" |
+        Where-Object { $_.CommandLine -match "GradleDaemon|KotlinCompileDaemon" } |
+        Select-Object -ExpandProperty ProcessId
+
+    foreach ($processId in $javaDaemons) {
+        Stop-Process -Id $processId -Force -ErrorAction SilentlyContinue
+    }
+
+    $gradleWrapper = Join-Path $AndroidDir "gradlew.bat"
+    if (-not (Test-Path $gradleWrapper)) {
+        return
+    }
+
+    Push-Location $AndroidDir
+    try {
+        & .\gradlew.bat --stop | Out-Null
+    }
+    finally {
+        Pop-Location
+    }
+}
+
 $root = Split-Path -Parent $PSScriptRoot
 $sdkRoot = Join-Path $env:LOCALAPPDATA "Android\Sdk"
 $jdkRoot = Join-Path $env:LOCALAPPDATA "Programs\Temurin17"
@@ -38,11 +76,8 @@ if (-not $env:NODE_ENV) {
 Push-Location $root
 
 try {
-    $versionInfoRaw = & node .\scripts\bump-app-version.mjs --release $Release
-
-    if ($LASTEXITCODE -ne 0) {
-        throw "No se pudo preparar versionado de app para build Android."
-    }
+    Invoke-NativeStep "versionado de app" { node .\scripts\bump-app-version.mjs --release $Release }
+    $versionInfoRaw = node .\scripts\bump-app-version.mjs --release none
 
     $versionInfo = $versionInfoRaw | ConvertFrom-Json
     $versionLabel = "v$($versionInfo.version)-b$($versionInfo.versionCode)"
@@ -54,24 +89,27 @@ try {
         Remove-Item $latestTarget -Force
     }
 
-    & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\sync-brand-assets.ps1
-    & .\node_modules\.bin\expo.cmd prebuild --platform android --clean
+    $androidDir = Join-Path $root "android"
+    Stop-GradleDaemonsIfPresent $androidDir
 
-    if (-not (Test-Path (Join-Path $root "android"))) {
+    Invoke-NativeStep "brand assets" { powershell -NoProfile -ExecutionPolicy Bypass -File scripts\sync-brand-assets.ps1 }
+    Invoke-NativeStep "expo prebuild android" { .\node_modules\.bin\expo.cmd prebuild --platform android }
+
+    if (-not (Test-Path $androidDir)) {
         throw "Expo prebuild no genero carpeta android."
     }
 
-    Push-Location android
+    Push-Location $androidDir
     try {
-        .\gradlew.bat clean
+        Invoke-NativeStep "gradle clean" { .\gradlew.bat clean --console=plain -q --no-daemon }
 
         if ($Artifact -eq "apk") {
-            .\gradlew.bat assembleRelease
+            Invoke-NativeStep "gradle assembleRelease" { .\gradlew.bat assembleRelease --console=plain -q --no-daemon }
             $source = Join-Path $root "android\app\build\outputs\apk\release\app-release.apk"
             $versionedTarget = Join-Path $distDir "rea-$versionLabel.apk"
         }
         else {
-            .\gradlew.bat bundleRelease
+            Invoke-NativeStep "gradle bundleRelease" { .\gradlew.bat bundleRelease --console=plain -q --no-daemon }
             $source = Join-Path $root "android\app\build\outputs\bundle\release\app-release.aab"
             $versionedTarget = Join-Path $distDir "rea-$versionLabel.aab"
         }

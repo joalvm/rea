@@ -65,6 +65,7 @@ export interface MoodCheckIn {
     mood: number;
     energy: number;
     pain: number;
+    breastSensitivity: number;
     stress: number;
     note?: string | null;
 }
@@ -78,8 +79,10 @@ export interface DailyLog {
     details?: {
         periodStarted?: boolean;
         periodEnded?: boolean;
+        pmsStarted?: boolean;
         clotSize?: ClotSize;
         painImpact?: PainImpact;
+        breastSensitivity?: number;
         medicationName?: string | null;
         medicationRelief?: MedicationRelief;
     } | null;

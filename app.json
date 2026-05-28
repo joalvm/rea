@@ -15,11 +15,11 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "app.rea.personal",
-            "buildNumber": "1"
+            "buildNumber": "4"
         },
         "android": {
             "package": "app.rea.personal",
-            "versionCode": 1,
+            "versionCode": 4,
             "adaptiveIcon": {
                 "foregroundImage": "./assets/branding/adaptive-foreground.png",
                 "backgroundColor": "#E8F8FE"
@@ -28,6 +28,10 @@
         "web": {
             "favicon": "./assets/branding/favicon.ico"
         },
-        "plugins": ["expo-sqlite", "expo-notifications", "expo-status-bar"]
+        "plugins": [
+            "expo-sqlite",
+            "expo-notifications",
+            "expo-status-bar"
+        ]
     }
 }

@@ -6,8 +6,8 @@ import { IconButton } from "../components/IconButton";
 import { QuickActionCard } from "../components/QuickActionCard";
 import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
-import { WeekStrip } from "../components/WeekStrip";
-import { buildEducationalAlerts, buildPatternInsights } from "../cycle";
+import { WeekStrip, WeekStripDay } from "../components/WeekStrip";
+import { addDays, buildEducationalAlerts, buildPatternInsights, estimateCycle, toIsoDate } from "../cycle";
 import { colors, radii, shadow, type } from "../theme";
 import { AppSettings, Cycle, CycleSnapshot, DailyLog, EducationalAlert, MoodCheckIn, PhaseKey } from "../types";
 
@@ -18,6 +18,7 @@ interface TodayScreenProps {
     moodCheckIns: MoodCheckIn[];
     dailyLogs: DailyLog[];
     onOpenCheckIn: () => void;
+    onOpenDay: (iso: string) => void;
     onOpenQuickCheckIn: () => void;
     onOpenCalendar: () => void;
     onOpenPatterns: () => void;
@@ -31,6 +32,7 @@ export function TodayScreen({
     moodCheckIns,
     dailyLogs,
     onOpenCheckIn,
+    onOpenDay,
     onOpenQuickCheckIn,
     onOpenCalendar,
     onOpenPatterns,
@@ -41,6 +43,8 @@ export function TodayScreen({
     const alerts = buildEducationalAlerts(settings, cycles, dailyLogs, moodCheckIns).slice(0, 2);
     const careTips = getCareTips(snapshot.phase);
     const heroSupport = getHeroSupport(snapshot);
+    const todayIso = snapshot.week.find((day) => day.isToday)?.iso ?? toIsoDate(new Date());
+    const weekPages = buildWeekPages(settings, cycles, dailyLogs, todayIso);
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -63,7 +67,12 @@ export function TodayScreen({
                         />
                     </View>
 
-                    <WeekStrip palette={heroTheme.weekPalette} week={snapshot.week} />
+                    <WeekStrip
+                        initialPage={Math.floor(weekPages.length / 2)}
+                        onSelectDay={onOpenDay}
+                        palette={heroTheme.weekPalette}
+                        weeks={weekPages}
+                    />
 
                     <View style={styles.phaseBlock}>
                         <View style={styles.phaseHeading}>
@@ -405,6 +414,29 @@ function getHeroSupport(snapshot: CycleSnapshot) {
     }
 
     return snapshot.confidenceNote ? `Base actual: ${snapshot.confidenceNote}` : null;
+}
+
+function buildWeekPages(settings: AppSettings | null, cycles: Cycle[], dailyLogs: DailyLog[], todayIso: string) {
+    const phaseCache = new Map<string, PhaseKey>();
+
+    return Array.from({ length: 15 }, (_, index) => {
+        const focusIso = addDays(todayIso, (index - 7) * 7);
+        return estimateCycle(settings, cycles, dailyLogs, focusIso).week.map((day): WeekStripDay => {
+            const cachedPhase = phaseCache.get(day.iso);
+            const phase = cachedPhase ?? estimateCycle(settings, cycles, dailyLogs, day.iso).phase;
+
+            if (!cachedPhase) {
+                phaseCache.set(day.iso, phase);
+            }
+
+            return {
+                ...day,
+                isToday: day.iso === todayIso,
+                isFuture: day.iso > todayIso,
+                phase,
+            };
+        });
+    });
 }
 
 function MiniStat({

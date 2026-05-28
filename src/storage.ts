@@ -37,6 +37,7 @@ export async function initializeDatabase() {
       mood INTEGER NOT NULL,
       energy INTEGER NOT NULL,
       pain INTEGER NOT NULL,
+            breastSensitivity INTEGER NOT NULL DEFAULT 0,
       stress INTEGER NOT NULL,
       note TEXT
     );
@@ -64,6 +65,7 @@ export async function initializeDatabase() {
   `);
 
     await ensureTableColumn(database, "cycles", "source", "TEXT NOT NULL DEFAULT 'observed'");
+    await ensureTableColumn(database, "mood_checkins", "breastSensitivity", "INTEGER NOT NULL DEFAULT 0");
     await ensureTableColumn(database, "daily_logs", "source", "TEXT NOT NULL DEFAULT 'observed'");
     await ensureTableColumn(database, "daily_logs", "details", "TEXT");
 }
@@ -189,16 +191,41 @@ export async function loadCycles(): Promise<Cycle[]> {
 }
 
 export async function addMoodCheckIn(checkIn: MoodCheckIn) {
+    await upsertMoodCheckIn(checkIn);
+}
+
+export async function upsertMoodCheckIn(checkIn: MoodCheckIn) {
+    if (checkIn.id) {
+        await db().runAsync(
+            "UPDATE mood_checkins SET datetime = ?, momentType = ?, mood = ?, energy = ?, pain = ?, breastSensitivity = ?, stress = ?, note = ? WHERE id = ?",
+            checkIn.datetime,
+            checkIn.momentType,
+            checkIn.mood,
+            checkIn.energy,
+            checkIn.pain,
+            checkIn.breastSensitivity,
+            checkIn.stress,
+            checkIn.note ?? null,
+            checkIn.id,
+        );
+        return;
+    }
+
     await db().runAsync(
-        "INSERT INTO mood_checkins (datetime, momentType, mood, energy, pain, stress, note) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO mood_checkins (datetime, momentType, mood, energy, pain, breastSensitivity, stress, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         checkIn.datetime,
         checkIn.momentType,
         checkIn.mood,
         checkIn.energy,
         checkIn.pain,
+        checkIn.breastSensitivity,
         checkIn.stress,
         checkIn.note ?? null,
     );
+}
+
+export async function deleteMoodCheckIn(id: number) {
+    await db().runAsync("DELETE FROM mood_checkins WHERE id = ?", id);
 }
 
 export async function loadMoodCheckIns(): Promise<MoodCheckIn[]> {
@@ -218,7 +245,40 @@ export async function upsertDailyLog(log: DailyLog) {
     );
 }
 
+export async function deleteDailyLog(date: string) {
+    await db().runAsync("DELETE FROM daily_logs WHERE date = ?", date);
+}
+
+export async function syncObservedCyclesFromDailyLogs() {
+    const database = db();
+    const dailyLogs = await loadAllDailyLogs();
+    const runs = buildObservedPeriodRuns(dailyLogs);
+
+    await database.withTransactionAsync(async () => {
+        await database.runAsync("DELETE FROM cycles WHERE source = 'observed' OR predicted = 0");
+
+        for (const run of runs) {
+            await database.runAsync(
+                "INSERT INTO cycles (startDate, endDate, predicted, source, createdAt) VALUES (?, ?, ?, ?, ?)",
+                run.start,
+                run.end,
+                0,
+                "observed",
+                `${run.start}T12:00:00.000Z`,
+            );
+        }
+    });
+}
+
 export async function loadDailyLogs(): Promise<DailyLog[]> {
+    return loadDailyLogsFromQuery("SELECT * FROM daily_logs ORDER BY date DESC LIMIT 200");
+}
+
+async function loadAllDailyLogs(): Promise<DailyLog[]> {
+    return loadDailyLogsFromQuery("SELECT * FROM daily_logs ORDER BY date ASC");
+}
+
+async function loadDailyLogsFromQuery(query: string): Promise<DailyLog[]> {
     const rows = await db().getAllAsync<{
         date: string;
         bleedingLevel: DailyLog["bleedingLevel"];
@@ -227,7 +287,7 @@ export async function loadDailyLogs(): Promise<DailyLog[]> {
         source: NonNullable<DailyLog["source"]>;
         details: string | null;
         updatedAt: string;
-    }>("SELECT * FROM daily_logs ORDER BY date DESC LIMIT 200");
+    }>(query);
 
     return rows.map((row) => ({
         date: row.date,
@@ -238,6 +298,56 @@ export async function loadDailyLogs(): Promise<DailyLog[]> {
         details: row.details ? (JSON.parse(row.details) as NonNullable<DailyLog["details"]>) : null,
         updatedAt: row.updatedAt,
     }));
+}
+
+function buildObservedPeriodRuns(dailyLogs: DailyLog[]) {
+    const sorted = [...dailyLogs].sort((left, right) => left.date.localeCompare(right.date));
+    const runs: { start: string; end: string }[] = [];
+    let currentStart: string | null = null;
+    let currentEnd: string | null = null;
+
+    const closeRun = () => {
+        if (!currentStart || !currentEnd) return;
+        runs.push({ start: currentStart, end: currentEnd });
+        currentStart = null;
+        currentEnd = null;
+    };
+
+    for (const log of sorted) {
+        if (!isBleedingDay(log)) {
+            closeRun();
+            continue;
+        }
+
+        const forcedStart = log.details?.periodStarted === true;
+
+        if (!currentStart || !currentEnd) {
+            currentStart = log.date;
+            currentEnd = log.date;
+        } else {
+            const previous = new Date(`${currentEnd}T12:00:00.000Z`).getTime();
+            const current = new Date(`${log.date}T12:00:00.000Z`).getTime();
+            const gap = Math.round((current - previous) / 86400000);
+
+            if (forcedStart || gap > 1) {
+                closeRun();
+                currentStart = log.date;
+            }
+
+            currentEnd = log.date;
+        }
+
+        if (log.details?.periodEnded) {
+            closeRun();
+        }
+    }
+
+    closeRun();
+    return runs;
+}
+
+function isBleedingDay(log: DailyLog) {
+    return log.bleedingLevel !== "none" || log.details?.periodStarted === true || log.details?.periodEnded === true;
 }
 
 export async function saveNotificationMoments(moments: NotificationMoment[]) {

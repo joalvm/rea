@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, radii, type } from "../theme";
 import { TabKey } from "../types";
@@ -17,8 +18,10 @@ interface BottomTabsProps {
 }
 
 export function BottomTabs({ activeTab, onTabChange }: BottomTabsProps) {
+    const insets = useSafeAreaInsets();
+
     return (
-        <View style={styles.wrap}>
+        <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
             {TABS.map((tab) => {
                 const active = tab.key === activeTab;
                 return (
@@ -48,7 +51,6 @@ const styles = StyleSheet.create({
         borderTopColor: colors.line,
         backgroundColor: colors.background,
         paddingTop: 8,
-        paddingBottom: 18,
         paddingHorizontal: 10,
     },
     item: {

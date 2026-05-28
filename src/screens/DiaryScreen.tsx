@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
@@ -12,9 +12,18 @@ interface DiaryScreenProps {
     moodCheckIns: MoodCheckIn[];
     onOpenCheckIn: () => void;
     onOpenQuickCheckIn: () => void;
+    onEditCheckIn: (entry: MoodCheckIn) => void;
+    onEditDailyLog: (entry: DailyLog) => void;
 }
 
-export function DiaryScreen({ dailyLogs, moodCheckIns, onOpenCheckIn, onOpenQuickCheckIn }: DiaryScreenProps) {
+export function DiaryScreen({
+    dailyLogs,
+    moodCheckIns,
+    onOpenCheckIn,
+    onOpenQuickCheckIn,
+    onEditCheckIn,
+    onEditDailyLog,
+}: DiaryScreenProps) {
     const latest = moodCheckIns.slice(0, 12);
 
     return (
@@ -42,7 +51,9 @@ export function DiaryScreen({ dailyLogs, moodCheckIns, onOpenCheckIn, onOpenQuic
                 {latest.length === 0 ? (
                     <EmptyState />
                 ) : (
-                    latest.map((item) => <CheckInRow item={item} key={item.id ?? item.datetime} />)
+                    latest.map((item) => (
+                        <CheckInRow item={item} key={item.id ?? item.datetime} onEdit={() => onEditCheckIn(item)} />
+                    ))
                 )}
             </View>
 
@@ -51,14 +62,14 @@ export function DiaryScreen({ dailyLogs, moodCheckIns, onOpenCheckIn, onOpenQuic
                 {dailyLogs.length === 0 ? (
                     <EmptyState label="Aún no hay días completos. El primero tarda menos de un minuto." />
                 ) : (
-                    dailyLogs.map((log) => <DailyLogRow key={log.date} log={log} />)
+                    dailyLogs.map((log) => <DailyLogRow key={log.date} log={log} onEdit={() => onEditDailyLog(log)} />)
                 )}
             </View>
         </ScrollView>
     );
 }
 
-function CheckInRow({ item }: { item: MoodCheckIn }) {
+function CheckInRow({ item, onEdit }: { item: MoodCheckIn; onEdit: () => void }) {
     const date = new Date(item.datetime);
     return (
         <SoftCard style={styles.rowCard}>
@@ -66,15 +77,23 @@ function CheckInRow({ item }: { item: MoodCheckIn }) {
                 <MaterialCommunityIcons color={colors.primaryDeep} name={momentIcon(item.momentType)} size={22} />
             </View>
             <View style={styles.rowBody}>
-                <Text style={styles.rowTitle}>{momentLabel(item.momentType)}</Text>
-                <Text style={styles.rowMeta}>
-                    {date.toLocaleDateString("es-PE", { day: "numeric", month: "short" })} ·{" "}
-                    {date.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" })}
-                </Text>
+                <View style={styles.rowHeader}>
+                    <View style={styles.rowCopy}>
+                        <Text style={styles.rowTitle}>{momentLabel(item.momentType)}</Text>
+                        <Text style={styles.rowMeta}>
+                            {date.toLocaleDateString("es-PE", { day: "numeric", month: "short" })} ·{" "}
+                            {date.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" })}
+                        </Text>
+                    </View>
+                    <Pressable accessibilityRole="button" onPress={onEdit} style={styles.editButton}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name="pencil-outline" size={18} />
+                    </Pressable>
+                </View>
                 <View style={styles.metrics}>
                     <Metric label="Ánimo" value={item.mood} />
                     <Metric label="Energía" value={item.energy} />
                     <Metric label="Dolor" value={item.pain} />
+                    <Metric label="Pecho" value={item.breastSensitivity} />
                     <Metric label="Estrés" value={item.stress} />
                 </View>
                 {item.note ? <Text style={styles.note}>{item.note}</Text> : null}
@@ -83,16 +102,21 @@ function CheckInRow({ item }: { item: MoodCheckIn }) {
     );
 }
 
-function DailyLogRow({ log }: { log: DailyLog }) {
+function DailyLogRow({ log, onEdit }: { log: DailyLog; onEdit: () => void }) {
     const details = buildDailyLogDetails(log);
 
     return (
         <SoftCard style={styles.dailyCard}>
             <View style={styles.dailyHeader}>
                 <Text style={styles.rowTitle}>{formatShortDate(log.date)}</Text>
-                <View style={styles.dailyMetaGroup}>
-                    <Text style={styles.sourcePill}>{sourceLabel(log.source)}</Text>
-                    <Text style={styles.bleeding}>{bleedingLabel(log.bleedingLevel)}</Text>
+                <View style={styles.dailyHeaderRight}>
+                    <Pressable accessibilityRole="button" onPress={onEdit} style={styles.editButton}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name="pencil-outline" size={18} />
+                    </Pressable>
+                    <View style={styles.dailyMetaGroup}>
+                        <Text style={styles.sourcePill}>{sourceLabel(log.source)}</Text>
+                        <Text style={styles.bleeding}>{bleedingLabel(log.bleedingLevel)}</Text>
+                    </View>
                 </View>
             </View>
             {log.symptoms.length > 0 ? (
@@ -173,10 +197,15 @@ function buildDailyLogDetails(log: DailyLog) {
 
     if (log.details?.periodStarted) items.push("Empezó hoy");
     if (log.details?.periodEnded) items.push("Terminó hoy");
+    if (log.details?.pmsStarted) items.push("Empezó SPM");
 
     if (log.details?.painImpact === "noticeable") items.push("Dolor se notó");
     if (log.details?.painImpact === "limits_day") items.push("Dolor me limitó");
     if (log.details?.painImpact === "stops_day") items.push("Dolor me tumbó");
+
+    if ((log.details?.breastSensitivity ?? 0) > 0) {
+        items.push(`Sensibilidad mamaria ${log.details?.breastSensitivity}/5`);
+    }
 
     if (log.details?.medicationName) {
         items.push(log.details.medicationName);
@@ -252,6 +281,16 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 8,
     },
+    rowHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        gap: 12,
+    },
+    rowCopy: {
+        flex: 1,
+        gap: 4,
+    },
     rowTitle: {
         color: colors.ink,
         fontSize: type.body,
@@ -284,6 +323,14 @@ const styles = StyleSheet.create({
         fontWeight: "900",
         marginTop: 2,
     },
+    editButton: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: colors.primarySoft,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     note: {
         color: colors.ink,
         fontSize: type.small,
@@ -295,7 +342,12 @@ const styles = StyleSheet.create({
     dailyHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "flex-start",
         gap: 12,
+    },
+    dailyHeaderRight: {
+        alignItems: "flex-end",
+        gap: 8,
     },
     dailyMetaGroup: {
         alignItems: "flex-end",

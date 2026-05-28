@@ -8,17 +8,23 @@ interface MetricScaleProps {
     lowLabel: string;
     highLabel: string;
     onChange: (value: number) => void;
+    min?: number;
+    max?: number;
 }
 
-export function MetricScale({ label, value, lowLabel, highLabel, onChange }: MetricScaleProps) {
+export function MetricScale({ label, value, lowLabel, highLabel, onChange, min = 1, max = 5 }: MetricScaleProps) {
+    const options = Array.from({ length: max - min + 1 }, (_, index) => min + index);
+
     return (
         <View style={styles.wrap}>
             <View style={styles.header}>
                 <Text style={styles.label}>{label}</Text>
-                <Text style={styles.value}>{value}/5</Text>
+                <Text style={styles.value}>
+                    {value}/{max}
+                </Text>
             </View>
             <View style={styles.scale}>
-                {[1, 2, 3, 4, 5].map((option) => (
+                {options.map((option) => (
                     <Pressable
                         accessibilityRole="button"
                         accessibilityLabel={`${label} ${option}`}

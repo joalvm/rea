@@ -317,10 +317,12 @@ export function buildPatternInsights(
     moodCheckIns: MoodCheckIn[],
 ): PatternInsight[] {
     const insights: PatternInsight[] = [];
+    const todayIso = toIsoDate(new Date());
     const phaseBuckets = buildPhaseBuckets(settings, cycles, dailyLogs, moodCheckIns);
     const highestPain = findPhaseExtreme(phaseBuckets, "pain", "max");
     const lowestEnergy = findPhaseExtreme(phaseBuckets, "energy", "min");
     const highestStress = findPhaseExtreme(phaseBuckets, "stress", "max");
+    const spmInsight = buildSpmPatternInsight(settings, cycles, dailyLogs, todayIso);
     const topSymptoms = summarizeTopSymptoms(dailyLogs, 2);
     const limitingPainDays = countLimitingPainDays(dailyLogs);
     const medicationRoughDays = dailyLogs.filter(
@@ -352,6 +354,10 @@ export function buildPatternInsights(
             detail: `Promedio ${highestStress.average.toFixed(1)}/5 en ${highestStress.count} momentos. Conviene ver si coincide con menos descanso o más dolor.`,
             tone: "watch",
         });
+    }
+
+    if (spmInsight) {
+        insights.push(spmInsight);
     }
 
     if (topSymptoms[0] && topSymptoms[0].count >= 2) {
@@ -559,6 +565,57 @@ function findPhaseExtreme(
 function countLimitingPainDays(logs: DailyLog[]) {
     return logs.filter((log) => log.details?.painImpact === "limits_day" || log.details?.painImpact === "stops_day")
         .length;
+}
+
+function buildSpmPatternInsight(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+    todayIso: string,
+): PatternInsight | null {
+    const observedRuns = [...getObservedPeriodRuns(dailyLogs)].sort((left, right) =>
+        left.start.localeCompare(right.start),
+    );
+    if (observedRuns.length < 2) {
+        return null;
+    }
+
+    const leadDays = dailyLogs
+        .filter((log) => log.details?.pmsStarted)
+        .map((log) => {
+            const nextRun = observedRuns.find((run) => run.start > log.date);
+            if (!nextRun) {
+                return null;
+            }
+
+            const lead = daysBetween(log.date, nextRun.start);
+            return lead >= 1 && lead <= 14 ? lead : null;
+        })
+        .filter((value): value is number => value !== null);
+
+    if (leadDays.length < 2) {
+        return null;
+    }
+
+    const averageLead = Math.round(average(leadDays));
+    const snapshot = estimateCycle(settings, cycles, dailyLogs, todayIso);
+    const approxStart = addDays(todayIso, snapshot.nextPeriodInDays - averageLead);
+    const daysUntilApprox = daysBetween(todayIso, approxStart);
+    const cycleLabel = `${leadDays.length} ciclos observados`;
+
+    let timing = `Si próximo ciclo sigue parecido, podría asomar cerca del ${formatShortDate(approxStart)}.`;
+    if (daysUntilApprox < -1) {
+        timing = "Si próximo ciclo sigue parecido, este mes ya estarías dentro de esa ventana.";
+    } else if (daysUntilApprox <= 1) {
+        timing = "Si próximo ciclo sigue parecido, esa ventana cae por estos días.";
+    }
+
+    return {
+        id: "spm-start",
+        title: `Tu SPM suele arrancar ${averageLead} ${averageLead === 1 ? "día" : "días"} antes`,
+        detail: `Lo marcaste así en ${cycleLabel}. ${timing}`,
+        tone: "supportive",
+    };
 }
 
 function phaseLabelWithArticle(phase: PhaseKey) {
@@ -788,7 +845,7 @@ function uniqueDates(values: string[]) {
 }
 
 function isBleedingDay(log: DailyLog) {
-    return log.bleedingLevel !== "none";
+    return log.bleedingLevel !== "none" || log.details?.periodStarted === true || log.details?.periodEnded === true;
 }
 
 export function average(values: number[]): number {

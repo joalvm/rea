@@ -1,7 +1,9 @@
 import { addNotificationResponseReceivedListener } from "expo-notifications/build/NotificationsEmitter";
+import * as NavigationBar from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Platform, StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { BottomTabs } from "./src/components/BottomTabs";
 import { CheckInModal } from "./src/components/CheckInModal";
@@ -14,21 +16,22 @@ import {
     rescheduleNotificationMoments,
 } from "./src/notifications";
 import { CalendarScreen } from "./src/screens/CalendarScreen";
+import { DayDetailScreen } from "./src/screens/DayDetailScreen";
 import { DiaryScreen } from "./src/screens/DiaryScreen";
 import { OnboardingScreen } from "./src/screens/OnboardingScreen";
 import { PatternsScreen } from "./src/screens/PatternsScreen";
 import { TodayScreen } from "./src/screens/TodayScreen";
 import {
     addCycle,
-    addMoodCheckIn,
-    closeLatestObservedCycle,
+    deleteMoodCheckIn,
     initializeDatabase,
     loadAppData,
     resetAppData,
     saveNotificationMoments,
     saveSettings,
-    upsertObservedCycleStart,
+    syncObservedCyclesFromDailyLogs,
     upsertDailyLog,
+    upsertMoodCheckIn,
 } from "./src/storage";
 import { colors } from "./src/theme";
 import { AppData, AppSettings, DailyLog, MomentType, MoodCheckIn, NotificationMoment, TabKey } from "./src/types";
@@ -43,22 +46,39 @@ const initialData: AppData = {
 
 interface CheckInState {
     visible: boolean;
+    sessionKey: number;
     mode: "daily" | "quick";
     momentType: MomentType;
     question: string;
+    saveTarget: "checkIn" | "dailyLog" | "both";
+    initialCheckIn: MoodCheckIn | null;
+    initialDailyLog: DailyLog | null;
 }
 
 export default function App() {
+    return (
+        <SafeAreaProvider>
+            <AppShell />
+        </SafeAreaProvider>
+    );
+}
+
+function AppShell() {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<AppData>(initialData);
     const [activeTab, setActiveTab] = useState<TabKey>("today");
+    const [selectedDayIso, setSelectedDayIso] = useState<string | null>(null);
     const [scheduleVisible, setScheduleVisible] = useState(false);
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [checkIn, setCheckIn] = useState<CheckInState>({
         visible: false,
+        sessionKey: 0,
         mode: "daily",
         momentType: "now",
         question: "¿Cómo te sientes hoy?",
+        saveTarget: "both",
+        initialCheckIn: null,
+        initialDailyLog: null,
     });
 
     const snapshot = useMemo(
@@ -81,9 +101,39 @@ export default function App() {
     function openQuickCheckIn(momentType: MomentType = "now") {
         setCheckIn({
             visible: true,
+            sessionKey: Date.now(),
             mode: "quick",
             momentType,
             question: questionForMoment(momentType),
+            saveTarget: "checkIn",
+            initialCheckIn: null,
+            initialDailyLog: null,
+        });
+    }
+
+    function editQuickCheckIn(entry: MoodCheckIn) {
+        setCheckIn({
+            visible: true,
+            sessionKey: Date.now(),
+            mode: "quick",
+            momentType: entry.momentType,
+            question: questionForMoment(entry.momentType),
+            saveTarget: "checkIn",
+            initialCheckIn: entry,
+            initialDailyLog: null,
+        });
+    }
+
+    function editDailyLog(entry: DailyLog) {
+        setCheckIn({
+            visible: true,
+            sessionKey: Date.now(),
+            mode: "daily",
+            momentType: "now",
+            question: "Ajusta tu registro del día",
+            saveTarget: "dailyLog",
+            initialCheckIn: null,
+            initialDailyLog: entry,
         });
     }
 
@@ -93,6 +143,18 @@ export default function App() {
         });
 
         return () => cancelAnimationFrame(frame);
+    }, []);
+
+    useEffect(() => {
+        if (Platform.OS !== "android") {
+            return;
+        }
+
+        void configureAndroidNavigationBar();
+
+        return () => {
+            void NavigationBar.setVisibilityAsync("visible").catch(() => undefined);
+        };
     }, []);
 
     useEffect(() => {
@@ -131,19 +193,25 @@ export default function App() {
         setData((current) => ({ ...current, notificationMoments: scheduled }));
     };
 
-    const saveCheckIn = async (moodCheckIn: MoodCheckIn, dailyLog?: DailyLog) => {
-        await addMoodCheckIn(moodCheckIn);
+    const saveCheckIn = async (moodCheckIn?: MoodCheckIn, dailyLog?: DailyLog) => {
+        if (moodCheckIn) {
+            await upsertMoodCheckIn(moodCheckIn);
+        }
+
         if (dailyLog) {
             await upsertDailyLog(dailyLog);
-
-            if (dailyLog.details?.periodStarted) {
-                await upsertObservedCycleStart(dailyLog.date, dailyLog.updatedAt);
-            }
-
-            if (dailyLog.details?.periodEnded) {
-                await closeLatestObservedCycle(dailyLog.date);
-            }
+            await syncObservedCyclesFromDailyLogs();
         }
+
+        await refreshData();
+    };
+
+    const deleteCheckIn = async (moodCheckIn?: MoodCheckIn | null) => {
+        if (!moodCheckIn?.id) {
+            return;
+        }
+
+        await deleteMoodCheckIn(moodCheckIn.id);
         await refreshData();
     };
 
@@ -151,18 +219,33 @@ export default function App() {
         await clearScheduledNotifications();
         await resetAppData();
         setCheckIn((current) => ({ ...current, visible: false }));
+        setSelectedDayIso(null);
         setScheduleVisible(false);
         setSettingsVisible(false);
         setActiveTab("today");
         setData(initialData);
     };
 
+    const handleTabChange = (tab: TabKey) => {
+        setSelectedDayIso(null);
+        setActiveTab(tab);
+    };
+
+    const openDiaryTab = () => {
+        setSelectedDayIso(null);
+        setActiveTab("diary");
+    };
+
     const openDailyCheckIn = () => {
         setCheckIn({
             visible: true,
+            sessionKey: Date.now(),
             mode: "daily",
             momentType: "now",
             question: "¿Cómo te sientes hoy?",
+            saveTarget: "both",
+            initialCheckIn: null,
+            initialDailyLog: null,
         });
     };
 
@@ -187,13 +270,18 @@ export default function App() {
     return (
         <View style={styles.app}>
             <View style={styles.scene}>{renderTab()}</View>
-            <BottomTabs activeTab={activeTab} onTabChange={setActiveTab} />
+            <BottomTabs activeTab={activeTab} onTabChange={handleTabChange} />
             <CheckInModal
+                key={checkIn.sessionKey}
+                initialCheckIn={checkIn.initialCheckIn}
+                initialDailyLog={checkIn.initialDailyLog}
                 mode={checkIn.mode}
                 momentType={checkIn.momentType}
                 onClose={() => setCheckIn((current) => ({ ...current, visible: false }))}
+                onDelete={deleteCheckIn}
                 onSave={saveCheckIn}
                 question={checkIn.question}
+                saveTarget={checkIn.saveTarget}
                 visible={checkIn.visible}
             />
             <ScheduleModal
@@ -217,6 +305,20 @@ export default function App() {
     );
 
     function renderTab() {
+        if (activeTab === "today" && selectedDayIso) {
+            return (
+                <DayDetailScreen
+                    cycles={data.cycles}
+                    dailyLogs={data.dailyLogs}
+                    moodCheckIns={data.moodCheckIns}
+                    onBack={() => setSelectedDayIso(null)}
+                    onOpenDiary={openDiaryTab}
+                    selectedIso={selectedDayIso}
+                    settings={data.settings}
+                />
+            );
+        }
+
         if (activeTab === "calendar") {
             return (
                 <CalendarScreen
@@ -234,6 +336,8 @@ export default function App() {
                 <DiaryScreen
                     dailyLogs={data.dailyLogs}
                     moodCheckIns={data.moodCheckIns}
+                    onEditCheckIn={editQuickCheckIn}
+                    onEditDailyLog={editDailyLog}
                     onOpenCheckIn={openDailyCheckIn}
                     onOpenQuickCheckIn={() => openQuickCheckIn("now")}
                 />
@@ -257,14 +361,23 @@ export default function App() {
                 dailyLogs={data.dailyLogs}
                 moodCheckIns={data.moodCheckIns}
                 onOpenCheckIn={openDailyCheckIn}
+                onOpenDay={setSelectedDayIso}
                 onOpenQuickCheckIn={() => openQuickCheckIn("now")}
-                onOpenCalendar={() => setActiveTab("calendar")}
-                onOpenPatterns={() => setActiveTab("patterns")}
+                onOpenCalendar={() => handleTabChange("calendar")}
+                onOpenPatterns={() => handleTabChange("patterns")}
                 onOpenSettings={() => setSettingsVisible(true)}
                 settings={data.settings}
                 snapshot={snapshot}
             />
         );
+    }
+}
+
+async function configureAndroidNavigationBar() {
+    try {
+        await NavigationBar.setVisibilityAsync("hidden");
+    } catch {
+        // Some Android builds ignore immersive nav bar APIs. Bottom safe area still keeps tabs reachable.
     }
 }
 
