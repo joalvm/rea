@@ -26,6 +26,7 @@ export async function initializeDatabase() {
       startDate TEXT NOT NULL,
       endDate TEXT,
       predicted INTEGER NOT NULL DEFAULT 0,
+            source TEXT NOT NULL DEFAULT 'observed',
       createdAt TEXT NOT NULL
     );
 
@@ -45,6 +46,8 @@ export async function initializeDatabase() {
       bleedingLevel TEXT NOT NULL,
       symptoms TEXT NOT NULL,
       notes TEXT,
+            source TEXT NOT NULL DEFAULT 'observed',
+            details TEXT,
       updatedAt TEXT NOT NULL
     );
 
@@ -59,6 +62,21 @@ export async function initializeDatabase() {
       notificationIds TEXT NOT NULL
     );
   `);
+
+    await ensureTableColumn(database, "cycles", "source", "TEXT NOT NULL DEFAULT 'observed'");
+    await ensureTableColumn(database, "daily_logs", "source", "TEXT NOT NULL DEFAULT 'observed'");
+    await ensureTableColumn(database, "daily_logs", "details", "TEXT");
+}
+
+async function ensureTableColumn(
+    database: SQLite.SQLiteDatabase,
+    tableName: string,
+    columnName: string,
+    definition: string,
+) {
+    const columns = await database.getAllAsync<{ name: string }>(`PRAGMA table_info(${tableName})`);
+    if (columns.some((column) => column.name === columnName)) return;
+    await database.execAsync(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${definition};`);
 }
 
 export async function loadAppData(): Promise<AppData> {
@@ -105,11 +123,48 @@ export async function saveSettings(settings: AppSettings) {
 
 export async function addCycle(cycle: Cycle) {
     await db().runAsync(
-        "INSERT INTO cycles (startDate, endDate, predicted, createdAt) VALUES (?, ?, ?, ?)",
+        "INSERT INTO cycles (startDate, endDate, predicted, source, createdAt) VALUES (?, ?, ?, ?, ?)",
         cycle.startDate,
         cycle.endDate ?? null,
         cycle.predicted ? 1 : 0,
+        cycle.source ?? (cycle.predicted ? "estimated" : "observed"),
         cycle.createdAt,
+    );
+}
+
+export async function upsertObservedCycleStart(startDate: string, createdAt: string) {
+    const existing = await db().getFirstAsync<{ id: number }>(
+        "SELECT id FROM cycles WHERE startDate = ? ORDER BY id DESC LIMIT 1",
+        startDate,
+    );
+
+    if (existing) {
+        await db().runAsync("UPDATE cycles SET predicted = 0, source = 'observed' WHERE id = ?", existing.id);
+        return;
+    }
+
+    await addCycle({
+        startDate,
+        endDate: null,
+        predicted: false,
+        source: "observed",
+        createdAt,
+    });
+}
+
+export async function closeLatestObservedCycle(endDate: string) {
+    const existing = await db().getFirstAsync<{ id: number; endDate: string | null }>(
+        "SELECT id, endDate FROM cycles WHERE startDate <= ? ORDER BY startDate DESC, id DESC LIMIT 1",
+        endDate,
+    );
+
+    if (!existing) return;
+    if (existing.endDate && existing.endDate >= endDate) return;
+
+    await db().runAsync(
+        "UPDATE cycles SET endDate = ?, predicted = 0, source = 'observed' WHERE id = ?",
+        endDate,
+        existing.id,
     );
 }
 
@@ -119,6 +174,7 @@ export async function loadCycles(): Promise<Cycle[]> {
         startDate: string;
         endDate: string | null;
         predicted: number;
+        source: Cycle["source"];
         createdAt: string;
     }>("SELECT * FROM cycles ORDER BY startDate DESC");
 
@@ -127,6 +183,7 @@ export async function loadCycles(): Promise<Cycle[]> {
         startDate: row.startDate,
         endDate: row.endDate,
         predicted: row.predicted === 1,
+        source: row.source ?? (row.predicted === 1 ? "estimated" : "observed"),
         createdAt: row.createdAt,
     }));
 }
@@ -150,11 +207,13 @@ export async function loadMoodCheckIns(): Promise<MoodCheckIn[]> {
 
 export async function upsertDailyLog(log: DailyLog) {
     await db().runAsync(
-        "INSERT OR REPLACE INTO daily_logs (date, bleedingLevel, symptoms, notes, updatedAt) VALUES (?, ?, ?, ?, ?)",
+        "INSERT OR REPLACE INTO daily_logs (date, bleedingLevel, symptoms, notes, source, details, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)",
         log.date,
         log.bleedingLevel,
         JSON.stringify(log.symptoms),
         log.notes ?? null,
+        log.source ?? "observed",
+        log.details ? JSON.stringify(log.details) : null,
         log.updatedAt,
     );
 }
@@ -165,6 +224,8 @@ export async function loadDailyLogs(): Promise<DailyLog[]> {
         bleedingLevel: DailyLog["bleedingLevel"];
         symptoms: string;
         notes: string | null;
+        source: NonNullable<DailyLog["source"]>;
+        details: string | null;
         updatedAt: string;
     }>("SELECT * FROM daily_logs ORDER BY date DESC LIMIT 200");
 
@@ -173,6 +234,8 @@ export async function loadDailyLogs(): Promise<DailyLog[]> {
         bleedingLevel: row.bleedingLevel,
         symptoms: JSON.parse(row.symptoms) as string[],
         notes: row.notes,
+        source: row.source ?? "observed",
+        details: row.details ? (JSON.parse(row.details) as NonNullable<DailyLog["details"]>) : null,
         updatedAt: row.updatedAt,
     }));
 }

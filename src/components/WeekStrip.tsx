@@ -17,7 +17,14 @@ export function WeekStrip({ week }: WeekStripProps) {
                         style={[
                             styles.circle,
                             day.isToday && styles.todayCircle,
-                            day.isPeriod && !day.isToday && styles.periodCircle,
+                            day.isPeriod &&
+                                day.periodSource === "observed" &&
+                                !day.isToday &&
+                                styles.observedPeriodCircle,
+                            day.isPeriod &&
+                                day.periodSource === "estimated" &&
+                                !day.isToday &&
+                                styles.estimatedPeriodCircle,
                             day.isFertile && !day.isToday && styles.fertileCircle,
                         ]}
                     >
@@ -59,7 +66,12 @@ const styles = StyleSheet.create({
     todayCircle: {
         backgroundColor: colors.primaryDeep,
     },
-    periodCircle: {
+    observedPeriodCircle: {
+        backgroundColor: colors.periodSoft,
+        borderWidth: 1,
+        borderColor: colors.period,
+    },
+    estimatedPeriodCircle: {
         borderWidth: 1,
         borderStyle: "dashed",
         borderColor: colors.period,

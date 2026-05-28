@@ -21,11 +21,13 @@ import { TodayScreen } from "./src/screens/TodayScreen";
 import {
     addCycle,
     addMoodCheckIn,
+    closeLatestObservedCycle,
     initializeDatabase,
     loadAppData,
     resetAppData,
     saveNotificationMoments,
     saveSettings,
+    upsertObservedCycleStart,
     upsertDailyLog,
 } from "./src/storage";
 import { colors } from "./src/theme";
@@ -59,7 +61,10 @@ export default function App() {
         question: "¿Cómo te sientes hoy?",
     });
 
-    const snapshot = useMemo(() => estimateCycle(data.settings), [data.settings]);
+    const snapshot = useMemo(
+        () => estimateCycle(data.settings, data.cycles, data.dailyLogs),
+        [data.cycles, data.dailyLogs, data.settings],
+    );
     const moments = data.notificationMoments.length > 0 ? data.notificationMoments : createDefaultNotificationMoments();
 
     useEffect(() => {
@@ -115,7 +120,17 @@ export default function App() {
 
     const saveCheckIn = async (moodCheckIn: MoodCheckIn, dailyLog?: DailyLog) => {
         await addMoodCheckIn(moodCheckIn);
-        if (dailyLog) await upsertDailyLog(dailyLog);
+        if (dailyLog) {
+            await upsertDailyLog(dailyLog);
+
+            if (dailyLog.details?.periodStarted) {
+                await upsertObservedCycleStart(dailyLog.date, dailyLog.updatedAt);
+            }
+
+            if (dailyLog.details?.periodEnded) {
+                await closeLatestObservedCycle(dailyLog.date);
+            }
+        }
         await refreshData();
     };
 
@@ -200,7 +215,13 @@ export default function App() {
     function renderTab() {
         if (activeTab === "calendar") {
             return (
-                <CalendarScreen dailyLogs={data.dailyLogs} onOpenCheckIn={openDailyCheckIn} settings={data.settings} />
+                <CalendarScreen
+                    cycles={data.cycles}
+                    dailyLogs={data.dailyLogs}
+                    onOpenCheckIn={openDailyCheckIn}
+                    settings={data.settings}
+                    snapshot={snapshot}
+                />
             );
         }
 

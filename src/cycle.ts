@@ -1,6 +1,12 @@
-import { AppSettings, CycleSnapshot, DailyLog, MoodCheckIn, PhaseKey } from "./types";
+import { AppSettings, Cycle, CycleSnapshot, DailyLog, MoodCheckIn, PhaseKey, PredictionConfidence } from "./types";
 
 const WEEKDAYS = ["D", "L", "M", "M", "J", "V", "S"];
+
+interface PeriodRun {
+    start: string;
+    end: string;
+    length: number;
+}
 
 export function toIsoDate(date: Date): string {
     const year = date.getFullYear();
@@ -36,37 +42,107 @@ export function monthTitle(date: Date): string {
     return title.charAt(0).toUpperCase() + title.slice(1);
 }
 
-export function estimateCycle(settings: AppSettings | null, todayIso = toIsoDate(new Date())): CycleSnapshot {
+export function estimateCycle(
+    settings: AppSettings | null,
+    cycles: Cycle[] = [],
+    dailyLogs: DailyLog[] = [],
+    todayIso = toIsoDate(new Date()),
+): CycleSnapshot {
     const fallbackStart = addDays(todayIso, -1);
-    const cycleLength = settings?.cycleLength ?? 28;
-    const periodLength = settings?.periodLength ?? 5;
-    const lastStart = settings?.lastPeriodStart ?? fallbackStart;
-    const diff = daysBetween(lastStart, todayIso);
+    const observedBleedingDates = getObservedBleedingDates(dailyLogs);
+    const observedRuns = getObservedPeriodRuns(dailyLogs);
+    const observedStarts = getObservedCycleStarts(settings, cycles, observedRuns);
+    const observedCycleLengths = getObservedCycleLengths(observedStarts);
+    const observedPeriodLengths = observedRuns.map((run) => run.length);
+
+    const cycleLength = roundOrFallback(observedCycleLengths, settings?.cycleLength ?? 28, 21, 40);
+    const periodLength = roundOrFallback(observedPeriodLengths, settings?.periodLength ?? 5, 2, 10);
+    const fertilityVisible = !settings?.hormonalContraception && settings?.goal !== "track_only";
+    const confidence = getPredictionConfidence(settings, observedStarts.length, observedCycleLengths.length);
+    const anchorStart = findCurrentAnchorStart(observedRuns, observedStarts, settings, todayIso) ?? fallbackStart;
+    const source = getSnapshotSource(observedBleedingDates, observedStarts, todayIso);
+    const diff = daysBetween(anchorStart, todayIso);
     const cycleDay = (((diff % cycleLength) + cycleLength) % cycleLength) + 1;
     const ovulationDay = Math.max(10, cycleLength - 14);
     const fertileStart = Math.max(1, ovulationDay - 5);
     const fertileEnd = Math.min(cycleLength, ovulationDay + 1);
     const nextPeriodInDays = cycleLength - cycleDay + 1;
-    const phase = getPhase(cycleDay, periodLength, fertileStart, fertileEnd);
-    const week = buildWeek(todayIso, cycleDay, periodLength, fertileStart, fertileEnd, cycleLength);
+    const variabilityDays = getVariabilityDays(observedCycleLengths, settings);
+    const phase = getPhase(
+        cycleDay,
+        periodLength,
+        fertileStart,
+        fertileEnd,
+        fertilityVisible,
+        observedBleedingDates.has(todayIso),
+    );
+    const week = buildWeek(
+        todayIso,
+        cycleDay,
+        periodLength,
+        fertileStart,
+        fertileEnd,
+        cycleLength,
+        observedBleedingDates,
+        fertilityVisible,
+    );
 
     return {
         cycleDay,
         phase,
+        source,
+        sourceLabel: getSourceLabel(source),
+        confidence,
+        confidenceLabel: getConfidenceLabel(confidence),
+        confidenceNote: getConfidenceNote(settings, confidence, observedStarts.length),
         phaseLabel: getPhaseLabel(phase),
-        phaseMessage: getPhaseMessage(phase, nextPeriodInDays),
+        phaseMessage: getPhaseMessage({
+            phase,
+            source,
+            confidence,
+            nextPeriodInDays,
+            fertilityVisible,
+            settings,
+        }),
         nextPeriodInDays,
-        fertileWindowLabel:
-            cycleDay >= fertileStart && cycleDay <= fertileEnd
-                ? "Ventana fértil aproximada"
-                : `Fertilidad estimada en ${Math.max(1, fertileStart - cycleDay)} días`,
+        nextPeriodLabel: getNextPeriodLabel(nextPeriodInDays, variabilityDays, confidence, source),
+        fertileWindowLabel: getFertilityStatusLabel(
+            cycleDay,
+            fertileStart,
+            cycleLength,
+            phase,
+            fertilityVisible,
+            confidence,
+            settings,
+        ),
+        fertilityVisible,
+        fertilityStatusLabel: getFertilityStatusLabel(
+            cycleDay,
+            fertileStart,
+            cycleLength,
+            phase,
+            fertilityVisible,
+            confidence,
+            settings,
+        ),
+        observedCycleCount: observedStarts.length,
+        cycleLengthEstimate: cycleLength,
+        periodLengthEstimate: periodLength,
         week,
     };
 }
 
-function getPhase(cycleDay: number, periodLength: number, fertileStart: number, fertileEnd: number): PhaseKey {
+function getPhase(
+    cycleDay: number,
+    periodLength: number,
+    fertileStart: number,
+    fertileEnd: number,
+    fertilityVisible: boolean,
+    isObservedBleeding: boolean,
+): PhaseKey {
+    if (isObservedBleeding) return "menstrual";
     if (cycleDay <= periodLength) return "menstrual";
-    if (cycleDay >= fertileStart && cycleDay <= fertileEnd) return "fertile";
+    if (fertilityVisible && cycleDay >= fertileStart && cycleDay <= fertileEnd) return "fertile";
     if (cycleDay < fertileStart) return "follicular";
     return "luteal";
 }
@@ -84,16 +160,46 @@ function getPhaseLabel(phase: PhaseKey): string {
     }
 }
 
-function getPhaseMessage(phase: PhaseKey, nextPeriodInDays: number): string {
+function getPhaseMessage({
+    phase,
+    source,
+    confidence,
+    nextPeriodInDays,
+    fertilityVisible,
+    settings,
+}: {
+    phase: PhaseKey;
+    source: CycleSnapshot["source"];
+    confidence: PredictionConfidence;
+    nextPeriodInDays: number;
+    fertilityVisible: boolean;
+    settings: AppSettings | null;
+}): string {
+    if (settings?.hormonalContraception) {
+        return "Con anticonceptivos hormonales esta vista es orientativa. Priorizamos tus registros sobre calendario.";
+    }
+
+    if (source === "unknown") {
+        return "Base inicial. Marca periodos reales para pasar de referencia suave a seguimiento mas confiable.";
+    }
+
+    if (confidence === "low") {
+        return "Todavía depende bastante de tu fecha inicial. Cuantos más periodos reales marques, mejor ajusta.";
+    }
+
     switch (phase) {
         case "menstrual":
-            return "Cuéntame tú flujo, dolor y energía para entender cómo cambia este inicio de ciclo.";
+            return source === "observed"
+                ? "Hoy cuenta como observación real de sangrado. Úsalo para ajustar mejor tu ciclo."
+                : "Esta etapa se sigue comparando contra tus registros. Flujo, dolor y energía ayudan a afinarla.";
         case "follicular":
-            return "Puede sentirse como una etapa de recuperación. Lo iremos comparando con tus registros.";
+            return "Etapa de recuperación orientativa. Lo útil aquí es comparar energía, sueño y ánimo con tus registros.";
         case "fertile":
-            return "Estimación orientativa. Si buscas precisión, combina señales como temperatura o test de ovulación.";
+            return fertilityVisible
+                ? "Ventana fértil orientativa. Si buscas precisión, combina señales reales como moco cervical, temperatura o test."
+                : "Seguimos mostrando referencia de ciclo, pero no una ventana fértil activa en este modo.";
         case "luteal":
-            return `Próximo periodo estimado en ${nextPeriodInDays} días. Observa sueño, ánimo y estrés.`;
+            return `Próxima regla estimada en ${nextPeriodInDays} días. Observa sueño, ánimo y estrés para comparar este tramo.`;
     }
 }
 
@@ -104,24 +210,32 @@ function buildWeek(
     fertileStart: number,
     fertileEnd: number,
     cycleLength: number,
-) {
+    observedBleedingDates: Set<string>,
+    fertilityVisible: boolean,
+): CycleSnapshot["week"] {
     const today = parseIsoDate(todayIso);
     const start = new Date(today);
     start.setDate(today.getDate() - 3);
 
-    return Array.from({ length: 7 }, (_, index) => {
+    return Array.from({ length: 7 }, (_, index): CycleSnapshot["week"][number] => {
         const date = new Date(start);
         date.setDate(start.getDate() + index);
         const iso = toIsoDate(date);
         const dayOffset = daysBetween(todayIso, iso);
         const projectedCycleDay = ((((cycleDay + dayOffset - 1) % cycleLength) + cycleLength) % cycleLength) + 1;
+        const isObservedPeriod = observedBleedingDates.has(iso);
         return {
             iso,
             day: date.getDate(),
             weekday: WEEKDAYS[date.getDay()] ?? "",
             isToday: iso === todayIso,
-            isPeriod: projectedCycleDay <= periodLength,
-            isFertile: projectedCycleDay >= fertileStart && projectedCycleDay <= fertileEnd,
+            isPeriod: isObservedPeriod || projectedCycleDay <= periodLength,
+            periodSource: isObservedPeriod ? "observed" : projectedCycleDay <= periodLength ? "estimated" : "unknown",
+            isFertile:
+                fertilityVisible &&
+                !isObservedPeriod &&
+                projectedCycleDay >= fertileStart &&
+                projectedCycleDay <= fertileEnd,
         };
     });
 }
@@ -129,7 +243,16 @@ function buildWeek(
 export function generateMonthDays(
     target: Date,
     settings: AppSettings | null,
-): { iso: string; day: number; inMonth: boolean; phase: PhaseKey; cycleDay: number }[] {
+    cycles: Cycle[] = [],
+    dailyLogs: DailyLog[] = [],
+): {
+    iso: string;
+    day: number;
+    inMonth: boolean;
+    phase: PhaseKey;
+    phaseSource: CycleSnapshot["source"];
+    cycleDay: number;
+}[] {
     const first = new Date(target.getFullYear(), target.getMonth(), 1, 12);
     const monthStartWeekday = first.getDay();
     const gridStart = new Date(first);
@@ -139,12 +262,13 @@ export function generateMonthDays(
         const date = new Date(gridStart);
         date.setDate(gridStart.getDate() + index);
         const iso = toIsoDate(date);
-        const estimate = estimateCycle(settings, iso);
+        const estimate = estimateCycle(settings, cycles, dailyLogs, iso);
         return {
             iso,
             day: date.getDate(),
             inMonth: date.getMonth() === target.getMonth(),
             phase: estimate.phase,
+            phaseSource: estimate.source,
             cycleDay: estimate.cycleDay,
         };
     });
@@ -165,8 +289,227 @@ export function buildPersonalInsights(checkIns: MoodCheckIn[], dailyLogs: DailyL
     if (avgEnergy <= 2.4) insights.push("Suele aparecer energía baja en tus registros recientes.");
     if (dailyLogs.some((log) => log.symptoms.includes("cólicos")))
         insights.push("Los cólicos aparecen en tu diario. Los iremos comparando con próximos ciclos.");
+    if (dailyLogs.some((log) => log.details?.painImpact === "limits_day" || log.details?.painImpact === "stops_day")) {
+        insights.push("Hubo días en los que el dolor sí llegó a frenarte. Vale ver si se repite en la misma fase.");
+    }
+    if (dailyLogs.some((log) => log.details?.medicationRelief === "did_not_help")) {
+        insights.push("En algunos días el alivio no fue suficiente. Puede ser útil compararlo con próximos ciclos.");
+    }
 
     return insights.length > 0 ? insights : ["Tus registros se ven estables. Seguiremos observando cambios por fase."];
+}
+
+function getObservedCycleStarts(settings: AppSettings | null, cycles: Cycle[], observedRuns: PeriodRun[]) {
+    const cycleStarts = cycles
+        .filter((cycle) => cycle.source === "observed" || cycle.predicted === false)
+        .map((cycle) => cycle.startDate);
+
+    const fromRuns = observedRuns.map((run) => run.start);
+    const seed = settings?.lastPeriodStart ? [settings.lastPeriodStart] : [];
+    return uniqueDates([...seed, ...cycleStarts, ...fromRuns]);
+}
+
+function getObservedCycleLengths(starts: string[]) {
+    return starts
+        .slice(1)
+        .map((startDate, index) => daysBetween(starts[index] ?? startDate, startDate))
+        .filter((days) => days >= 18 && days <= 60);
+}
+
+function getObservedBleedingDates(dailyLogs: DailyLog[]) {
+    return new Set(dailyLogs.filter((log) => isBleedingDay(log)).map((log) => log.date));
+}
+
+function getObservedPeriodRuns(dailyLogs: DailyLog[]): PeriodRun[] {
+    const sorted = [...dailyLogs].sort((left, right) => left.date.localeCompare(right.date));
+    const runs: PeriodRun[] = [];
+    let currentStart: string | null = null;
+    let currentEnd: string | null = null;
+
+    const closeRun = () => {
+        if (!currentStart || !currentEnd) return;
+        runs.push({
+            start: currentStart,
+            end: currentEnd,
+            length: daysBetween(currentStart, currentEnd) + 1,
+        });
+        currentStart = null;
+        currentEnd = null;
+    };
+
+    for (const log of sorted) {
+        if (!isBleedingDay(log)) {
+            closeRun();
+            continue;
+        }
+
+        const forcedStart = log.details?.periodStarted === true;
+        if (!currentStart || !currentEnd) {
+            currentStart = log.date;
+            currentEnd = log.date;
+        } else {
+            const gap = daysBetween(currentEnd, log.date);
+            if (forcedStart || gap > 1) {
+                closeRun();
+                currentStart = log.date;
+            }
+            currentEnd = log.date;
+        }
+
+        if (log.details?.periodEnded) {
+            closeRun();
+        }
+    }
+
+    closeRun();
+    return runs;
+}
+
+function findCurrentAnchorStart(
+    observedRuns: PeriodRun[],
+    observedStarts: string[],
+    settings: AppSettings | null,
+    todayIso: string,
+) {
+    const currentRun = observedRuns.find((run) => run.start <= todayIso && run.end >= todayIso);
+    if (currentRun) return currentRun.start;
+    return findLastOnOrBefore(observedStarts, todayIso) ?? settings?.lastPeriodStart ?? null;
+}
+
+function findLastOnOrBefore(values: string[], targetIso: string) {
+    for (let index = values.length - 1; index >= 0; index -= 1) {
+        if ((values[index] ?? "") <= targetIso) {
+            return values[index] ?? null;
+        }
+    }
+    return null;
+}
+
+function getSnapshotSource(
+    observedBleedingDates: Set<string>,
+    observedStarts: string[],
+    todayIso: string,
+): CycleSnapshot["source"] {
+    if (observedBleedingDates.has(todayIso)) return "observed";
+    if (findLastOnOrBefore(observedStarts, todayIso)) return "estimated";
+    return "unknown";
+}
+
+function getPredictionConfidence(
+    settings: AppSettings | null,
+    observedCycleCount: number,
+    measuredCycleCount: number,
+): PredictionConfidence {
+    if (settings?.hormonalContraception) return "low";
+
+    let score = 0;
+    if (measuredCycleCount >= 3) score += 2;
+    else if (measuredCycleCount >= 1) score += 1;
+    if (observedCycleCount >= 3) score += 1;
+    if (settings?.regularity === "variable") score -= 1;
+    if (settings?.regularity === "irregular") score -= 2;
+
+    if (score >= 3) return "high";
+    if (score >= 1) return "medium";
+    return "low";
+}
+
+function getSourceLabel(source: CycleSnapshot["source"]) {
+    if (source === "observed") return "Observado";
+    if (source === "estimated") return "Estimado";
+    return "Sin datos";
+}
+
+function getConfidenceLabel(confidence: PredictionConfidence) {
+    if (confidence === "high") return "Confianza alta";
+    if (confidence === "medium") return "Confianza media";
+    return "Confianza baja";
+}
+
+function getConfidenceNote(settings: AppSettings | null, confidence: PredictionConfidence, observedCycleCount: number) {
+    if (settings?.hormonalContraception) {
+        return "Con anticonceptivos hormonales priorizamos lo observado y bajamos confianza del calendario.";
+    }
+
+    if (confidence === "high") {
+        return `Base fuerte: ${observedCycleCount} ciclos observados recientes.`;
+    }
+
+    if (confidence === "medium") {
+        return `Base mixta: ${observedCycleCount} ciclos observados y tu configuracion inicial.`;
+    }
+
+    return observedCycleCount <= 1
+        ? "Base inicial. Todavia depende bastante de la fecha con la que empezaste."
+        : `Base parcial: ${observedCycleCount} ciclos observados aun no bastan para dar mucha confianza.`;
+}
+
+function getNextPeriodLabel(
+    nextPeriodInDays: number,
+    variabilityDays: number,
+    confidence: PredictionConfidence,
+    source: CycleSnapshot["source"],
+) {
+    if (source === "unknown") return "Sin rango claro";
+    if (confidence === "high" && variabilityDays <= 2) {
+        return `En ${nextPeriodInDays} días`;
+    }
+
+    const halfRange = Math.max(1, Math.ceil(variabilityDays / 2));
+    const start = Math.max(1, nextPeriodInDays - halfRange);
+    const end = nextPeriodInDays + halfRange;
+    return `Entre ${start} y ${end} días`;
+}
+
+function getFertilityStatusLabel(
+    cycleDay: number,
+    fertileStart: number,
+    cycleLength: number,
+    phase: PhaseKey,
+    fertilityVisible: boolean,
+    confidence: PredictionConfidence,
+    settings: AppSettings | null,
+) {
+    if (!fertilityVisible) {
+        return settings?.hormonalContraception ? "Oculta" : "No priorizada";
+    }
+
+    if (phase === "fertile") return confidence === "low" ? "Aprox. ahora" : "Ahora";
+
+    const daysToFertility = getDaysToFertility(cycleDay, fertileStart, cycleLength);
+    return confidence === "low" ? `Aprox. en ${daysToFertility} días` : `En ${daysToFertility} días`;
+}
+
+function getDaysToFertility(cycleDay: number, fertileStart: number, cycleLength: number) {
+    if (cycleDay < fertileStart) return fertileStart - cycleDay;
+    return cycleLength - cycleDay + fertileStart;
+}
+
+function getVariabilityDays(values: number[], settings: AppSettings | null) {
+    if (values.length >= 2) {
+        return Math.max(...values) - Math.min(...values);
+    }
+
+    if (settings?.regularity === "irregular") return 6;
+    if (settings?.regularity === "variable") return 4;
+    return 2;
+}
+
+function roundOrFallback(values: number[], fallback: number, min: number, max: number) {
+    if (values.length === 0) return fallback;
+    return clamp(Math.round(average(values)), min, max);
+}
+
+function clamp(value: number, min: number, max: number) {
+    return Math.min(max, Math.max(min, value));
+}
+
+function uniqueDates(values: string[]) {
+    return [...new Set(values.filter(Boolean))].sort((left, right) => left.localeCompare(right));
+}
+
+function isBleedingDay(log: DailyLog) {
+    return log.bleedingLevel !== "none";
 }
 
 export function average(values: number[]): number {

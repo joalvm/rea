@@ -5,18 +5,23 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SoftButton } from "../components/SoftButton";
 import { generateMonthDays, monthTitle, toIsoDate } from "../cycle";
 import { colors, radii, shadow, type } from "../theme";
-import { AppSettings, DailyLog, PhaseKey } from "../types";
+import { AppSettings, Cycle, CycleSnapshot, DailyLog, PhaseKey } from "../types";
 
 interface CalendarScreenProps {
     settings: AppSettings | null;
+    cycles: Cycle[];
     dailyLogs: DailyLog[];
+    snapshot: CycleSnapshot;
     onOpenCheckIn: () => void;
 }
 
-export function CalendarScreen({ settings, dailyLogs, onOpenCheckIn }: CalendarScreenProps) {
+export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCheckIn }: CalendarScreenProps) {
     const [month, setMonth] = useState(new Date());
     const todayIso = toIsoDate(new Date());
-    const days = useMemo(() => generateMonthDays(month, settings), [month, settings]);
+    const days = useMemo(
+        () => generateMonthDays(month, settings, cycles, dailyLogs),
+        [cycles, dailyLogs, month, settings],
+    );
     const loggedDates = useMemo(() => new Set(dailyLogs.map((log) => log.date)), [dailyLogs]);
 
     const shiftMonth = (delta: number) => {
@@ -53,6 +58,7 @@ export function CalendarScreen({ settings, dailyLogs, onOpenCheckIn }: CalendarS
                             key={day.iso}
                             monthDay={day.day}
                             phase={day.phase}
+                            phaseSource={day.phaseSource}
                             periodDay={day.phase === "menstrual" ? day.cycleDay : null}
                         />
                     ))}
@@ -60,15 +66,19 @@ export function CalendarScreen({ settings, dailyLogs, onOpenCheckIn }: CalendarS
             </View>
 
             <View style={styles.legend}>
-                <Legend color={colors.period} icon="water" label="Regla" />
-                <Legend color={colors.fertile} icon="leaf" label="Fértil aprox." />
+                <Legend color={colors.period} icon="water" label="Regla observada" />
+                <Legend color={colors.period} icon="circle-outline" label="Regla estimada" />
+                {snapshot.fertilityVisible ? <Legend color={colors.fertile} icon="leaf" label="Fértil aprox." /> : null}
                 <Legend color={colors.luteal} icon="weather-night" label="Lútea" />
                 <Legend color={colors.primaryDeep} icon="check-circle" label="Con registro" />
             </View>
 
             <View style={styles.panel}>
                 <Text style={styles.panelTitle}>¿Algo cambió?</Text>
-                <Text style={styles.panelText}>Corrige el día real y las próximas fechas se ajustan mejor a ti.</Text>
+                <Text style={styles.panelText}>
+                    Base actual: {snapshot.sourceLabel.toLowerCase()} y {snapshot.confidenceLabel.toLowerCase()}. Marca
+                    tus días reales para ajustar mejor las estimaciones.
+                </Text>
                 <SoftButton label="Registrar mi día" onPress={onOpenCheckIn} />
             </View>
         </ScrollView>
@@ -79,6 +89,7 @@ function DayCell({
     monthDay,
     inMonth,
     phase,
+    phaseSource,
     periodDay,
     isToday,
     isLogged,
@@ -86,11 +97,14 @@ function DayCell({
     monthDay: number;
     inMonth: boolean;
     phase: PhaseKey;
+    phaseSource: CycleSnapshot["source"];
     periodDay: number | null;
     isToday: boolean;
     isLogged: boolean;
 }) {
     const phaseStyle = phaseStyles[phase];
+    const isObservedPeriod = phase === "menstrual" && phaseSource === "observed";
+    const isEstimatedPeriod = phase === "menstrual" && phaseSource !== "observed";
 
     return (
         <View style={[styles.cell, !inMonth && styles.cellMuted]}>
@@ -98,10 +112,11 @@ function DayCell({
                 style={[
                     styles.dayCircle,
                     isToday && styles.todayCircle,
+                    isObservedPeriod && !isToday && styles.observedPeriodCircle,
                     phase === "fertile" && !isToday && styles.fertileCircle,
                 ]}
             >
-                {periodDay ? (
+                {periodDay && isEstimatedPeriod ? (
                     <View style={styles.periodBadge}>
                         <Text style={styles.periodBadgeText}>{periodDay}</Text>
                     </View>
@@ -208,6 +223,11 @@ const styles = StyleSheet.create({
     },
     todayCircle: {
         backgroundColor: colors.primaryDeep,
+    },
+    observedPeriodCircle: {
+        backgroundColor: colors.periodSoft,
+        borderWidth: 1,
+        borderColor: colors.period,
     },
     fertileCircle: {
         borderWidth: 1,

@@ -84,11 +84,16 @@ function CheckInRow({ item }: { item: MoodCheckIn }) {
 }
 
 function DailyLogRow({ log }: { log: DailyLog }) {
+    const details = buildDailyLogDetails(log);
+
     return (
         <SoftCard style={styles.dailyCard}>
             <View style={styles.dailyHeader}>
                 <Text style={styles.rowTitle}>{formatShortDate(log.date)}</Text>
-                <Text style={styles.bleeding}>{bleedingLabel(log.bleedingLevel)}</Text>
+                <View style={styles.dailyMetaGroup}>
+                    <Text style={styles.sourcePill}>{sourceLabel(log.source)}</Text>
+                    <Text style={styles.bleeding}>{bleedingLabel(log.bleedingLevel)}</Text>
+                </View>
             </View>
             {log.symptoms.length > 0 ? (
                 <View style={styles.symptoms}>
@@ -101,6 +106,15 @@ function DailyLogRow({ log }: { log: DailyLog }) {
             ) : (
                 <Text style={styles.rowMeta}>Sin síntomas marcados.</Text>
             )}
+            {details.length > 0 ? (
+                <View style={styles.symptoms}>
+                    {details.map((detail) => (
+                        <Text key={detail} style={styles.detailChip}>
+                            {detail}
+                        </Text>
+                    ))}
+                </View>
+            ) : null}
             {log.notes ? <Text style={styles.note}>{log.notes}</Text> : null}
         </SoftCard>
     );
@@ -146,6 +160,37 @@ function bleedingLabel(level: DailyLog["bleedingLevel"]) {
     if (level === "light") return "Leve";
     if (level === "medium") return "Medio";
     return "Abundante";
+}
+
+function sourceLabel(source: DailyLog["source"]) {
+    if (source === "estimated") return "Estimado";
+    if (source === "unknown") return "Sin datos";
+    return "Observado";
+}
+
+function buildDailyLogDetails(log: DailyLog) {
+    const items: string[] = [];
+
+    if (log.details?.periodStarted) items.push("Empezó hoy");
+    if (log.details?.periodEnded) items.push("Terminó hoy");
+
+    if (log.details?.painImpact === "noticeable") items.push("Dolor se notó");
+    if (log.details?.painImpact === "limits_day") items.push("Dolor me limitó");
+    if (log.details?.painImpact === "stops_day") items.push("Dolor me tumbó");
+
+    if (log.details?.medicationName) {
+        items.push(log.details.medicationName);
+    }
+
+    if (log.details?.medicationRelief === "helped") items.push("Sí ayudó");
+    if (log.details?.medicationRelief === "partly_helped") items.push("Ayudó poco");
+    if (log.details?.medicationRelief === "did_not_help") items.push("No ayudó");
+
+    if (log.details?.clotSize === "small") items.push("Coágulos leves");
+    if (log.details?.clotSize === "medium") items.push("Coágulos medios");
+    if (log.details?.clotSize === "large") items.push("Coágulos grandes");
+
+    return items;
 }
 
 const styles = StyleSheet.create({
@@ -252,6 +297,20 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         gap: 12,
     },
+    dailyMetaGroup: {
+        alignItems: "flex-end",
+        gap: 6,
+    },
+    sourcePill: {
+        color: colors.primaryDeep,
+        backgroundColor: colors.primarySoft,
+        borderRadius: 999,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        fontSize: type.tiny,
+        fontWeight: "900",
+        overflow: "hidden",
+    },
     bleeding: {
         color: colors.period,
         fontSize: type.small,
@@ -270,6 +329,15 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
         fontSize: type.small,
         fontWeight: "800",
+    },
+    detailChip: {
+        color: colors.ink,
+        backgroundColor: colors.surfaceSoft,
+        borderRadius: radii.md,
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        fontSize: type.small,
+        fontWeight: "700",
     },
     empty: {
         alignItems: "center",

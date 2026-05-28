@@ -55,19 +55,24 @@ export function TodayScreen({
                     <WeekStrip week={snapshot.week} />
 
                     <View style={styles.phaseBlock}>
+                        <View style={styles.phaseMetaRow}>
+                            <MetaPill label={snapshot.sourceLabel} tone={snapshot.source} />
+                            <MetaPill label={snapshot.confidenceLabel} tone="confidence" />
+                        </View>
                         <Text style={styles.phaseLabel}>{snapshot.phaseLabel}</Text>
                         <Text style={styles.phaseDay}>Día {snapshot.cycleDay}</Text>
                         <Text style={styles.phaseMessage}>{snapshot.phaseMessage}</Text>
+                        <Text style={styles.phaseSupport}>{snapshot.confidenceNote}</Text>
                     </View>
 
                     <View style={styles.heroStats}>
-                        <MiniStat
-                            icon="calendar-clock"
-                            label="Próxima regla"
-                            value={`${snapshot.nextPeriodInDays} días`}
-                        />
+                        <MiniStat icon="calendar-clock" label="Próxima regla" value={snapshot.nextPeriodLabel} />
                         <View style={styles.statDivider} />
-                        <MiniStat icon="leaf" label="Ventana fértil" value={fertileValue(snapshot)} />
+                        <MiniStat
+                            icon="leaf"
+                            label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
+                            value={snapshot.fertilityStatusLabel}
+                        />
                     </View>
 
                     <SoftButton label="Registrar mi día" onPress={onOpenCheckIn} style={styles.heroButton} />
@@ -139,6 +144,31 @@ export function TodayScreen({
     );
 }
 
+function MetaPill({ label, tone }: { label: string; tone: CycleSnapshot["source"] | "confidence" }) {
+    const backgroundColor =
+        tone === "observed"
+            ? colors.periodSoft
+            : tone === "estimated"
+              ? colors.primarySoft
+              : tone === "confidence"
+                ? colors.surface
+                : colors.surfaceSoft;
+    const textColor =
+        tone === "observed"
+            ? colors.period
+            : tone === "estimated"
+              ? colors.primaryDeep
+              : tone === "confidence"
+                ? colors.ink
+                : colors.muted;
+
+    return (
+        <View style={[styles.metaPill, { backgroundColor }]}>
+            <Text style={[styles.metaPillText, { color: textColor }]}>{label}</Text>
+        </View>
+    );
+}
+
 function MiniStat({ icon, label, value }: { icon: string; label: string; value: string }) {
     return (
         <View style={styles.miniStat}>
@@ -151,12 +181,6 @@ function MiniStat({ icon, label, value }: { icon: string; label: string; value: 
             </View>
         </View>
     );
-}
-
-function fertileValue(snapshot: CycleSnapshot) {
-    if (snapshot.phase === "fertile") return "Ahora";
-    const match = snapshot.fertileWindowLabel.match(/\d+/);
-    return match ? `En ${match[0]} días` : "Aprox.";
 }
 
 function getCareTips(phase: PhaseKey) {
@@ -278,6 +302,24 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 38,
     },
+    phaseMetaRow: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 12,
+    },
+    metaPill: {
+        minHeight: 28,
+        borderRadius: 14,
+        paddingHorizontal: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: "rgba(8,124,155,0.08)",
+    },
+    metaPillText: {
+        fontSize: type.small,
+        fontWeight: "900",
+    },
     phaseLabel: {
         color: colors.ink,
         fontSize: type.subtitle,
@@ -297,6 +339,14 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginTop: 12,
         maxWidth: 314,
+    },
+    phaseSupport: {
+        color: colors.muted,
+        fontSize: type.small,
+        lineHeight: 18,
+        textAlign: "center",
+        marginTop: 10,
+        maxWidth: 320,
     },
     heroStats: {
         alignSelf: "center",

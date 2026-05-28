@@ -4,7 +4,7 @@ import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 
 
 import { toIsoDate } from "../cycle";
 import { colors, radii, type } from "../theme";
-import { BleedingLevel, DailyLog, MomentType, MoodCheckIn } from "../types";
+import { BleedingLevel, ClotSize, DailyLog, MedicationRelief, MomentType, MoodCheckIn, PainImpact } from "../types";
 import { MetricScale } from "./MetricScale";
 import { SoftButton } from "./SoftButton";
 
@@ -16,6 +16,27 @@ const BLEEDING: { key: BleedingLevel; label: string }[] = [
     { key: "light", label: "Leve" },
     { key: "medium", label: "Medio" },
     { key: "heavy", label: "Abundante" },
+];
+
+const PAIN_IMPACT_OPTIONS: { key: PainImpact; label: string }[] = [
+    { key: "none", label: "No frenó" },
+    { key: "noticeable", label: "Se notó" },
+    { key: "limits_day", label: "Me limitó" },
+    { key: "stops_day", label: "Me tumbó" },
+];
+
+const MEDICATION_RELIEF_OPTIONS: { key: MedicationRelief; label: string }[] = [
+    { key: "not_applicable", label: "No tomé" },
+    { key: "helped", label: "Sí ayudó" },
+    { key: "partly_helped", label: "Ayudó poco" },
+    { key: "did_not_help", label: "No ayudó" },
+];
+
+const CLOT_SIZE_OPTIONS: { key: ClotSize; label: string }[] = [
+    { key: "none", label: "No" },
+    { key: "small", label: "Pequeños" },
+    { key: "medium", label: "Medios" },
+    { key: "large", label: "Grandes" },
 ];
 
 interface CheckInModalProps {
@@ -35,6 +56,12 @@ export function CheckInModal({ visible, mode, momentType, question, onClose, onS
     const [note, setNote] = useState("");
     const [bleedingLevel, setBleedingLevel] = useState<BleedingLevel>("none");
     const [symptoms, setSymptoms] = useState<string[]>([]);
+    const [periodStarted, setPeriodStarted] = useState(false);
+    const [periodEnded, setPeriodEnded] = useState(false);
+    const [clotSize, setClotSize] = useState<ClotSize>("none");
+    const [painImpact, setPainImpact] = useState<PainImpact>("none");
+    const [medicationName, setMedicationName] = useState("");
+    const [medicationRelief, setMedicationRelief] = useState<MedicationRelief>("not_applicable");
     const [saving, setSaving] = useState(false);
 
     const resetForm = () => {
@@ -45,6 +72,12 @@ export function CheckInModal({ visible, mode, momentType, question, onClose, onS
         setNote("");
         setBleedingLevel("none");
         setSymptoms([]);
+        setPeriodStarted(false);
+        setPeriodEnded(false);
+        setClotSize("none");
+        setPainImpact("none");
+        setMedicationName("");
+        setMedicationRelief("not_applicable");
     };
 
     const handleClose = () => {
@@ -70,6 +103,8 @@ export function CheckInModal({ visible, mode, momentType, question, onClose, onS
                       bleedingLevel,
                       symptoms,
                       notes: note.trim() || null,
+                      source: "observed",
+                      details: buildDailyLogDetails(),
                       updatedAt: now.toISOString(),
                   }
                 : undefined;
@@ -81,6 +116,37 @@ export function CheckInModal({ visible, mode, momentType, question, onClose, onS
         } finally {
             setSaving(false);
         }
+    };
+
+    const buildDailyLogDetails = (): NonNullable<DailyLog["details"]> | null => {
+        const details: NonNullable<DailyLog["details"]> = {};
+
+        if (periodStarted) {
+            details.periodStarted = true;
+        }
+
+        if (periodEnded) {
+            details.periodEnded = true;
+        }
+
+        if (clotSize !== "none") {
+            details.clotSize = clotSize;
+        }
+
+        if (painImpact !== "none") {
+            details.painImpact = painImpact;
+        }
+
+        const cleanMedicationName = medicationName.trim();
+        if (cleanMedicationName) {
+            details.medicationName = cleanMedicationName;
+        }
+
+        if (medicationRelief !== "not_applicable") {
+            details.medicationRelief = medicationRelief;
+        }
+
+        return Object.keys(details).length > 0 ? details : null;
     };
 
     return (
@@ -170,6 +236,104 @@ export function CheckInModal({ visible, mode, momentType, question, onClose, onS
                                                 </Pressable>
                                             );
                                         })}
+                                    </View>
+                                </View>
+
+                                <View style={styles.section}>
+                                    <Text style={styles.sectionTitle}>Periodo</Text>
+                                    <View style={styles.chips}>
+                                        <Pressable
+                                            onPress={() => setPeriodStarted((current) => !current)}
+                                            style={[styles.chip, periodStarted && styles.chipActive]}
+                                        >
+                                            <Text style={[styles.chipText, periodStarted && styles.chipTextActive]}>
+                                                Empezó hoy
+                                            </Text>
+                                        </Pressable>
+                                        <Pressable
+                                            onPress={() => setPeriodEnded((current) => !current)}
+                                            style={[styles.chip, periodEnded && styles.chipActive]}
+                                        >
+                                            <Text style={[styles.chipText, periodEnded && styles.chipTextActive]}>
+                                                Terminó hoy
+                                            </Text>
+                                        </Pressable>
+                                    </View>
+                                </View>
+
+                                <View style={styles.section}>
+                                    <Text style={styles.sectionTitle}>Coágulos</Text>
+                                    <View style={styles.chips}>
+                                        {CLOT_SIZE_OPTIONS.map((item) => (
+                                            <Pressable
+                                                key={item.key}
+                                                onPress={() => setClotSize(item.key)}
+                                                style={[styles.chip, clotSize === item.key && styles.chipActive]}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.chipText,
+                                                        clotSize === item.key && styles.chipTextActive,
+                                                    ]}
+                                                >
+                                                    {item.label}
+                                                </Text>
+                                            </Pressable>
+                                        ))}
+                                    </View>
+                                </View>
+
+                                <View style={styles.section}>
+                                    <Text style={styles.sectionTitle}>¿Cuánto te frenó el dolor?</Text>
+                                    <View style={styles.chips}>
+                                        {PAIN_IMPACT_OPTIONS.map((item) => (
+                                            <Pressable
+                                                key={item.key}
+                                                onPress={() => setPainImpact(item.key)}
+                                                style={[styles.chip, painImpact === item.key && styles.chipActive]}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.chipText,
+                                                        painImpact === item.key && styles.chipTextActive,
+                                                    ]}
+                                                >
+                                                    {item.label}
+                                                </Text>
+                                            </Pressable>
+                                        ))}
+                                    </View>
+                                </View>
+
+                                <View style={styles.section}>
+                                    <Text style={styles.sectionTitle}>Si tomaste algo</Text>
+                                    <TextInput
+                                        onChangeText={setMedicationName}
+                                        placeholder="Ibuprofeno, naproxeno..."
+                                        placeholderTextColor={colors.muted}
+                                        style={styles.compactInput}
+                                        value={medicationName}
+                                    />
+                                    <View style={styles.chips}>
+                                        {MEDICATION_RELIEF_OPTIONS.map((item) => (
+                                            <Pressable
+                                                key={item.key}
+                                                onPress={() => setMedicationRelief(item.key)}
+                                                style={[
+                                                    styles.chip,
+                                                    medicationRelief === item.key && styles.chipActive,
+                                                ]}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.chipText,
+                                                        medicationRelief === item.key && styles.chipTextActive,
+                                                    ]}
+                                                >
+                                                    {item.label}
+                                                </Text>
+                                            </Pressable>
+                                        ))}
                                     </View>
                                 </View>
                             </>
@@ -296,6 +460,16 @@ const styles = StyleSheet.create({
         padding: 16,
         fontSize: type.body,
         textAlignVertical: "top",
+    },
+    compactInput: {
+        minHeight: 48,
+        borderRadius: radii.md,
+        backgroundColor: colors.surface,
+        borderWidth: 1,
+        borderColor: "rgba(8, 124, 155, 0.1)",
+        color: colors.ink,
+        paddingHorizontal: 16,
+        fontSize: type.body,
     },
     privacy: {
         color: colors.muted,
