@@ -97,7 +97,6 @@ function DayCell({
             <View
                 style={[
                     styles.dayCircle,
-                    phase !== "follicular" && { backgroundColor: phaseStyle.soft },
                     isToday && styles.todayCircle,
                     phase === "fertile" && !isToday && styles.fertileCircle,
                 ]}
@@ -177,8 +176,6 @@ const styles = StyleSheet.create({
     weekHeader: {
         flexDirection: "row",
         paddingBottom: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: "rgba(8,124,155,0.08)",
     },
     weekday: {
         width: `${100 / 7}%`,
