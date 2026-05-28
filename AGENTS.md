@@ -47,6 +47,9 @@
 
 - Asumir `master` como rama protegida en remoto.
 - Para futuras colaboraciones, preferir ramas + pull request + checks de validacion.
+- Mantener `validate` como check requerido de rama principal.
+- Mantener squash merge como camino normal de integracion en remoto.
+- Asumir commits firmados como requisito para pushes directos a `master`.
 - No depender de force-push ni de borrar rama principal para flujos normales.
 
 ## Flujo de trabajo

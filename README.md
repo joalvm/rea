@@ -53,6 +53,8 @@ Colaboracion y seguridad:
 - asumir `master` como rama protegida para colaboraciones futuras
 - preferir trabajo por ramas y pull requests
 - mantener checks de validacion antes de fusionar cambios
+- usar squash merge como camino normal de integracion
+- tener en cuenta que los pushes directos a `master` deben llegar firmados
 
 Criterios de aporte:
 
