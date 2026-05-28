@@ -1,4 +1,15 @@
-import { AppSettings, Cycle, CycleSnapshot, DailyLog, MoodCheckIn, PhaseKey, PredictionConfidence } from "./types";
+import {
+    AppSettings,
+    Cycle,
+    CycleSnapshot,
+    CycleSummary,
+    DailyLog,
+    EducationalAlert,
+    MoodCheckIn,
+    PatternInsight,
+    PhaseKey,
+    PredictionConfidence,
+} from "./types";
 
 const WEEKDAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
@@ -297,6 +308,274 @@ export function buildPersonalInsights(checkIns: MoodCheckIn[], dailyLogs: DailyL
     }
 
     return insights.length > 0 ? insights : ["Tus registros se ven estables. Seguiremos observando cambios por fase."];
+}
+
+export function buildPatternInsights(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+    moodCheckIns: MoodCheckIn[],
+): PatternInsight[] {
+    const insights: PatternInsight[] = [];
+    const phaseBuckets = buildPhaseBuckets(settings, cycles, dailyLogs, moodCheckIns);
+    const highestPain = findPhaseExtreme(phaseBuckets, "pain", "max");
+    const lowestEnergy = findPhaseExtreme(phaseBuckets, "energy", "min");
+    const highestStress = findPhaseExtreme(phaseBuckets, "stress", "max");
+    const topSymptoms = summarizeTopSymptoms(dailyLogs, 2);
+    const limitingPainDays = countLimitingPainDays(dailyLogs);
+    const medicationRoughDays = dailyLogs.filter(
+        (log) => log.details?.medicationRelief === "partly_helped" || log.details?.medicationRelief === "did_not_help",
+    ).length;
+
+    if (highestPain && highestPain.average >= 2.8) {
+        insights.push({
+            id: "phase-pain",
+            title: `Dolor más alto en ${phaseLabelWithArticle(highestPain.phase)}`,
+            detail: `Promedio ${highestPain.average.toFixed(1)}/5 en ${highestPain.count} momentos. Sirve comparar qué lo acompaña en esa fase.`,
+            tone: "watch",
+        });
+    }
+
+    if (lowestEnergy && lowestEnergy.average <= 3) {
+        insights.push({
+            id: "phase-energy",
+            title: `Energía más baja en ${phaseLabelWithArticle(lowestEnergy.phase)}`,
+            detail: `Promedio ${lowestEnergy.average.toFixed(1)}/5 en ${lowestEnergy.count} momentos. Ahí vale mirar sueño, carga mental y dolor.`,
+            tone: "supportive",
+        });
+    }
+
+    if (highestStress && highestStress.average >= 2.8) {
+        insights.push({
+            id: "phase-stress",
+            title: `Estrés más alto en ${phaseLabelWithArticle(highestStress.phase)}`,
+            detail: `Promedio ${highestStress.average.toFixed(1)}/5 en ${highestStress.count} momentos. Conviene ver si coincide con menos descanso o más dolor.`,
+            tone: "watch",
+        });
+    }
+
+    if (topSymptoms[0] && topSymptoms[0].count >= 2) {
+        insights.push({
+            id: "top-symptom",
+            title: `Síntoma que más se repite: ${topSymptoms[0].label}`,
+            detail: `Aparece en ${topSymptoms[0].count} días registrados. Si vuelve a repetirse, ya deja de ser dato aislado.`,
+            tone: "supportive",
+        });
+    }
+
+    if (limitingPainDays > 0) {
+        insights.push({
+            id: "pain-impact",
+            title: `Dolor que sí frenó tu día: ${limitingPainDays}`,
+            detail: `Ya no es solo molestia leve. Vale ver si cae siempre en el mismo tramo del ciclo.`,
+            tone: "watch",
+        });
+    }
+
+    if (medicationRoughDays > 0) {
+        insights.push({
+            id: "medication-relief",
+            title: `Alivio parcial o nulo: ${medicationRoughDays} días`,
+            detail: `Te da una señal concreta para comparar qué tan manejable fue ese dolor de un ciclo a otro.`,
+            tone: "watch",
+        });
+    }
+
+    return insights.slice(0, 5);
+}
+
+export function buildEducationalAlerts(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+    moodCheckIns: MoodCheckIn[],
+    todayIso = toIsoDate(new Date()),
+): EducationalAlert[] {
+    const alerts: EducationalAlert[] = [];
+    const observedRuns = getObservedPeriodRuns(dailyLogs);
+    const observedStarts = getObservedCycleStarts(settings, cycles, observedRuns);
+    const cycleLengths = getObservedCycleLengths(observedStarts);
+    const heavyDays = dailyLogs.filter((log) => log.bleedingLevel === "heavy").length;
+    const largeClotDays = dailyLogs.filter((log) => log.details?.clotSize === "large").length;
+    const limitingPainDays = countLimitingPainDays(dailyLogs);
+    const highPainMoments = moodCheckIns.filter((item) => item.pain >= 4).length;
+    const noReliefDays = dailyLogs.filter((log) => log.details?.medicationRelief === "did_not_help").length;
+    const longPeriods = observedRuns.filter((run) => run.length > 7);
+    const outOfRangeCycles = cycleLengths.filter((days) => days < 21 || days > 35);
+    const lastObservedStart = observedStarts[observedStarts.length - 1];
+    const daysSinceLastObserved = lastObservedStart ? daysBetween(lastObservedStart, todayIso) : 0;
+
+    if (longPeriods.length > 0) {
+        const longest = Math.max(...longPeriods.map((run) => run.length));
+        alerts.push({
+            id: "long-period",
+            severity: "consult",
+            title: "Sangrado más largo de lo habitual",
+            detail: `Ya registraste un periodo de ${longest} días. Si vuelve a pasar, conviene comentarlo con profesional.`,
+        });
+    }
+
+    if (heavyDays >= 2 || largeClotDays >= 1) {
+        alerts.push({
+            id: "heavy-bleeding",
+            severity: heavyDays >= 3 || largeClotDays >= 2 ? "consult" : "watch",
+            title: "Flujo abundante para vigilar",
+            detail: "Hay registros de sangrado abundante o coágulos grandes. Si se repite o te empapa muy rápido, conviene consultar.",
+        });
+    }
+
+    if (limitingPainDays >= 2 || (highPainMoments >= 3 && noReliefDays >= 1)) {
+        alerts.push({
+            id: "pain-impact",
+            severity: "consult",
+            title: "Dolor que ya impacta tu rutina",
+            detail: "Registraste días en los que dolor te limitó o no respondió bien. Si sigue así, vale hablarlo con profesional.",
+        });
+    }
+
+    if (outOfRangeCycles.length >= 2) {
+        alerts.push({
+            id: "cycle-range",
+            severity: "watch",
+            title: "Ciclos fuera de rango típico",
+            detail: "Tus ciclos observados no siempre caen entre 21 y 35 días. Sin diagnosticar nada, es buena señal para seguir mirando o consultar si persiste.",
+        });
+    }
+
+    if (lastObservedStart && daysSinceLastObserved > 90) {
+        alerts.push({
+            id: "long-gap",
+            severity: "consult",
+            title: "Mucho tiempo sin periodo observado",
+            detail: "Pasaron más de 90 días desde último inicio observado. Si no hay una explicación clara, conviene consultarlo.",
+        });
+    }
+
+    return sortAlerts(alerts);
+}
+
+export function buildCycleSummaries(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+    limit = 6,
+): CycleSummary[] {
+    const observedRuns = [...getObservedPeriodRuns(dailyLogs)].sort((left, right) =>
+        right.start.localeCompare(left.start),
+    );
+    const allLogs = [...dailyLogs];
+
+    return observedRuns.slice(0, limit).map((run, index) => {
+        const olderRun = observedRuns[index + 1];
+        const logsInRun = allLogs.filter((log) => log.date >= run.start && log.date <= run.end);
+        const topSymptoms = summarizeTopSymptoms(logsInRun, 2).map((item) => item.label);
+
+        return {
+            id: `${run.start}-${index}`,
+            startDate: run.start,
+            endDate: run.end,
+            source: "observed",
+            cycleLengthDays: olderRun ? daysBetween(olderRun.start, run.start) : null,
+            bleedingDays: run.length,
+            heavyDays: logsInRun.filter((log) => log.bleedingLevel === "heavy").length,
+            painImpactDays: countLimitingPainDays(logsInRun),
+            topSymptoms,
+        };
+    });
+}
+
+export function summarizeTopSymptoms(logs: DailyLog[], limit = 5) {
+    const counts = new Map<string, number>();
+    logs.forEach((log) => {
+        log.symptoms.forEach((symptom) => counts.set(symptom, (counts.get(symptom) ?? 0) + 1));
+    });
+
+    return [...counts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, limit)
+        .map(([label, count]) => ({ label, count }));
+}
+
+type PhaseBucket = {
+    mood: number[];
+    energy: number[];
+    pain: number[];
+    stress: number[];
+};
+
+type PhaseMetricKey = keyof PhaseBucket;
+
+function buildPhaseBuckets(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+    moodCheckIns: MoodCheckIn[],
+): Map<PhaseKey, PhaseBucket> {
+    const buckets = new Map<PhaseKey, PhaseBucket>();
+
+    moodCheckIns.forEach((item) => {
+        const iso = toIsoDate(new Date(item.datetime));
+        const phase = estimateCycle(settings, cycles, dailyLogs, iso).phase;
+        const bucket = buckets.get(phase) ?? { mood: [], energy: [], pain: [], stress: [] };
+        bucket.mood.push(item.mood);
+        bucket.energy.push(item.energy);
+        bucket.pain.push(item.pain);
+        bucket.stress.push(item.stress);
+        buckets.set(phase, bucket);
+    });
+
+    return buckets;
+}
+
+function findPhaseExtreme(
+    buckets: Map<PhaseKey, PhaseBucket>,
+    metric: PhaseMetricKey,
+    direction: "min" | "max",
+): { phase: PhaseKey; average: number; count: number } | null {
+    let winner: { phase: PhaseKey; average: number; count: number } | null = null;
+
+    buckets.forEach((bucket, phase) => {
+        const values = bucket[metric] as number[];
+        if (values.length < 2) return;
+        const current = { phase, average: average(values), count: values.length };
+
+        if (!winner) {
+            winner = current;
+            return;
+        }
+
+        if (direction === "max" && current.average > winner.average) {
+            winner = current;
+        }
+
+        if (direction === "min" && current.average < winner.average) {
+            winner = current;
+        }
+    });
+
+    return winner;
+}
+
+function countLimitingPainDays(logs: DailyLog[]) {
+    return logs.filter((log) => log.details?.painImpact === "limits_day" || log.details?.painImpact === "stops_day")
+        .length;
+}
+
+function phaseLabelWithArticle(phase: PhaseKey) {
+    if (phase === "menstrual") return "tu fase menstrual";
+    if (phase === "follicular") return "tu fase folicular";
+    if (phase === "fertile") return "tu ventana fértil orientativa";
+    return "tu fase lútea";
+}
+
+function sortAlerts(alerts: EducationalAlert[]) {
+    const weight: Record<EducationalAlert["severity"], number> = {
+        consult: 0,
+        watch: 1,
+        info: 2,
+    };
+
+    return [...alerts].sort((left, right) => weight[left.severity] - weight[right.severity]);
 }
 
 function getObservedCycleStarts(settings: AppSettings | null, cycles: Cycle[], observedRuns: PeriodRun[]) {

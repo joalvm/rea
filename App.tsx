@@ -67,8 +67,32 @@ export default function App() {
     );
     const moments = data.notificationMoments.length > 0 ? data.notificationMoments : createDefaultNotificationMoments();
 
+    async function boot() {
+        await initializeDatabase();
+        const loaded = await loadAppData();
+        setData({
+            ...loaded,
+            notificationMoments:
+                loaded.notificationMoments.length > 0 ? loaded.notificationMoments : createDefaultNotificationMoments(),
+        });
+        setLoading(false);
+    }
+
+    function openQuickCheckIn(momentType: MomentType = "now") {
+        setCheckIn({
+            visible: true,
+            mode: "quick",
+            momentType,
+            question: questionForMoment(momentType),
+        });
+    }
+
     useEffect(() => {
-        void boot();
+        const frame = requestAnimationFrame(() => {
+            void boot();
+        });
+
+        return () => cancelAnimationFrame(frame);
     }, []);
 
     useEffect(() => {
@@ -78,17 +102,6 @@ export default function App() {
         });
         return () => subscription.remove();
     }, []);
-
-    const boot = async () => {
-        await initializeDatabase();
-        const loaded = await loadAppData();
-        setData({
-            ...loaded,
-            notificationMoments:
-                loaded.notificationMoments.length > 0 ? loaded.notificationMoments : createDefaultNotificationMoments(),
-        });
-        setLoading(false);
-    };
 
     const refreshData = async () => {
         const loaded = await loadAppData();
@@ -150,15 +163,6 @@ export default function App() {
             mode: "daily",
             momentType: "now",
             question: "¿Cómo te sientes hoy?",
-        });
-    };
-
-    const openQuickCheckIn = (momentType: MomentType = "now") => {
-        setCheckIn({
-            visible: true,
-            mode: "quick",
-            momentType,
-            question: questionForMoment(momentType),
         });
     };
 
@@ -237,11 +241,19 @@ export default function App() {
         }
 
         if (activeTab === "patterns") {
-            return <PatternsScreen dailyLogs={data.dailyLogs} moodCheckIns={data.moodCheckIns} />;
+            return (
+                <PatternsScreen
+                    cycles={data.cycles}
+                    dailyLogs={data.dailyLogs}
+                    moodCheckIns={data.moodCheckIns}
+                    settings={data.settings}
+                />
+            );
         }
 
         return (
             <TodayScreen
+                cycles={data.cycles}
                 dailyLogs={data.dailyLogs}
                 moodCheckIns={data.moodCheckIns}
                 onOpenCheckIn={openDailyCheckIn}
@@ -249,6 +261,7 @@ export default function App() {
                 onOpenCalendar={() => setActiveTab("calendar")}
                 onOpenPatterns={() => setActiveTab("patterns")}
                 onOpenSettings={() => setSettingsVisible(true)}
+                settings={data.settings}
                 snapshot={snapshot}
             />
         );

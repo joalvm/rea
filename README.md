@@ -39,14 +39,14 @@ Desde Ajustes existe una opcion para borrar todo y volver al inicio. Esa accion 
 
 Segun la configuracion actual del proyecto, Rea esta pensada primero para movil y en orientacion vertical.
 
-- `Android`: es el camino mas directo para pruebas hoy. El proyecto ya incluye notificaciones locales, base de datos local y un script para levantar un emulador Android en Windows sin depender de Android Studio completo.
+- `Android`: es el camino mas directo para pruebas hoy. Ya queda preparado un flujo con EAS para sacar un APK instalable en emulador o telefono Android. Un equipo moderno como Redmi Note 14 Pro no requiere una adaptacion nativa especial para esta app; lo importante sera validar permisos de notificacion y restricciones de bateria de HyperOS en pruebas reales.
 - `iPhone y iPad`: el proyecto esta configurado para iOS y declara soporte de tablet, pero eso no equivale a una publicacion ni a una validacion final de tienda.
 - `Web`: existe script de arranque web, pero la experiencia fue disenada para movil. Conviene tratar web como vista de desarrollo o revision, no como soporte equivalente al telefono.
 - `Sin internet`: el uso principal no depende de conexion. La app puede funcionar offline porque guarda la informacion de manera local.
 
 ## Estado real del proyecto
 
-Rea esta en estado de desarrollo. Este repositorio contiene el codigo fuente, no una version distribuida en App Store o Play Store. El nombre publico ya es `Rea`, aunque en varios identificadores tecnicos todavia aparece `mensu` porque era el nombre anterior del proyecto. Eso incluye partes como el paquete interno, el `slug`, la base local y el nombre del emulador Android. No cambia la idea del producto, pero conviene saberlo si revisas el codigo o los logs.
+Rea esta en estado de desarrollo. Este repositorio contiene el codigo fuente, no una version distribuida en App Store o Play Store. La identidad de build ya queda alineada a `Rea` en nombre, `slug`, `scheme` y paquetes moviles. La carpeta local del repo puede seguir llamandose `mensu`, pero la app ya se prepara para publicarse como Rea.
 
 ## Si quieres usarla sin meterte al codigo
 
@@ -72,6 +72,28 @@ npm run web
 npm run typecheck
 npm run lint
 ```
+
+## Builds con EAS
+
+Para compilar binarios instalables o de tienda, el proyecto queda preparado con perfiles de EAS Build.
+
+1. Inicia sesion en Expo o usa `npx eas-cli@latest login`.
+2. Ejecuta una vez `npm run build:configure` si todavia no vinculaste el proyecto a tu cuenta.
+3. Usa el perfil que corresponda:
+
+```bash
+npm run build:android:apk
+npm run build:android:aab
+npm run build:ios:sim
+npm run build:ios:device
+```
+
+- `build:android:apk`: genera un APK instalable para emulador o telefono Android.
+- `build:android:aab`: genera el bundle para Play Store.
+- `build:ios:sim`: genera build para simulador iOS.
+- `build:ios:device`: genera build para dispositivo iOS o distribucion interna.
+
+Nota importante: en iOS no existe APK. El binario instalable sera una build de simulador o un `.ipa`, segun el perfil y las credenciales disponibles.
 
 En Windows hay un instalador para preparar emulador Android sin Android Studio completo:
 

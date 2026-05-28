@@ -1,17 +1,19 @@
 {
     "expo": {
-        "name": "Mensu",
-        "slug": "mensu",
+        "name": "Rea",
+        "slug": "rea",
         "version": "0.1.0",
         "orientation": "portrait",
-        "scheme": "mensu",
+        "scheme": "rea",
         "userInterfaceStyle": "light",
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "app.mensu.personal"
+            "bundleIdentifier": "app.rea.personal",
+            "buildNumber": "1"
         },
         "android": {
-            "package": "app.mensu.personal",
+            "package": "app.rea.personal",
+            "versionCode": 1,
             "adaptiveIcon": {
                 "backgroundColor": "#E8F8FE"
             }

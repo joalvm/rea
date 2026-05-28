@@ -2,13 +2,13 @@ $ErrorActionPreference = "Stop"
 
 $sdkRoot = Join-Path $env:LOCALAPPDATA "Android\Sdk"
 $jdkRoot = Join-Path $env:LOCALAPPDATA "Programs\Temurin17"
-$workRoot = Join-Path $env:TEMP "mensu-android-setup"
+$workRoot = Join-Path $env:TEMP "rea-android-setup"
 $cmdlineZip = Join-Path $workRoot "commandlinetools-win.zip"
 $cmdlineUrl = "https://dl.google.com/android/repository/commandlinetools-win-14742923_latest.zip"
 $cmdlineSha256 = "cc610ccbe83faddb58e1aa68e8fc8743bb30aa5e83577eceb4cc168dae95f9ee"
 $jdkZip = Join-Path $workRoot "temurin17-jdk.zip"
 $jdkUrl = "https://api.adoptium.net/v3/binary/latest/17/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk"
-$avdName = "Mensu_API_36"
+$avdName = "Rea_API_36"
 $systemImage = "system-images;android-36;google_apis;x86_64"
 
 function Add-UserPathEntry {

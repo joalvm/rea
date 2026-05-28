@@ -7,11 +7,13 @@ import { QuickActionCard } from "../components/QuickActionCard";
 import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
 import { WeekStrip } from "../components/WeekStrip";
-import { buildPersonalInsights } from "../cycle";
+import { buildEducationalAlerts, buildPatternInsights } from "../cycle";
 import { colors, radii, shadow, type } from "../theme";
-import { CycleSnapshot, DailyLog, MoodCheckIn, PhaseKey } from "../types";
+import { AppSettings, Cycle, CycleSnapshot, DailyLog, EducationalAlert, MoodCheckIn, PhaseKey } from "../types";
 
 interface TodayScreenProps {
+    settings: AppSettings | null;
+    cycles: Cycle[];
     snapshot: CycleSnapshot;
     moodCheckIns: MoodCheckIn[];
     dailyLogs: DailyLog[];
@@ -23,6 +25,8 @@ interface TodayScreenProps {
 }
 
 export function TodayScreen({
+    settings,
+    cycles,
     snapshot,
     moodCheckIns,
     dailyLogs,
@@ -32,7 +36,8 @@ export function TodayScreen({
     onOpenPatterns,
     onOpenSettings,
 }: TodayScreenProps) {
-    const insights = buildPersonalInsights(moodCheckIns, dailyLogs);
+    const insights = buildPatternInsights(settings, cycles, dailyLogs, moodCheckIns);
+    const alerts = buildEducationalAlerts(settings, cycles, dailyLogs, moodCheckIns).slice(0, 2);
     const careTips = getCareTips(snapshot.phase);
 
     return (
@@ -113,6 +118,32 @@ export function TodayScreen({
                 </ScrollView>
             </View>
 
+            {alerts.length > 0 ? (
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Señales para mirar</Text>
+                    <SoftCard style={styles.alertCard}>
+                        {alerts.map((alert) => (
+                            <View key={alert.id} style={styles.alertRow}>
+                                <View
+                                    style={[
+                                        styles.alertBadge,
+                                        { backgroundColor: getAlertTone(alert.severity).background },
+                                    ]}
+                                >
+                                    <Text style={[styles.alertBadgeText, { color: getAlertTone(alert.severity).ink }]}>
+                                        {getAlertTone(alert.severity).label}
+                                    </Text>
+                                </View>
+                                <View style={styles.alertCopy}>
+                                    <Text style={styles.alertTitle}>{alert.title}</Text>
+                                    <Text style={styles.alertText}>{alert.detail}</Text>
+                                </View>
+                            </View>
+                        ))}
+                    </SoftCard>
+                </View>
+            ) : null}
+
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Para cuidarte hoy</Text>
                 <SoftCard style={styles.careCard}>
@@ -130,18 +161,45 @@ export function TodayScreen({
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Lo que vamos notando</Text>
                 <SoftCard style={styles.insightCard}>
-                    {insights.map((insight, index) => (
-                        <View key={insight} style={styles.insightRow}>
-                            <View style={styles.insightDot}>
-                                <Text style={styles.insightNumber}>{index + 1}</Text>
+                    {insights.length === 0 ? (
+                        <Text style={styles.emptyText}>
+                            Con algunos registros más, esta zona podrá comparar fases y repeticiones reales.
+                        </Text>
+                    ) : (
+                        insights.map((insight) => (
+                            <View key={insight.id} style={styles.insightRow}>
+                                <View style={[styles.insightDot, insight.tone === "watch" && styles.insightDotWatch]}>
+                                    <MaterialCommunityIcons
+                                        color={insight.tone === "watch" ? colors.period : colors.primaryDeep}
+                                        name={
+                                            insight.tone === "watch" ? "bell-alert-outline" : "star-four-points-outline"
+                                        }
+                                        size={16}
+                                    />
+                                </View>
+                                <View style={styles.insightCopy}>
+                                    <Text style={styles.insightTitle}>{insight.title}</Text>
+                                    <Text style={styles.insightText}>{insight.detail}</Text>
+                                </View>
                             </View>
-                            <Text style={styles.insightText}>{insight}</Text>
-                        </View>
-                    ))}
+                        ))
+                    )}
                 </SoftCard>
             </View>
         </ScrollView>
     );
+}
+
+function getAlertTone(severity: EducationalAlert["severity"]) {
+    if (severity === "consult") {
+        return { label: "Consultar", background: colors.periodSoft, ink: colors.period };
+    }
+
+    if (severity === "watch") {
+        return { label: "Vigilar", background: colors.primarySoft, ink: colors.primaryDeep };
+    }
+
+    return { label: "Info", background: colors.surfaceSoft, ink: colors.muted };
 }
 
 function MetaPill({ label, tone }: { label: string; tone: CycleSnapshot["source"] | "confidence" }) {
@@ -410,6 +468,40 @@ const styles = StyleSheet.create({
         gap: 12,
         paddingRight: 20,
     },
+    alertCard: {
+        gap: 14,
+    },
+    alertRow: {
+        flexDirection: "row",
+        gap: 12,
+        alignItems: "flex-start",
+    },
+    alertBadge: {
+        minHeight: 28,
+        minWidth: 76,
+        borderRadius: 14,
+        paddingHorizontal: 10,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    alertBadgeText: {
+        fontSize: type.small,
+        fontWeight: "900",
+    },
+    alertCopy: {
+        flex: 1,
+        gap: 4,
+    },
+    alertTitle: {
+        color: colors.ink,
+        fontSize: type.body,
+        fontWeight: "900",
+    },
+    alertText: {
+        color: colors.muted,
+        fontSize: type.body,
+        lineHeight: 22,
+    },
     careCard: {
         gap: 14,
     },
@@ -448,14 +540,26 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    insightNumber: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
+    insightDotWatch: {
+        backgroundColor: colors.periodSoft,
+    },
+    insightCopy: {
+        flex: 1,
+        gap: 4,
+    },
+    insightTitle: {
+        color: colors.ink,
+        fontSize: type.body,
         fontWeight: "900",
     },
     insightText: {
         flex: 1,
         color: colors.ink,
+        fontSize: type.body,
+        lineHeight: 22,
+    },
+    emptyText: {
+        color: colors.muted,
         fontSize: type.body,
         lineHeight: 22,
     },

@@ -56,7 +56,7 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
                 <View style={styles.logo}>
                     <MaterialCommunityIcons color={colors.primaryDeep} name="moon-waning-crescent" size={28} />
                 </View>
-                <Text style={styles.brandText}>Mensu</Text>
+                <Text style={styles.brandText}>Rea</Text>
             </View>
 
             <View style={styles.progressTrack}>

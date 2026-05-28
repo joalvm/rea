@@ -1,5 +1,5 @@
 {
-    "name": "mensu",
+    "name": "rea",
     "version": "0.1.0",
     "private": true,
     "main": "index.ts",
@@ -8,6 +8,11 @@
         "android": "expo start --android",
         "ios": "expo start --ios",
         "web": "expo start --web",
+        "build:configure": "npx eas-cli@latest build:configure",
+        "build:android:apk": "npx eas-cli@latest build --platform android --profile preview",
+        "build:android:aab": "npx eas-cli@latest build --platform android --profile production",
+        "build:ios:sim": "npx eas-cli@latest build --platform ios --profile simulator",
+        "build:ios:device": "npx eas-cli@latest build --platform ios --profile preview",
         "lint": "expo lint",
         "lint:fix": "expo lint --fix",
         "format": "prettier --write .",

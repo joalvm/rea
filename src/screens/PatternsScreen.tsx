@@ -2,11 +2,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DimensionValue, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { SoftCard } from "../components/SoftCard";
-import { average, buildPersonalInsights } from "../cycle";
+import {
+    average,
+    buildCycleSummaries,
+    buildEducationalAlerts,
+    buildPatternInsights,
+    formatShortDate,
+    summarizeTopSymptoms,
+} from "../cycle";
 import { colors, radii, type } from "../theme";
-import { DailyLog, MoodCheckIn } from "../types";
+import { AppSettings, Cycle, DailyLog, EducationalAlert, MoodCheckIn, PatternInsight } from "../types";
 
 interface PatternsScreenProps {
+    settings: AppSettings | null;
+    cycles: Cycle[];
     moodCheckIns: MoodCheckIn[];
     dailyLogs: DailyLog[];
 }
@@ -22,17 +31,21 @@ const METRICS: {
     { key: "stress", label: "Estrés", color: colors.luteal },
 ];
 
-export function PatternsScreen({ moodCheckIns, dailyLogs }: PatternsScreenProps) {
-    const insights = buildPersonalInsights(moodCheckIns, dailyLogs);
+export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: PatternsScreenProps) {
+    const insights = buildPatternInsights(settings, cycles, dailyLogs, moodCheckIns);
+    const alerts = buildEducationalAlerts(settings, cycles, dailyLogs, moodCheckIns);
+    const cycleSummaries = buildCycleSummaries(settings, cycles, dailyLogs, 6);
+    const symptoms = summarizeTopSymptoms(dailyLogs, 5);
     const enoughData = moodCheckIns.length >= 4;
+    const enoughObservedCycles = cycleSummaries.length >= 3;
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={styles.header}>
                 <Text style={styles.kicker}>Patrones propios</Text>
-                <Text style={styles.title}>Lo que vamos observando.</Text>
+                <Text style={styles.title}>Señales que sí te sirven.</Text>
                 <Text style={styles.subtitle}>
-                    Las conclusiones usan tus registros. No afirman causa hormonal ni reemplazan criterio médico.
+                    Rea separa lo observado de lo estimado. Esto orienta decisiones de seguimiento, no hace diagnóstico.
                 </Text>
             </View>
 
@@ -46,15 +59,99 @@ export function PatternsScreen({ moodCheckIns, dailyLogs }: PatternsScreenProps)
                 </View>
                 <View style={styles.statusBody}>
                     <Text style={styles.statusTitle}>
-                        {enoughData ? "Historial inicial listo" : "Aún juntando señales"}
+                        {enoughObservedCycles
+                            ? "Ya hay base útil"
+                            : enoughData
+                              ? "Historial inicial listo"
+                              : "Aún juntando señales"}
                     </Text>
                     <Text style={styles.statusText}>
-                        {enoughData
-                            ? "Ya hay suficientes momentos para mostrar tendencias suaves."
-                            : "Con 4 momentos aparecen los primeros patrones. Con 3 ciclos serán más útiles."}
+                        {enoughObservedCycles
+                            ? `Ya hay ${cycleSummaries.length} ciclos observados para comparar duración, dolor y síntomas repetidos.`
+                            : enoughData
+                              ? "Ya hay suficientes momentos para enseñar tendencias, pero con 3 ciclos observados ganan contexto."
+                              : "Con 4 momentos aparecen los primeros patrones. Con 3 ciclos observados serán más defendibles."}
                     </Text>
                 </View>
             </SoftCard>
+
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Lo que sí se repite</Text>
+                <SoftCard style={styles.insightCard}>
+                    {insights.length === 0 ? (
+                        <Text style={styles.emptyText}>
+                            Aún faltan datos para detectar repeticiones sólidas por fase o intensidad.
+                        </Text>
+                    ) : (
+                        insights.map((insight) => <InsightRow insight={insight} key={insight.id} />)
+                    )}
+                </SoftCard>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Señales educativas para vigilar</Text>
+                <View style={styles.alertList}>
+                    {alerts.length === 0 ? (
+                        <SoftCard>
+                            <Text style={styles.emptyText}>
+                                No aparece una señal llamativa en tus registros actuales. Eso no equivale a descarte
+                                médico.
+                            </Text>
+                        </SoftCard>
+                    ) : (
+                        alerts.map((alert) => <AlertCard alert={alert} key={alert.id} />)
+                    )}
+                </View>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Tus últimos ciclos observados</Text>
+                <View style={styles.summaryList}>
+                    {cycleSummaries.length === 0 ? (
+                        <SoftCard>
+                            <Text style={styles.emptyText}>
+                                Cuando marques inicios y finales reales del periodo, aquí aparecerá la comparación entre
+                                ciclos.
+                            </Text>
+                        </SoftCard>
+                    ) : (
+                        cycleSummaries.map((summary) => (
+                            <SoftCard key={summary.id} style={styles.summaryCard}>
+                                <View style={styles.summaryHeader}>
+                                    <Text style={styles.summaryTitle}>
+                                        {formatShortDate(summary.startDate)}
+                                        {summary.endDate ? ` al ${formatShortDate(summary.endDate)}` : ""}
+                                    </Text>
+                                    <Text style={styles.summaryMeta}>
+                                        {summary.cycleLengthDays
+                                            ? `${summary.cycleLengthDays} días de ciclo`
+                                            : "Esperando siguiente inicio"}
+                                    </Text>
+                                </View>
+
+                                <View style={styles.summaryMetrics}>
+                                    <MetricPill label={`${summary.bleedingDays} días de sangrado`} tone="soft" />
+                                    {summary.heavyDays > 0 ? (
+                                        <MetricPill label={`${summary.heavyDays} días abundantes`} tone="watch" />
+                                    ) : null}
+                                    {summary.painImpactDays > 0 ? (
+                                        <MetricPill
+                                            label={`${summary.painImpactDays} días con dolor que frenó`}
+                                            tone="watch"
+                                        />
+                                    ) : null}
+                                </View>
+
+                                <Text style={styles.summaryFoot}>
+                                    {summary.topSymptoms.length > 0
+                                        ? `Síntomas que destacaron: ${summary.topSymptoms.join(", ")}.`
+                                        : "Sin síntomas repetidos destacados en ese ciclo."}
+                                </Text>
+                            </SoftCard>
+                        ))
+                    )}
+                </View>
+            </View>
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Promedios recientes</Text>
@@ -67,28 +164,12 @@ export function PatternsScreen({ moodCheckIns, dailyLogs }: PatternsScreenProps)
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Insights</Text>
-                <SoftCard style={styles.insightCard}>
-                    {insights.map((insight) => (
-                        <View key={insight} style={styles.insightRow}>
-                            <MaterialCommunityIcons
-                                color={colors.primaryDeep}
-                                name="star-four-points-outline"
-                                size={19}
-                            />
-                            <Text style={styles.insightText}>{insight}</Text>
-                        </View>
-                    ))}
-                </SoftCard>
-            </View>
-
-            <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Síntomas más registrados</Text>
                 <SoftCard style={styles.symptomCard}>
-                    {topSymptoms(dailyLogs).length === 0 ? (
+                    {symptoms.length === 0 ? (
                         <Text style={styles.emptyText}>Aún no hay síntomas suficientes para ordenar tendencias.</Text>
                     ) : (
-                        topSymptoms(dailyLogs).map((item) => (
+                        symptoms.map((item) => (
                             <View key={item.label} style={styles.symptomRow}>
                                 <Text style={styles.symptomLabel}>{item.label}</Text>
                                 <Text style={styles.symptomCount}>{item.count}</Text>
@@ -99,6 +180,76 @@ export function PatternsScreen({ moodCheckIns, dailyLogs }: PatternsScreenProps)
             </View>
         </ScrollView>
     );
+}
+
+function InsightRow({ insight }: { insight: PatternInsight }) {
+    return (
+        <View style={styles.insightRow}>
+            <View style={[styles.insightIcon, insight.tone === "watch" && styles.insightIconWatch]}>
+                <MaterialCommunityIcons
+                    color={insight.tone === "watch" ? colors.period : colors.primaryDeep}
+                    name={insight.tone === "watch" ? "bell-alert-outline" : "star-four-points-outline"}
+                    size={18}
+                />
+            </View>
+            <View style={styles.insightCopy}>
+                <Text style={styles.insightTitle}>{insight.title}</Text>
+                <Text style={styles.insightText}>{insight.detail}</Text>
+            </View>
+        </View>
+    );
+}
+
+function AlertCard({ alert }: { alert: EducationalAlert }) {
+    const tone = getAlertTone(alert.severity);
+
+    return (
+        <SoftCard style={styles.alertCard}>
+            <View style={styles.alertHeader}>
+                <View style={[styles.alertBadge, { backgroundColor: tone.background }]}>
+                    <Text style={[styles.alertBadgeText, { color: tone.ink }]}>{tone.label}</Text>
+                </View>
+                <MaterialCommunityIcons color={tone.ink} name={tone.icon as never} size={18} />
+            </View>
+            <Text style={styles.alertTitle}>{alert.title}</Text>
+            <Text style={styles.alertText}>{alert.detail}</Text>
+        </SoftCard>
+    );
+}
+
+function MetricPill({ label, tone }: { label: string; tone: "soft" | "watch" }) {
+    return (
+        <View style={[styles.metricPill, tone === "watch" && styles.metricPillWatch]}>
+            <Text style={[styles.metricPillText, tone === "watch" && styles.metricPillTextWatch]}>{label}</Text>
+        </View>
+    );
+}
+
+function getAlertTone(severity: EducationalAlert["severity"]) {
+    if (severity === "consult") {
+        return {
+            label: "Consultar",
+            background: colors.periodSoft,
+            ink: colors.period,
+            icon: "stethoscope",
+        };
+    }
+
+    if (severity === "watch") {
+        return {
+            label: "Vigilar",
+            background: colors.primarySoft,
+            ink: colors.primaryDeep,
+            icon: "eye-outline",
+        };
+    }
+
+    return {
+        label: "Info",
+        background: colors.surfaceSoft,
+        ink: colors.muted,
+        icon: "information-outline",
+    };
 }
 
 function Bar({ label, value, color }: { label: string; value: number; color: string }) {
@@ -114,17 +265,6 @@ function Bar({ label, value, color }: { label: string; value: number; color: str
             </View>
         </View>
     );
-}
-
-function topSymptoms(logs: DailyLog[]) {
-    const counts = new Map<string, number>();
-    logs.forEach((log) => {
-        log.symptoms.forEach((symptom) => counts.set(symptom, (counts.get(symptom) ?? 0) + 1));
-    });
-    return [...counts.entries()]
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([label, count]) => ({ label, count }));
 }
 
 const styles = StyleSheet.create({
@@ -193,6 +333,38 @@ const styles = StyleSheet.create({
     chartCard: {
         gap: 18,
     },
+    alertList: {
+        gap: 12,
+    },
+    alertCard: {
+        gap: 10,
+    },
+    alertHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    alertBadge: {
+        minHeight: 28,
+        paddingHorizontal: 10,
+        borderRadius: 14,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    alertBadgeText: {
+        fontSize: type.small,
+        fontWeight: "900",
+    },
+    alertTitle: {
+        color: colors.ink,
+        fontSize: type.body,
+        fontWeight: "900",
+    },
+    alertText: {
+        color: colors.muted,
+        fontSize: type.body,
+        lineHeight: 22,
+    },
     barRow: {
         gap: 8,
     },
@@ -228,9 +400,77 @@ const styles = StyleSheet.create({
         gap: 10,
         alignItems: "flex-start",
     },
+    insightIcon: {
+        width: 34,
+        height: 34,
+        borderRadius: 17,
+        backgroundColor: colors.primarySoft,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    insightIconWatch: {
+        backgroundColor: colors.periodSoft,
+    },
+    insightCopy: {
+        flex: 1,
+        gap: 4,
+    },
+    insightTitle: {
+        color: colors.ink,
+        fontSize: type.body,
+        fontWeight: "900",
+    },
     insightText: {
         flex: 1,
         color: colors.ink,
+        fontSize: type.body,
+        lineHeight: 22,
+    },
+    summaryList: {
+        gap: 12,
+    },
+    summaryCard: {
+        gap: 12,
+    },
+    summaryHeader: {
+        gap: 4,
+    },
+    summaryTitle: {
+        color: colors.ink,
+        fontSize: type.body,
+        fontWeight: "900",
+    },
+    summaryMeta: {
+        color: colors.muted,
+        fontSize: type.small,
+        fontWeight: "800",
+    },
+    summaryMetrics: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 8,
+    },
+    metricPill: {
+        minHeight: 32,
+        borderRadius: 16,
+        backgroundColor: colors.surfaceSoft,
+        paddingHorizontal: 12,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    metricPillWatch: {
+        backgroundColor: colors.periodSoft,
+    },
+    metricPillText: {
+        color: colors.primaryDeep,
+        fontSize: type.small,
+        fontWeight: "900",
+    },
+    metricPillTextWatch: {
+        color: colors.period,
+    },
+    summaryFoot: {
+        color: colors.muted,
         fontSize: type.body,
         lineHeight: 22,
     },

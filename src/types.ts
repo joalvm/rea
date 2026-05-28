@@ -6,9 +6,37 @@ export type PhaseKey = "menstrual" | "follicular" | "fertile" | "luteal";
 export type BleedingLevel = "none" | "spotting" | "light" | "medium" | "heavy";
 export type DataSource = "observed" | "estimated" | "unknown";
 export type PredictionConfidence = "low" | "medium" | "high";
+export type AlertSeverity = "info" | "watch" | "consult";
+export type InsightTone = "supportive" | "watch";
 export type ClotSize = "none" | "small" | "medium" | "large";
 export type PainImpact = "none" | "noticeable" | "limits_day" | "stops_day";
 export type MedicationRelief = "not_applicable" | "helped" | "partly_helped" | "did_not_help";
+
+export interface PatternInsight {
+    id: string;
+    title: string;
+    detail: string;
+    tone: InsightTone;
+}
+
+export interface EducationalAlert {
+    id: string;
+    severity: AlertSeverity;
+    title: string;
+    detail: string;
+}
+
+export interface CycleSummary {
+    id: string;
+    startDate: string;
+    endDate: string | null;
+    source: DataSource;
+    cycleLengthDays: number | null;
+    bleedingDays: number;
+    heavyDays: number;
+    painImpactDays: number;
+    topSymptoms: string[];
+}
 
 export interface AppSettings {
     onboarded: boolean;
