@@ -34,12 +34,20 @@
 - Antes de refactors estructurales amplios, comparar proyecto con convenciones actuales de Expo y React Native.
 - No mover carpetas o entrypoints por inercia antigua; justificar cualquier desviacion del template y guias vigentes.
 - Corregir raiz del problema. Evitar parches cosmeticos si modelo de datos o flujo siguen debiles.
+- Si se toca versionado o build Android, mantener sincronizados `package.json`, `package-lock.json` y `app.json`.
+- Artefactos Android locales deben salir con nombre versionado visible y alias estable para ultimo build.
 
 ## Reglas de documentacion
 
 - README debe explicar que es Rea, que hace, que no promete y como se protege privacidad.
 - README no debe convertirse en manual tecnico; dejar detalle tecnico solo en tramo final para contribuidores.
 - ROADMAP.md sigue siendo archivo local de trabajo. Mantenerlo breve y borrarlo cuando ya no tenga pendientes reales.
+
+## Reglas de repositorio
+
+- Asumir `master` como rama protegida en remoto.
+- Para futuras colaboraciones, preferir ramas + pull request + checks de validacion.
+- No depender de force-push ni de borrar rama principal para flujos normales.
 
 ## Flujo de trabajo
 

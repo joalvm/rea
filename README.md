@@ -41,6 +41,19 @@ npm run typecheck
 npm run lint
 ```
 
+Build Android local:
+
+- `npm run build:android:apk`: genera APK con version actual.
+- `npm run build:android:apk:build`: sube solo `android.versionCode` y `ios.buildNumber`.
+- `npm run build:android:apk:patch`, `minor`, `major`: suben version semantica y tambien los contadores nativos.
+- Cada build deja un archivo versionado en `dist/rea-vX.Y.Z-bN.apk` y actualiza alias `dist/rea-release.apk`.
+
+Colaboracion y seguridad:
+
+- asumir `master` como rama protegida para colaboraciones futuras
+- preferir trabajo por ramas y pull requests
+- mantener checks de validacion antes de fusionar cambios
+
 Criterios de aporte:
 
 - mantener enfoque local-first y privado

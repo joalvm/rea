@@ -1,6 +1,9 @@
 param(
     [ValidateSet("apk", "aab")]
-    [string]$Artifact = "apk"
+    [string]$Artifact = "apk",
+
+    [ValidateSet("none", "build", "patch", "minor", "major")]
+    [string]$Release = "none"
 )
 
 $ErrorActionPreference = "Stop"
@@ -35,6 +38,22 @@ if (-not $env:NODE_ENV) {
 Push-Location $root
 
 try {
+    $versionInfoRaw = & node .\scripts\bump-app-version.mjs --release $Release
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "No se pudo preparar versionado de app para build Android."
+    }
+
+    $versionInfo = $versionInfoRaw | ConvertFrom-Json
+    $versionLabel = "v$($versionInfo.version)-b$($versionInfo.versionCode)"
+    $distDir = Join-Path $root "dist"
+    New-Item -ItemType Directory -Force -Path $distDir | Out-Null
+
+    $latestTarget = Join-Path $distDir "rea-release.$Artifact"
+    if (Test-Path $latestTarget) {
+        Remove-Item $latestTarget -Force
+    }
+
     & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\sync-brand-assets.ps1
     & .\node_modules\.bin\expo.cmd prebuild --platform android --clean
 
@@ -44,15 +63,17 @@ try {
 
     Push-Location android
     try {
+        .\gradlew.bat clean
+
         if ($Artifact -eq "apk") {
             .\gradlew.bat assembleRelease
             $source = Join-Path $root "android\app\build\outputs\apk\release\app-release.apk"
-            $target = Join-Path $root "dist\rea-release.apk"
+            $versionedTarget = Join-Path $distDir "rea-$versionLabel.apk"
         }
         else {
             .\gradlew.bat bundleRelease
             $source = Join-Path $root "android\app\build\outputs\bundle\release\app-release.aab"
-            $target = Join-Path $root "dist\rea-release.aab"
+            $versionedTarget = Join-Path $distDir "rea-$versionLabel.aab"
         }
     }
     finally {
@@ -63,11 +84,14 @@ try {
         throw "No se genero artefacto Android esperado: $source"
     }
 
-    $distDir = Join-Path $root "dist"
-    New-Item -ItemType Directory -Force -Path $distDir | Out-Null
-    Copy-Item $source $target -Force
+    Copy-Item $source $versionedTarget -Force
+    Copy-Item $source $latestTarget -Force
 
-    Write-Host "Artefacto listo: $target"
+    Write-Host "Version app: $($versionInfo.version)"
+    Write-Host "Android versionCode: $($versionInfo.versionCode)"
+    Write-Host "iOS buildNumber: $($versionInfo.buildNumber)"
+    Write-Host "Artefacto versionado listo: $versionedTarget"
+    Write-Host "Alias actualizado: $latestTarget"
 }
 finally {
     Pop-Location
