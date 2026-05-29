@@ -14,63 +14,27 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
-import { colors, radii, type } from "../theme";
+import { toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { colors, radii, type } from "../../theme";
 import {
     BleedingLevel,
     ClotSize,
     DailyLog,
     MedicationRelief,
-    MomentType,
     MoodCheckIn,
     PainImpact,
-} from "../types/records.types";
-import { MetricScale } from "../ui/MetricScale";
-import { SoftButton } from "../ui/SoftButton";
-
-const SYMPTOMS = ["cólicos", "migraña", "acné", "hinchazón", "antojos", "insomnio", "náuseas"];
-
-const BLEEDING: { key: BleedingLevel; label: string }[] = [
-    { key: "none", label: "Nada" },
-    { key: "spotting", label: "Manchado" },
-    { key: "light", label: "Leve" },
-    { key: "medium", label: "Medio" },
-    { key: "heavy", label: "Abundante" },
-];
-
-const PAIN_IMPACT_OPTIONS: { key: PainImpact; label: string }[] = [
-    { key: "none", label: "No frenó" },
-    { key: "noticeable", label: "Se notó" },
-    { key: "limits_day", label: "Me limitó" },
-    { key: "stops_day", label: "Me tumbó" },
-];
-
-const MEDICATION_RELIEF_OPTIONS: { key: MedicationRelief; label: string }[] = [
-    { key: "not_applicable", label: "No tomé" },
-    { key: "helped", label: "Sí ayudó" },
-    { key: "partly_helped", label: "Ayudó poco" },
-    { key: "did_not_help", label: "No ayudó" },
-];
-
-const CLOT_SIZE_OPTIONS: { key: ClotSize; label: string }[] = [
-    { key: "none", label: "No" },
-    { key: "small", label: "Pequeños" },
-    { key: "medium", label: "Medios" },
-    { key: "large", label: "Grandes" },
-];
-
-interface CheckInModalProps {
-    visible: boolean;
-    mode: "daily" | "quick";
-    momentType: MomentType;
-    question: string;
-    onClose: () => void;
-    onDelete?: (checkIn?: MoodCheckIn | null) => Promise<void>;
-    onSave: (checkIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
-    initialCheckIn?: MoodCheckIn | null;
-    initialDailyLog?: DailyLog | null;
-    saveTarget?: "checkIn" | "dailyLog" | "both";
-}
+} from "../../types/records.types";
+import { MetricScale } from "../../ui/MetricScale";
+import { SoftButton } from "../../ui/SoftButton";
+import {
+    BLEEDING_OPTIONS,
+    CLOT_SIZE_OPTIONS,
+    MEDICATION_RELIEF_OPTIONS,
+    PAIN_IMPACT_OPTIONS,
+    SYMPTOMS,
+} from "./constants/checkInOptions";
+import { CheckInModalProps } from "./check-in.types";
+import buildDailyLogDetails from "./utils/buildDailyLogDetails";
 
 export function CheckInModal({
     visible,
@@ -172,7 +136,16 @@ export function CheckInModal({
                       symptoms,
                       notes: trimmedNote,
                       source: initialDailyLog?.source ?? "observed",
-                      details: buildDailyLogDetails(),
+                      details: buildDailyLogDetails({
+                          periodStarted,
+                          periodEnded,
+                          pmsStarted,
+                          clotSize,
+                          painImpact,
+                          breastSensitivity,
+                          medicationName,
+                          medicationRelief,
+                      }),
                       updatedAt: now.toISOString(),
                   }
                 : undefined;
@@ -184,45 +157,6 @@ export function CheckInModal({
         } finally {
             setSaving(false);
         }
-    };
-
-    const buildDailyLogDetails = (): NonNullable<DailyLog["details"]> | null => {
-        const details: NonNullable<DailyLog["details"]> = {};
-
-        if (periodStarted) {
-            details.periodStarted = true;
-        }
-
-        if (periodEnded) {
-            details.periodEnded = true;
-        }
-
-        if (pmsStarted) {
-            details.pmsStarted = true;
-        }
-
-        if (clotSize !== "none") {
-            details.clotSize = clotSize;
-        }
-
-        if (painImpact !== "none") {
-            details.painImpact = painImpact;
-        }
-
-        if (breastSensitivity > 0) {
-            details.breastSensitivity = breastSensitivity;
-        }
-
-        const cleanMedicationName = medicationName.trim();
-        if (cleanMedicationName) {
-            details.medicationName = cleanMedicationName;
-        }
-
-        if (medicationRelief !== "not_applicable") {
-            details.medicationRelief = medicationRelief;
-        }
-
-        return Object.keys(details).length > 0 ? details : null;
     };
 
     return (
@@ -315,7 +249,7 @@ export function CheckInModal({
                                     <View style={styles.section}>
                                         <Text style={styles.sectionTitle}>Sangrado</Text>
                                         <View style={styles.chips}>
-                                            {BLEEDING.map((item) => (
+                                            {BLEEDING_OPTIONS.map((item) => (
                                                 <Pressable
                                                     key={item.key}
                                                     onPress={() => setBleedingLevel(item.key)}

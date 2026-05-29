@@ -5,9 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Platform, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { CheckInModal } from "./src/components/CheckInModal";
-import { ScheduleModal } from "./src/components/ScheduleModal";
-import { SettingsModal } from "./src/components/SettingsModal";
+import { CheckInModal } from "./src/features/check-in/CheckInModal";
+import { ScheduleModal } from "./src/features/settings/ScheduleModal";
+import { SettingsModal } from "./src/features/settings/SettingsModal";
 import estimateCycle from "./src/modules/cycle/estimation/estimateCycle";
 import createDefaultNotificationMoments from "./src/modules/notifications/defaults/createDefaultNotificationMoments";
 import clearScheduledNotifications from "./src/modules/notifications/scheduler/clearScheduledNotifications";

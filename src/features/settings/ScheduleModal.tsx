@@ -2,11 +2,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from "react-native";
 
-import { colors, radii, type } from "../theme";
-import { NotificationMoment } from "../types/notifications.types";
-import { MomentType } from "../types/records.types";
-import { SoftButton } from "../ui/SoftButton";
-import { SoftCard } from "../ui/SoftCard";
+import { colors, radii, type } from "../../theme";
+import { NotificationMoment } from "../../types/notifications.types";
+import { SoftButton } from "../../ui/SoftButton";
+import { SoftCard } from "../../ui/SoftCard";
+import { ScheduleModalProps } from "./settings.types";
+import momentIcon from "./utils/momentIcon";
+import momentTone from "./utils/momentTone";
 
 const DAYS = [
     { key: 1, label: "L" },
@@ -17,13 +19,6 @@ const DAYS = [
     { key: 6, label: "S" },
     { key: 0, label: "D" },
 ];
-
-interface ScheduleModalProps {
-    visible: boolean;
-    moments: NotificationMoment[];
-    onClose: () => void;
-    onChange: (moments: NotificationMoment[]) => Promise<void>;
-}
 
 export function ScheduleModal({ visible, moments, onClose, onChange }: ScheduleModalProps) {
     const [label, setLabel] = useState("Tarde");
@@ -178,18 +173,6 @@ function MomentCard({ moment, onUpdate, onRemove }: MomentCardProps) {
             ) : null}
         </SoftCard>
     );
-}
-
-function momentIcon(type: MomentType) {
-    if (type === "morning") return "weather-sunset-up";
-    if (type === "night") return "weather-night";
-    return "heart-pulse";
-}
-
-function momentTone(type: MomentType) {
-    if (type === "morning") return { color: colors.primaryDeep, background: colors.primarySoft };
-    if (type === "night") return { color: "#7A5EC9", background: colors.lutealSoft };
-    return { color: colors.period, background: colors.periodSoft };
 }
 
 const styles = StyleSheet.create({

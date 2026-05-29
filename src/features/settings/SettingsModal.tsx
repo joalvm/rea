@@ -1,18 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { colors, radii, type } from "../theme";
-import { NotificationMoment } from "../types/notifications.types";
-import { IconButton } from "../ui/IconButton";
-import { SoftCard } from "../ui/SoftCard";
-
-interface SettingsModalProps {
-    visible: boolean;
-    moments: NotificationMoment[];
-    onClose: () => void;
-    onOpenSchedule: () => void;
-    onReset: () => Promise<void>;
-}
+import { colors, radii, type } from "../../theme";
+import { IconButton } from "../../ui/IconButton";
+import { SoftCard } from "../../ui/SoftCard";
+import { SettingsModalProps } from "./settings.types";
 
 export function SettingsModal({ visible, moments, onClose, onOpenSchedule, onReset }: SettingsModalProps) {
     const activeMoments = moments.filter((moment) => moment.enabled).length;
