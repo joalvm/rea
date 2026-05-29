@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DimensionValue, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { SoftCard } from "../components/SoftCard";
 import {
     average,
     buildCycleSummaries,
@@ -15,6 +14,7 @@ import { Cycle } from "../types/cycle.types";
 import { EducationalAlert, PatternInsight } from "../types/insights.types";
 import { DailyLog, MoodCheckIn } from "../types/records.types";
 import { AppSettings } from "../types/settings.types";
+import { SoftCard } from "../ui/SoftCard";
 
 const brandVertical = require("../../assets/branding/logo-vertical.png");
 

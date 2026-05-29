@@ -2,15 +2,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { NumberPicker } from "../components/NumberPicker";
-import { SoftButton } from "../components/SoftButton";
-import { StepShell } from "../components/StepShell";
 import { addDays, formatShortDate, toIsoDate } from "../cycle";
 import { createDefaultNotificationMoments } from "../notifications";
 import { GOALS, REGULARITY } from "../onboarding/options";
 import { colors, radii, type } from "../theme";
 import { NotificationMoment } from "../types/notifications.types";
 import { AppSettings, Goal, Regularity } from "../types/settings.types";
+import { NumberPicker } from "../ui/NumberPicker";
+import { SoftButton } from "../ui/SoftButton";
+import { StepShell } from "../ui/StepShell";
 
 const brandHorizontal = require("../../assets/branding/logo-horizontal.png");
 

@@ -1,11 +1,11 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { SoftButton } from "../components/SoftButton";
-import { SoftCard } from "../components/SoftCard";
 import { formatShortDate } from "../cycle";
 import { colors, radii, type } from "../theme";
 import { DailyLog, MoodCheckIn } from "../types/records.types";
+import { SoftButton } from "../ui/SoftButton";
+import { SoftCard } from "../ui/SoftCard";
 
 interface DiaryScreenProps {
     dailyLogs: DailyLog[];

@@ -3,8 +3,8 @@ import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "rea
 
 import { colors, radii, type } from "../theme";
 import { NotificationMoment } from "../types/notifications.types";
-import { IconButton } from "./IconButton";
-import { SoftCard } from "./SoftCard";
+import { IconButton } from "../ui/IconButton";
+import { SoftCard } from "../ui/SoftCard";
 
 interface SettingsModalProps {
     visible: boolean;

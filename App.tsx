@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Platform, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { BottomTabs } from "./src/components/BottomTabs";
 import { CheckInModal } from "./src/components/CheckInModal";
 import { ScheduleModal } from "./src/components/ScheduleModal";
 import { SettingsModal } from "./src/components/SettingsModal";
@@ -34,6 +33,7 @@ import {
     upsertMoodCheckIn,
 } from "./src/storage";
 import { colors } from "./src/theme";
+import { BottomTabs } from "./src/ui/BottomTabs";
 import { AppData, TabKey } from "./src/types/app.types";
 import { NotificationMoment } from "./src/types/notifications.types";
 import { DailyLog, MomentType, MoodCheckIn } from "./src/types/records.types";

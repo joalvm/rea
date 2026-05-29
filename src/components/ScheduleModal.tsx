@@ -5,8 +5,8 @@ import { Modal, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View
 import { colors, radii, type } from "../theme";
 import { NotificationMoment } from "../types/notifications.types";
 import { MomentType } from "../types/records.types";
-import { SoftButton } from "./SoftButton";
-import { SoftCard } from "./SoftCard";
+import { SoftButton } from "../ui/SoftButton";
+import { SoftCard } from "../ui/SoftCard";
 
 const DAYS = [
     { key: 1, label: "L" },

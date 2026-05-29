@@ -1,18 +1,18 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { FloatingBubbles } from "../components/FloatingBubbles";
-import { IconButton } from "../components/IconButton";
-import { QuickActionCard } from "../components/QuickActionCard";
-import { SoftButton } from "../components/SoftButton";
-import { SoftCard } from "../components/SoftCard";
-import { WeekStrip, WeekStripDay } from "../components/WeekStrip";
 import { addDays, buildEducationalAlerts, buildPatternInsights, estimateCycle, toIsoDate } from "../cycle";
 import { colors, radii, shadow, type } from "../theme";
 import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
 import { EducationalAlert } from "../types/insights.types";
 import { DailyLog, MoodCheckIn } from "../types/records.types";
 import { AppSettings } from "../types/settings.types";
+import { FloatingBubbles } from "../ui/FloatingBubbles";
+import { IconButton } from "../ui/IconButton";
+import { QuickActionCard } from "../ui/QuickActionCard";
+import { SoftButton } from "../ui/SoftButton";
+import { SoftCard } from "../ui/SoftCard";
+import { WeekStrip, WeekStripDay } from "../ui/WeekStrip";
 
 interface TodayScreenProps {
     settings: AppSettings | null;
