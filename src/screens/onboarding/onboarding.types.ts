@@ -5,3 +5,8 @@ import { AppSettings } from "../../types/settings.types";
 export interface OnboardingScreenProps {
     onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
 }
+
+/** Dependencias mínimas para controlar el flujo de onboarding. */
+export interface OnboardingFlowConfig {
+    onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
+}

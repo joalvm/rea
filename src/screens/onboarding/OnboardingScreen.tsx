@@ -1,53 +1,40 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 
 import { addDays, formatShortDate, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
-import createDefaultNotificationMoments from "../../modules/notifications/defaults/createDefaultNotificationMoments";
-import { colors, radii, type } from "../../theme";
-import { Goal, Regularity } from "../../types/settings.types";
+import { colors } from "../../theme";
 import { NumberPicker } from "../../ui/NumberPicker";
 import { SoftButton } from "../../ui/SoftButton";
 import { StepShell } from "../../ui/StepShell";
+import styles from "./OnboardingScreen.styles";
 import { GOALS, REGULARITY } from "./constants/onboardingOptions";
 import { OnboardingScreenProps } from "./onboarding.types";
+import useOnboardingFlow from "./hooks/useOnboardingFlow";
 
 const brandHorizontal = require("../../../assets/branding/logo-horizontal.png");
 
 export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
-    const [step, setStep] = useState(0);
-    const [goal, setGoal] = useState<Goal>("self_knowledge");
-    const [lastPeriodStart, setLastPeriodStart] = useState(toIsoDate(new Date()));
-    const [cycleLength, setCycleLength] = useState(28);
-    const [periodLength, setPeriodLength] = useState(5);
-    const [regularity, setRegularity] = useState<Regularity>("regular");
-    const [hormonalContraception, setHormonalContraception] = useState(false);
-    const [moments, setMoments] = useState(createDefaultNotificationMoments());
-    const [saving, setSaving] = useState(false);
-
-    const progress = useMemo(() => (step + 1) / 6, [step]);
-
-    const finish = async () => {
-        const now = new Date().toISOString();
-        setSaving(true);
-        try {
-            await onComplete(
-                {
-                    onboarded: true,
-                    lastPeriodStart,
-                    cycleLength,
-                    periodLength,
-                    regularity,
-                    hormonalContraception,
-                    goal,
-                    createdAt: now,
-                },
-                moments,
-            );
-        } finally {
-            setSaving(false);
-        }
-    };
+    const {
+        step,
+        setStep,
+        goal,
+        setGoal,
+        lastPeriodStart,
+        setLastPeriodStart,
+        cycleLength,
+        setCycleLength,
+        periodLength,
+        setPeriodLength,
+        regularity,
+        setRegularity,
+        hormonalContraception,
+        setHormonalContraception,
+        moments,
+        setMoments,
+        saving,
+        progress,
+        finish,
+    } = useOnboardingFlow({ onComplete });
 
     return (
         <View style={styles.screen}>
@@ -240,188 +227,3 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        backgroundColor: colors.background,
-        paddingTop: 42,
-    },
-    brand: {
-        alignItems: "center",
-        gap: 10,
-    },
-    brandImage: {
-        width: 176,
-        height: 58,
-    },
-    brandText: {
-        color: colors.muted,
-        fontSize: type.body,
-        fontWeight: "700",
-    },
-    progressTrack: {
-        height: 5,
-        marginHorizontal: 34,
-        marginTop: 24,
-        borderRadius: 999,
-        backgroundColor: colors.surfaceSoft,
-    },
-    progressFill: {
-        height: 5,
-        borderRadius: 999,
-        backgroundColor: colors.primaryDeep,
-    },
-    content: {
-        flexGrow: 1,
-        padding: 24,
-        justifyContent: "center",
-    },
-    body: {
-        color: colors.ink,
-        fontSize: type.body,
-        lineHeight: 23,
-        textAlign: "center",
-    },
-    dateOptions: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 10,
-    },
-    option: {
-        width: "47%",
-        borderRadius: radii.lg,
-        padding: 16,
-        backgroundColor: colors.surface,
-        borderWidth: 1,
-        borderColor: colors.line,
-    },
-    optionActive: {
-        backgroundColor: colors.primary,
-        borderColor: colors.primary,
-    },
-    optionText: {
-        color: colors.ink,
-        fontSize: type.body,
-        fontWeight: "900",
-    },
-    optionTextActive: {
-        color: colors.primaryInk,
-    },
-    optionMeta: {
-        color: colors.muted,
-        marginTop: 6,
-        fontSize: type.small,
-        fontWeight: "700",
-    },
-    segmentGroup: {
-        flexDirection: "row",
-        gap: 8,
-    },
-    segment: {
-        flex: 1,
-        minHeight: 48,
-        borderRadius: radii.md,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.surface,
-        borderWidth: 1,
-        borderColor: colors.line,
-    },
-    segmentActive: {
-        backgroundColor: colors.primary,
-    },
-    segmentText: {
-        color: colors.muted,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    segmentTextActive: {
-        color: colors.primaryInk,
-    },
-    toggleRow: {
-        minHeight: 58,
-        borderRadius: radii.lg,
-        backgroundColor: colors.surface,
-        borderWidth: 1,
-        borderColor: colors.line,
-        paddingHorizontal: 16,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    toggleRowActive: {
-        backgroundColor: colors.primarySoft,
-    },
-    toggleText: {
-        color: colors.ink,
-        fontSize: type.body,
-        fontWeight: "800",
-    },
-    goals: {
-        gap: 10,
-    },
-    goal: {
-        flexDirection: "row",
-        gap: 14,
-        alignItems: "center",
-        borderRadius: radii.lg,
-        padding: 16,
-        backgroundColor: colors.surface,
-        borderWidth: 1,
-        borderColor: colors.line,
-    },
-    goalActive: {
-        borderColor: colors.primary,
-        backgroundColor: colors.primarySoft,
-    },
-    goalText: {
-        flex: 1,
-    },
-    goalTitle: {
-        color: colors.ink,
-        fontSize: type.body,
-        fontWeight: "900",
-    },
-    goalDescription: {
-        color: colors.muted,
-        fontSize: type.small,
-        marginTop: 3,
-    },
-    reminders: {
-        gap: 10,
-    },
-    reminder: {
-        minHeight: 72,
-        borderRadius: radii.lg,
-        padding: 16,
-        backgroundColor: colors.surface,
-        borderWidth: 1,
-        borderColor: colors.line,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    reminderActive: {
-        backgroundColor: colors.primarySoft,
-    },
-    reminderTitle: {
-        color: colors.ink,
-        fontSize: type.body,
-        fontWeight: "900",
-    },
-    reminderMeta: {
-        color: colors.muted,
-        marginTop: 3,
-        fontWeight: "700",
-    },
-    footer: {
-        paddingHorizontal: 24,
-        paddingTop: 10,
-        paddingBottom: 26,
-        gap: 10,
-    },
-    nextButton: {
-        width: "100%",
-    },
-});

@@ -1,14 +1,23 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
-import { parseIsoDate, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
-import { colors, type } from "../../theme";
-import { PhaseKey } from "../../types/cycle.types";
-import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { colors } from "../../theme";
 import { SoftButton } from "../../ui/SoftButton";
 import { SoftCard } from "../../ui/SoftCard";
+import styles from "./DayDetailScreen.styles";
+import CareTipRow from "./components/CareTipRow";
+import MomentEntryRow from "./components/MomentEntryRow";
 import { DayDetailScreenProps } from "./day-detail.types";
+import {
+    bleedingLabel,
+    buildDailyLogDetails,
+    buildDaySummary,
+    formatLongDate,
+    getCareTips,
+    sourceLabel,
+} from "./utils/dayDetailContent";
 
 export function DayDetailScreen({
     selectedIso,
@@ -62,12 +71,7 @@ export function DayDetailScreen({
                 <Text style={styles.cardTitle}>{isFuture ? "Referencia orientativa" : "Qué mirar aquí"}</Text>
                 <Text style={styles.cardBody}>{snapshot.phaseMessage}</Text>
                 {careTips.map((tip) => (
-                    <View key={tip.text} style={styles.tipRow}>
-                        <View style={[styles.tipIcon, { backgroundColor: tip.background }]}>
-                            <MaterialCommunityIcons color={tip.color} name={tip.icon as never} size={18} />
-                        </View>
-                        <Text style={styles.tipText}>{tip.text}</Text>
-                    </View>
+                    <CareTipRow key={tip.text} tip={tip} />
                 ))}
             </SoftCard>
 
@@ -105,23 +109,7 @@ export function DayDetailScreen({
                 <SoftCard style={styles.card}>
                     <Text style={styles.cardTitle}>Momentos anotados</Text>
                     {moments.map((entry) => (
-                        <View key={entry.id ?? entry.datetime} style={styles.momentRow}>
-                            <View style={styles.momentCopy}>
-                                <Text style={styles.momentTitle}>{momentLabel(entry.momentType)}</Text>
-                                <Text style={styles.metaLine}>
-                                    {new Date(entry.datetime).toLocaleTimeString("es-PE", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    })}
-                                </Text>
-                            </View>
-                            <View style={styles.momentMetrics}>
-                                <Text style={styles.metric}>Ánimo {entry.mood}/5</Text>
-                                <Text style={styles.metric}>Dolor {entry.pain}/5</Text>
-                                <Text style={styles.metric}>Pecho {entry.breastSensitivity}/5</Text>
-                            </View>
-                            {entry.note ? <Text style={styles.note}>{entry.note}</Text> : null}
-                        </View>
+                        <MomentEntryRow entry={entry} key={entry.id ?? entry.datetime} />
                     ))}
                 </SoftCard>
             ) : null}
@@ -147,329 +135,3 @@ export function DayDetailScreen({
         </ScrollView>
     );
 }
-
-function buildDaySummary(
-    selectedIso: string,
-    todayIso: string,
-    phaseMessage: string,
-    dailyLog: DailyLog | null,
-    moments: MoodCheckIn[],
-) {
-    if (dailyLog) {
-        const symptomCopy =
-            dailyLog.symptoms.length > 0
-                ? `Síntomas marcados: ${dailyLog.symptoms.slice(0, 3).join(", ")}.`
-                : "Sin síntomas marcados.";
-        const noteCopy = dailyLog.notes ? ` Nota: ${dailyLog.notes}` : "";
-        return `Día observado. ${symptomCopy}${noteCopy}`.trim();
-    }
-
-    if (moments.length > 0) {
-        const latest = moments[0];
-        if (!latest) {
-            return "Hay momentos guardados para este día.";
-        }
-
-        return `Hay ${moments.length} ${moments.length === 1 ? "momento" : "momentos"} guardados. Último ánimo ${latest.mood}/5 y dolor ${latest.pain}/5.`;
-    }
-
-    if (selectedIso > todayIso) {
-        return `Aún no hay anotación. Vista usa referencia estimada: ${phaseMessage}`;
-    }
-
-    if (selectedIso === todayIso) {
-        return "Hoy todavía no tiene registro completo. Esta vista sirve como contexto antes de anotar.";
-    }
-
-    return "No quedó registro ese día.";
-}
-
-function buildDailyLogDetails(log: DailyLog) {
-    const items: string[] = [];
-
-    if (log.details?.periodStarted) items.push("Empezó hoy");
-    if (log.details?.periodEnded) items.push("Terminó hoy");
-    if (log.details?.pmsStarted) items.push("Empezó SPM");
-
-    if (log.details?.painImpact === "noticeable") items.push("Dolor se notó");
-    if (log.details?.painImpact === "limits_day") items.push("Dolor me limitó");
-    if (log.details?.painImpact === "stops_day") items.push("Dolor me tumbó");
-
-    if ((log.details?.breastSensitivity ?? 0) > 0) {
-        items.push(`Sensibilidad mamaria ${log.details?.breastSensitivity}/5`);
-    }
-
-    if (log.details?.medicationName) {
-        items.push(log.details.medicationName);
-    }
-
-    if (log.details?.medicationRelief === "helped") items.push("Sí ayudó");
-    if (log.details?.medicationRelief === "partly_helped") items.push("Ayudó poco");
-    if (log.details?.medicationRelief === "did_not_help") items.push("No ayudó");
-
-    if (log.details?.clotSize === "small") items.push("Coágulos leves");
-    if (log.details?.clotSize === "medium") items.push("Coágulos medios");
-    if (log.details?.clotSize === "large") items.push("Coágulos grandes");
-
-    return items;
-}
-
-function bleedingLabel(level: DailyLog["bleedingLevel"]) {
-    if (level === "none") return "Sin sangrado";
-    if (level === "spotting") return "Manchado";
-    if (level === "light") return "Flujo leve";
-    if (level === "medium") return "Flujo medio";
-    return "Flujo abundante";
-}
-
-function sourceLabel(source: DailyLog["source"]) {
-    if (source === "estimated") return "Estimado";
-    if (source === "unknown") return "Sin datos";
-    return "Observado";
-}
-
-function momentLabel(momentType: MoodCheckIn["momentType"]) {
-    if (momentType === "morning") return "Cómo despertaste";
-    if (momentType === "night") return "Cómo estuvo tu día";
-    return "Cómo te sientes ahora";
-}
-
-function formatLongDate(iso: string) {
-    const date = parseIsoDate(iso);
-    const label = date.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" });
-    return label.charAt(0).toUpperCase() + label.slice(1);
-}
-
-function getCareTips(phase: PhaseKey) {
-    if (phase === "menstrual") {
-        return [
-            {
-                icon: "tea-outline",
-                text: "Calor suave, agua cerca y descanso sin culpa.",
-                color: colors.period,
-                background: colors.periodSoft,
-            },
-            {
-                icon: "pulse",
-                text: "Si dolor cambia, conviene dejarlo anotado para comparar luego.",
-                color: colors.primaryDeep,
-                background: colors.primarySoft,
-            },
-        ];
-    }
-
-    if (phase === "follicular") {
-        return [
-            {
-                icon: "walk",
-                text: "Si energía acompaña, algo de movimiento suave suele sentar bien.",
-                color: colors.success,
-                background: colors.fertileSoft,
-            },
-            {
-                icon: "notebook-heart-outline",
-                text: "Sueño y ánimo aquí suelen dar contexto útil para resto de ciclo.",
-                color: colors.primaryDeep,
-                background: colors.primarySoft,
-            },
-        ];
-    }
-
-    if (phase === "fertile") {
-        return [
-            {
-                icon: "leaf",
-                text: "Ventana sigue siendo orientativa; señales reales valen más que calendario.",
-                color: colors.success,
-                background: colors.fertileSoft,
-            },
-            {
-                icon: "thermometer-lines",
-                text: "Si buscas más precisión, temperatura o tests ayudan más.",
-                color: colors.primaryDeep,
-                background: colors.primarySoft,
-            },
-        ];
-    }
-
-    return [
-        {
-            icon: "weather-night",
-            text: "Prioriza sueño, comida tranquila y pausas pequeñas.",
-            color: "#7A5EC9",
-            background: colors.lutealSoft,
-        },
-        {
-            icon: "heart-outline",
-            text: "Ánimo y estrés aquí suelen merecer seguimiento suave, sin juicio.",
-            color: colors.period,
-            background: colors.periodSoft,
-        },
-    ];
-}
-
-const styles = StyleSheet.create({
-    content: {
-        backgroundColor: colors.background,
-        paddingTop: 58,
-        paddingHorizontal: 18,
-        paddingBottom: 36,
-        gap: 18,
-    },
-    headerRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: 14,
-    },
-    backButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.surface,
-        borderWidth: 1,
-        borderColor: colors.line,
-    },
-    headerCopy: {
-        flex: 1,
-        gap: 6,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    title: {
-        color: colors.ink,
-        fontSize: 28,
-        lineHeight: 34,
-        fontWeight: "900",
-    },
-    subtitle: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 20,
-    },
-    summaryCard: {
-        gap: 12,
-        backgroundColor: colors.surfaceSoft,
-    },
-    card: {
-        gap: 12,
-    },
-    cardTitle: {
-        color: colors.ink,
-        fontSize: type.subtitle,
-        fontWeight: "900",
-    },
-    summaryText: {
-        color: colors.ink,
-        fontSize: type.body,
-        lineHeight: 22,
-    },
-    cardBody: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 22,
-    },
-    badges: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-    },
-    badge: {
-        color: colors.primaryDeep,
-        backgroundColor: colors.primarySoft,
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        borderRadius: 999,
-        fontSize: type.tiny,
-        fontWeight: "900",
-        overflow: "hidden",
-    },
-    metaLine: {
-        color: colors.muted,
-        fontSize: type.small,
-        lineHeight: 18,
-    },
-    chips: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-    },
-    chip: {
-        color: colors.ink,
-        backgroundColor: colors.surfaceSoft,
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        borderRadius: 999,
-        fontSize: type.small,
-        overflow: "hidden",
-    },
-    detailChip: {
-        color: colors.primaryDeep,
-        backgroundColor: colors.primarySoft,
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        borderRadius: 999,
-        fontSize: type.small,
-        fontWeight: "800",
-        overflow: "hidden",
-    },
-    softText: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 20,
-    },
-    note: {
-        color: colors.ink,
-        fontSize: type.body,
-        lineHeight: 21,
-    },
-    tipRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-    },
-    tipIcon: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    tipText: {
-        flex: 1,
-        color: colors.ink,
-        fontSize: type.body,
-        lineHeight: 20,
-    },
-    momentRow: {
-        gap: 8,
-        paddingTop: 12,
-        borderTopWidth: 1,
-        borderTopColor: colors.line,
-    },
-    momentCopy: {
-        gap: 4,
-    },
-    momentTitle: {
-        color: colors.ink,
-        fontSize: type.body,
-        fontWeight: "800",
-    },
-    momentMetrics: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-    },
-    metric: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "700",
-    },
-    actionButton: {
-        marginTop: 4,
-    },
-});
