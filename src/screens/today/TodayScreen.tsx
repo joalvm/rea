@@ -1,35 +1,22 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import buildEducationalAlerts from "../modules/cycle/alerts/buildEducationalAlerts";
-import estimateCycle from "../modules/cycle/estimation/estimateCycle";
-import buildPatternInsights from "../modules/cycle/insights/buildPatternInsights";
-import { addDays, toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
-import { colors, radii, shadow, type } from "../theme";
-import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
-import { EducationalAlert } from "../types/insights.types";
-import { DailyLog, MoodCheckIn } from "../types/records.types";
-import { AppSettings } from "../types/settings.types";
-import { FloatingBubbles } from "../ui/FloatingBubbles";
-import { IconButton } from "../ui/IconButton";
-import { QuickActionCard } from "../ui/QuickActionCard";
-import { SoftButton } from "../ui/SoftButton";
-import { SoftCard } from "../ui/SoftCard";
-import { WeekStrip, WeekStripDay } from "../ui/WeekStrip";
-
-interface TodayScreenProps {
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    snapshot: CycleSnapshot;
-    moodCheckIns: MoodCheckIn[];
-    dailyLogs: DailyLog[];
-    onOpenCheckIn: () => void;
-    onOpenDay: (iso: string) => void;
-    onOpenQuickCheckIn: () => void;
-    onOpenCalendar: () => void;
-    onOpenPatterns: () => void;
-    onOpenSettings: () => void;
-}
+import buildEducationalAlerts from "../../modules/cycle/alerts/buildEducationalAlerts";
+import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
+import buildPatternInsights from "../../modules/cycle/insights/buildPatternInsights";
+import { addDays, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { colors, radii, shadow, type } from "../../theme";
+import { Cycle, CycleSnapshot, PhaseKey } from "../../types/cycle.types";
+import { EducationalAlert } from "../../types/insights.types";
+import { DailyLog } from "../../types/records.types";
+import { AppSettings } from "../../types/settings.types";
+import { FloatingBubbles } from "../../ui/FloatingBubbles";
+import { IconButton } from "../../ui/IconButton";
+import { QuickActionCard } from "../../ui/QuickActionCard";
+import { SoftButton } from "../../ui/SoftButton";
+import { SoftCard } from "../../ui/SoftCard";
+import { WeekStrip, WeekStripDay } from "../../ui/WeekStrip";
+import { TodayScreenProps } from "./today.types";
 
 export function TodayScreen({
     settings,

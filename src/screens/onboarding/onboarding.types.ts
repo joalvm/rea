@@ -1,0 +1,7 @@
+import { NotificationMoment } from "../../types/notifications.types";
+import { AppSettings } from "../../types/settings.types";
+
+/** Props del flujo inicial de onboarding. */
+export interface OnboardingScreenProps {
+    onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
+}

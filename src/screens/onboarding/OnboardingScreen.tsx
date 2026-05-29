@@ -2,21 +2,17 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { addDays, formatShortDate, toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
-import createDefaultNotificationMoments from "../modules/notifications/defaults/createDefaultNotificationMoments";
-import { GOALS, REGULARITY } from "../onboarding/options";
-import { colors, radii, type } from "../theme";
-import { NotificationMoment } from "../types/notifications.types";
-import { AppSettings, Goal, Regularity } from "../types/settings.types";
-import { NumberPicker } from "../ui/NumberPicker";
-import { SoftButton } from "../ui/SoftButton";
-import { StepShell } from "../ui/StepShell";
+import { addDays, formatShortDate, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
+import createDefaultNotificationMoments from "../../modules/notifications/defaults/createDefaultNotificationMoments";
+import { colors, radii, type } from "../../theme";
+import { Goal, Regularity } from "../../types/settings.types";
+import { NumberPicker } from "../../ui/NumberPicker";
+import { SoftButton } from "../../ui/SoftButton";
+import { StepShell } from "../../ui/StepShell";
+import { GOALS, REGULARITY } from "./constants/onboardingOptions";
+import { OnboardingScreenProps } from "./onboarding.types";
 
-const brandHorizontal = require("../../assets/branding/logo-horizontal.png");
-
-interface OnboardingScreenProps {
-    onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
-}
+const brandHorizontal = require("../../../assets/branding/logo-horizontal.png");
 
 export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
     const [step, setStep] = useState(0);

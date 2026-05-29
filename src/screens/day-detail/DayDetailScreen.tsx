@@ -1,24 +1,14 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import estimateCycle from "../modules/cycle/estimation/estimateCycle";
-import { parseIsoDate, toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
-import { colors, type } from "../theme";
-import { Cycle, PhaseKey } from "../types/cycle.types";
-import { DailyLog, MoodCheckIn } from "../types/records.types";
-import { AppSettings } from "../types/settings.types";
-import { SoftButton } from "../ui/SoftButton";
-import { SoftCard } from "../ui/SoftCard";
-
-interface DayDetailScreenProps {
-    selectedIso: string;
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    dailyLogs: DailyLog[];
-    moodCheckIns: MoodCheckIn[];
-    onBack: () => void;
-    onOpenDiary: () => void;
-}
+import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
+import { parseIsoDate, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { colors, type } from "../../theme";
+import { PhaseKey } from "../../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { SoftButton } from "../../ui/SoftButton";
+import { SoftCard } from "../../ui/SoftCard";
+import { DayDetailScreenProps } from "./day-detail.types";
 
 export function DayDetailScreen({
     selectedIso,

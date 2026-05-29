@@ -1,27 +1,19 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DimensionValue, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import buildEducationalAlerts from "../modules/cycle/alerts/buildEducationalAlerts";
-import buildPatternInsights from "../modules/cycle/insights/buildPatternInsights";
-import buildCycleSummaries from "../modules/cycle/summaries/buildCycleSummaries";
-import { formatShortDate } from "../modules/cycle/shared/cycleDate.utils";
-import { average } from "../modules/cycle/shared/cycleMath.utils";
-import { summarizeTopSymptoms } from "../modules/cycle/shared/cycleSummary.utils";
-import { colors, radii, type } from "../theme";
-import { Cycle } from "../types/cycle.types";
-import { EducationalAlert, PatternInsight } from "../types/insights.types";
-import { DailyLog, MoodCheckIn } from "../types/records.types";
-import { AppSettings } from "../types/settings.types";
-import { SoftCard } from "../ui/SoftCard";
+import buildEducationalAlerts from "../../modules/cycle/alerts/buildEducationalAlerts";
+import buildPatternInsights from "../../modules/cycle/insights/buildPatternInsights";
+import buildCycleSummaries from "../../modules/cycle/summaries/buildCycleSummaries";
+import { formatShortDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { average } from "../../modules/cycle/shared/cycleMath.utils";
+import { summarizeTopSymptoms } from "../../modules/cycle/shared/cycleSummary.utils";
+import { colors, radii, type } from "../../theme";
+import { EducationalAlert, PatternInsight } from "../../types/insights.types";
+import { MoodCheckIn } from "../../types/records.types";
+import { SoftCard } from "../../ui/SoftCard";
+import { PatternsScreenProps } from "./patterns.types";
 
-const brandVertical = require("../../assets/branding/logo-vertical.png");
-
-interface PatternsScreenProps {
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    moodCheckIns: MoodCheckIn[];
-    dailyLogs: DailyLog[];
-}
+const brandVertical = require("../../../assets/branding/logo-vertical.png");
 
 const METRICS: {
     key: keyof Pick<MoodCheckIn, "mood" | "energy" | "pain" | "stress">;

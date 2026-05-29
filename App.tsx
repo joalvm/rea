@@ -13,12 +13,12 @@ import createDefaultNotificationMoments from "./src/modules/notifications/defaul
 import clearScheduledNotifications from "./src/modules/notifications/scheduler/clearScheduledNotifications";
 import registerNotificationHandler from "./src/modules/notifications/scheduler/registerNotificationHandler";
 import rescheduleNotificationMoments from "./src/modules/notifications/scheduler/rescheduleNotificationMoments";
-import { CalendarScreen } from "./src/screens/CalendarScreen";
-import { DayDetailScreen } from "./src/screens/DayDetailScreen";
-import { DiaryScreen } from "./src/screens/DiaryScreen";
-import { OnboardingScreen } from "./src/screens/OnboardingScreen";
-import { PatternsScreen } from "./src/screens/PatternsScreen";
-import { TodayScreen } from "./src/screens/TodayScreen";
+import { CalendarScreen } from "./src/screens/calendar/CalendarScreen";
+import { DayDetailScreen } from "./src/screens/day-detail/DayDetailScreen";
+import { DiaryScreen } from "./src/screens/diary/DiaryScreen";
+import { OnboardingScreen } from "./src/screens/onboarding/OnboardingScreen";
+import { PatternsScreen } from "./src/screens/patterns/PatternsScreen";
+import { TodayScreen } from "./src/screens/today/TodayScreen";
 import initializeDatabase from "./src/modules/storage/core/schema";
 import { addCycle } from "./src/modules/storage/repositories/cycles.repository";
 import { upsertDailyLog } from "./src/modules/storage/repositories/dailyLogs.repository";

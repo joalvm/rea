@@ -1,4 +1,4 @@
-import { Goal, Regularity } from "../types/settings.types";
+import { Goal, Regularity } from "../../../types/settings.types";
 
 export const GOALS: { key: Goal; label: string; description: string; icon: string }[] = [
     {

@@ -1,20 +1,12 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { formatShortDate } from "../modules/cycle/shared/cycleDate.utils";
-import { colors, radii, type } from "../theme";
-import { DailyLog, MoodCheckIn } from "../types/records.types";
-import { SoftButton } from "../ui/SoftButton";
-import { SoftCard } from "../ui/SoftCard";
-
-interface DiaryScreenProps {
-    dailyLogs: DailyLog[];
-    moodCheckIns: MoodCheckIn[];
-    onOpenCheckIn: () => void;
-    onOpenQuickCheckIn: () => void;
-    onEditCheckIn: (entry: MoodCheckIn) => void;
-    onEditDailyLog: (entry: DailyLog) => void;
-}
+import { formatShortDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { colors, radii, type } from "../../theme";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { SoftButton } from "../../ui/SoftButton";
+import { SoftCard } from "../../ui/SoftCard";
+import { DiaryScreenProps } from "./diary.types";
 
 export function DiaryScreen({
     dailyLogs,

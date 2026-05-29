@@ -2,22 +2,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import generateMonthDays from "../modules/cycle/calendar/generateMonthDays";
-import { monthTitle, toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
-import { colors, radii, type } from "../theme";
-import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
-import { DailyLog } from "../types/records.types";
-import { AppSettings } from "../types/settings.types";
-import { SoftButton } from "../ui/SoftButton";
-import { SoftCard } from "../ui/SoftCard";
-
-interface CalendarScreenProps {
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    dailyLogs: DailyLog[];
-    snapshot: CycleSnapshot;
-    onOpenCheckIn: () => void;
-}
+import generateMonthDays from "../../modules/cycle/calendar/generateMonthDays";
+import { monthTitle, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
+import { colors, radii, type } from "../../theme";
+import { CycleSnapshot, PhaseKey } from "../../types/cycle.types";
+import { SoftButton } from "../../ui/SoftButton";
+import { SoftCard } from "../../ui/SoftCard";
+import { CalendarScreenProps } from "./calendar.types";
 
 export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCheckIn }: CalendarScreenProps) {
     const [month, setMonth] = useState(new Date());
