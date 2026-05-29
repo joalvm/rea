@@ -71,10 +71,11 @@ $assetsConfig = @(
         MinimumPaddingPx = 24
         GenerateSvg = $true
         SvgThreshold = 0.48
-        SvgScale = 2
-        SvgTurdSize = 3
-        SvgAlphaMax = 0.95
-        SvgOptTolerance = 0.20
+        SvgScale = 1
+        SvgTurdSize = 6
+        SvgAlphaMax = 1.05
+        SvgOptTolerance = 0.35
+        SvgUnit = 4
     },
     @{
         Name = "logo-horizontal"
@@ -88,10 +89,11 @@ $assetsConfig = @(
         GenerateSvg = $true
         WebWidths = @(1200, 800, 400, 200)
         SvgThreshold = 0.50
-        SvgScale = 2
-        SvgTurdSize = 3
-        SvgAlphaMax = 0.95
-        SvgOptTolerance = 0.20
+        SvgScale = 1
+        SvgTurdSize = 6
+        SvgAlphaMax = 1.05
+        SvgOptTolerance = 0.35
+        SvgUnit = 4
     },
     @{
         Name = "logo-vertical"
@@ -105,10 +107,11 @@ $assetsConfig = @(
         GenerateSvg = $true
         WebHeights = @(1200, 800, 600)
         SvgThreshold = 0.50
-        SvgScale = 2
-        SvgTurdSize = 3
-        SvgAlphaMax = 0.95
-        SvgOptTolerance = 0.20
+        SvgScale = 1
+        SvgTurdSize = 6
+        SvgAlphaMax = 1.05
+        SvgOptTolerance = 0.35
+        SvgUnit = 4
     }
 )
 
@@ -505,30 +508,66 @@ function Save-FaviconIco {
     }
 }
 
-function Save-TraceInputBitmap {
+function Save-TraceMaskBitmap {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
-        [Parameter(Mandatory)][string]$Path
+        [Parameter(Mandatory)][string]$Path,
+        [int]$AlphaCutoff = 6
     )
 
     if (Test-Path -LiteralPath $Path) {
         Remove-Item -LiteralPath $Path -Force
     }
 
-    $flattened = New-Object System.Drawing.Bitmap $Source.Width, $Source.Height, ([System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
-    $graphics = [System.Drawing.Graphics]::FromImage($flattened)
+    $argb = Convert-ToArgbBitmap -Image $Source
+    $mask = New-Object System.Drawing.Bitmap $Source.Width, $Source.Height, ([System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
     try {
-        $graphics.Clear([System.Drawing.Color]::White)
-        $graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality
-        $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-        $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
-        $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
-        $graphics.DrawImage($Source, 0, 0, $Source.Width, $Source.Height)
-        $flattened.Save($Path, [System.Drawing.Imaging.ImageFormat]::Bmp)
+        $rect = New-Object System.Drawing.Rectangle 0, 0, $argb.Width, $argb.Height
+        $srcData = $argb.LockBits($rect, [System.Drawing.Imaging.ImageLockMode]::ReadOnly, $argb.PixelFormat)
+        $dstData = $mask.LockBits($rect, [System.Drawing.Imaging.ImageLockMode]::WriteOnly, $mask.PixelFormat)
+
+        try {
+            $srcStride = [Math]::Abs($srcData.Stride)
+            $dstStride = [Math]::Abs($dstData.Stride)
+            $srcBytes = $srcStride * $argb.Height
+            $dstBytes = $dstStride * $mask.Height
+            $srcBuffer = New-Object byte[] $srcBytes
+            $dstBuffer = New-Object byte[] $dstBytes
+
+            [Runtime.InteropServices.Marshal]::Copy($srcData.Scan0, $srcBuffer, 0, $srcBytes)
+
+            for ($y = 0; $y -lt $argb.Height; $y++) {
+                $srcRow = $y * $srcStride
+                $dstRow = $y * $dstStride
+
+                for ($x = 0; $x -lt $argb.Width; $x++) {
+                    $srcIndex = $srcRow + ($x * 4)
+                    $dstIndex = $dstRow + ($x * 3)
+                    $alpha = $srcBuffer[$srcIndex + 3]
+
+                    $value = 255
+                    if ($alpha -gt $AlphaCutoff) {
+                        $value = 255 - $alpha
+                    }
+
+                    $dstBuffer[$dstIndex] = [byte]$value
+                    $dstBuffer[$dstIndex + 1] = [byte]$value
+                    $dstBuffer[$dstIndex + 2] = [byte]$value
+                }
+            }
+
+            [Runtime.InteropServices.Marshal]::Copy($dstBuffer, 0, $dstData.Scan0, $dstBytes)
+        }
+        finally {
+            $argb.UnlockBits($srcData)
+            $mask.UnlockBits($dstData)
+        }
+
+        $mask.Save($Path, [System.Drawing.Imaging.ImageFormat]::Bmp)
     }
     finally {
-        $graphics.Dispose()
-        $flattened.Dispose()
+        $argb.Dispose()
+        $mask.Dispose()
     }
 }
 
@@ -578,7 +617,7 @@ function Get-PotraceDownloadInfo {
     return @{
         Architecture = $architecture
         FileName = $fileName
-        Url = "https://downloads.sourceforge.net/project/potrace/potrace/$($script:PotraceVersion)/$fileName"
+        Url = "https://potrace.sourceforge.net/download/$($script:PotraceVersion)/$fileName"
     }
 }
 
@@ -692,9 +731,22 @@ function Convert-SvgToCurrentColor {
         [string]$Id = ""
     )
 
-    $svg = $SvgContent -replace '\sfill="[^"]*"', ''
+    $svg = $SvgContent -replace '(?s)<\?xml[^>]*>\s*', ''
+    $svg = $svg -replace '(?s)<!DOCTYPE[^>]*>\s*', ''
+    $svg = $svg -replace '(?is)<metadata>.*?</metadata>', ''
+    $svg = $svg -replace '(?is)<title>.*?</title>', ''
+    $svg = $svg -replace '(?is)<desc>.*?</desc>', ''
+    $svg = $svg -replace '(?s)<!--.*?-->', ''
+    $svg = $svg -replace '\sversion="[^"]*"', ''
+    $svg = $svg -replace '\swidth="[^"]*"', ''
+    $svg = $svg -replace '\sheight="[^"]*"', ''
+    $svg = $svg -replace '\spreserveAspectRatio="[^"]*"', ''
+    $svg = $svg -replace '\sfill="[^"]*"', ''
     $svg = $svg -replace '\sstroke="[^"]*"', ''
     $svg = $svg -replace '\sfill-opacity="[^"]*"', ''
+    $svg = $svg -replace '\sstroke-width="[^"]*"', ''
+    $svg = $svg -replace '\sstroke-linecap="[^"]*"', ''
+    $svg = $svg -replace '\sstroke-linejoin="[^"]*"', ''
 
     $attrs = @('fill="currentColor"')
     if ($Id) {
@@ -702,7 +754,15 @@ function Convert-SvgToCurrentColor {
         $attrs += 'class="brand-asset"'
     }
 
-    return ($svg -replace '(<svg\b[^>]*)>', ("`$1 " + ($attrs -join " ") + ">"))
+    $svg = $svg -replace '(<svg\b[^>]*)>', ("`$1 " + ($attrs -join " ") + ">")
+    $svg = $svg -replace '\r?\n', ' '
+    $svg = $svg -replace '>\s+<', '><'
+    $svg = $svg -replace '\s{2,}', ' '
+    $svg = [regex]::Replace($svg, '(?<num>-?\d+)\.0+\b', '${num}')
+    $svg = [regex]::Replace($svg, '(?<int>-?\d+)\.(?<frac>\d*?[1-9])0+\b', '${int}.${frac}')
+    $svg = $svg.Trim()
+
+    return $svg
 }
 
 function Export-SvgAsset {
@@ -728,15 +788,15 @@ function Export-SvgAsset {
     $turdSize = [int](Get-ConfigValue -Config $Asset -Name "SvgTurdSize" -Default 3)
     $alphaMax = ConvertTo-InvariantString (Get-ConfigValue -Config $Asset -Name "SvgAlphaMax" -Default 1.0)
     $optTolerance = ConvertTo-InvariantString (Get-ConfigValue -Config $Asset -Name "SvgOptTolerance" -Default 0.20)
+    $unit = [int](Get-ConfigValue -Config $Asset -Name "SvgUnit" -Default 10)
 
     New-Directory $tempRoot | Out-Null
 
     try {
-        Save-TraceInputBitmap -Source $Source -Path $tempBmp
+        Save-TraceMaskBitmap -Source $Source -Path $tempBmp
 
         if ($Toolchain.MkbitmapPath) {
             $mkbitmapArgs = @(
-                "-x",
                 "-s", (ConvertTo-InvariantString $scale),
                 "-t", $threshold,
                 "-o", $tempPbm,
@@ -753,9 +813,11 @@ function Export-SvgAsset {
 
         $potraceArgs = @(
             "-s",
+            "--flat",
             "-t", (ConvertTo-InvariantString $turdSize),
             "-a", $alphaMax,
             "-O", $optTolerance,
+            "-u", (ConvertTo-InvariantString $unit),
             "-o", $tempSvg
         )
 
@@ -772,6 +834,7 @@ function Export-SvgAsset {
 
         $svgContent = Get-Content -LiteralPath $tempSvg -Raw
         $svgContent = Convert-SvgToCurrentColor -SvgContent $svgContent -Id $Asset.Name
+        New-Directory (Split-Path -Parent $OutputPath) | Out-Null
         Set-Content -LiteralPath $OutputPath -Value $svgContent -Encoding utf8 -NoNewline
 
         return $true
