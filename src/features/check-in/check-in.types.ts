@@ -8,10 +8,16 @@ import {
     PainImpact,
 } from "../../types/records.types";
 
+/** Modalidades soportadas por el registro. */
+export type CheckInMode = "daily" | "quick";
+
+/** Define qué entidades persiste el modal al guardar. */
+export type CheckInSaveTarget = "checkIn" | "dailyLog" | "both";
+
 /** Props del modal de check-in diario o puntual. */
 export interface CheckInModalProps {
     visible: boolean;
-    mode: "daily" | "quick";
+    mode: CheckInMode;
     momentType: MomentType;
     question: string;
     onClose: () => void;
@@ -19,7 +25,19 @@ export interface CheckInModalProps {
     onSave: (checkIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
     initialCheckIn?: MoodCheckIn | null;
     initialDailyLog?: DailyLog | null;
-    saveTarget?: "checkIn" | "dailyLog" | "both";
+    saveTarget?: CheckInSaveTarget;
+}
+
+/** Dependencias base para controlar el estado del modal. */
+export interface CheckInFormConfig {
+    mode: CheckInMode;
+    momentType: MomentType;
+    onClose: () => void;
+    onDelete?: (checkIn?: MoodCheckIn | null) => Promise<void>;
+    onSave: (checkIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
+    initialCheckIn?: MoodCheckIn | null;
+    initialDailyLog?: DailyLog | null;
+    saveTarget: CheckInSaveTarget;
 }
 
 /** Insumos para construir detalles opcionales de registro diario. */
