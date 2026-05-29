@@ -1,7 +1,12 @@
 import { Text, View } from "react-native";
 
 import styles from "../PatternsScreen.styles";
-import { MetricPillProps } from "../patterns.types";
+
+/** Props de una pill métrica usada en resúmenes de ciclo. */
+interface MetricPillProps {
+    label: string;
+    tone: "soft" | "watch";
+}
 
 /** Resume una métrica corta del ciclo en formato pill. */
 export default function MetricPill({ label, tone }: MetricPillProps) {

@@ -1,7 +1,12 @@
 import { Text, View } from "react-native";
 
 import styles from "../DiaryScreen.styles";
-import { DiaryMetricProps } from "../diary.types";
+
+/** Props de una métrica compacta en filas del diario. */
+interface DiaryMetricProps {
+    label: string;
+    value: number;
+}
 
 /** Muestra una métrica puntual del check-in en formato compacto. */
 export default function DiaryMetric({ label, value }: DiaryMetricProps) {

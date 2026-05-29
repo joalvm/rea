@@ -4,13 +4,24 @@ import { ScrollView, Text, View } from "react-native";
 import generateMonthDays from "../../modules/cycle/calendar/generateMonthDays";
 import { monthTitle, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
 import { colors } from "../../theme";
+import { Cycle, CycleSnapshot } from "../../types/cycle.types";
+import { DailyLog } from "../../types/records.types";
+import { AppSettings } from "../../types/settings.types";
 import { SoftButton } from "../../ui/SoftButton";
 import { SoftCard } from "../../ui/SoftCard";
 import styles from "./CalendarScreen.styles";
-import { CalendarScreenProps } from "./calendar.types";
 import CalendarLegend from "./components/CalendarLegend";
 import DayCell from "./components/DayCell";
 import MonthHeader from "./components/MonthHeader";
+
+/** Props del screen de calendario del ciclo. */
+interface CalendarScreenProps {
+    settings: AppSettings | null;
+    cycles: Cycle[];
+    dailyLogs: DailyLog[];
+    snapshot: CycleSnapshot;
+    onOpenCheckIn: () => void;
+}
 
 export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCheckIn }: CalendarScreenProps) {
     const [month, setMonth] = useState(new Date());

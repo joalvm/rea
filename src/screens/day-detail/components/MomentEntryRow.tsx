@@ -1,8 +1,13 @@
 import { Text, View } from "react-native";
 
 import styles from "../DayDetailScreen.styles";
-import { DayDetailMomentRowProps } from "../day-detail.types";
+import { MoodCheckIn } from "../../../types/records.types";
 import { momentLabel } from "../utils/dayDetailContent";
+
+/** Props de una fila de momento guardado dentro del detalle. */
+interface DayDetailMomentRowProps {
+    entry: MoodCheckIn;
+}
 
 /** Renderiza un momento guardado del día con su resumen rápido. */
 export default function MomentEntryRow({ entry }: DayDetailMomentRowProps) {

@@ -8,14 +8,23 @@ import { formatShortDate } from "../../modules/cycle/shared/cycleDate.utils";
 import { average } from "../../modules/cycle/shared/cycleMath.utils";
 import { summarizeTopSymptoms } from "../../modules/cycle/shared/cycleSummary.utils";
 import { colors } from "../../theme";
-import { MoodCheckIn } from "../../types/records.types";
+import { Cycle } from "../../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { AppSettings } from "../../types/settings.types";
 import { SoftCard } from "../../ui/SoftCard";
 import styles from "./PatternsScreen.styles";
 import AlertCard from "./components/AlertCard";
 import InsightRow from "./components/InsightRow";
 import MetricBar from "./components/MetricBar";
 import MetricPill from "./components/MetricPill";
-import { PatternsScreenProps } from "./patterns.types";
+
+/** Props del screen de patrones e insights. */
+interface PatternsScreenProps {
+    settings: AppSettings | null;
+    cycles: Cycle[];
+    moodCheckIns: MoodCheckIn[];
+    dailyLogs: DailyLog[];
+}
 
 const brandVertical = require("../../../assets/branding/logo-vertical.png");
 

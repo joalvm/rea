@@ -2,7 +2,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
 import styles from "../DayDetailScreen.styles";
-import { DayDetailTipRowProps } from "../day-detail.types";
+import { DayDetailCareTip } from "../day-detail.types";
+
+/** Props de una fila visual para consejos del día. */
+interface DayDetailTipRowProps {
+    tip: DayDetailCareTip;
+}
 
 /** Renderiza un consejo contextual del día con tono visual propio. */
 export default function CareTipRow({ tip }: DayDetailTipRowProps) {

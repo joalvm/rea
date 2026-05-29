@@ -6,7 +6,17 @@ import { IconButton } from "../../ui/IconButton";
 import { SoftCard } from "../../ui/SoftCard";
 import styles from "./SettingsModal.styles";
 import SettingRow from "./components/SettingRow";
-import { SettingsModalProps } from "./settings.types";
+
+import { NotificationMoment } from "../../types/notifications.types";
+
+/** Props del modal principal de ajustes. */
+interface SettingsModalProps {
+    visible: boolean;
+    moments: NotificationMoment[];
+    onClose: () => void;
+    onOpenSchedule: () => void;
+    onReset: () => Promise<void>;
+}
 
 export function SettingsModal({ visible, moments, onClose, onOpenSchedule, onReset }: SettingsModalProps) {
     const activeMoments = moments.filter((moment) => moment.enabled).length;

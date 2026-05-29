@@ -3,6 +3,9 @@ import { ScrollView, Text, View } from "react-native";
 
 import { toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
 import { colors } from "../../theme";
+import { Cycle, CycleSnapshot } from "../../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { AppSettings } from "../../types/settings.types";
 import { FloatingBubbles } from "../../ui/FloatingBubbles";
 import { IconButton } from "../../ui/IconButton";
 import { QuickActionCard } from "../../ui/QuickActionCard";
@@ -11,9 +14,23 @@ import { SoftCard } from "../../ui/SoftCard";
 import { WeekStrip } from "../../ui/WeekStrip";
 import styles from "./TodayScreen.styles";
 import MiniStat from "./components/MiniStat";
-import { TodayScreenProps } from "./today.types";
 import { buildTodaySummaries, buildWeekPages, getAlertTone, getCareTips, getHeroSupport } from "./utils/todayContent";
 import getHeroTheme from "./utils/todayHeroTheme";
+
+/** Props del screen principal de hoy. */
+interface TodayScreenProps {
+    settings: AppSettings | null;
+    cycles: Cycle[];
+    snapshot: CycleSnapshot;
+    moodCheckIns: MoodCheckIn[];
+    dailyLogs: DailyLog[];
+    onOpenCheckIn: () => void;
+    onOpenDay: (iso: string) => void;
+    onOpenQuickCheckIn: () => void;
+    onOpenCalendar: () => void;
+    onOpenPatterns: () => void;
+    onOpenSettings: () => void;
+}
 
 export function TodayScreen({
     settings,

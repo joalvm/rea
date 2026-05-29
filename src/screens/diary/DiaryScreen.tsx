@@ -1,11 +1,21 @@
 import { ScrollView, Text, View } from "react-native";
 
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
 import { SoftButton } from "../../ui/SoftButton";
 import styles from "./DiaryScreen.styles";
 import CheckInRow from "./components/CheckInRow";
 import DailyLogRow from "./components/DailyLogRow";
 import DiaryEmptyState from "./components/DiaryEmptyState";
-import { DiaryScreenProps } from "./diary.types";
+
+/** Props del screen de diario y edición de registros. */
+interface DiaryScreenProps {
+    dailyLogs: DailyLog[];
+    moodCheckIns: MoodCheckIn[];
+    onOpenCheckIn: () => void;
+    onOpenQuickCheckIn: () => void;
+    onEditCheckIn: (entry: MoodCheckIn) => void;
+    onEditDailyLog: (entry: DailyLog) => void;
+}
 
 export function DiaryScreen({
     dailyLogs,

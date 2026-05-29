@@ -1,6 +1,6 @@
 ---
 name: standards-rea-code-style
-description: "Use when writing or reviewing code in Rea, deciding exports, comments, typing, componentization, or React Native code style. Triggers: export default, comentarios descriptivos, types separados, componentizacion, hooks por ambito, estilo de codigo, claridad."
+description: "Use when writing or reviewing code in Rea, deciding exports, comments, typing, componentization, or React Native code style. Triggers: export default, comentarios descriptivos, props inline, types separados, componentizacion, hooks por ambito, estilo de codigo, claridad."
 ---
 
 # Rea Code Style
@@ -22,8 +22,11 @@ Orden y claridad en codigo.
 
 ## Tipos
 
-- Tipos e interfaces no triviales deben vivir en `*.types.ts`.
-- Props de componentes grandes o reutilizados deben salir del archivo principal cuando ya ensucian lectura.
+- Props de cualquier componente React viven en mismo archivo que su dueño.
+- Orden obligatorio en archivo React: imports, definicion de `Props`, componente, helpers locales si hacen falta.
+- `*.types.ts` no se usa para guardar un `FooProps` suelto.
+- Si un componente importa solo sus props desde un `*.types.ts` hermano, al tocarlo hay que devolver esas props al archivo del componente.
+- Tipos e interfaces no triviales que no sean props y si se compartan entre varios archivos del ambito pueden vivir en `*.types.ts`.
 - Tipos compartidos van a `src/types/`.
 - Tipos locales se quedan junto a su dueño.
 
@@ -34,6 +37,7 @@ Orden y claridad en codigo.
 - Subcomponentes visuales exclusivos van a `components/` del ambito.
 - Hooks van al ambito real del componente o pantalla que los usa.
 - Helpers puros salen del componente si no dependen de React.
+- Screen, feature, scene de `app/`, modal, card, row o bloque reutilizable define sus props justo arriba del componente.
 - No separar por moda. Separar cuando mejora lectura, mantenimiento o responsabilidad.
 
 ## React y React Native
@@ -44,6 +48,7 @@ Orden y claridad en codigo.
 - Estado derivado en render cuando sea suficiente.
 - Hooks con dueño claro.
 - Evitar componentes inline grandes dentro de otros componentes.
+- Archivo React debe poder leerse de arriba hacia abajo sin saltar a `*.types.ts` para entender props basicas.
 - Priorizar nombres semanticos y responsabilidades cortas.
 
 ## Comentarios
@@ -74,7 +79,9 @@ Orden y claridad en codigo.
 
 - principal export usa `export default` cuando corresponde
 - complementos innecesarios no se exportan
-- tipos no triviales estan separados
+- props React estan en mismo archivo y antes del componente
+- `*.types.ts` no se usa como deposito de props aisladas
+- tipos no-props compartidos estan separados cuando de verdad aportan claridad
 - comentarios explican proposito
 - componente principal se entiende leyendo arriba hacia abajo
 - helpers y hooks tienen dueño claro

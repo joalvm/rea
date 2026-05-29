@@ -1,7 +1,13 @@
 import { DimensionValue, Text, View } from "react-native";
 
 import styles from "../PatternsScreen.styles";
-import { MetricBarProps } from "../patterns.types";
+
+/** Props de una barra de promedio reciente. */
+interface MetricBarProps {
+    label: string;
+    value: number;
+    color: string;
+}
 
 /** Renderiza una barra horizontal con promedio reciente. */
 export default function MetricBar({ label, value, color }: MetricBarProps) {

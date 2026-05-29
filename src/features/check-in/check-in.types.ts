@@ -14,20 +14,6 @@ export type CheckInMode = "daily" | "quick";
 /** Define qué entidades persiste el modal al guardar. */
 export type CheckInSaveTarget = "checkIn" | "dailyLog" | "both";
 
-/** Props del modal de check-in diario o puntual. */
-export interface CheckInModalProps {
-    visible: boolean;
-    mode: CheckInMode;
-    momentType: MomentType;
-    question: string;
-    onClose: () => void;
-    onDelete?: (checkIn?: MoodCheckIn | null) => Promise<void>;
-    onSave: (checkIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
-    initialCheckIn?: MoodCheckIn | null;
-    initialDailyLog?: DailyLog | null;
-    saveTarget?: CheckInSaveTarget;
-}
-
 /** Dependencias base para controlar el estado del modal. */
 export interface CheckInFormConfig {
     mode: CheckInMode;

@@ -7,8 +7,24 @@ import CheckInDailySections from "./components/CheckInDailySections";
 import CheckInModalHeader from "./components/CheckInModalHeader";
 import CheckInMetricsSection from "./components/CheckInMetricsSection";
 import CheckInNoteSection from "./components/CheckInNoteSection";
-import { CheckInModalProps } from "./check-in.types";
+import { CheckInMode, CheckInSaveTarget } from "./check-in.types";
 import useCheckInForm from "./hooks/useCheckInForm";
+
+import { DailyLog, MomentType, MoodCheckIn } from "../../types/records.types";
+
+/** Props del modal de check-in diario o puntual. */
+interface CheckInModalProps {
+    visible: boolean;
+    mode: CheckInMode;
+    momentType: MomentType;
+    question: string;
+    onClose: () => void;
+    onDelete?: (checkIn?: MoodCheckIn | null) => Promise<void>;
+    onSave: (checkIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
+    initialCheckIn?: MoodCheckIn | null;
+    initialDailyLog?: DailyLog | null;
+    saveTarget?: CheckInSaveTarget;
+}
 
 export function CheckInModal({
     visible,

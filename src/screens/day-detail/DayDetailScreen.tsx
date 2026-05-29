@@ -4,12 +4,14 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
 import { toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
 import { colors } from "../../theme";
+import { Cycle } from "../../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { AppSettings } from "../../types/settings.types";
 import { SoftButton } from "../../ui/SoftButton";
 import { SoftCard } from "../../ui/SoftCard";
 import styles from "./DayDetailScreen.styles";
 import CareTipRow from "./components/CareTipRow";
 import MomentEntryRow from "./components/MomentEntryRow";
-import { DayDetailScreenProps } from "./day-detail.types";
 import {
     bleedingLabel,
     buildDailyLogDetails,
@@ -18,6 +20,17 @@ import {
     getCareTips,
     sourceLabel,
 } from "./utils/dayDetailContent";
+
+/** Props del screen de detalle por día seleccionado. */
+interface DayDetailScreenProps {
+    selectedIso: string;
+    settings: AppSettings | null;
+    cycles: Cycle[];
+    dailyLogs: DailyLog[];
+    moodCheckIns: MoodCheckIn[];
+    onBack: () => void;
+    onOpenDiary: () => void;
+}
 
 export function DayDetailScreen({
     selectedIso,

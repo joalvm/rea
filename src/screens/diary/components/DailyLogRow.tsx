@@ -3,10 +3,16 @@ import { Pressable, Text, View } from "react-native";
 
 import { formatShortDate } from "../../../modules/cycle/shared/cycleDate.utils";
 import { colors } from "../../../theme";
+import { DailyLog } from "../../../types/records.types";
 import { SoftCard } from "../../../ui/SoftCard";
 import styles from "../DiaryScreen.styles";
-import { DiaryDailyLogRowProps } from "../diary.types";
 import { bleedingLabel, buildDailyLogDetails, sourceLabel } from "../utils/diaryLabels";
+
+/** Props de una fila de día con registro completo. */
+interface DiaryDailyLogRowProps {
+    log: DailyLog;
+    onEdit: () => void;
+}
 
 /** Renderiza un día con registro observacional completo y su edición. */
 export default function DailyLogRow({ log, onEdit }: DiaryDailyLogRowProps) {

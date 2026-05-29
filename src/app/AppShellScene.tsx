@@ -3,7 +3,26 @@ import { DayDetailScreen } from "../screens/day-detail/DayDetailScreen";
 import { DiaryScreen } from "../screens/diary/DiaryScreen";
 import { PatternsScreen } from "../screens/patterns/PatternsScreen";
 import { TodayScreen } from "../screens/today/TodayScreen";
-import { AppShellSceneProps } from "./app-shell.types";
+import { AppData, TabKey } from "../types/app.types";
+import { CycleSnapshot } from "../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../types/records.types";
+
+/** Props mínimas para resolver escena activa desde shell principal. */
+interface AppShellSceneProps {
+    activeTab: TabKey;
+    data: AppData;
+    onCloseDay: () => void;
+    onEditDailyLog: (entry: DailyLog) => void;
+    onEditQuickCheckIn: (entry: MoodCheckIn) => void;
+    onOpenDailyCheckIn: () => void;
+    onOpenDay: (iso: string) => void;
+    onOpenDiaryTab: () => void;
+    onOpenQuickCheckInNow: () => void;
+    onOpenSettings: () => void;
+    onOpenTab: (tab: TabKey) => void;
+    selectedDayIso: string | null;
+    snapshot: CycleSnapshot;
+}
 
 /** Renderiza la escena principal según la pestaña activa y el día seleccionado. */
 export default function AppShellScene({

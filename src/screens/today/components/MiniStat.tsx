@@ -2,7 +2,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
 import styles from "../TodayScreen.styles";
-import { TodayMiniStatProps } from "../today.types";
+
+/** Props de una mini estadística del hero. */
+interface TodayMiniStatProps {
+    icon: string;
+    label: string;
+    value: string;
+    iconColor: string;
+    labelColor: string;
+    valueColor: string;
+}
 
 /** Muestra una mini estadística dentro del hero de Hoy. */
 export default function MiniStat({ icon, label, value, iconColor, labelColor, valueColor }: TodayMiniStatProps) {

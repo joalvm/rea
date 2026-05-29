@@ -8,7 +8,15 @@ import { SoftButton } from "../../ui/SoftButton";
 import { SoftCard } from "../../ui/SoftCard";
 import styles from "./ScheduleModal.styles";
 import MomentCard from "./components/MomentCard";
-import { ScheduleDayOption, ScheduleModalProps } from "./settings.types";
+import { ScheduleDayOption } from "./settings.types";
+
+/** Props del modal de horarios de recordatorio. */
+interface ScheduleModalProps {
+    visible: boolean;
+    moments: NotificationMoment[];
+    onClose: () => void;
+    onChange: (moments: NotificationMoment[]) => Promise<void>;
+}
 
 const DAYS: ScheduleDayOption[] = [
     { key: 1, label: "L" },

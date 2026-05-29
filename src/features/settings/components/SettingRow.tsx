@@ -3,7 +3,15 @@ import { Pressable, Text, View } from "react-native";
 
 import { colors } from "../../../theme";
 import styles from "../SettingsModal.styles";
-import { SettingRowProps } from "../settings.types";
+
+/** Props de una fila accionable dentro del modal de ajustes. */
+interface SettingRowProps {
+    title: string;
+    text: string;
+    meta: string;
+    icon: string;
+    onPress: () => void;
+}
 
 /** Renderiza una fila accionable dentro del modal de ajustes. */
 export default function SettingRow({ title, text, meta, icon, onPress }: SettingRowProps) {

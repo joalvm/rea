@@ -8,8 +8,15 @@ import OnboardingPrivacyStep from "./components/OnboardingPrivacyStep";
 import OnboardingRegularityStep from "./components/OnboardingRegularityStep";
 import OnboardingReminderStep from "./components/OnboardingReminderStep";
 import OnboardingRhythmStep from "./components/OnboardingRhythmStep";
-import { OnboardingScreenProps } from "./onboarding.types";
 import useOnboardingFlow from "./hooks/useOnboardingFlow";
+
+import { NotificationMoment } from "../../types/notifications.types";
+import { AppSettings } from "../../types/settings.types";
+
+/** Props del flujo inicial de onboarding. */
+interface OnboardingScreenProps {
+    onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
+}
 
 const brandHorizontal = require("../../../assets/branding/logo-horizontal.png");
 

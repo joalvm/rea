@@ -2,11 +2,17 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
 import { colors } from "../../../theme";
+import { MoodCheckIn } from "../../../types/records.types";
 import { SoftCard } from "../../../ui/SoftCard";
 import styles from "../DiaryScreen.styles";
-import { DiaryCheckInRowProps } from "../diary.types";
 import DiaryMetric from "./DiaryMetric";
 import { momentIcon, momentLabel } from "../utils/diaryLabels";
+
+/** Props de una fila de check-in puntual. */
+interface DiaryCheckInRowProps {
+    item: MoodCheckIn;
+    onEdit: () => void;
+}
 
 /** Renderiza un check-in puntual con métricas resumidas y edición. */
 export default function CheckInRow({ item, onEdit }: DiaryCheckInRowProps) {

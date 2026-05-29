@@ -1,10 +1,15 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
+import { EducationalAlert } from "../../../types/insights.types";
 import { SoftCard } from "../../../ui/SoftCard";
 import styles from "../PatternsScreen.styles";
-import { AlertCardProps } from "../patterns.types";
 import getAlertTone from "../utils/getAlertTone";
+
+/** Props de una alerta educativa visual. */
+interface AlertCardProps {
+    alert: EducationalAlert;
+}
 
 /** Renderiza una alerta educativa con su gravedad visual. */
 export default function AlertCard({ alert }: AlertCardProps) {

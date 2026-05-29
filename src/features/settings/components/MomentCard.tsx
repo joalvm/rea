@@ -2,11 +2,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Switch, Text, TextInput, View } from "react-native";
 
 import { colors } from "../../../theme";
+import { NotificationMoment } from "../../../types/notifications.types";
 import { SoftCard } from "../../../ui/SoftCard";
 import styles from "../ScheduleModal.styles";
-import { ScheduleMomentCardProps } from "../settings.types";
+import { ScheduleDayOption } from "../settings.types";
 import momentIcon from "../utils/momentIcon";
 import momentTone from "../utils/momentTone";
+
+/** Props de una tarjeta editable de horario. */
+interface ScheduleMomentCardProps {
+    moment: NotificationMoment;
+    days: ScheduleDayOption[];
+    onUpdate: (id: string, patch: Partial<NotificationMoment>) => void;
+    onRemove: (id: string) => void;
+}
 
 /** Renderiza y edita un horario individual de recordatorio. */
 export default function MomentCard({ moment, days, onUpdate, onRemove }: ScheduleMomentCardProps) {

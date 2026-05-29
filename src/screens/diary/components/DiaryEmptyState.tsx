@@ -4,7 +4,11 @@ import { Text } from "react-native";
 import { colors } from "../../../theme";
 import { SoftCard } from "../../../ui/SoftCard";
 import styles from "../DiaryScreen.styles";
-import { DiaryEmptyStateProps } from "../diary.types";
+
+/** Props de tarjeta de estado vacío del diario. */
+interface DiaryEmptyStateProps {
+    label?: string;
+}
 
 /** Renderiza un vacío amable cuando aún no hay historial suficiente. */
 export default function DiaryEmptyState({

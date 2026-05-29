@@ -34,6 +34,8 @@
 - Antes de refactors estructurales amplios, comparar proyecto con convenciones actuales de Expo y React Native.
 - No mover carpetas o entrypoints por inercia antigua; justificar cualquier desviacion del template y guias vigentes.
 - Corregir raiz del problema. Evitar parches cosmeticos si modelo de datos o flujo siguen debiles.
+- Props de componentes React viven con su dueño: mismo archivo, definicion primero, componente despues.
+- No crear `*.types.ts` solo para props de screen, feature, modal, row, card o componente compartido.
 - Si se toca versionado o build Android, mantener sincronizados `package.json`, `package-lock.json` y `app.json`.
 - Artefactos Android locales deben salir con nombre versionado visible y alias estable para ultimo build.
 
