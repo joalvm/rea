@@ -38,9 +38,9 @@ export const shadow = {
 export const type = {
     family: "System",
     display: 34,
-    title: 20,
-    subtitle: 16,
+    title: 22,
+    subtitle: 17,
     body: 15,
-    small: 11,
-    tiny: 9,
+    small: 12,
+    tiny: 10,
 };

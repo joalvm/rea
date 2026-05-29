@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image, ScrollView, Text, View } from "react-native";
 
-import brandVertical from "@assets/branding/logo-vertical.png";
+import logoHorizontal from "@assets/branding/logo-horizontal.png";
 import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
 import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
 import buildCycleSummaries from "@/modules/cycle/summaries/buildCycleSummaries";
@@ -49,7 +49,7 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={styles.header}>
-                <Image resizeMode="contain" source={brandVertical} style={styles.brandImage} />
+                <Image resizeMode="contain" source={logoHorizontal} style={styles.brandImage} />
                 <Text style={styles.kicker}>Patrones propios</Text>
                 <Text style={styles.title}>Cuaderno de señales.</Text>
                 <Text style={styles.subtitle}>

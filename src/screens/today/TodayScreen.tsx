@@ -16,6 +16,7 @@ import styles from "./TodayScreen.styles";
 import MiniStat from "./components/MiniStat";
 import { buildTodaySummaries, buildWeekPages, getAlertTone, getCareTips, getHeroSupport } from "./utils/todayContent";
 import getHeroTheme from "./utils/todayHeroTheme";
+import { HeroCurve } from "./components/HeroCurve";
 
 /** Props del screen principal de hoy. */
 interface TodayScreenProps {
@@ -56,8 +57,7 @@ export function TodayScreen({
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={[styles.hero, { backgroundColor: heroTheme.background }]}>
                 <FloatingBubbles palette={heroTheme.bubbleColors} />
-                <View pointerEvents="none" style={[styles.heroGlow, { backgroundColor: heroTheme.glow }]} />
-                <View pointerEvents="none" style={[styles.heroCurve, { backgroundColor: heroTheme.background }]} />
+                <HeroCurve backgroundColor={heroTheme.background} />
 
                 <View style={styles.heroContent}>
                     <View style={styles.topRow}>
@@ -161,7 +161,7 @@ export function TodayScreen({
 
             <View style={[styles.section, styles.firstSection]}>
                 <Text style={styles.sectionTitle}>Acciones rápidas</Text>
-                <ScrollView horizontal contentContainerStyle={styles.quickCards} showsHorizontalScrollIndicator={false}>
+                <ScrollView horizontal contentContainerStyle={styles.quickCards} showsHorizontalScrollIndicator={true}>
                     <QuickActionCard
                         hint="ahora"
                         icon="heart-pulse"

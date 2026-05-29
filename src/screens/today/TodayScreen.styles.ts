@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
     hero: {
         minHeight: 492,
-        marginBottom: 92,
+        marginBottom: 56,
         overflow: "visible",
     },
     heroGlow: {
@@ -20,21 +20,19 @@ const styles = StyleSheet.create({
         right: -18,
         top: 116,
     },
-    heroCurve: {
+    heroCurveContainer: {
         position: "absolute",
-        left: -36,
-        right: -36,
-        bottom: -78,
-        height: 124,
-        borderBottomLeftRadius: 150,
-        borderBottomRightRadius: 150,
-        zIndex: 1,
+        bottom: -59, // Empuja el SVG hacia abajo para que sobresalga del contenedor hero
+        left: 0,
+        right: 0,
+        height: 60,
+        zIndex: 1, // Asegúrate de que quede por encima del fondo pero detrás de las tarjetas si es necesario
     },
     heroContent: {
         zIndex: 2,
         paddingTop: 54,
         paddingHorizontal: 20,
-        paddingBottom: 12,
+        paddingBottom: 0,
     },
     topRow: {
         flexDirection: "row",
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
         gap: 12,
     },
     firstSection: {
-        marginTop: 4,
+        marginTop: 0,
     },
     sectionTitle: {
         color: colors.ink,
