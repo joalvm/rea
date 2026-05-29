@@ -7,7 +7,7 @@ import {
 } from "expo-notifications/build/Notifications.types";
 import { scheduleNotificationAsync } from "expo-notifications/build/scheduleNotificationAsync";
 
-import { NotificationMoment } from "./types";
+import { NotificationMoment } from "./types/notifications.types";
 
 setNotificationHandler({
     handleNotification: async () => ({

@@ -5,7 +5,9 @@ import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
 import { estimateCycle, parseIsoDate, toIsoDate } from "../cycle";
 import { colors, type } from "../theme";
-import { AppSettings, Cycle, DailyLog, MoodCheckIn, PhaseKey } from "../types";
+import { Cycle, PhaseKey } from "../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../types/records.types";
+import { AppSettings } from "../types/settings.types";
 
 interface DayDetailScreenProps {
     selectedIso: string;

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors, radii, type } from "../theme";
-import { TabKey } from "../types";
+import { TabKey } from "../types/app.types";
 
 const TABS: { key: TabKey; label: string; icon: string }[] = [
     { key: "today", label: "Hoy", icon: "calendar-heart" },

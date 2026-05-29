@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from "react-native";
 
 import { colors, radii, type } from "../theme";
-import { MomentType, NotificationMoment } from "../types";
+import { NotificationMoment } from "../types/notifications.types";
+import { MomentType } from "../types/records.types";
 import { SoftButton } from "./SoftButton";
 import { SoftCard } from "./SoftCard";
 

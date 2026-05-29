@@ -9,7 +9,8 @@ import { addDays, formatShortDate, toIsoDate } from "../cycle";
 import { createDefaultNotificationMoments } from "../notifications";
 import { GOALS, REGULARITY } from "../onboarding/options";
 import { colors, radii, type } from "../theme";
-import { AppSettings, Goal, NotificationMoment, Regularity } from "../types";
+import { NotificationMoment } from "../types/notifications.types";
+import { AppSettings, Goal, Regularity } from "../types/settings.types";
 
 const brandHorizontal = require("../../assets/branding/logo-horizontal.png");
 

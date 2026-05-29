@@ -6,7 +6,9 @@ import { SoftCard } from "../components/SoftCard";
 import { SoftButton } from "../components/SoftButton";
 import { generateMonthDays, monthTitle, toIsoDate } from "../cycle";
 import { colors, radii, type } from "../theme";
-import { AppSettings, Cycle, CycleSnapshot, DailyLog, PhaseKey } from "../types";
+import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
+import { DailyLog } from "../types/records.types";
+import { AppSettings } from "../types/settings.types";
 
 interface CalendarScreenProps {
     settings: AppSettings | null;

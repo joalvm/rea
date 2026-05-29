@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { colors, radii, type } from "../theme";
-import { NotificationMoment } from "../types";
+import { NotificationMoment } from "../types/notifications.types";
 import { IconButton } from "./IconButton";
 import { SoftCard } from "./SoftCard";
 

@@ -34,7 +34,10 @@ import {
     upsertMoodCheckIn,
 } from "./src/storage";
 import { colors } from "./src/theme";
-import { AppData, AppSettings, DailyLog, MomentType, MoodCheckIn, NotificationMoment, TabKey } from "./src/types";
+import { AppData, TabKey } from "./src/types/app.types";
+import { NotificationMoment } from "./src/types/notifications.types";
+import { DailyLog, MomentType, MoodCheckIn } from "./src/types/records.types";
+import { AppSettings } from "./src/types/settings.types";
 
 const initialData: AppData = {
     settings: null,

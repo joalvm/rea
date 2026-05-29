@@ -9,7 +9,10 @@ import { SoftCard } from "../components/SoftCard";
 import { WeekStrip, WeekStripDay } from "../components/WeekStrip";
 import { addDays, buildEducationalAlerts, buildPatternInsights, estimateCycle, toIsoDate } from "../cycle";
 import { colors, radii, shadow, type } from "../theme";
-import { AppSettings, Cycle, CycleSnapshot, DailyLog, EducationalAlert, MoodCheckIn, PhaseKey } from "../types";
+import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
+import { EducationalAlert } from "../types/insights.types";
+import { DailyLog, MoodCheckIn } from "../types/records.types";
+import { AppSettings } from "../types/settings.types";
 
 interface TodayScreenProps {
     settings: AppSettings | null;

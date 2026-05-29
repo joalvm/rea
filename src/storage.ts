@@ -1,6 +1,10 @@
 import * as SQLite from "expo-sqlite";
 
-import { AppData, AppSettings, Cycle, DailyLog, MoodCheckIn, NotificationMoment } from "./types";
+import { AppData } from "./types/app.types";
+import { Cycle } from "./types/cycle.types";
+import { NotificationMoment } from "./types/notifications.types";
+import { DailyLog, MoodCheckIn } from "./types/records.types";
+import { AppSettings } from "./types/settings.types";
 
 let database: SQLite.SQLiteDatabase | null = null;
 

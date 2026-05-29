@@ -1,15 +1,7 @@
-import {
-    AppSettings,
-    Cycle,
-    CycleSnapshot,
-    CycleSummary,
-    DailyLog,
-    EducationalAlert,
-    MoodCheckIn,
-    PatternInsight,
-    PhaseKey,
-    PredictionConfidence,
-} from "./types";
+import { Cycle, CycleSnapshot, CycleSummary, PhaseKey, PredictionConfidence } from "./types/cycle.types";
+import { EducationalAlert, PatternInsight } from "./types/insights.types";
+import { DailyLog, MoodCheckIn } from "./types/records.types";
+import { AppSettings } from "./types/settings.types";
 
 const WEEKDAYS = ["D", "L", "M", "M", "J", "V", "S"];
 

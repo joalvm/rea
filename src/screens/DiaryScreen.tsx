@@ -5,7 +5,7 @@ import { SoftButton } from "../components/SoftButton";
 import { SoftCard } from "../components/SoftCard";
 import { formatShortDate } from "../cycle";
 import { colors, radii, type } from "../theme";
-import { DailyLog, MoodCheckIn } from "../types";
+import { DailyLog, MoodCheckIn } from "../types/records.types";
 
 interface DiaryScreenProps {
     dailyLogs: DailyLog[];

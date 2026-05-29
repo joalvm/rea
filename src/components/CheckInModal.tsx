@@ -16,7 +16,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { toIsoDate } from "../cycle";
 import { colors, radii, type } from "../theme";
-import { BleedingLevel, ClotSize, DailyLog, MedicationRelief, MomentType, MoodCheckIn, PainImpact } from "../types";
+import { BleedingLevel, ClotSize, DailyLog, MedicationRelief, MomentType, MoodCheckIn, PainImpact } from "../types/records.types";
 import { MetricScale } from "./MetricScale";
 import { SoftButton } from "./SoftButton";
 

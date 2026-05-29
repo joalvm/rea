@@ -11,7 +11,10 @@ import {
     summarizeTopSymptoms,
 } from "../cycle";
 import { colors, radii, type } from "../theme";
-import { AppSettings, Cycle, DailyLog, EducationalAlert, MoodCheckIn, PatternInsight } from "../types";
+import { Cycle } from "../types/cycle.types";
+import { EducationalAlert, PatternInsight } from "../types/insights.types";
+import { DailyLog, MoodCheckIn } from "../types/records.types";
+import { AppSettings } from "../types/settings.types";
 
 const brandVertical = require("../../assets/branding/logo-vertical.png");
 
