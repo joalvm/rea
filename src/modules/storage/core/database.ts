@@ -5,7 +5,7 @@ let database: SQLite.SQLiteDatabase | null = null;
 /** Abre y reutiliza conexión SQLite local de app. */
 export default function db() {
     if (!database) {
-        database = SQLite.openDatabaseSync("mensu.db");
+        database = SQLite.openDatabaseSync("rea.db");
     }
 
     return database;
