@@ -1,7 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { addDays, buildEducationalAlerts, buildPatternInsights, estimateCycle, toIsoDate } from "../cycle";
+import buildEducationalAlerts from "../modules/cycle/alerts/buildEducationalAlerts";
+import estimateCycle from "../modules/cycle/estimation/estimateCycle";
+import buildPatternInsights from "../modules/cycle/insights/buildPatternInsights";
+import { addDays, toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
 import { colors, radii, shadow, type } from "../theme";
 import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
 import { EducationalAlert } from "../types/insights.types";

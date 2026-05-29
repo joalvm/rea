@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { formatShortDate } from "../cycle";
+import { formatShortDate } from "../modules/cycle/shared/cycleDate.utils";
 import { colors, radii, type } from "../theme";
 import { DailyLog, MoodCheckIn } from "../types/records.types";
 import { SoftButton } from "../ui/SoftButton";

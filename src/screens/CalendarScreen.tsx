@@ -2,7 +2,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { generateMonthDays, monthTitle, toIsoDate } from "../cycle";
+import generateMonthDays from "../modules/cycle/calendar/generateMonthDays";
+import { monthTitle, toIsoDate } from "../modules/cycle/shared/cycleDate.utils";
 import { colors, radii, type } from "../theme";
 import { Cycle, CycleSnapshot, PhaseKey } from "../types/cycle.types";
 import { DailyLog } from "../types/records.types";

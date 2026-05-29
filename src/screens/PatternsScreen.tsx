@@ -1,14 +1,12 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DimensionValue, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import {
-    average,
-    buildCycleSummaries,
-    buildEducationalAlerts,
-    buildPatternInsights,
-    formatShortDate,
-    summarizeTopSymptoms,
-} from "../cycle";
+import buildEducationalAlerts from "../modules/cycle/alerts/buildEducationalAlerts";
+import buildPatternInsights from "../modules/cycle/insights/buildPatternInsights";
+import buildCycleSummaries from "../modules/cycle/summaries/buildCycleSummaries";
+import { formatShortDate } from "../modules/cycle/shared/cycleDate.utils";
+import { average } from "../modules/cycle/shared/cycleMath.utils";
+import { summarizeTopSymptoms } from "../modules/cycle/shared/cycleSummary.utils";
 import { colors, radii, type } from "../theme";
 import { Cycle } from "../types/cycle.types";
 import { EducationalAlert, PatternInsight } from "../types/insights.types";

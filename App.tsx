@@ -8,30 +8,26 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { CheckInModal } from "./src/components/CheckInModal";
 import { ScheduleModal } from "./src/components/ScheduleModal";
 import { SettingsModal } from "./src/components/SettingsModal";
-import { estimateCycle } from "./src/cycle";
-import {
-    clearScheduledNotifications,
-    createDefaultNotificationMoments,
-    rescheduleNotificationMoments,
-} from "./src/notifications";
+import estimateCycle from "./src/modules/cycle/estimation/estimateCycle";
+import createDefaultNotificationMoments from "./src/modules/notifications/defaults/createDefaultNotificationMoments";
+import clearScheduledNotifications from "./src/modules/notifications/scheduler/clearScheduledNotifications";
+import registerNotificationHandler from "./src/modules/notifications/scheduler/registerNotificationHandler";
+import rescheduleNotificationMoments from "./src/modules/notifications/scheduler/rescheduleNotificationMoments";
 import { CalendarScreen } from "./src/screens/CalendarScreen";
 import { DayDetailScreen } from "./src/screens/DayDetailScreen";
 import { DiaryScreen } from "./src/screens/DiaryScreen";
 import { OnboardingScreen } from "./src/screens/OnboardingScreen";
 import { PatternsScreen } from "./src/screens/PatternsScreen";
 import { TodayScreen } from "./src/screens/TodayScreen";
-import {
-    addCycle,
-    deleteMoodCheckIn,
-    initializeDatabase,
-    loadAppData,
-    resetAppData,
-    saveNotificationMoments,
-    saveSettings,
-    syncObservedCyclesFromDailyLogs,
-    upsertDailyLog,
-    upsertMoodCheckIn,
-} from "./src/storage";
+import initializeDatabase from "./src/modules/storage/core/schema";
+import { addCycle } from "./src/modules/storage/repositories/cycles.repository";
+import { upsertDailyLog } from "./src/modules/storage/repositories/dailyLogs.repository";
+import { deleteMoodCheckIn, upsertMoodCheckIn } from "./src/modules/storage/repositories/moodCheckIns.repository";
+import { saveNotificationMoments } from "./src/modules/storage/repositories/notificationMoments.repository";
+import { saveSettings } from "./src/modules/storage/repositories/settings.repository";
+import loadAppData from "./src/modules/storage/services/loadAppData";
+import resetAppData from "./src/modules/storage/services/resetAppData";
+import syncObservedCyclesFromDailyLogs from "./src/modules/storage/services/syncObservedCycles";
 import { colors } from "./src/theme";
 import { BottomTabs } from "./src/ui/BottomTabs";
 import { AppData, TabKey } from "./src/types/app.types";
@@ -57,6 +53,8 @@ interface CheckInState {
     initialCheckIn: MoodCheckIn | null;
     initialDailyLog: DailyLog | null;
 }
+
+registerNotificationHandler();
 
 export default function App() {
     return (
