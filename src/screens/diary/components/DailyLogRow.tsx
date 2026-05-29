@@ -1,10 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { formatShortDate } from "../../../modules/cycle/shared/cycleDate.utils";
-import { colors } from "../../../theme";
-import { DailyLog } from "../../../types/records.types";
-import { SoftCard } from "../../../ui/SoftCard";
+import { formatShortDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
+import { DailyLog } from "@/types/records.types";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "../DiaryScreen.styles";
 import { bleedingLabel, buildDailyLogDetails, sourceLabel } from "../utils/diaryLabels";
 

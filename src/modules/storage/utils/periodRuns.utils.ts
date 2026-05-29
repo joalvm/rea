@@ -1,4 +1,4 @@
-import { DailyLog } from "../../../types/records.types";
+import { DailyLog } from "@/types/records.types";
 
 /** Reconstruye corridas observadas de sangrado desde logs diarios. */
 export function buildObservedPeriodRuns(dailyLogs: DailyLog[]) {

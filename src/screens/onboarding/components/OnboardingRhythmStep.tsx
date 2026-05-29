@@ -1,5 +1,5 @@
-import { NumberPicker } from "../../../ui/NumberPicker";
-import { StepShell } from "../../../ui/StepShell";
+import { NumberPicker } from "@/ui/NumberPicker";
+import { StepShell } from "@/ui/StepShell";
 
 interface OnboardingRhythmStepProps {
     cycleLength: number;

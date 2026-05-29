@@ -1,4 +1,4 @@
-import { NotificationMoment } from "../../../types/notifications.types";
+import { NotificationMoment } from "@/types/notifications.types";
 
 /** Devuelve copy breve según momento configurado para recordatorio. */
 export default function notificationBody(moment: NotificationMoment): string {

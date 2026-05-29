@@ -1,4 +1,4 @@
-import { NotificationMoment } from "../../../types/notifications.types";
+import { NotificationMoment } from "@/types/notifications.types";
 
 /** Crea horarios base cuando usuaria aun no configuró recordatorios. */
 export default function createDefaultNotificationMoments(): NotificationMoment[] {

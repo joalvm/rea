@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { PatternInsight } from "../../../types/insights.types";
+import { colors } from "@/theme";
+import { PatternInsight } from "@/types/insights.types";
 import styles from "../PatternsScreen.styles";
 
 /** Props de una fila de insight detectado. */

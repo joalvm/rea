@@ -1,4 +1,4 @@
-import { CycleSnapshot } from "../../../types/cycle.types";
+import { CycleSnapshot } from "@/types/cycle.types";
 
 import { daysBetween, parseIsoDate, toIsoDate } from "../shared/cycleDate.utils";
 

@@ -23,7 +23,7 @@ Orden y claridad en codigo.
 ## Tipos
 
 - Props de cualquier componente React viven en mismo archivo que su dueño.
-- Orden obligatorio en archivo React: imports, definicion de `Props`, componente, helpers locales si hacen falta.
+- Orden obligatorio en archivo React: imports, requires excepcionales, definicion de `Props`, componente, helpers locales si hacen falta.
 - `*.types.ts` no se usa para guardar un `FooProps` suelto.
 - Si un componente importa solo sus props desde un `*.types.ts` hermano, al tocarlo hay que devolver esas props al archivo del componente.
 - Tipos e interfaces no triviales que no sean props y si se compartan entre varios archivos del ambito pueden vivir en `*.types.ts`.
@@ -43,12 +43,16 @@ Orden y claridad en codigo.
 ## React y React Native
 
 - Seguir imports directos y rutas estaticas.
+- Todos los `import` y `require` van arriba del archivo. Nunca dejar interfaces, tipos o constantes arriba de un asset importado.
+- Si existe alias `@/` o `@assets/`, preferirlo cuando la ruta salga varios niveles del ambito local.
+- Mantener rutas relativas para vecino inmediato del mismo ambito cuando eso lea mejor.
 - No usar barrels.
 - No mover derivaciones simples a effects.
 - Estado derivado en render cuando sea suficiente.
 - Hooks con dueño claro.
 - Evitar componentes inline grandes dentro de otros componentes.
 - Archivo React debe poder leerse de arriba hacia abajo sin saltar a `*.types.ts` para entender props basicas.
+- Assets estaticos deben importarse con `import` tipado. `require(...)` queda como excepcion, no como camino normal.
 - Priorizar nombres semanticos y responsabilidades cortas.
 
 ## Comentarios
@@ -82,6 +86,8 @@ Orden y claridad en codigo.
 - props React estan en mismo archivo y antes del componente
 - `*.types.ts` no se usa como deposito de props aisladas
 - tipos no-props compartidos estan separados cuando de verdad aportan claridad
+- imports arriba, `require` excepcional debajo de imports si de verdad hace falta
+- no hay `../../../` evitable cuando existe alias del repo
 - comentarios explican proposito
 - componente principal se entiende leyendo arriba hacia abajo
 - helpers y hooks tienen dueño claro

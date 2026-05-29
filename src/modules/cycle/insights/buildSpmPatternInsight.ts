@@ -1,7 +1,7 @@
-import { Cycle } from "../../../types/cycle.types";
-import { PatternInsight } from "../../../types/insights.types";
-import { DailyLog } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
+import { Cycle } from "@/types/cycle.types";
+import { PatternInsight } from "@/types/insights.types";
+import { DailyLog } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
 import { getObservedPeriodRuns } from "../shared/cycleObservedData.utils";

@@ -1,17 +1,17 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
 
-import { toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
-import { colors } from "../../theme";
-import { Cycle, CycleSnapshot } from "../../types/cycle.types";
-import { DailyLog, MoodCheckIn } from "../../types/records.types";
-import { AppSettings } from "../../types/settings.types";
-import { FloatingBubbles } from "../../ui/FloatingBubbles";
-import { IconButton } from "../../ui/IconButton";
-import { QuickActionCard } from "../../ui/QuickActionCard";
-import { SoftButton } from "../../ui/SoftButton";
-import { SoftCard } from "../../ui/SoftCard";
-import { WeekStrip } from "../../ui/WeekStrip";
+import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
+import { Cycle, CycleSnapshot } from "@/types/cycle.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
+import { FloatingBubbles } from "@/ui/FloatingBubbles";
+import { IconButton } from "@/ui/IconButton";
+import { QuickActionCard } from "@/ui/QuickActionCard";
+import { SoftButton } from "@/ui/SoftButton";
+import { SoftCard } from "@/ui/SoftCard";
+import { WeekStrip } from "@/ui/WeekStrip";
 import styles from "./TodayScreen.styles";
 import MiniStat from "./components/MiniStat";
 import { buildTodaySummaries, buildWeekPages, getAlertTone, getCareTips, getHeroSupport } from "./utils/todayContent";

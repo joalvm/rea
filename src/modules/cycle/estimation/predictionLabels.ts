@@ -1,5 +1,5 @@
-import { CycleSnapshot, PhaseKey, PredictionConfidence } from "../../../types/cycle.types";
-import { AppSettings } from "../../../types/settings.types";
+import { CycleSnapshot, PhaseKey, PredictionConfidence } from "@/types/cycle.types";
+import { AppSettings } from "@/types/settings.types";
 
 /** Devuelve label legible para origen de snapshot. */
 export function getSourceLabel(source: CycleSnapshot["source"]) {

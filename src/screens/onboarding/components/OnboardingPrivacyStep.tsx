@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 
-import { StepShell } from "../../../ui/StepShell";
+import { StepShell } from "@/ui/StepShell";
 import styles from "../OnboardingScreen.styles";
 
 /** Muestra la introducción privada y local del onboarding. */

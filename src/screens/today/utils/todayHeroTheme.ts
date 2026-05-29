@@ -1,5 +1,5 @@
-import { colors } from "../../../theme";
-import { PhaseKey } from "../../../types/cycle.types";
+import { colors } from "@/theme";
+import { PhaseKey } from "@/types/cycle.types";
 import { TodayHeroTheme } from "../today.types";
 
 /** Devuelve paleta editorial del hero según fase actual. */

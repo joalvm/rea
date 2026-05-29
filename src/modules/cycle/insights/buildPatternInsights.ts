@@ -1,7 +1,7 @@
-import { Cycle, PhaseKey } from "../../../types/cycle.types";
-import { PatternInsight } from "../../../types/insights.types";
-import { DailyLog, MoodCheckIn } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
+import { Cycle, PhaseKey } from "@/types/cycle.types";
+import { PatternInsight } from "@/types/insights.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
 import { phaseLabelWithArticle } from "../estimation/phaseLabels";

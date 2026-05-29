@@ -1,6 +1,6 @@
-import { Cycle, CycleSnapshot, PhaseKey } from "../../../types/cycle.types";
-import { DailyLog } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
+import { Cycle, CycleSnapshot, PhaseKey } from "@/types/cycle.types";
+import { DailyLog } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
 import { toIsoDate } from "../shared/cycleDate.utils";

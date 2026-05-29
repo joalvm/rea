@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { Regularity } from "../../../types/settings.types";
-import { StepShell } from "../../../ui/StepShell";
+import { colors } from "@/theme";
+import { Regularity } from "@/types/settings.types";
+import { StepShell } from "@/ui/StepShell";
 import styles from "../OnboardingScreen.styles";
 import { REGULARITY } from "../constants/onboardingOptions";
 

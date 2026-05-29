@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { SoftButton } from "../../../ui/SoftButton";
+import { colors } from "@/theme";
+import { SoftButton } from "@/ui/SoftButton";
 import styles from "../CheckInModal.styles";
 
 interface CheckInActionsRowProps {

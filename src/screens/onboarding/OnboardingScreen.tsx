@@ -1,6 +1,9 @@
 import { Image, ScrollView, Text, View } from "react-native";
 
-import { SoftButton } from "../../ui/SoftButton";
+import brandHorizontal from "@assets/branding/logo-horizontal.png";
+import { NotificationMoment } from "@/types/notifications.types";
+import { AppSettings } from "@/types/settings.types";
+import { SoftButton } from "@/ui/SoftButton";
 import styles from "./OnboardingScreen.styles";
 import OnboardingGoalStep from "./components/OnboardingGoalStep";
 import OnboardingLastPeriodStep from "./components/OnboardingLastPeriodStep";
@@ -10,15 +13,10 @@ import OnboardingReminderStep from "./components/OnboardingReminderStep";
 import OnboardingRhythmStep from "./components/OnboardingRhythmStep";
 import useOnboardingFlow from "./hooks/useOnboardingFlow";
 
-import { NotificationMoment } from "../../types/notifications.types";
-import { AppSettings } from "../../types/settings.types";
-
 /** Props del flujo inicial de onboarding. */
 interface OnboardingScreenProps {
     onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
 }
-
-const brandHorizontal = require("../../../assets/branding/logo-horizontal.png");
 
 export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
     const {

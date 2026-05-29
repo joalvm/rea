@@ -20,9 +20,12 @@ Orden y claridad. Cada archivo debe tener dueño claro.
 - `ui/` es plano. Solo archivos.
 - `modules/` se separa por carpetas de contexto: `cycle/`, `storage/`, `notifications/`.
 - Dentro de cada modulo solo crear subcarpetas si hay 2 o mas archivos del mismo tipo o un subdominio claro.
+- Alias del repo: `@/` para `src/` y `@assets/` para `assets/`.
 - Tipos compartidos van a `src/types/`.
 - Props de componentes React viven en mismo archivo que su dueño.
 - Orden obligatorio en componentes React: definicion de `Props` primero, componente despues.
+- `import` va antes que `require`. Ambos viven arriba del archivo.
+- No dejar interfaces, tipos o constantes por encima de un asset importado.
 - No crear `*.types.ts` para guardar solo props de un componente.
 - Tipos locales no-props compartidos por varios archivos del mismo ambito pueden vivir en `*.types.ts`.
 - Si un archivo de tipos local queda con solo `FooProps`, ese tipo debe volver al archivo del componente.
@@ -71,6 +74,8 @@ Orden y claridad. Cada archivo debe tener dueño claro.
 - Si algo renderiza UI de negocio reusable, va a `features/`.
 - Si algo solo sirve a una pantalla, vive dentro de esa pantalla.
 - Si algo no toca React, evaluar `modules/` o `utils/` del ambito.
+- Si import sale 3 o mas niveles del ambito, evaluar alias antes de dejar `../../../`.
+- Assets de `assets/` deben entrar por `@assets/` cuando el repo ya tenga alias disponible.
 - Si tipo solo describe props de un componente, no merece `*.types.ts`; vive junto al componente.
 - Si tipo local lo usan varios archivos del mismo ambito y no es props, evaluar `*.types.ts` del ambito.
 - Si archivo mezcla demasiadas responsabilidades, dividir por dueño real.

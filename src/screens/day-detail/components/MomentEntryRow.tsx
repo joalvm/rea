@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 
 import styles from "../DayDetailScreen.styles";
-import { MoodCheckIn } from "../../../types/records.types";
+import { MoodCheckIn } from "@/types/records.types";
 import { momentLabel } from "../utils/dayDetailContent";
 
 /** Props de una fila de momento guardado dentro del detalle. */

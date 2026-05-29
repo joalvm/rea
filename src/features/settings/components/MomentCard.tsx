@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Switch, Text, TextInput, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { NotificationMoment } from "../../../types/notifications.types";
-import { SoftCard } from "../../../ui/SoftCard";
+import { colors } from "@/theme";
+import { NotificationMoment } from "@/types/notifications.types";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "../ScheduleModal.styles";
 import { ScheduleDayOption } from "../settings.types";
 import momentIcon from "../utils/momentIcon";

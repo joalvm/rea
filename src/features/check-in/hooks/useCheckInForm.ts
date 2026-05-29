@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { Alert } from "react-native";
 
-import { toIsoDate } from "../../../modules/cycle/shared/cycleDate.utils";
-import {
-    BleedingLevel,
-    ClotSize,
-    DailyLog,
-    MedicationRelief,
-    MoodCheckIn,
-    PainImpact,
-} from "../../../types/records.types";
+import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { BleedingLevel, ClotSize, DailyLog, MedicationRelief, MoodCheckIn, PainImpact } from "@/types/records.types";
 import { CheckInFormConfig } from "../check-in.types";
 import buildDailyLogDetails from "../utils/buildDailyLogDetails";
 

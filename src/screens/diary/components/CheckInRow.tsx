@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { MoodCheckIn } from "../../../types/records.types";
-import { SoftCard } from "../../../ui/SoftCard";
+import { colors } from "@/theme";
+import { MoodCheckIn } from "@/types/records.types";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "../DiaryScreen.styles";
 import DiaryMetric from "./DiaryMetric";
 import { momentIcon, momentLabel } from "../utils/diaryLabels";

@@ -5,7 +5,7 @@ import {
 } from "expo-notifications/build/Notifications.types";
 import { scheduleNotificationAsync } from "expo-notifications/build/scheduleNotificationAsync";
 
-import { NotificationMoment } from "../../../types/notifications.types";
+import { NotificationMoment } from "@/types/notifications.types";
 import ensureNotificationPermission from "../permissions/ensureNotificationPermission";
 import notificationBody from "../utils/notificationBody";
 

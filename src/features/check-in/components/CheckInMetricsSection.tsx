@@ -1,4 +1,4 @@
-import { MetricScale } from "../../../ui/MetricScale";
+import { MetricScale } from "@/ui/MetricScale";
 
 interface CheckInMetricsSectionProps {
     mood: number;

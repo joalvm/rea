@@ -1,7 +1,7 @@
-import { parseIsoDate } from "../../../modules/cycle/shared/cycleDate.utils";
-import { colors } from "../../../theme";
-import { PhaseKey } from "../../../types/cycle.types";
-import { DailyLog, MoodCheckIn } from "../../../types/records.types";
+import { parseIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
+import { PhaseKey } from "@/types/cycle.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { DayDetailCareTip } from "../day-detail.types";
 
 /** Resume el día seleccionado según registros y contexto temporal. */

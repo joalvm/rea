@@ -1,4 +1,4 @@
-import { MomentType } from "../../../types/records.types";
+import { MomentType } from "@/types/records.types";
 
 /** Devuelve icono visual según tipo de momento. */
 export default function momentIcon(type: MomentType) {

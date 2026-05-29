@@ -1,6 +1,6 @@
-import { Cycle, CycleSnapshot } from "../../../types/cycle.types";
-import { DailyLog } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
+import { Cycle, CycleSnapshot } from "@/types/cycle.types";
+import { DailyLog } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 import buildWeek from "../calendar/buildWeek";
 import {

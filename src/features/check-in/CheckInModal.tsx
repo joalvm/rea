@@ -10,7 +10,7 @@ import CheckInNoteSection from "./components/CheckInNoteSection";
 import { CheckInMode, CheckInSaveTarget } from "./check-in.types";
 import useCheckInForm from "./hooks/useCheckInForm";
 
-import { DailyLog, MomentType, MoodCheckIn } from "../../types/records.types";
+import { DailyLog, MomentType, MoodCheckIn } from "@/types/records.types";
 
 /** Props del modal de check-in diario o puntual. */
 interface CheckInModalProps {

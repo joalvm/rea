@@ -1,4 +1,4 @@
-import { Cycle } from "../../../types/cycle.types";
+import { Cycle } from "@/types/cycle.types";
 
 import db from "../core/database";
 

@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import generateMonthDays from "../../modules/cycle/calendar/generateMonthDays";
-import { monthTitle, toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
-import { colors } from "../../theme";
-import { Cycle, CycleSnapshot } from "../../types/cycle.types";
-import { DailyLog } from "../../types/records.types";
-import { AppSettings } from "../../types/settings.types";
-import { SoftButton } from "../../ui/SoftButton";
-import { SoftCard } from "../../ui/SoftCard";
+import generateMonthDays from "@/modules/cycle/calendar/generateMonthDays";
+import { monthTitle, toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
+import { Cycle, CycleSnapshot } from "@/types/cycle.types";
+import { DailyLog } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
+import { SoftButton } from "@/ui/SoftButton";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "./CalendarScreen.styles";
 import CalendarLegend from "./components/CalendarLegend";
 import DayCell from "./components/DayCell";

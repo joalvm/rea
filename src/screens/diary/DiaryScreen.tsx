@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from "react-native";
 
-import { DailyLog, MoodCheckIn } from "../../types/records.types";
-import { SoftButton } from "../../ui/SoftButton";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { SoftButton } from "@/ui/SoftButton";
 import styles from "./DiaryScreen.styles";
 import CheckInRow from "./components/CheckInRow";
 import DailyLogRow from "./components/DailyLogRow";

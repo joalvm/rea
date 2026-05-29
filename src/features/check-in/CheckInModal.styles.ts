@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "../../theme";
+import { colors, radii, type } from "@/theme";
 
 const styles = StyleSheet.create({
     scrim: {

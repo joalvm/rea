@@ -1,4 +1,4 @@
-import { DailyLog, MoodCheckIn } from "../../../types/records.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
 
 /** Devuelve icono del momento registrado. */
 export function momentIcon(momentType: MoodCheckIn["momentType"]) {

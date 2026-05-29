@@ -1,4 +1,4 @@
-import { DailyLog } from "../../../types/records.types";
+import { DailyLog } from "@/types/records.types";
 
 /** Resume síntomas más repetidos en conjunto de logs. */
 export function summarizeTopSymptoms(logs: DailyLog[], limit = 5) {

@@ -1,7 +1,7 @@
-import { Cycle } from "../../../types/cycle.types";
-import { EducationalAlert } from "../../../types/insights.types";
-import { DailyLog, MoodCheckIn } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
+import { Cycle } from "@/types/cycle.types";
+import { EducationalAlert } from "@/types/insights.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 import {
     getObservedCycleLengths,

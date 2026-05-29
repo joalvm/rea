@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { NotificationMoment } from "../../../types/notifications.types";
-import { StepShell } from "../../../ui/StepShell";
+import { colors } from "@/theme";
+import { NotificationMoment } from "@/types/notifications.types";
+import { StepShell } from "@/ui/StepShell";
 import styles from "../OnboardingScreen.styles";
 
 interface OnboardingReminderStepProps {

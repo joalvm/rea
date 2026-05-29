@@ -1,4 +1,4 @@
-import { AppSettings } from "../../../types/settings.types";
+import { AppSettings } from "@/types/settings.types";
 
 import db from "../core/database";
 

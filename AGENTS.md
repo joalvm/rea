@@ -35,6 +35,10 @@
 - No mover carpetas o entrypoints por inercia antigua; justificar cualquier desviacion del template y guias vigentes.
 - Corregir raiz del problema. Evitar parches cosmeticos si modelo de datos o flujo siguen debiles.
 - Props de componentes React viven con su dueño: mismo archivo, definicion primero, componente despues.
+- Imports y requires van siempre arriba. Primero import, luego require solo si no queda otra salida razonable.
+- No dejar interfaces, tipos ni constantes por encima de imports o requires de assets.
+- Preferir alias `@/` y `@assets/` cuando la ruta salga varios niveles del ambito local.
+- Assets estaticos deben importarse con `import`; `require(...)` queda como excepcion.
 - No crear `*.types.ts` solo para props de screen, feature, modal, row, card o componente compartido.
 - Si se toca versionado o build Android, mantener sincronizados `package.json`, `package-lock.json` y `app.json`.
 - Artefactos Android locales deben salir con nombre versionado visible y alias estable para ultimo build.

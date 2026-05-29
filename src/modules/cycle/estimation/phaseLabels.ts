@@ -1,4 +1,4 @@
-import { PhaseKey } from "../../../types/cycle.types";
+import { PhaseKey } from "@/types/cycle.types";
 
 /** Devuelve label legible para fase de ciclo. */
 export default function getPhaseLabel(phase: PhaseKey): string {

@@ -2,10 +2,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
-import { colors } from "../../theme";
-import { NotificationMoment } from "../../types/notifications.types";
-import { SoftButton } from "../../ui/SoftButton";
-import { SoftCard } from "../../ui/SoftCard";
+import { colors } from "@/theme";
+import { NotificationMoment } from "@/types/notifications.types";
+import { SoftButton } from "@/ui/SoftButton";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "./ScheduleModal.styles";
 import MomentCard from "./components/MomentCard";
 import { ScheduleDayOption } from "./settings.types";

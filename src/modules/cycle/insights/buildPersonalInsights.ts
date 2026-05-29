@@ -1,4 +1,4 @@
-import { DailyLog, MoodCheckIn } from "../../../types/records.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
 
 import { average } from "../shared/cycleMath.utils";
 

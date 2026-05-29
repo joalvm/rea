@@ -1,14 +1,14 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
-import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
-import { toIsoDate } from "../../modules/cycle/shared/cycleDate.utils";
-import { colors } from "../../theme";
-import { Cycle } from "../../types/cycle.types";
-import { DailyLog, MoodCheckIn } from "../../types/records.types";
-import { AppSettings } from "../../types/settings.types";
-import { SoftButton } from "../../ui/SoftButton";
-import { SoftCard } from "../../ui/SoftCard";
+import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
+import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
+import { Cycle } from "@/types/cycle.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
+import { SoftButton } from "@/ui/SoftButton";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "./DayDetailScreen.styles";
 import CareTipRow from "./components/CareTipRow";
 import MomentEntryRow from "./components/MomentEntryRow";

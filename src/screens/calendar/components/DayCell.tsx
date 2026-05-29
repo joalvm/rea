@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import { CycleSnapshot, PhaseKey } from "../../../types/cycle.types";
+import { CycleSnapshot, PhaseKey } from "@/types/cycle.types";
 import styles, { phaseStyles } from "../CalendarScreen.styles";
 
 interface DayCellProps {

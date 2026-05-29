@@ -1,4 +1,4 @@
-import { DailyLog } from "../../../types/records.types";
+import { DailyLog } from "@/types/records.types";
 
 import { BuildDailyLogDetailsInput } from "../check-in.types";
 

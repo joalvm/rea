@@ -1,6 +1,6 @@
 import { Text, TextInput, View } from "react-native";
 
-import { colors } from "../../../theme";
+import { colors } from "@/theme";
 import styles from "../CheckInModal.styles";
 
 interface CheckInNoteSectionProps {

@@ -8,6 +8,15 @@ module.exports = defineConfig([
     expoConfig,
     eslintPluginPrettierRecommended,
     {
+        settings: {
+            "import/resolver": {
+                typescript: {
+                    project: "./tsconfig.json",
+                },
+            },
+        },
+    },
+    {
         files: ["*.config.js", "scripts/**/*.js", "scripts/**/*.cjs"],
         languageOptions: {
             globals: globals.node,

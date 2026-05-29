@@ -1,4 +1,4 @@
-import { NotificationMoment } from "../../../types/notifications.types";
+import { NotificationMoment } from "@/types/notifications.types";
 
 import db from "../core/database";
 

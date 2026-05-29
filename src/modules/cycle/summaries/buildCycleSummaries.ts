@@ -1,6 +1,6 @@
-import { Cycle, CycleSummary } from "../../../types/cycle.types";
-import { DailyLog } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
+import { Cycle, CycleSummary } from "@/types/cycle.types";
+import { DailyLog } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 import { getObservedPeriodRuns } from "../shared/cycleObservedData.utils";
 import { daysBetween } from "../shared/cycleDate.utils";

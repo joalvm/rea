@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
-import { colors } from "../../../theme";
-import { BleedingLevel, ClotSize, MedicationRelief, PainImpact } from "../../../types/records.types";
-import { MetricScale } from "../../../ui/MetricScale";
+import { colors } from "@/theme";
+import { BleedingLevel, ClotSize, MedicationRelief, PainImpact } from "@/types/records.types";
+import { MetricScale } from "@/ui/MetricScale";
 import {
     BLEEDING_OPTIONS,
     CLOT_SIZE_OPTIONS,

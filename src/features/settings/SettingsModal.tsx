@@ -1,13 +1,13 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Alert, Modal, Pressable, ScrollView, Text, View } from "react-native";
 
-import { colors } from "../../theme";
-import { IconButton } from "../../ui/IconButton";
-import { SoftCard } from "../../ui/SoftCard";
+import { colors } from "@/theme";
+import { IconButton } from "@/ui/IconButton";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "./SettingsModal.styles";
 import SettingRow from "./components/SettingRow";
 
-import { NotificationMoment } from "../../types/notifications.types";
+import { NotificationMoment } from "@/types/notifications.types";
 
 /** Props del modal principal de ajustes. */
 interface SettingsModalProps {

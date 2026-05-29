@@ -19,3 +19,6 @@ Skills pequeñas, directas y reutilizables. Una skill por capacidad.
 - Props de componentes React viven en mismo archivo que su duenio.
 - Orden obligatorio: definicion de props primero, componente despues.
 - `*.types.ts` no se usa para dejar un solo `FooProps` aislado.
+- Imports y requires van siempre al inicio. Primero `import`, luego `require` solo si queda una excepcion real.
+- Preferir alias `@/` y `@assets/` antes que rutas con muchos `../../..` al salir del ambito local.
+- Assets estaticos deben entrar por `import`, no por `require`, salvo limitacion concreta del bundler o API.

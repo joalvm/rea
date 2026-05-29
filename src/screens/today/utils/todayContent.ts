@@ -1,13 +1,13 @@
-import buildEducationalAlerts from "../../../modules/cycle/alerts/buildEducationalAlerts";
-import estimateCycle from "../../../modules/cycle/estimation/estimateCycle";
-import buildPatternInsights from "../../../modules/cycle/insights/buildPatternInsights";
-import { addDays } from "../../../modules/cycle/shared/cycleDate.utils";
-import { colors } from "../../../theme";
-import { Cycle, CycleSnapshot, PhaseKey } from "../../../types/cycle.types";
-import { EducationalAlert } from "../../../types/insights.types";
-import { DailyLog, MoodCheckIn } from "../../../types/records.types";
-import { AppSettings } from "../../../types/settings.types";
-import { WeekStripDay } from "../../../ui/WeekStrip";
+import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
+import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
+import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
+import { addDays } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
+import { Cycle, CycleSnapshot, PhaseKey } from "@/types/cycle.types";
+import { EducationalAlert } from "@/types/insights.types";
+import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
+import { WeekStripDay } from "@/ui/WeekStrip";
 import { TodayAlertTone, TodayCareTip } from "../today.types";
 
 /** Deriva tono breve para alertas visibles en Home. */

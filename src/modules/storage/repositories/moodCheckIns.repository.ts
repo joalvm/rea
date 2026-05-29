@@ -1,4 +1,4 @@
-import { MoodCheckIn } from "../../../types/records.types";
+import { MoodCheckIn } from "@/types/records.types";
 
 import db from "../core/database";
 

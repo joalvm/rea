@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "../../theme";
-import { PhaseKey } from "../../types/cycle.types";
+import { colors, radii, type } from "@/theme";
+import { PhaseKey } from "@/types/cycle.types";
 
 /** Define tonos visuales por fase para celdas del calendario. */
 export const phaseStyles: Record<PhaseKey, { ink: string; line: string }> = {

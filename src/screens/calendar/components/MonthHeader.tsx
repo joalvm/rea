@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { colors } from "../../../theme";
+import { colors } from "@/theme";
 import styles from "../CalendarScreen.styles";
 
 interface MonthHeaderProps {

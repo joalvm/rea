@@ -1,5 +1,5 @@
-import { colors } from "../../../theme";
-import { MomentType } from "../../../types/records.types";
+import { colors } from "@/theme";
+import { MomentType } from "@/types/records.types";
 
 /** Devuelve color e indicador de fondo según tipo de momento. */
 export default function momentTone(type: MomentType) {

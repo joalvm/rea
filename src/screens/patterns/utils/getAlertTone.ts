@@ -1,5 +1,5 @@
-import { colors } from "../../../theme";
-import { EducationalAlert } from "../../../types/insights.types";
+import { colors } from "@/theme";
+import { EducationalAlert } from "@/types/insights.types";
 import { AlertTone } from "../patterns.types";
 
 /** Define tono visual y rótulo para alertas educativas. */

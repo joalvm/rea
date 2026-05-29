@@ -1,4 +1,4 @@
-import { AppData } from "../../../types/app.types";
+import { AppData } from "@/types/app.types";
 
 import { loadCycles } from "../repositories/cycles.repository";
 import { loadDailyLogs } from "../repositories/dailyLogs.repository";

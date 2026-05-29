@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text } from "react-native";
 
-import { colors } from "../../../theme";
-import { SoftCard } from "../../../ui/SoftCard";
+import { colors } from "@/theme";
+import { SoftCard } from "@/ui/SoftCard";
 import styles from "../DiaryScreen.styles";
 
 /** Props de tarjeta de estado vacío del diario. */

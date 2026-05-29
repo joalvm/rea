@@ -6,7 +6,7 @@ import {
     MomentType,
     MoodCheckIn,
     PainImpact,
-} from "../../types/records.types";
+} from "@/types/records.types";
 
 /** Modalidades soportadas por el registro. */
 export type CheckInMode = "daily" | "quick";
