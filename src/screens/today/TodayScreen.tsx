@@ -161,7 +161,7 @@ export function TodayScreen({
 
             <View style={[styles.section, styles.firstSection]}>
                 <Text style={styles.sectionTitle}>Acciones rápidas</Text>
-                <ScrollView horizontal contentContainerStyle={styles.quickCards} showsHorizontalScrollIndicator={true}>
+                <ScrollView horizontal contentContainerStyle={styles.quickCards} showsHorizontalScrollIndicator={false}>
                     <QuickActionCard
                         hint="ahora"
                         icon="heart-pulse"
