@@ -38,7 +38,7 @@ npm install
 npm run assets:brand
 npm run start
 npm run android
-npm run build
+npm run build:android
 npm run check
 npm run typecheck
 npm run lint
@@ -47,12 +47,10 @@ npm run lint
 Build local:
 
 - `npm run assets:brand`: reconstruye iconos y branding derivados. Correlo solo cuando cambien archivos dentro de `references/branding`.
-- `npm run build`: intenta build local de Android e iOS cuando host lo permite, sin regenerar branding.
-- `npm run build -- --platform=android`: genera `dist/rea-android.apk`. En macOS o Linux usa EAS local con perfil `preview`; en Windows usa fallback nativo porque EAS local no tiene soporte oficial ahi.
-- `npm run build -- --platform=ios`: en macOS con Xcode usa EAS local con perfil `simulator` y genera `dist/rea-ios-simulator.tar.gz`.
-- Si no pasas `--platform`, script usa `all`. En Windows omitira iOS con warning porque build iOS local requiere macOS con Xcode.
+- `npm run build:android`: genera `dist/rea-android.apk`. En macOS o Linux usa EAS local con perfil `preview`; en Windows usa fallback nativo porque EAS local no tiene soporte oficial ahi.
+- `npm run build:ios`: en macOS con Xcode usa EAS local con perfil `simulator` y genera `dist/rea-ios-simulator.tar.gz`.
 - Si quieres EAS local en Windows, usa WSL. Expo no lo soporta oficialmente en host Windows nativo.
-- Si cambias logos o iconos fuente, primero corre `npm run assets:brand` y despues build.
+- Si cambias logos o iconos fuente, primero corre `npm run assets:brand` y despues `npm run build:android` o `npm run build:ios`.
 
 Colaboracion y seguridad:
 
