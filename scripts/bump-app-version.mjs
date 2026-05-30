@@ -2,10 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const validReleaseKinds = new Set(["none", "build", "patch", "minor", "major"]);
+const validReleaseKinds = new Set(["none", "patch", "minor", "major"]);
 const args = process.argv.slice(2);
-const releaseIndex = args.indexOf("--release");
-const release = releaseIndex >= 0 ? args[releaseIndex + 1] : "none";
+const release = readOption(args, "--release") ?? "none";
+const dryRun = args.includes("--dry-run");
 
 if (!validReleaseKinds.has(release)) {
     console.error(`Tipo de release no soportado: ${release}`);
@@ -25,10 +25,13 @@ const appJson = readJson(appPath);
 
 const currentVersion = packageJson.version;
 const nextVersion = bumpVersion(currentVersion, release);
-const nextVersionCode = bumpCounter(Number(appJson.expo.android.versionCode ?? 1), release);
-const nextBuildNumber = bumpCounter(Number(appJson.expo.ios.buildNumber ?? "1"), release);
+const currentVersionCode = Number(appJson.expo.android.versionCode ?? 1);
+const currentBuildNumber = Number(appJson.expo.ios.buildNumber ?? "1");
+const nextVersionCode = bumpCounter(currentVersionCode, release);
+const nextBuildNumber = bumpCounter(currentBuildNumber, release);
+const shouldWrite = release !== "none" && !dryRun;
 
-if (release !== "none") {
+if (shouldWrite) {
     packageJson.version = nextVersion;
     packageLockJson.version = nextVersion;
 
@@ -49,7 +52,9 @@ process.stdout.write(
     JSON.stringify(
         {
             release,
-            changed: release !== "none",
+            dryRun,
+            changed: shouldWrite,
+            previousVersion: currentVersion,
             version: nextVersion,
             versionCode: nextVersionCode,
             buildNumber: String(nextBuildNumber),
@@ -58,6 +63,20 @@ process.stdout.write(
         4,
     ),
 );
+
+function readOption(tokens, name) {
+    const inline = tokens.find((token) => token.startsWith(`${name}=`));
+    if (inline) {
+        return inline.slice(name.length + 1);
+    }
+
+    const index = tokens.indexOf(name);
+    if (index >= 0 && index + 1 < tokens.length) {
+        return tokens[index + 1];
+    }
+
+    return null;
+}
 
 function readJson(filePath) {
     return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -72,16 +91,14 @@ function bumpCounter(value, releaseKind) {
 }
 
 function bumpVersion(version, releaseKind) {
-    const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
-
-    if (!match) {
-        throw new Error(`Version semantica invalida: ${version}`);
+    if (releaseKind === "none") {
+        return version;
     }
 
-    let [, major, minor, patch] = match;
-    let nextMajor = Number(major);
-    let nextMinor = Number(minor);
-    let nextPatch = Number(patch);
+    const parsed = parseVersion(version);
+    let nextMajor = parsed.major;
+    let nextMinor = parsed.minor;
+    let nextPatch = parsed.patch;
 
     if (releaseKind === "major") {
         nextMajor += 1;
@@ -95,4 +112,20 @@ function bumpVersion(version, releaseKind) {
     }
 
     return `${nextMajor}.${nextMinor}.${nextPatch}`;
+}
+
+function parseVersion(version) {
+    const match = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?(?:\+([0-9A-Za-z.-]+))?$/.exec(version);
+
+    if (!match) {
+        throw new Error(`Version semantica invalida: ${version}`);
+    }
+
+    return {
+        major: Number(match[1]),
+        minor: Number(match[2]),
+        patch: Number(match[3]),
+        prerelease: match[4] ?? null,
+        buildMetadata: match[5] ?? null,
+    };
 }

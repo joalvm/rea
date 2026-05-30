@@ -35,18 +35,25 @@ Comandos base:
 
 ```bash
 npm install
+npm run assets:brand
 npm run start
 npm run android
+npm run build -- --dry-run
+npm run check
 npm run typecheck
 npm run lint
 ```
 
-Build Android local:
+Build local sin cuentas:
 
-- `npm run build:android:apk`: genera APK con version actual.
-- `npm run build:android:apk:build`: sube solo `android.versionCode` y `ios.buildNumber`.
-- `npm run build:android:apk:patch`, `minor`, `major`: suben version semantica y tambien los contadores nativos.
-- Cada build deja un archivo versionado en `dist/rea-vX.Y.Z-bN.apk` y actualiza alias `dist/rea-release.apk`.
+- `npm run assets:brand`: reconstruye iconos y branding derivados. Correlo solo cuando cambien archivos dentro de `references/branding`.
+- `npm run build`: por defecto prepara siguiente `minor` y, si host lo permite, intenta ambos targets locales sin regenerar branding.
+- `npm run build -- --platform=android --version=major`: ejemplo de build Android subiendo version mayor.
+- `npm run build -- --platform=android --version=patch`: genera APK Android local y deja `dist/rea-android-vX.Y.Z-bN.apk` mas alias `dist/rea-android-latest.apk`.
+- `npm run build -- --platform=ios --version=minor`: en macOS con Xcode genera app de simulador comprimida en `dist/rea-ios-simulator-vX.Y.Z-bN.zip` mas alias `dist/rea-ios-simulator-latest.zip`.
+- Si no pasas `--platform`, script usa `all`. En Windows omitira iOS con warning porque build iOS local sin cuentas requiere macOS con Xcode.
+- Si no pasas `--version`, script usa `minor`. Tambien acepta `patch`, `major` y `none`.
+- Si cambias logos o iconos fuente, primero corre `npm run assets:brand` y despues build.
 
 Colaboracion y seguridad:
 

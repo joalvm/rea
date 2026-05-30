@@ -11,31 +11,27 @@ param(
 
 <#
 .SYNOPSIS
-    Sincroniza brand assets a partir de imagenes de referencia.
+    Regenera branding final de Rea para Expo iOS y Android.
 .DESCRIPTION
-    - Detecta contenido util y recalcula aire interno ideal.
-    - Limpia fondo blanco/casi blanco.
-    - Genera PNGs canonicos para Expo, Android, iOS y web.
-    - Intenta vectorizar con Potrace; si no existe en PATH, descarga binarios
-      oficiales a carpeta temporal y reutiliza cache local.
+    - Lee referencias base desde references/branding.
+    - Detecta contenido util, recorta aire sobrante y limpia fondo blanco.
+    - Genera solo assets finales usados por proyecto:
+      - logos PNG para app
+      - icono iOS/App Store
+      - splash para iOS y Android
+      - adaptive icon y notification icon para Android
+      - SVG opcional en raiz si Potrace existe
+    - No crea carpetas web, ios/, android/ ni referencias intermedias.
 #>
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version 3.0
 
 Add-Type -AssemblyName System.Drawing
-Add-Type @"
-using System;
-using System.Runtime.InteropServices;
-public static class NativeIcon {
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    public static extern bool DestroyIcon(IntPtr handle);
-}
-"@
 
 $root = Split-Path -Parent $PSScriptRoot
 if (-not $PSBoundParameters.ContainsKey("ReferenceDir")) {
-    $ReferenceDir = Join-Path $root "references\logo"
+    $ReferenceDir = Join-Path $root "references\branding"
 }
 if (-not $PSBoundParameters.ContainsKey("OutputDir")) {
     $OutputDir = Join-Path $root "assets\branding"
@@ -43,31 +39,37 @@ if (-not $PSBoundParameters.ContainsKey("OutputDir")) {
 
 $script:PotraceVersion = "1.16"
 $script:PotraceCacheRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("rea-brand-tools\potrace\" + $script:PotraceVersion)
-$script:ManagedOutputRelativePaths = @(
+$script:FinalOutputs = @(
     "adaptive-foreground.png",
-    "favicon.ico",
-    "favicon.png",
+    "adaptive-monochrome.png",
     "icon.png",
     "logo-horizontal.png",
+    "logo-horizontal.svg",
     "logo-mark.png",
+    "logo-mark.svg",
     "logo-vertical.png",
-    "splash-icon.png",
+    "logo-vertical.svg",
+    "notification-icon.png",
+    "splash-icon.png"
+)
+$script:LegacyOutputs = @(
     "android",
     "ios",
     "references",
     "svg",
-    "web"
+    "web",
+    "favicon.ico",
+    "favicon.png"
 )
-
-$assetsConfig = @(
+$script:BrandingSpecs = @(
     @{
         Name = "logo-mark"
         SourceFile = "logo.png"
-        Type = "mark"
+        Kind = "mark"
         Threshold = 245
         TransitionRange = 40
-        TargetContentRatioX = 0.80
-        TargetContentRatioY = 0.80
+        CropRatioX = 0.80
+        CropRatioY = 0.80
         MinimumPaddingPx = 24
         GenerateSvg = $true
         SvgThreshold = 0.48
@@ -80,14 +82,13 @@ $assetsConfig = @(
     @{
         Name = "logo-horizontal"
         SourceFile = "logo-horizontal.png"
-        Type = "horizontal"
+        Kind = "horizontal"
         Threshold = 245
         TransitionRange = 40
-        TargetContentRatioX = 0.88
-        TargetContentRatioY = 0.84
+        CropRatioX = 0.88
+        CropRatioY = 0.84
         MinimumPaddingPx = 24
         GenerateSvg = $true
-        WebWidths = @(1200, 800, 400, 200)
         SvgThreshold = 0.50
         SvgScale = 1
         SvgTurdSize = 6
@@ -98,14 +99,13 @@ $assetsConfig = @(
     @{
         Name = "logo-vertical"
         SourceFile = "logo-vertical.png"
-        Type = "vertical"
+        Kind = "vertical"
         Threshold = 245
         TransitionRange = 40
-        TargetContentRatioX = 0.84
-        TargetContentRatioY = 0.88
+        CropRatioX = 0.84
+        CropRatioY = 0.88
         MinimumPaddingPx = 24
         GenerateSvg = $true
-        WebHeights = @(1200, 800, 600)
         SvgThreshold = 0.50
         SvgScale = 1
         SvgTurdSize = 6
@@ -115,7 +115,7 @@ $assetsConfig = @(
     }
 )
 
-function New-Directory {
+function Ensure-Directory {
     param([Parameter(Mandatory)][string]$Path)
 
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -123,26 +123,6 @@ function New-Directory {
     }
 
     return $Path
-}
-
-function Get-ConfigValue {
-    param(
-        [Parameter(Mandatory)][hashtable]$Config,
-        [Parameter(Mandatory)][string]$Name,
-        [Parameter(Mandatory)]$Default
-    )
-
-    if ($Config.ContainsKey($Name) -and $null -ne $Config[$Name]) {
-        return $Config[$Name]
-    }
-
-    return $Default
-}
-
-function ConvertTo-InvariantString {
-    param([Parameter(Mandatory)]$Value)
-
-    return [System.Convert]::ToString($Value, [System.Globalization.CultureInfo]::InvariantCulture)
 }
 
 function Remove-PathIfExists {
@@ -161,6 +141,35 @@ function Remove-PathIfExists {
     }
 }
 
+function Reset-ManagedOutputs {
+    param([Parameter(Mandatory)][string]$BaseDir)
+
+    Ensure-Directory $BaseDir | Out-Null
+    foreach ($relativePath in ($script:FinalOutputs + $script:LegacyOutputs)) {
+        Remove-PathIfExists -Path (Join-Path $BaseDir $relativePath)
+    }
+}
+
+function Get-SpecValue {
+    param(
+        [Parameter(Mandatory)][hashtable]$Spec,
+        [Parameter(Mandatory)][string]$Name,
+        [Parameter(Mandatory)]$Default
+    )
+
+    if ($Spec.ContainsKey($Name) -and $null -ne $Spec[$Name]) {
+        return $Spec[$Name]
+    }
+
+    return $Default
+}
+
+function ConvertTo-InvariantString {
+    param([Parameter(Mandatory)]$Value)
+
+    return [System.Convert]::ToString($Value, [System.Globalization.CultureInfo]::InvariantCulture)
+}
+
 function Save-Png {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Bitmap,
@@ -169,7 +178,7 @@ function Save-Png {
 
     $parent = Split-Path -Parent $Path
     if ($parent) {
-        New-Directory $parent | Out-Null
+        Ensure-Directory $parent | Out-Null
     }
     if (Test-Path -LiteralPath $Path) {
         Remove-Item -LiteralPath $Path -Force
@@ -183,6 +192,7 @@ function Convert-ToArgbBitmap {
 
     $bitmap = New-Object System.Drawing.Bitmap $Image.Width, $Image.Height, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
     $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+
     try {
         $graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality
         $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
@@ -270,7 +280,7 @@ function Get-ContentBounds {
     }
 }
 
-function New-CroppedImage {
+function New-CroppedBitmap {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
         [Parameter(Mandatory)][System.Drawing.Rectangle]$Bounds,
@@ -310,6 +320,7 @@ function New-CroppedImage {
 
     $result = New-Object System.Drawing.Bitmap $canvasWidth, $canvasHeight, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
     $graphics = [System.Drawing.Graphics]::FromImage($result)
+
     try {
         $graphics.Clear([System.Drawing.Color]::FromArgb(0, 0, 0, 0))
         $graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality
@@ -406,10 +417,9 @@ function Remove-WhiteBackground {
     }
 }
 
-function Save-CanvasImage {
+function New-FittedCanvasBitmap {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
-        [Parameter(Mandatory)][string]$Destination,
         [Parameter(Mandatory)][int]$Width,
         [Parameter(Mandatory)][int]$Height,
         [Parameter(Mandatory)][System.Drawing.Color]$Background,
@@ -433,10 +443,14 @@ function Save-CanvasImage {
         $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
         $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
 
-        $effectiveScale = $Scale * (1.0 - $Padding)
+        $effectiveScale = [Math]::Max(0.05, $Scale * (1.0 - $Padding))
         $maxWidth = [int][Math]::Round($Width * $effectiveScale)
         $maxHeight = [int][Math]::Round($Height * $effectiveScale)
         $ratio = [Math]::Min($maxWidth / [double]$Source.Width, $maxHeight / [double]$Source.Height)
+
+        if ($ratio -le 0) {
+            throw "No pude ajustar contenido dentro del canvas ${Width}x${Height}."
+        }
 
         $drawWidth = [int][Math]::Round($Source.Width * $ratio)
         $drawHeight = [int][Math]::Round($Source.Height * $ratio)
@@ -444,67 +458,94 @@ function Save-CanvasImage {
         $top = [int][Math]::Round(($Height - $drawHeight) / 2.0)
 
         $graphics.DrawImage($Source, $left, $top, $drawWidth, $drawHeight)
-        Save-Png -Bitmap $canvas -Path $Destination
+        return $canvas
     }
     finally {
         $graphics.Dispose()
-        $canvas.Dispose()
     }
 }
 
-function Save-ResizedImage {
+function Save-CanvasImage {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
         [Parameter(Mandatory)][string]$Destination,
-        [Parameter(Mandatory)][int]$MaxWidth,
-        [Parameter(Mandatory)][int]$MaxHeight
+        [Parameter(Mandatory)][int]$Width,
+        [Parameter(Mandatory)][int]$Height,
+        [Parameter(Mandatory)][System.Drawing.Color]$Background,
+        [double]$Scale = 0.84,
+        [double]$Padding = 0.0
     )
 
-    $ratio = [Math]::Min($MaxWidth / [double]$Source.Width, $MaxHeight / [double]$Source.Height)
-    $newWidth = [int][Math]::Round($Source.Width * $ratio)
-    $newHeight = [int][Math]::Round($Source.Height * $ratio)
-
-    $canvas = New-Object System.Drawing.Bitmap $newWidth, $newHeight, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
-    $graphics = [System.Drawing.Graphics]::FromImage($canvas)
+    $canvas = $null
     try {
-        $graphics.Clear([System.Drawing.Color]::FromArgb(0, 0, 0, 0))
-        $graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality
-        $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-        $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
-        $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
-        $graphics.DrawImage($Source, 0, 0, $newWidth, $newHeight)
-
+        $canvas = New-FittedCanvasBitmap -Source $Source -Width $Width -Height $Height -Background $Background -Scale $Scale -Padding $Padding
         Save-Png -Bitmap $canvas -Path $Destination
     }
     finally {
-        $graphics.Dispose()
-        $canvas.Dispose()
+        if ($canvas) {
+            $canvas.Dispose()
+        }
     }
 }
 
-function Save-FaviconIco {
+function Save-MonochromeImage {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
-        [Parameter(Mandatory)][string]$Destination
+        [Parameter(Mandatory)][string]$Destination,
+        [System.Drawing.Color]$FillColor = [System.Drawing.Color]::White,
+        [int]$AlphaCutoff = 8
     )
 
-    if (Test-Path -LiteralPath $Destination) {
-        Remove-Item -LiteralPath $Destination -Force
-    }
-
-    $iconBitmap = New-Object System.Drawing.Bitmap $Source, (New-Object System.Drawing.Size 256, 256)
-    $iconHandle = $iconBitmap.GetHicon()
-    $icon = [System.Drawing.Icon]::FromHandle($iconHandle)
-    $stream = [System.IO.File]::Create($Destination)
+    $work = Convert-ToArgbBitmap -Image $Source
+    $result = New-Object System.Drawing.Bitmap $work.Width, $work.Height, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
 
     try {
-        $icon.Save($stream)
+        $rect = New-Object System.Drawing.Rectangle 0, 0, $work.Width, $work.Height
+        $srcData = $work.LockBits($rect, [System.Drawing.Imaging.ImageLockMode]::ReadOnly, $work.PixelFormat)
+        $dstData = $result.LockBits($rect, [System.Drawing.Imaging.ImageLockMode]::WriteOnly, $result.PixelFormat)
+
+        try {
+            $srcStride = [Math]::Abs($srcData.Stride)
+            $dstStride = [Math]::Abs($dstData.Stride)
+            $srcBytes = $srcStride * $work.Height
+            $dstBytes = $dstStride * $result.Height
+            $srcBuffer = New-Object byte[] $srcBytes
+            $dstBuffer = New-Object byte[] $dstBytes
+
+            [Runtime.InteropServices.Marshal]::Copy($srcData.Scan0, $srcBuffer, 0, $srcBytes)
+
+            for ($y = 0; $y -lt $work.Height; $y++) {
+                $srcRow = $y * $srcStride
+                $dstRow = $y * $dstStride
+
+                for ($x = 0; $x -lt $work.Width; $x++) {
+                    $srcIndex = $srcRow + ($x * 4)
+                    $dstIndex = $dstRow + ($x * 4)
+                    $alpha = $srcBuffer[$srcIndex + 3]
+
+                    if ($alpha -lt $AlphaCutoff) {
+                        continue
+                    }
+
+                    $dstBuffer[$dstIndex] = $FillColor.B
+                    $dstBuffer[$dstIndex + 1] = $FillColor.G
+                    $dstBuffer[$dstIndex + 2] = $FillColor.R
+                    $dstBuffer[$dstIndex + 3] = [byte][Math]::Round(($alpha / 255.0) * $FillColor.A)
+                }
+            }
+
+            [Runtime.InteropServices.Marshal]::Copy($dstBuffer, 0, $dstData.Scan0, $dstBytes)
+        }
+        finally {
+            $work.UnlockBits($srcData)
+            $result.UnlockBits($dstData)
+        }
+
+        Save-Png -Bitmap $result -Path $Destination
     }
     finally {
-        $stream.Dispose()
-        $icon.Dispose()
-        $iconBitmap.Dispose()
-        [NativeIcon]::DestroyIcon($iconHandle) | Out-Null
+        $work.Dispose()
+        $result.Dispose()
     }
 }
 
@@ -521,6 +562,7 @@ function Save-TraceMaskBitmap {
 
     $argb = Convert-ToArgbBitmap -Image $Source
     $mask = New-Object System.Drawing.Bitmap $Source.Width, $Source.Height, ([System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
+
     try {
         $rect = New-Object System.Drawing.Rectangle 0, 0, $argb.Width, $argb.Height
         $srcData = $argb.LockBits($rect, [System.Drawing.Imaging.ImageLockMode]::ReadOnly, $argb.PixelFormat)
@@ -547,7 +589,7 @@ function Save-TraceMaskBitmap {
 
                     $value = 255
                     if ($alpha -gt $AlphaCutoff) {
-                        $value = 255 - $alpha
+                        $value = 0
                     }
 
                     $dstBuffer[$dstIndex] = [byte]$value
@@ -604,10 +646,8 @@ function Find-Executable {
         return $null
     }
 
-    $match = Get-ChildItem -Path $Root -Filter $Name -File -Recurse -ErrorAction SilentlyContinue |
+    return Get-ChildItem -Path $Root -Filter $Name -File -Recurse -ErrorAction SilentlyContinue |
         Select-Object -First 1 -ExpandProperty FullName
-
-    return $match
 }
 
 function Get-PotraceDownloadInfo {
@@ -628,7 +668,7 @@ function Install-PotraceToolchain {
     )
 
     $downloadInfo = Get-PotraceDownloadInfo
-    $toolRoot = New-Directory (Join-Path $script:PotraceCacheRoot $downloadInfo.Architecture)
+    $toolRoot = Ensure-Directory (Join-Path $script:PotraceCacheRoot $downloadInfo.Architecture)
     $binDir = Join-Path $toolRoot "bin"
     $zipPath = Join-Path $toolRoot $downloadInfo.FileName
     $extractDir = Join-Path $toolRoot "extract"
@@ -643,13 +683,13 @@ function Install-PotraceToolchain {
         }
     }
 
-    New-Directory $toolRoot | Out-Null
+    Ensure-Directory $toolRoot | Out-Null
     Remove-PathIfExists -Path $binDir
     Remove-PathIfExists -Path $extractDir
-    New-Directory $binDir | Out-Null
-    New-Directory $extractDir | Out-Null
+    Ensure-Directory $binDir | Out-Null
+    Ensure-Directory $extractDir | Out-Null
 
-    Write-Host "potrace no encontrado. Descargando binarios oficiales a cache temporal..." -ForegroundColor Yellow
+    Write-Host "Potrace no encontrado. Descargando binarios oficiales a cache temporal..." -ForegroundColor Yellow
 
     try {
         Invoke-WebRequest -Uri $downloadInfo.Url -OutFile $zipPath -UseBasicParsing -TimeoutSec $TimeoutSeconds
@@ -760,16 +800,14 @@ function Convert-SvgToCurrentColor {
     $svg = $svg -replace '\s{2,}', ' '
     $svg = [regex]::Replace($svg, '(?<num>-?\d+)\.0+\b', '${num}')
     $svg = [regex]::Replace($svg, '(?<int>-?\d+)\.(?<frac>\d*?[1-9])0+\b', '${int}.${frac}')
-    $svg = $svg.Trim()
-
-    return $svg
+    return $svg.Trim()
 }
 
 function Export-SvgAsset {
     param(
         [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
         [Parameter(Mandatory)][string]$OutputPath,
-        [Parameter(Mandatory)][hashtable]$Asset,
+        [Parameter(Mandatory)][hashtable]$Spec,
         [Parameter(Mandatory)]$Toolchain
     )
 
@@ -779,37 +817,19 @@ function Export-SvgAsset {
 
     $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("rea-brand-trace-" + [Guid]::NewGuid().ToString("N"))
     $tempBmp = Join-Path $tempRoot "input.bmp"
-    $tempPbm = Join-Path $tempRoot "input.pbm"
     $tempSvg = Join-Path $tempRoot "output.svg"
     $traceInput = $tempBmp
 
-    $scale = [int](Get-ConfigValue -Config $Asset -Name "SvgScale" -Default 2)
-    $threshold = ConvertTo-InvariantString (Get-ConfigValue -Config $Asset -Name "SvgThreshold" -Default 0.48)
-    $turdSize = [int](Get-ConfigValue -Config $Asset -Name "SvgTurdSize" -Default 3)
-    $alphaMax = ConvertTo-InvariantString (Get-ConfigValue -Config $Asset -Name "SvgAlphaMax" -Default 1.0)
-    $optTolerance = ConvertTo-InvariantString (Get-ConfigValue -Config $Asset -Name "SvgOptTolerance" -Default 0.20)
-    $unit = [int](Get-ConfigValue -Config $Asset -Name "SvgUnit" -Default 10)
+    $threshold = ConvertTo-InvariantString (Get-SpecValue -Spec $Spec -Name "SvgThreshold" -Default 0.48)
+    $turdSize = [int](Get-SpecValue -Spec $Spec -Name "SvgTurdSize" -Default 6)
+    $alphaMax = ConvertTo-InvariantString (Get-SpecValue -Spec $Spec -Name "SvgAlphaMax" -Default 1.05)
+    $optTolerance = ConvertTo-InvariantString (Get-SpecValue -Spec $Spec -Name "SvgOptTolerance" -Default 0.35)
+    $unit = [int](Get-SpecValue -Spec $Spec -Name "SvgUnit" -Default 4)
 
-    New-Directory $tempRoot | Out-Null
+    Ensure-Directory $tempRoot | Out-Null
 
     try {
         Save-TraceMaskBitmap -Source $Source -Path $tempBmp
-
-        if ($Toolchain.MkbitmapPath) {
-            $mkbitmapArgs = @(
-                "-s", (ConvertTo-InvariantString $scale),
-                "-t", $threshold,
-                "-o", $tempPbm,
-                $tempBmp
-            )
-
-            & $Toolchain.MkbitmapPath @mkbitmapArgs
-            if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $tempPbm)) {
-                throw "mkbitmap fallo preparando $($Asset.Name)."
-            }
-
-            $traceInput = $tempPbm
-        }
 
         $potraceArgs = @(
             "-s",
@@ -821,22 +841,18 @@ function Export-SvgAsset {
             "-o", $tempSvg
         )
 
-        if (-not $Toolchain.MkbitmapPath) {
-            $potraceArgs += @("-k", $threshold)
-        }
+        $potraceArgs += @("-k", $threshold)
 
         $potraceArgs += $traceInput
         & $Toolchain.PotracePath @potraceArgs
 
         if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $tempSvg)) {
-            throw "potrace fallo generando SVG para $($Asset.Name)."
+            throw "potrace fallo generando SVG para $($Spec.Name)."
         }
 
         $svgContent = Get-Content -LiteralPath $tempSvg -Raw
-        $svgContent = Convert-SvgToCurrentColor -SvgContent $svgContent -Id $Asset.Name
-        New-Directory (Split-Path -Parent $OutputPath) | Out-Null
+        $svgContent = Convert-SvgToCurrentColor -SvgContent $svgContent -Id $Spec.Name
         Set-Content -LiteralPath $OutputPath -Value $svgContent -Encoding utf8 -NoNewline
-
         return $true
     }
     finally {
@@ -844,172 +860,59 @@ function Export-SvgAsset {
     }
 }
 
-function Reset-ManagedOutputs {
-    param([Parameter(Mandatory)][string]$BaseDir)
-
-    New-Directory $BaseDir | Out-Null
-    foreach ($relativePath in $script:ManagedOutputRelativePaths) {
-        Remove-PathIfExists -Path (Join-Path $BaseDir $relativePath)
-    }
-}
-
-function Export-AndroidAssets {
+function Export-BrandingOutputs {
     param(
-        [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
+        [Parameter(Mandatory)][System.Drawing.Bitmap]$CleanBitmap,
+        [Parameter(Mandatory)][hashtable]$Spec,
         [Parameter(Mandatory)][string]$BaseDir
     )
 
-    Save-CanvasImage -Source $Source -Destination (Join-Path $BaseDir "adaptive-foreground.png") `
-        -Width 1024 -Height 1024 -Background ([System.Drawing.Color]::Transparent) -Scale 0.78 -Padding 0.05
-
-    $androidDir = New-Directory (Join-Path $BaseDir "android")
-    Save-CanvasImage -Source $Source -Destination (Join-Path $androidDir "ic_launcher_foreground.png") `
-        -Width 432 -Height 432 -Background ([System.Drawing.Color]::Transparent) -Scale 0.66
-
-    $background = New-Object System.Drawing.Bitmap 432, 432, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
-    try {
-        Save-Png -Bitmap $background -Path (Join-Path $androidDir "ic_launcher_background.png")
-    }
-    finally {
-        $background.Dispose()
-    }
-
-    $sizes = @{
-        "mipmap-mdpi" = 48
-        "mipmap-hdpi" = 72
-        "mipmap-xhdpi" = 96
-        "mipmap-xxhdpi" = 144
-        "mipmap-xxxhdpi" = 192
-    }
-
-    foreach ($folder in $sizes.Keys) {
-        $size = $sizes[$folder]
-        $folderPath = New-Directory (Join-Path $androidDir $folder)
-
-        Save-CanvasImage -Source $Source -Destination (Join-Path $folderPath "ic_launcher.png") `
-            -Width $size -Height $size -Background ([System.Drawing.Color]::Transparent) -Scale 0.80
-        Save-CanvasImage -Source $Source -Destination (Join-Path $folderPath "ic_launcher_round.png") `
-            -Width $size -Height $size -Background ([System.Drawing.Color]::Transparent) -Scale 0.75 -Padding 0.02
-    }
-}
-
-function Export-IosAssets {
-    param(
-        [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
-        [Parameter(Mandatory)][string]$BaseDir
-    )
-
-    $iosDir = New-Directory (Join-Path $BaseDir "ios\AppIcon.appiconset")
-    $icons = @(
-        @{ Size = 20; Scale = 2; Id = "icon-20@2x"; Idiom = "iphone" },
-        @{ Size = 20; Scale = 3; Id = "icon-20@3x"; Idiom = "iphone" },
-        @{ Size = 29; Scale = 2; Id = "icon-29@2x"; Idiom = "iphone" },
-        @{ Size = 29; Scale = 3; Id = "icon-29@3x"; Idiom = "iphone" },
-        @{ Size = 40; Scale = 2; Id = "icon-40@2x"; Idiom = "iphone" },
-        @{ Size = 40; Scale = 3; Id = "icon-40@3x"; Idiom = "iphone" },
-        @{ Size = 60; Scale = 2; Id = "icon-60@2x"; Idiom = "iphone" },
-        @{ Size = 60; Scale = 3; Id = "icon-60@3x"; Idiom = "iphone" },
-        @{ Size = 29; Scale = 1; Id = "icon-29"; Idiom = "ipad" },
-        @{ Size = 40; Scale = 1; Id = "icon-40"; Idiom = "ipad" },
-        @{ Size = 76; Scale = 1; Id = "icon-76"; Idiom = "ipad" },
-        @{ Size = 76; Scale = 2; Id = "icon-76@2x"; Idiom = "ipad" },
-        @{ Size = 83.5; Scale = 2; Id = "icon-83.5@2x"; Idiom = "ipad" },
-        @{ Size = 1024; Scale = 1; Id = "icon-1024"; Idiom = "ios-marketing" }
-    )
-
-    $images = @()
-    foreach ($icon in $icons) {
-        $pixels = [int][Math]::Round($icon.Size * $icon.Scale)
-        $fileName = "$($icon.Id).png"
-        $background = if ($icon.Size -eq 1024) { [System.Drawing.Color]::White } else { [System.Drawing.Color]::Transparent }
-
-        Save-CanvasImage -Source $Source -Destination (Join-Path $iosDir $fileName) `
-            -Width $pixels -Height $pixels -Background $background -Scale 0.82
-
-        $images += @{
-            size = "$($icon.Size)x$($icon.Size)"
-            idiom = $icon.Idiom
-            filename = $fileName
-            scale = "$($icon.Scale)x"
-        }
-    }
-
-    @{
-        images = $images
-        info = @{
-            version = 1
-            author = "xcode"
-        }
-    } | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $iosDir "Contents.json") -Encoding utf8
-}
-
-function Export-WebAssets {
-    param(
-        [Parameter(Mandatory)][System.Drawing.Bitmap]$Source,
-        [Parameter(Mandatory)][string]$BaseDir,
-        [Parameter(Mandatory)][hashtable]$Asset
-    )
-
-    $webDir = New-Directory (Join-Path $BaseDir "web")
-
-    switch ($Asset.Type) {
+    switch ($Spec.Kind) {
         "mark" {
-            Save-Png -Bitmap $Source -Path (Join-Path $BaseDir "logo-mark.png")
-            Save-Png -Bitmap $Source -Path (Join-Path $webDir "logo-mark.png")
+            Save-Png -Bitmap $CleanBitmap -Path (Join-Path $BaseDir "logo-mark.png")
 
-            Save-CanvasImage -Source $Source -Destination (Join-Path $BaseDir "icon.png") `
-                -Width 1024 -Height 1024 -Background ([System.Drawing.Color]::White) -Scale 0.82
-            Save-CanvasImage -Source $Source -Destination (Join-Path $webDir "icon.png") `
+            Save-CanvasImage -Source $CleanBitmap -Destination (Join-Path $BaseDir "icon.png") `
                 -Width 1024 -Height 1024 -Background ([System.Drawing.Color]::White) -Scale 0.82
 
-            Save-CanvasImage -Source $Source -Destination (Join-Path $BaseDir "splash-icon.png") `
-                -Width 512 -Height 512 -Background ([System.Drawing.Color]::Transparent) -Scale 0.78 -Padding 0.05
-            Save-CanvasImage -Source $Source -Destination (Join-Path $webDir "splash-icon.png") `
+            Save-CanvasImage -Source $CleanBitmap -Destination (Join-Path $BaseDir "splash-icon.png") `
                 -Width 512 -Height 512 -Background ([System.Drawing.Color]::Transparent) -Scale 0.78 -Padding 0.05
 
-            Save-CanvasImage -Source $Source -Destination (Join-Path $BaseDir "favicon.png") `
-                -Width 256 -Height 256 -Background ([System.Drawing.Color]::Transparent) -Scale 0.80
-            Save-CanvasImage -Source $Source -Destination (Join-Path $webDir "favicon.png") `
-                -Width 256 -Height 256 -Background ([System.Drawing.Color]::Transparent) -Scale 0.80
-
-            $faviconBitmap = [System.Drawing.Bitmap]::FromFile((Join-Path $BaseDir "favicon.png"))
+            $adaptiveForeground = $null
+            $notificationCanvas = $null
             try {
-                Save-FaviconIco -Source $faviconBitmap -Destination (Join-Path $BaseDir "favicon.ico")
-                Save-FaviconIco -Source $faviconBitmap -Destination (Join-Path $webDir "favicon.ico")
+                $adaptiveForeground = New-FittedCanvasBitmap -Source $CleanBitmap -Width 1024 -Height 1024 -Background ([System.Drawing.Color]::Transparent) -Scale 0.78 -Padding 0.05
+                Save-Png -Bitmap $adaptiveForeground -Path (Join-Path $BaseDir "adaptive-foreground.png")
+                Save-MonochromeImage -Source $adaptiveForeground -Destination (Join-Path $BaseDir "adaptive-monochrome.png")
+
+                $notificationCanvas = New-FittedCanvasBitmap -Source $CleanBitmap -Width 96 -Height 96 -Background ([System.Drawing.Color]::Transparent) -Scale 0.72
+                Save-MonochromeImage -Source $notificationCanvas -Destination (Join-Path $BaseDir "notification-icon.png")
             }
             finally {
-                $faviconBitmap.Dispose()
+                if ($notificationCanvas) {
+                    $notificationCanvas.Dispose()
+                }
+                if ($adaptiveForeground) {
+                    $adaptiveForeground.Dispose()
+                }
             }
         }
 
         "horizontal" {
-            Save-Png -Bitmap $Source -Path (Join-Path $BaseDir "logo-horizontal.png")
-            Save-Png -Bitmap $Source -Path (Join-Path $webDir "logo-horizontal.png")
-
-            foreach ($width in (Get-ConfigValue -Config $Asset -Name "WebWidths" -Default @(1200, 800, 400, 200))) {
-                Save-ResizedImage -Source $Source -Destination (Join-Path $webDir ("logo-horizontal-{0}.png" -f $width)) `
-                    -MaxWidth $width -MaxHeight 800
-            }
+            Save-Png -Bitmap $CleanBitmap -Path (Join-Path $BaseDir "logo-horizontal.png")
         }
 
         "vertical" {
-            Save-Png -Bitmap $Source -Path (Join-Path $BaseDir "logo-vertical.png")
-            Save-Png -Bitmap $Source -Path (Join-Path $webDir "logo-vertical.png")
-
-            foreach ($height in (Get-ConfigValue -Config $Asset -Name "WebHeights" -Default @(1200, 800, 600))) {
-                Save-ResizedImage -Source $Source -Destination (Join-Path $webDir ("logo-vertical-{0}.png" -f $height)) `
-                    -MaxWidth 800 -MaxHeight $height
-            }
+            Save-Png -Bitmap $CleanBitmap -Path (Join-Path $BaseDir "logo-vertical.png")
         }
     }
 }
 
 function Test-SourcesAvailable {
-    param([Parameter(Mandatory)][hashtable[]]$Assets)
+    param([Parameter(Mandatory)][hashtable[]]$Specs)
 
     $missing = @()
-    foreach ($asset in $Assets) {
-        $sourcePath = Join-Path $ReferenceDir $asset.SourceFile
+    foreach ($spec in $Specs) {
+        $sourcePath = Join-Path $ReferenceDir $spec.SourceFile
         if (-not (Test-Path -LiteralPath $sourcePath)) {
             $missing += $sourcePath
         }
@@ -1028,16 +931,14 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Referencia: $ReferenceDir" -ForegroundColor Gray
 Write-Host "Salida:     $OutputDir" -ForegroundColor Gray
 
-Test-SourcesAvailable -Assets $assetsConfig
+Test-SourcesAvailable -Specs $script:BrandingSpecs
 
 if (-not $KeepManagedOutputs) {
     Write-Host "Limpiando outputs gestionados..." -ForegroundColor Gray
     Reset-ManagedOutputs -BaseDir $OutputDir
 }
 
-New-Directory $OutputDir | Out-Null
-$referenceOutputDir = New-Directory (Join-Path $OutputDir "references")
-$svgOutputDir = New-Directory (Join-Path $OutputDir "svg")
+Ensure-Directory $OutputDir | Out-Null
 
 $potraceToolchain = Resolve-PotraceToolchain `
     -ForceDownload:$ForcePotraceDownload `
@@ -1052,57 +953,48 @@ else {
     Write-Host "Potrace no disponible. SVGs se omitiran; PNGs siguen." -ForegroundColor Yellow
 }
 
-foreach ($asset in $assetsConfig) {
-    $sourcePath = Join-Path $ReferenceDir $asset.SourceFile
+foreach ($spec in $script:BrandingSpecs) {
+    $sourcePath = Join-Path $ReferenceDir $spec.SourceFile
     $sourceBitmap = $null
     $croppedBitmap = $null
     $cleanBitmap = $null
 
     Write-Host ""
-    Write-Host ("Procesando: {0}" -f $asset.Name) -ForegroundColor Cyan
+    Write-Host ("Procesando: {0}" -f $spec.Name) -ForegroundColor Cyan
 
     try {
         $sourceBitmap = [System.Drawing.Bitmap]::FromFile($sourcePath)
-        $bounds = Get-ContentBounds -Bitmap $sourceBitmap -Threshold ([int](Get-ConfigValue -Config $asset -Name "Threshold" -Default 245))
+        $bounds = Get-ContentBounds -Bitmap $sourceBitmap -Threshold ([int](Get-SpecValue -Spec $spec -Name "Threshold" -Default 245))
 
         if (-not $bounds) {
-            throw "No se detecto contenido util en $($asset.SourceFile)."
+            throw "No se detecto contenido util en $($spec.SourceFile)."
         }
 
         Write-Host ("  Contenido: {0}x{1} en ({2},{3})" -f $bounds.Width, $bounds.Height, $bounds.X, $bounds.Y) -ForegroundColor Gray
 
-        $croppedBitmap = New-CroppedImage `
+        $croppedBitmap = New-CroppedBitmap `
             -Source $sourceBitmap `
             -Bounds $bounds `
-            -TargetContentRatioX ([double](Get-ConfigValue -Config $asset -Name "TargetContentRatioX" -Default 0.85)) `
-            -TargetContentRatioY ([double](Get-ConfigValue -Config $asset -Name "TargetContentRatioY" -Default 0.85)) `
-            -MinimumPaddingPx ([int](Get-ConfigValue -Config $asset -Name "MinimumPaddingPx" -Default 0))
-
-        Save-Png -Bitmap $croppedBitmap -Path (Join-Path $referenceOutputDir ("{0}-cropped.png" -f $asset.Name))
+            -TargetContentRatioX ([double](Get-SpecValue -Spec $spec -Name "CropRatioX" -Default 0.85)) `
+            -TargetContentRatioY ([double](Get-SpecValue -Spec $spec -Name "CropRatioY" -Default 0.85)) `
+            -MinimumPaddingPx ([int](Get-SpecValue -Spec $spec -Name "MinimumPaddingPx" -Default 0))
 
         $cleanBitmap = Remove-WhiteBackground `
             -Source $croppedBitmap `
-            -Threshold ([int](Get-ConfigValue -Config $asset -Name "Threshold" -Default 245)) `
-            -TransitionRange ([int](Get-ConfigValue -Config $asset -Name "TransitionRange" -Default 40))
+            -Threshold ([int](Get-SpecValue -Spec $spec -Name "Threshold" -Default 245)) `
+            -TransitionRange ([int](Get-SpecValue -Spec $spec -Name "TransitionRange" -Default 40))
 
-        Save-Png -Bitmap $cleanBitmap -Path (Join-Path $referenceOutputDir ("{0}-clean.png" -f $asset.Name))
+        Export-BrandingOutputs -CleanBitmap $cleanBitmap -Spec $spec -BaseDir $OutputDir
 
-        Export-WebAssets -Source $cleanBitmap -BaseDir $OutputDir -Asset $asset
-
-        if ($asset.Type -eq "mark") {
-            Export-AndroidAssets -Source $cleanBitmap -BaseDir $OutputDir
-            Export-IosAssets -Source $cleanBitmap -BaseDir $OutputDir
-        }
-
-        if ((Get-ConfigValue -Config $asset -Name "GenerateSvg" -Default $false) -and $potraceToolchain) {
-            $svgPath = Join-Path $svgOutputDir ("{0}.svg" -f $asset.Name)
-            $generated = Export-SvgAsset -Source $cleanBitmap -OutputPath $svgPath -Asset $asset -Toolchain $potraceToolchain
+        if ((Get-SpecValue -Spec $spec -Name "GenerateSvg" -Default $false) -and $potraceToolchain) {
+            $svgPath = Join-Path $OutputDir ("{0}.svg" -f $spec.Name)
+            $generated = Export-SvgAsset -Source $cleanBitmap -OutputPath $svgPath -Spec $spec -Toolchain $potraceToolchain
             if ($generated) {
                 Write-Host ("  SVG: {0}" -f $svgPath) -ForegroundColor Green
             }
         }
 
-        Write-Host ("  OK: {0}" -f $asset.Name) -ForegroundColor Green
+        Write-Host ("  OK: {0}" -f $spec.Name) -ForegroundColor Green
     }
     finally {
         if ($cleanBitmap) { $cleanBitmap.Dispose() }
@@ -1115,7 +1007,7 @@ Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  BRAND ASSETS LISTOS" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  root -> icon.png, splash-icon.png, adaptive-foreground.png, favicon.ico" -ForegroundColor Gray
-Write-Host "  web  -> web\\logo-horizontal-*.png, web\\logo-vertical-*.png" -ForegroundColor Gray
-Write-Host "  ios  -> ios\\AppIcon.appiconset\\Contents.json" -ForegroundColor Gray
-Write-Host "  svg  -> svg\\*.svg (si Potrace disponible)" -ForegroundColor Gray
+Write-Host "  shared  -> logo-mark.png, logo-horizontal.png, logo-vertical.png" -ForegroundColor Gray
+Write-Host "  iOS     -> icon.png, splash-icon.png" -ForegroundColor Gray
+Write-Host "  Android -> icon.png, splash-icon.png, adaptive-foreground.png, adaptive-monochrome.png, notification-icon.png" -ForegroundColor Gray
+Write-Host "  extras  -> *.svg en raiz (si Potrace disponible)" -ForegroundColor Gray
