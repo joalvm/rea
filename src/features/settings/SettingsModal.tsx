@@ -5,20 +5,38 @@ import { colors } from "@/theme";
 import { IconButton } from "@/ui/IconButton";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./SettingsModal.styles";
+import ExportSavedBanner from "./components/ExportSavedBanner";
 import SettingRow from "./components/SettingRow";
 
 import { NotificationMoment } from "@/types/notifications.types";
+import { ExportSavedNotice } from "./settings.types";
 
 /** Props del modal principal de ajustes. */
 interface SettingsModalProps {
     visible: boolean;
+    exportSavedNotice: ExportSavedNotice | null;
+    exportingBackup: boolean;
     moments: NotificationMoment[];
     onClose: () => void;
+    onDismissExportSavedNotice: () => void;
+    onExportBackup: () => Promise<void>;
     onOpenSchedule: () => void;
     onReset: () => Promise<void>;
+    onShareSavedBackup: () => Promise<void>;
 }
 
-export function SettingsModal({ visible, moments, onClose, onOpenSchedule, onReset }: SettingsModalProps) {
+export function SettingsModal({
+    visible,
+    exportSavedNotice,
+    exportingBackup,
+    moments,
+    onClose,
+    onDismissExportSavedNotice,
+    onExportBackup,
+    onOpenSchedule,
+    onReset,
+    onShareSavedBackup,
+}: SettingsModalProps) {
     const activeMoments = moments.filter((moment) => moment.enabled).length;
 
     const confirmReset = () => {
@@ -59,6 +77,16 @@ export function SettingsModal({ visible, moments, onClose, onOpenSchedule, onRes
                         title="Momentos del día"
                     />
 
+                    <SettingRow
+                        icon="database-export-outline"
+                        meta={exportingBackup ? "Preparando" : "SQLite"}
+                        onPress={() => {
+                            void onExportBackup();
+                        }}
+                        text="Guarda una copia local al instante y luego puedes compartirla donde prefieras."
+                        title="Exportar respaldo"
+                    />
+
                     <SoftCard style={styles.privacyCard}>
                         <View style={styles.privacyIcon}>
                             <MaterialCommunityIcons color={colors.primaryDeep} name="shield-check-outline" size={25} />
@@ -91,6 +119,20 @@ export function SettingsModal({ visible, moments, onClose, onOpenSchedule, onRes
                         </Pressable>
                     </SoftCard>
                 </ScrollView>
+
+                {exportSavedNotice ? (
+                    <ExportSavedBanner
+                        message={exportSavedNotice.message}
+                        onDismiss={onDismissExportSavedNotice}
+                        onShare={
+                            exportSavedNotice.canShare
+                                ? () => {
+                                      void onShareSavedBackup();
+                                  }
+                                : undefined
+                        }
+                    />
+                ) : null}
             </View>
         </Modal>
     );

@@ -12,6 +12,9 @@ export default function OnboardingPrivacyStep() {
             title="Tu ciclo, en privado."
         >
             <Text style={styles.body}>Vamos a separar lo que registras de lo que solo se estima.</Text>
+            <Text style={styles.body}>
+                Si ya tenías datos guardados, puedes importar tu respaldo antes de continuar.
+            </Text>
         </StepShell>
     );
 }

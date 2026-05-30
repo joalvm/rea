@@ -23,9 +23,15 @@ export default function AppShell() {
         completeOnboarding,
         data,
         deleteCheckIn,
+        dismissExportSavedNotice,
         editDailyLog,
         editQuickCheckIn,
+        exportBackup,
+        exportSavedNotice,
+        exportingBackup,
         handleTabChange,
+        importBackup,
+        importingBackup,
         loading,
         moments,
         openDailyCheckIn,
@@ -39,6 +45,7 @@ export default function AppShell() {
         saveMoments,
         scheduleVisible,
         selectedDayIso,
+        shareSavedBackup,
         settingsVisible,
         snapshot,
     } = useAppShellController();
@@ -55,7 +62,11 @@ export default function AppShell() {
     if (!data.settings?.onboarded) {
         return (
             <>
-                <OnboardingScreen onComplete={completeOnboarding} />
+                <OnboardingScreen
+                    importingBackup={importingBackup}
+                    onComplete={completeOnboarding}
+                    onImportBackup={importBackup}
+                />
                 <StatusBar style="dark" />
             </>
         );
@@ -96,10 +107,15 @@ export default function AppShell() {
             />
             <ScheduleModal moments={moments} onChange={saveMoments} onClose={closeSchedule} visible={scheduleVisible} />
             <SettingsModal
+                exportSavedNotice={exportSavedNotice}
+                exportingBackup={exportingBackup}
                 moments={moments}
                 onClose={closeSettings}
+                onDismissExportSavedNotice={dismissExportSavedNotice}
+                onExportBackup={exportBackup}
                 onOpenSchedule={openScheduleFromSettings}
                 onReset={resetApplication}
+                onShareSavedBackup={shareSavedBackup}
                 visible={settingsVisible}
             />
             <StatusBar style="dark" />

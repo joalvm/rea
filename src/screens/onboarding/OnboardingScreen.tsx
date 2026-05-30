@@ -15,10 +15,12 @@ import useOnboardingFlow from "./hooks/useOnboardingFlow";
 
 /** Props del flujo inicial de onboarding. */
 interface OnboardingScreenProps {
+    importingBackup: boolean;
     onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
+    onImportBackup: () => Promise<void>;
 }
 
-export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
+export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }: OnboardingScreenProps) {
     const {
         step,
         setStep,
@@ -86,15 +88,35 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
             </ScrollView>
 
             <View style={styles.footer}>
+                {step === 0 ? (
+                    <View style={styles.footerRow}>
+                        <SoftButton
+                            label="Importar respaldo"
+                            loading={importingBackup}
+                            onPress={() => {
+                                void onImportBackup();
+                            }}
+                            style={styles.footerAction}
+                            variant="secondary"
+                        />
+                        <SoftButton
+                            label="Continuar"
+                            onPress={() => setStep((current) => current + 1)}
+                            style={styles.footerAction}
+                        />
+                    </View>
+                ) : null}
                 {step > 0 ? (
                     <SoftButton label="Atrás" onPress={() => setStep((current) => current - 1)} variant="ghost" />
                 ) : null}
-                <SoftButton
-                    label={step === 5 ? "Empezar" : "Siguiente"}
-                    loading={saving}
-                    onPress={step === 5 ? finish : () => setStep((current) => current + 1)}
-                    style={styles.nextButton}
-                />
+                {step > 0 ? (
+                    <SoftButton
+                        label={step === 5 ? "Empezar" : "Siguiente"}
+                        loading={saving}
+                        onPress={step === 5 ? finish : () => setStep((current) => current + 1)}
+                        style={styles.nextButton}
+                    />
+                ) : null}
             </View>
         </View>
     );

@@ -1,7 +1,8 @@
 import { addNotificationResponseReceivedListener } from "expo-notifications/build/NotificationsEmitter";
-import * as NavigationBar from "expo-navigation-bar";
+import * as DocumentPicker from "expo-document-picker";
+import * as Sharing from "expo-sharing";
 import { useEffect, useMemo, useState } from "react";
-import { Platform } from "react-native";
+import { Alert } from "react-native";
 
 import estimateCycle from "../modules/cycle/estimation/estimateCycle";
 import createDefaultNotificationMoments from "../modules/notifications/defaults/createDefaultNotificationMoments";
@@ -14,9 +15,13 @@ import { upsertDailyLog } from "../modules/storage/repositories/dailyLogs.reposi
 import { deleteMoodCheckIn, upsertMoodCheckIn } from "../modules/storage/repositories/moodCheckIns.repository";
 import { saveNotificationMoments } from "../modules/storage/repositories/notificationMoments.repository";
 import { saveSettings } from "../modules/storage/repositories/settings.repository";
+import exportAppBackup from "../modules/storage/services/exportAppBackup";
+import importAppBackup from "../modules/storage/services/importAppBackup";
 import loadAppData from "../modules/storage/services/loadAppData";
 import resetAppData from "../modules/storage/services/resetAppData";
+import saveBackupToDevice from "../modules/storage/services/saveBackupToDevice";
 import syncObservedCyclesFromDailyLogs from "../modules/storage/services/syncObservedCycles";
+import { ExportSavedNotice } from "../features/settings/settings.types";
 import { AppData, TabKey } from "../types/app.types";
 import { NotificationMoment } from "../types/notifications.types";
 import { DailyLog, MomentType, MoodCheckIn } from "../types/records.types";
@@ -44,6 +49,9 @@ export default function useAppShellController() {
     const [selectedDayIso, setSelectedDayIso] = useState<string | null>(null);
     const [scheduleVisible, setScheduleVisible] = useState(false);
     const [settingsVisible, setSettingsVisible] = useState(false);
+    const [exportSavedNotice, setExportSavedNotice] = useState<ExportSavedNotice | null>(null);
+    const [exportingBackup, setExportingBackup] = useState(false);
+    const [importingBackup, setImportingBackup] = useState(false);
     const [checkIn, setCheckIn] = useState<CheckInState>(initialCheckInState);
 
     const snapshot = useMemo(
@@ -61,18 +69,6 @@ export default function useAppShellController() {
     }, []);
 
     useEffect(() => {
-        if (Platform.OS !== "android") {
-            return;
-        }
-
-        void configureAndroidNavigationBar();
-
-        return () => {
-            void NavigationBar.setVisibilityAsync("visible").catch(() => undefined);
-        };
-    }, []);
-
-    useEffect(() => {
         const subscription = addNotificationResponseReceivedListener((response) => {
             const type = response.notification.request.content.data?.momentType;
             openQuickCheckIn(typeof type === "string" ? (type as MomentType) : "now");
@@ -80,6 +76,18 @@ export default function useAppShellController() {
 
         return () => subscription.remove();
     }, []);
+
+    useEffect(() => {
+        if (!exportSavedNotice) {
+            return;
+        }
+
+        const timeoutId = setTimeout(() => {
+            setExportSavedNotice(null);
+        }, 6500);
+
+        return () => clearTimeout(timeoutId);
+    }, [exportSavedNotice]);
 
     async function boot() {
         await initializeDatabase();
@@ -154,6 +162,7 @@ export default function useAppShellController() {
     };
 
     const closeSettings = () => {
+        setExportSavedNotice(null);
         setSettingsVisible(false);
     };
 
@@ -182,6 +191,101 @@ export default function useAppShellController() {
     const openDiaryTab = () => {
         setSelectedDayIso(null);
         setActiveTab("diary");
+    };
+
+    const exportBackup = async () => {
+        if (exportingBackup || importingBackup) {
+            return;
+        }
+
+        try {
+            setExportingBackup(true);
+
+            const backupFile = await exportAppBackup();
+            const savedBackup = await saveBackupToDevice(backupFile);
+            const sharingAvailable = await Sharing.isAvailableAsync();
+
+            setExportSavedNotice(
+                buildExportSavedNotice(
+                    savedBackup.file.name,
+                    savedBackup.file.uri,
+                    savedBackup.folderLabel,
+                    sharingAvailable,
+                ),
+            );
+        } catch (error) {
+            Alert.alert("No pude exportar tu respaldo", getErrorMessage(error, "Intenta de nuevo en unos segundos."));
+        } finally {
+            setExportingBackup(false);
+        }
+    };
+
+    const dismissExportSavedNotice = () => {
+        setExportSavedNotice(null);
+    };
+
+    const shareSavedBackup = async () => {
+        if (!exportSavedNotice?.canShare) {
+            return;
+        }
+
+        try {
+            await Sharing.shareAsync(exportSavedNotice.fileUri, {
+                dialogTitle: "Compartir respaldo de Rea",
+                mimeType: "application/vnd.sqlite3",
+            });
+
+            setExportSavedNotice(null);
+        } catch (error) {
+            Alert.alert("No pude compartir tu respaldo", getErrorMessage(error, "Intenta de nuevo en unos segundos."));
+        }
+    };
+
+    const importBackup = async () => {
+        if (exportingBackup || importingBackup) {
+            return;
+        }
+
+        try {
+            setImportingBackup(true);
+
+            const result = await DocumentPicker.getDocumentAsync({
+                copyToCacheDirectory: true,
+                type: "*/*",
+            });
+
+            if (result.canceled) {
+                return;
+            }
+
+            const selectedBackup = result.assets[0];
+            if (!selectedBackup) {
+                throw new Error("No recibí ningún archivo para importar.");
+            }
+
+            await importAppBackup(selectedBackup.uri);
+
+            const restoredData = await loadAppData();
+            if (restoredData.notificationMoments.length > 0) {
+                const rescheduledMoments = await rescheduleNotificationMoments(restoredData.notificationMoments);
+                await saveNotificationMoments(rescheduledMoments);
+            } else {
+                await clearScheduledNotifications();
+            }
+
+            await refreshData();
+            setActiveTab("today");
+            setSelectedDayIso(null);
+
+            Alert.alert("Respaldo importado", "Tus registros volvieron a este teléfono.");
+        } catch (error) {
+            Alert.alert(
+                "No pude importar el respaldo",
+                getErrorMessage(error, "Revisa que sea un respaldo válido creado por Rea."),
+            );
+        } finally {
+            setImportingBackup(false);
+        }
     };
 
     const completeOnboarding = async (settings: AppSettings, notificationMoments: NotificationMoment[]) => {
@@ -246,9 +350,15 @@ export default function useAppShellController() {
         completeOnboarding,
         data,
         deleteCheckIn,
+        dismissExportSavedNotice,
         editDailyLog,
         editQuickCheckIn,
+        exportBackup,
+        exportSavedNotice,
+        exportingBackup,
         handleTabChange,
+        importBackup,
+        importingBackup,
         loading,
         moments,
         openDailyCheckIn,
@@ -262,6 +372,7 @@ export default function useAppShellController() {
         saveMoments,
         scheduleVisible,
         selectedDayIso,
+        shareSavedBackup,
         settingsVisible,
         snapshot,
     };
@@ -298,11 +409,20 @@ function questionForMoment(momentType: MomentType) {
     return "¿Cómo te sientes ahora?";
 }
 
-/** Intenta ocultar la barra de navegación Android sin romper builds que ignoran esa API. */
-async function configureAndroidNavigationBar() {
-    try {
-        await NavigationBar.setVisibilityAsync("hidden");
-    } catch {
-        // Some Android builds ignore immersive nav bar APIs. Bottom safe area still keeps tabs reachable.
-    }
+function getErrorMessage(error: unknown, fallback: string) {
+    return error instanceof Error && error.message ? error.message : fallback;
+}
+
+function buildExportSavedNotice(
+    fileName: string,
+    fileUri: string,
+    folderLabel: string,
+    canShare: boolean,
+): ExportSavedNotice {
+    return {
+        fileName,
+        fileUri,
+        message: `Se guardó en ${folderLabel}.`,
+        canShare,
+    };
 }

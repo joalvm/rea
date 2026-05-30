@@ -182,6 +182,13 @@ const styles = StyleSheet.create({
         paddingBottom: 26,
         gap: 10,
     },
+    footerRow: {
+        flexDirection: "row",
+        gap: 10,
+    },
+    footerAction: {
+        flex: 1,
+    },
     nextButton: {
         width: "100%",
     },
