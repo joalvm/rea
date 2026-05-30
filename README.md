@@ -38,21 +38,20 @@ npm install
 npm run assets:brand
 npm run start
 npm run android
-npm run build -- --dry-run
+npm run build
 npm run check
 npm run typecheck
 npm run lint
 ```
 
-Build local sin cuentas:
+Build local:
 
 - `npm run assets:brand`: reconstruye iconos y branding derivados. Correlo solo cuando cambien archivos dentro de `references/branding`.
-- `npm run build`: por defecto prepara siguiente `minor` y, si host lo permite, intenta ambos targets locales sin regenerar branding.
-- `npm run build -- --platform=android --version=major`: ejemplo de build Android subiendo version mayor.
-- `npm run build -- --platform=android --version=patch`: genera APK Android local y deja `dist/rea-android-vX.Y.Z-bN.apk` mas alias `dist/rea-android-latest.apk`.
-- `npm run build -- --platform=ios --version=minor`: en macOS con Xcode genera app de simulador comprimida en `dist/rea-ios-simulator-vX.Y.Z-bN.zip` mas alias `dist/rea-ios-simulator-latest.zip`.
-- Si no pasas `--platform`, script usa `all`. En Windows omitira iOS con warning porque build iOS local sin cuentas requiere macOS con Xcode.
-- Si no pasas `--version`, script usa `minor`. Tambien acepta `patch`, `major` y `none`.
+- `npm run build`: intenta build local de Android e iOS cuando host lo permite, sin regenerar branding.
+- `npm run build -- --platform=android`: genera `dist/rea-android.apk`. En macOS o Linux usa EAS local con perfil `preview`; en Windows usa fallback nativo porque EAS local no tiene soporte oficial ahi.
+- `npm run build -- --platform=ios`: en macOS con Xcode usa EAS local con perfil `simulator` y genera `dist/rea-ios-simulator.tar.gz`.
+- Si no pasas `--platform`, script usa `all`. En Windows omitira iOS con warning porque build iOS local requiere macOS con Xcode.
+- Si quieres EAS local en Windows, usa WSL. Expo no lo soporta oficialmente en host Windows nativo.
 - Si cambias logos o iconos fuente, primero corre `npm run assets:brand` y despues build.
 
 Colaboracion y seguridad:

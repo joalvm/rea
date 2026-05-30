@@ -1,8 +1,3 @@
-param(
-    [ValidateSet("apk")]
-    [string]$Artifact = "apk"
-)
-
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version 3.0
 
@@ -20,6 +15,15 @@ function Invoke-NativeStep {
 
 function Test-IsWindowsHost {
     return $env:OS -eq "Windows_NT"
+}
+
+function Get-EasCliPath {
+    $easCli = Get-Command eas -ErrorAction SilentlyContinue
+    if (-not $easCli) {
+        throw "No encontre EAS CLI en PATH. Instala eas-cli o usa entorno donde `eas` este disponible."
+    }
+
+    return $easCli.Source
 }
 
 function Stop-GradleDaemonsIfPresent {
@@ -105,32 +109,38 @@ function Set-AndroidEnvironmentDefaults {
     }
 }
 
-$root = Split-Path -Parent $PSScriptRoot
-Set-AndroidEnvironmentDefaults
-$expoCli = Get-ExpoCliPath -Root $root
+function Remove-AndroidArtifacts {
+    param([Parameter(Mandatory)][string]$DistDir)
 
-Push-Location $root
-try {
-    $versionInfoRaw = node .\scripts\bump-app-version.mjs --release none
-    if ($LASTEXITCODE -ne 0) {
-        throw "No pude leer version actual de app."
+    $patterns = @(
+        "rea-android*.apk",
+        "rea-release.apk",
+        "rea-v*.apk"
+    )
+
+    foreach ($pattern in $patterns) {
+        Get-ChildItem -Path $DistDir -Filter $pattern -File -ErrorAction SilentlyContinue |
+            Remove-Item -Force -ErrorAction SilentlyContinue
     }
+}
 
-    $versionInfo = $versionInfoRaw | ConvertFrom-Json
-    $versionLabel = "v$($versionInfo.version)-b$($versionInfo.versionCode)"
-    $distDir = Join-Path $root "dist"
-    New-Item -ItemType Directory -Force -Path $distDir | Out-Null
+function Invoke-EasLocalAndroidBuild {
+    param([Parameter(Mandatory)][string]$OutputPath)
 
-    $versionedTarget = Join-Path $distDir "rea-android-$versionLabel.apk"
-    $latestTarget = Join-Path $distDir "rea-android-latest.apk"
-
-    foreach ($target in @($versionedTarget, $latestTarget)) {
-        if (Test-Path $target) {
-            Remove-Item $target -Force
-        }
+    $easCli = Get-EasCliPath
+    Invoke-NativeStep "eas local build android" {
+        & $easCli build --platform android --profile preview --local --non-interactive --output $OutputPath
     }
+}
 
-    $androidDir = Join-Path $root "android"
+function Invoke-WindowsFallbackAndroidBuild {
+    param(
+        [Parameter(Mandatory)][string]$Root,
+        [Parameter(Mandatory)][string]$OutputPath
+    )
+
+    $expoCli = Get-ExpoCliPath -Root $Root
+    $androidDir = Join-Path $Root "android"
     Stop-GradleDaemonsIfPresent -AndroidDir $androidDir
 
     Invoke-NativeStep "expo prebuild android" { & $expoCli prebuild --platform android }
@@ -153,18 +163,38 @@ try {
         Pop-Location
     }
 
-    $source = Join-Path $root "android\app\build\outputs\apk\release\app-release.apk"
+    $source = Join-Path $Root "android\app\build\outputs\apk\release\app-release.apk"
     if (-not (Test-Path $source)) {
         throw "No se genero artefacto Android esperado: $source"
     }
 
-    Copy-Item $source $versionedTarget -Force
-    Copy-Item $source $latestTarget -Force
+    Copy-Item $source $OutputPath -Force
+}
 
-    Write-Host "Version app: $($versionInfo.version)"
-    Write-Host "Android versionCode: $($versionInfo.versionCode)"
-    Write-Host "Artefacto versionado listo: $versionedTarget"
-    Write-Host "Alias actualizado: $latestTarget"
+$root = Split-Path -Parent $PSScriptRoot
+Set-AndroidEnvironmentDefaults
+
+Push-Location $root
+try {
+    $distDir = Join-Path $root "dist"
+    New-Item -ItemType Directory -Force -Path $distDir | Out-Null
+    Remove-AndroidArtifacts -DistDir $distDir
+
+    $outputTarget = Join-Path $distDir "rea-android.apk"
+
+    if (Test-IsWindowsHost) {
+        Write-Warning "EAS local para Android no tiene soporte oficial en Windows. Uso fallback nativo local. Si quieres EAS local estandar en Windows, usa WSL."
+        Invoke-WindowsFallbackAndroidBuild -Root $root -OutputPath $outputTarget
+    }
+    else {
+        Invoke-EasLocalAndroidBuild -OutputPath $outputTarget
+    }
+
+    if (-not (Test-Path $outputTarget)) {
+        throw "No se genero artefacto Android esperado: $outputTarget"
+    }
+
+    Write-Host "Artefacto listo: $outputTarget"
 }
 finally {
     Pop-Location

@@ -38,6 +38,12 @@
                 }
             ],
             "expo-status-bar"
-        ]
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "26cb52dd-a4ef-4b60-92be-42d4ca976332"
+            }
+        },
+        "owner": "joalvm"
     }
 }
