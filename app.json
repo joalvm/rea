@@ -56,6 +56,15 @@
                     "category": ["DEFAULT"],
                     "data": [
                         {
+                            "mimeType": "application/octet-stream"
+                        }
+                    ]
+                },
+                {
+                    "action": "VIEW",
+                    "category": ["DEFAULT"],
+                    "data": [
+                        {
                             "scheme": "content",
                             "host": "*",
                             "pathPattern": ".*\\\\.rea"
