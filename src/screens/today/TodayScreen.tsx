@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
 
-import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
 import { colors } from "@/theme";
 import { BrandLogo } from "@/ui/BrandLogo";
 import { Cycle, CycleSnapshot } from "@/types/cycle.types";
@@ -15,9 +14,9 @@ import { SoftCard } from "@/ui/SoftCard";
 import { WeekStrip } from "@/ui/WeekStrip";
 import styles from "./TodayScreen.styles";
 import MiniStat from "./components/MiniStat";
-import { buildTodaySummaries, buildWeekPages, getAlertTone, getCareTips, getHeroSupport } from "./utils/todayContent";
-import getHeroTheme from "./utils/todayHeroTheme";
 import { HeroCurve } from "./components/HeroCurve";
+import useTodayModel from "./useTodayModel";
+import { getAlertTone } from "./utils/todayContent";
 
 /** Props del screen principal de hoy. */
 interface TodayScreenProps {
@@ -47,13 +46,13 @@ export function TodayScreen({
     onOpenPatterns,
     onOpenSettings,
 }: TodayScreenProps) {
-    const heroTheme = getHeroTheme(snapshot.phase);
-    const { insights, alerts } = buildTodaySummaries(settings, cycles, dailyLogs, moodCheckIns);
-    const careTips = getCareTips(snapshot.phase);
-    const heroSupport = getHeroSupport(snapshot);
-    const showHeroDataSummary = snapshot.observedCycleCount > 0;
-    const todayIso = snapshot.week.find((day) => day.isToday)?.iso ?? toIsoDate(new Date());
-    const weekPages = buildWeekPages(settings, cycles, dailyLogs, todayIso);
+    const { alerts, careTips, heroSupport, heroTheme, insights, showHeroDataSummary, weekPages } = useTodayModel({
+        settings,
+        cycles,
+        snapshot,
+        moodCheckIns,
+        dailyLogs,
+    });
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>

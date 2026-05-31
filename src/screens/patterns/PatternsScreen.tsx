@@ -1,12 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
 
-import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
-import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
-import buildCycleSummaries from "@/modules/cycle/summaries/buildCycleSummaries";
 import { formatShortDate } from "@/modules/cycle/shared/cycleDate.utils";
-import { average } from "@/modules/cycle/shared/cycleMath.utils";
-import { summarizeTopSymptoms } from "@/modules/cycle/shared/cycleSummary.utils";
 import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
@@ -19,6 +14,7 @@ import AlertCard from "./components/AlertCard";
 import InsightRow from "./components/InsightRow";
 import MetricBar from "./components/MetricBar";
 import MetricPill from "./components/MetricPill";
+import usePatternsModel from "./usePatternsModel";
 
 /** Props del screen de patrones e insights. */
 interface PatternsScreenProps {
@@ -28,24 +24,14 @@ interface PatternsScreenProps {
     dailyLogs: DailyLog[];
 }
 
-const METRICS: {
-    key: keyof Pick<MoodCheckIn, "mood" | "energy" | "pain" | "stress">;
-    label: string;
-    color: string;
-}[] = [
-    { key: "mood", label: "Ánimo", color: colors.primary },
-    { key: "energy", label: "Energía", color: colors.fertile },
-    { key: "pain", label: "Dolor", color: colors.period },
-    { key: "stress", label: "Estrés", color: colors.luteal },
-];
-
 export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: PatternsScreenProps) {
-    const insights = buildPatternInsights(settings, cycles, dailyLogs, moodCheckIns);
-    const alerts = buildEducationalAlerts(settings, cycles, dailyLogs, moodCheckIns);
-    const cycleSummaries = buildCycleSummaries(settings, cycles, dailyLogs, 6);
-    const symptoms = summarizeTopSymptoms(dailyLogs, 5);
-    const enoughData = moodCheckIns.length >= 4;
-    const enoughObservedCycles = cycleSummaries.length >= 3;
+    const { alerts, cycleSummaries, insights, metricAverages, statusIconName, statusText, statusTitle, symptoms } =
+        usePatternsModel({
+            settings,
+            cycles,
+            moodCheckIns,
+            dailyLogs,
+        });
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -57,27 +43,11 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
 
             <SoftCard style={styles.statusCard} tone="primary" variant="accent">
                 <View style={styles.statusIcon}>
-                    <MaterialCommunityIcons
-                        color={colors.primaryDeep}
-                        name={enoughData ? "chart-line" : "timer-sand"}
-                        size={28}
-                    />
+                    <MaterialCommunityIcons color={colors.primaryDeep} name={statusIconName as never} size={28} />
                 </View>
                 <View style={styles.statusBody}>
-                    <Text style={styles.statusTitle}>
-                        {enoughObservedCycles
-                            ? "Ya hay base útil"
-                            : enoughData
-                              ? "Historial inicial listo"
-                              : "Aún juntando señales"}
-                    </Text>
-                    <Text style={styles.statusText}>
-                        {enoughObservedCycles
-                            ? `Ya hay ${cycleSummaries.length} ciclos observados para comparar duración, dolor y síntomas repetidos.`
-                            : enoughData
-                              ? "Ya hay suficientes momentos para enseñar tendencias, pero con 3 ciclos observados ganan contexto."
-                              : "Con 4 momentos aparecen los primeros patrones. Con 3 ciclos observados serán más defendibles."}
-                    </Text>
+                    <Text style={styles.statusTitle}>{statusTitle}</Text>
+                    <Text style={styles.statusText}>{statusText}</Text>
                 </View>
             </SoftCard>
 
@@ -162,10 +132,9 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Promedios recientes</Text>
                 <SoftCard style={styles.chartCard}>
-                    {METRICS.map((metric) => {
-                        const value = average(moodCheckIns.map((item) => item[metric.key]));
-                        return <MetricBar key={metric.key} color={metric.color} label={metric.label} value={value} />;
-                    })}
+                    {metricAverages.map((metric) => (
+                        <MetricBar key={metric.key} color={metric.color} label={metric.label} value={metric.value} />
+                    ))}
                 </SoftCard>
             </View>
 

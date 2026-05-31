@@ -1,8 +1,5 @@
-import { useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import generateMonthDays from "@/modules/cycle/calendar/generateMonthDays";
-import { monthTitle, toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
 import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog } from "@/types/records.types";
@@ -12,6 +9,7 @@ import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./CalendarScreen.styles";
+import useCalendarModel from "./useCalendarModel";
 import DayCell from "./components/DayCell";
 import MonthHeader from "./components/MonthHeader";
 
@@ -25,29 +23,18 @@ interface CalendarScreenProps {
 }
 
 export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onOpenDay }: CalendarScreenProps) {
-    const [month, setMonth] = useState(new Date());
-    const todayIso = toIsoDate(new Date());
-    const days = useMemo(
-        () => generateMonthDays(month, settings, cycles, dailyLogs),
-        [cycles, dailyLogs, month, settings],
-    );
-    const loggedDates = useMemo(() => new Set(dailyLogs.map((log) => log.date)), [dailyLogs]);
-    const todayHasLog = loggedDates.has(todayIso);
-
-    const shiftMonth = (delta: number) => {
-        setMonth((current) => new Date(current.getFullYear(), current.getMonth() + delta, 1, 12));
-    };
+    const { days, loggedDates, monthLabel, shiftMonth, todayHasLog, todayIso } = useCalendarModel({
+        settings,
+        cycles,
+        dailyLogs,
+    });
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader title="Calendario" titleIcon={<BrandMark color={colors.primaryDeep} size={20} />} />
 
             <View style={styles.calendarPanel}>
-                <MonthHeader
-                    monthLabel={monthTitle(month)}
-                    onNext={() => shiftMonth(1)}
-                    onPrevious={() => shiftMonth(-1)}
-                />
+                <MonthHeader monthLabel={monthLabel} onNext={() => shiftMonth(1)} onPrevious={() => shiftMonth(-1)} />
 
                 <View style={styles.weekHeader}>
                     {["D", "L", "M", "M", "J", "V", "S"].map((day, index) => (
