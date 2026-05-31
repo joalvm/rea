@@ -1,19 +1,14 @@
 import { StyleSheet } from "react-native";
 
-import { colors, type } from "@/theme";
+import { accents, colors, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     content: {
         backgroundColor: colors.background,
-        paddingTop: 58,
-        paddingHorizontal: 18,
+        paddingTop: screen.topInset,
+        paddingHorizontal: screen.horizontalPadding,
         paddingBottom: 36,
         gap: 18,
-    },
-    headerRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: 14,
     },
     backButton: {
         width: 40,
@@ -21,33 +16,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
-    },
-    headerCopy: {
-        flex: 1,
-        gap: 6,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    title: {
-        color: colors.ink,
-        fontSize: 28,
-        lineHeight: 34,
-        fontWeight: "900",
-    },
-    subtitle: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 20,
+        borderColor: accents.primary.border,
     },
     summaryCard: {
         gap: 12,
-        backgroundColor: colors.surfaceSoft,
     },
     card: {
         gap: 12,
@@ -73,14 +47,16 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     badge: {
-        color: colors.primaryDeep,
-        backgroundColor: colors.primarySoft,
+        color: colors.primaryInk,
+        backgroundColor: surfaces.cardRaised,
         paddingHorizontal: 10,
         paddingVertical: 6,
         borderRadius: 999,
         fontSize: type.tiny,
         fontWeight: "900",
         overflow: "hidden",
+        borderWidth: 1,
+        borderColor: surfaces.borderStrong,
     },
     metaLine: {
         color: colors.muted,
@@ -94,7 +70,7 @@ const styles = StyleSheet.create({
     },
     chip: {
         color: colors.ink,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         paddingHorizontal: 10,
         paddingVertical: 6,
         borderRadius: 999,
@@ -102,8 +78,8 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     detailChip: {
-        color: colors.primaryDeep,
-        backgroundColor: colors.primarySoft,
+        color: colors.primaryInk,
+        backgroundColor: accents.primary.tint,
         paddingHorizontal: 10,
         paddingVertical: 6,
         borderRadius: 999,
@@ -132,6 +108,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         alignItems: "center",
         justifyContent: "center",
+        borderWidth: 1,
+        borderColor: surfaces.borderStrong,
     },
     tipText: {
         flex: 1,

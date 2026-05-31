@@ -3,6 +3,7 @@ import { ScrollView, Text, View } from "react-native";
 
 import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
 import { colors } from "@/theme";
+import { BrandLogo } from "@/ui/BrandLogo";
 import { Cycle, CycleSnapshot } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
@@ -61,9 +62,7 @@ export function TodayScreen({
 
                 <View style={styles.heroContent}>
                     <View style={styles.topRow}>
-                        <Text style={[styles.date, { color: heroTheme.dateColor }]}>
-                            {new Date().toLocaleDateString("es-PE", { day: "numeric", month: "long" })}
-                        </Text>
+                        <BrandLogo color={heroTheme.titleColor} width={56} />
                         <IconButton
                             backgroundColor={heroTheme.iconButtonBackground}
                             color={heroTheme.iconButtonColor}

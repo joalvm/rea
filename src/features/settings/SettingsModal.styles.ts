@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, interactions, radii, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     screen: {
@@ -9,54 +9,37 @@ const styles = StyleSheet.create({
         paddingTop: 54,
     },
     header: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 14,
-        paddingHorizontal: 20,
+        paddingHorizontal: screen.horizontalPadding,
         paddingBottom: 14,
-    },
-    headerCopy: {
-        flex: 1,
-        minWidth: 0,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    title: {
-        color: colors.ink,
-        flexShrink: 1,
-        fontSize: type.title,
-        fontWeight: "900",
-        lineHeight: 28,
-        marginTop: 2,
     },
     content: {
         gap: 14,
-        paddingHorizontal: 20,
+        paddingHorizontal: screen.horizontalPadding,
         paddingTop: 8,
         paddingBottom: 34,
     },
     row: {
         minHeight: 92,
         borderRadius: radii.lg,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.08)",
+        borderColor: surfaces.border,
         padding: 16,
         flexDirection: "row",
         alignItems: "center",
         gap: 12,
     },
     pressed: {
-        transform: [{ scale: 0.985 }],
+        transform: [{ scale: interactions.pressScale }, { translateY: interactions.pressTranslateY }],
+        opacity: interactions.pressOpacity,
     },
     rowIcon: {
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -71,10 +54,10 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     rowMeta: {
-        color: colors.primaryDeep,
+        color: colors.primaryInk,
         fontSize: type.tiny,
         fontWeight: "900",
-        backgroundColor: colors.primarySoft,
+        backgroundColor: accents.primary.tint,
         borderRadius: 999,
         overflow: "hidden",
         paddingHorizontal: 8,
@@ -99,7 +82,9 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -119,7 +104,7 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: colors.periodSoft,
+        backgroundColor: accents.period.tint,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -130,7 +115,7 @@ const styles = StyleSheet.create({
     resetButton: {
         minHeight: 48,
         borderRadius: radii.md,
-        backgroundColor: colors.periodSoft,
+        backgroundColor: accents.period.tint,
         alignItems: "center",
         justifyContent: "center",
     },

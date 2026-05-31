@@ -3,10 +3,11 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
 import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
-import { colors } from "@/theme";
+import { AccentToneName, colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./DayDetailScreen.styles";
@@ -52,23 +53,29 @@ export function DayDetailScreen({
     const careTips = getCareTips(snapshot.phase);
     const summary = buildDaySummary(selectedIso, todayIso, snapshot.phaseMessage, dailyLog, moments);
     const hasRecords = Boolean(dailyLog || moments.length > 0);
+    const summaryTone: AccentToneName =
+        snapshot.phase === "menstrual"
+            ? "period"
+            : snapshot.phase === "fertile"
+              ? "fertile"
+              : snapshot.phase === "luteal"
+                ? "luteal"
+                : "primary";
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-            <View style={styles.headerRow}>
-                <Pressable accessibilityRole="button" onPress={onBack} style={styles.backButton}>
-                    <MaterialCommunityIcons color={colors.primaryDeep} name="arrow-left" size={20} />
-                </Pressable>
-                <View style={styles.headerCopy}>
-                    <Text style={styles.kicker}>Detalle del día</Text>
-                    <Text style={styles.title}>{formatLongDate(selectedIso)}</Text>
-                    <Text style={styles.subtitle}>
-                        {snapshot.phaseLabel} · {snapshot.sourceLabel}
-                    </Text>
-                </View>
-            </View>
+            <ScreenHeader
+                kicker="Detalle del día"
+                leading={
+                    <Pressable accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name="arrow-left" size={20} />
+                    </Pressable>
+                }
+                subtitle={`${snapshot.phaseLabel} · ${snapshot.sourceLabel}`}
+                title={formatLongDate(selectedIso)}
+            />
 
-            <SoftCard style={styles.summaryCard}>
+            <SoftCard style={styles.summaryCard} tone={summaryTone} variant="accent">
                 <Text style={styles.cardTitle}>Lectura rápida</Text>
                 <Text style={styles.summaryText}>{summary}</Text>
                 <View style={styles.badges}>
@@ -128,7 +135,7 @@ export function DayDetailScreen({
             ) : null}
 
             {!hasRecords && !isFuture ? (
-                <SoftCard style={styles.card}>
+                <SoftCard style={styles.card} variant="soft">
                     <Text style={styles.cardTitle}>Sin anotaciones</Text>
                     <Text style={styles.cardBody}>
                         Ese día quedó vacío. Si hace falta corregirlo o completar algo, Diario sigue siendo punto de

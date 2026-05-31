@@ -1,48 +1,30 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, radii, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     content: {
         backgroundColor: colors.background,
-        paddingTop: 58,
-        paddingHorizontal: 18,
-        paddingBottom: 32,
-        gap: 22,
-    },
-    header: {
-        gap: 8,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    title: {
-        color: colors.ink,
-        fontSize: 30,
-        lineHeight: 36,
-        fontWeight: "900",
-    },
-    subtitle: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 22,
+        paddingTop: screen.topInset,
+        paddingHorizontal: screen.horizontalPadding,
+        paddingBottom: screen.bottomInset,
+        gap: screen.blockGap,
     },
     actions: {
         flexDirection: "row",
-        gap: 10,
+        gap: 12,
     },
     actionButton: {
         flex: 1,
         paddingHorizontal: 10,
     },
     section: {
-        gap: 12,
+        gap: screen.sectionGap,
     },
     sectionTitle: {
         color: colors.ink,
         fontSize: type.subtitle,
+        lineHeight: screen.sectionTitleLineHeight,
         fontWeight: "900",
     },
     rowCard: {
@@ -53,7 +35,9 @@ const styles = StyleSheet.create({
         width: 46,
         height: 46,
         borderRadius: 23,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -87,7 +71,9 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     metric: {
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: surfaces.borderSoft,
         borderRadius: 14,
         paddingHorizontal: 10,
         paddingVertical: 8,
@@ -98,7 +84,7 @@ const styles = StyleSheet.create({
         fontWeight: "900",
     },
     metricValue: {
-        color: colors.primaryDeep,
+        color: colors.primaryInk,
         fontSize: type.small,
         fontWeight: "900",
         marginTop: 2,
@@ -107,7 +93,9 @@ const styles = StyleSheet.create({
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -134,8 +122,8 @@ const styles = StyleSheet.create({
         gap: 6,
     },
     sourcePill: {
-        color: colors.primaryDeep,
-        backgroundColor: colors.primarySoft,
+        color: colors.primaryInk,
+        backgroundColor: accents.primary.tint,
         borderRadius: 999,
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -155,7 +143,7 @@ const styles = StyleSheet.create({
     },
     symptom: {
         color: colors.primaryInk,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardSoft,
         borderRadius: radii.md,
         paddingHorizontal: 10,
         paddingVertical: 7,
@@ -163,8 +151,8 @@ const styles = StyleSheet.create({
         fontWeight: "800",
     },
     detailChip: {
-        color: colors.ink,
-        backgroundColor: colors.surfaceSoft,
+        color: colors.primaryInk,
+        backgroundColor: accents.primary.tint,
         borderRadius: radii.md,
         paddingHorizontal: 10,
         paddingVertical: 7,
@@ -173,8 +161,7 @@ const styles = StyleSheet.create({
     },
     empty: {
         alignItems: "center",
-        gap: 10,
-        backgroundColor: colors.primarySoft,
+        gap: 12,
     },
     emptyText: {
         color: colors.primaryInk,

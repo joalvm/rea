@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { colors, radii, type } from "../theme";
+import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "../theme";
 import { TabKey } from "../types/app.types";
 
 const TABS: { key: TabKey; label: string; icon: string }[] = [
@@ -30,7 +30,13 @@ export function BottomTabs({ activeTab, onTabChange }: BottomTabsProps) {
                         accessibilityRole="tab"
                         key={tab.key}
                         onPress={() => onTabChange(tab.key)}
-                        style={[styles.item, active && styles.activeItem]}
+                        style={({ pressed }) => [
+                            styles.item,
+                            active && styles.activeItem,
+                            pressed && styles.itemPressed,
+                            pressed && active && styles.activeItemPressed,
+                            pressed && !active && styles.inactiveItemPressed,
+                        ]}
                     >
                         <MaterialCommunityIcons
                             color={active ? colors.primaryDeep : colors.muted}
@@ -49,23 +55,36 @@ const styles = StyleSheet.create({
     wrap: {
         flexDirection: "row",
         borderTopWidth: 1,
-        borderTopColor: colors.line,
-        backgroundColor: colors.background,
-        paddingTop: 6,
-        paddingHorizontal: 10,
+        borderTopColor: surfaces.borderSoft,
+        backgroundColor: surfaces.tabBar,
+        paddingTop: screen.tabBarTopPadding,
+        paddingHorizontal: 12,
+        gap: 6,
     },
     item: {
         flex: 1,
-        minHeight: 52,
+        minHeight: 56,
         alignItems: "center",
         justifyContent: "center",
-        gap: 3,
-        borderRadius: radii.md,
+        gap: 4,
+        borderRadius: radii.lg,
     },
     activeItem: {
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: accents.primary.border,
+        ...elevations.card,
+    },
+    itemPressed: {
+        transform: [{ scale: interactions.pressScaleSoft }, { translateY: interactions.pressTranslateY }],
+    },
+    inactiveItemPressed: {
+        backgroundColor: accents.neutral.tint,
+        opacity: interactions.pressOpacity,
+    },
+    activeItemPressed: {
+        borderColor: accents.primary.ink,
+        opacity: 0.98,
     },
     label: {
         color: colors.muted,
@@ -73,6 +92,6 @@ const styles = StyleSheet.create({
         fontWeight: "800",
     },
     activeLabel: {
-        color: colors.primaryDeep,
+        color: colors.primaryInk,
     },
 });

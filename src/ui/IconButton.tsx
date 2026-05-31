@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from "react-native";
 
-import { colors } from "../theme";
+import { colors, interactions } from "../theme";
 
 interface IconButtonProps {
     icon: string;
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     pressed: {
-        transform: [{ scale: 0.96 }],
+        transform: [{ scale: interactions.pressScaleStrong }, { translateY: interactions.pressTranslateY }],
+        opacity: interactions.pressOpacity,
     },
 });

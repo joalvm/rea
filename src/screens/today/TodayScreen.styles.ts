@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, shadow, type } from "@/theme";
+import { accents, colors, radii, screen, shadow, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     content: {
@@ -39,11 +39,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         marginBottom: 24,
-    },
-    date: {
-        color: colors.ink,
-        fontSize: type.subtitle,
-        fontWeight: "900",
     },
     phaseBlock: {
         alignItems: "center",
@@ -150,9 +145,9 @@ const styles = StyleSheet.create({
         minWidth: 184,
     },
     section: {
-        paddingHorizontal: 20,
-        marginTop: 20,
-        gap: 12,
+        paddingHorizontal: screen.horizontalPadding,
+        marginTop: screen.blockGap,
+        gap: screen.sectionGap,
     },
     firstSection: {
         marginTop: 0,
@@ -160,6 +155,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         color: colors.ink,
         fontSize: type.subtitle,
+        lineHeight: screen.sectionTitleLineHeight,
         fontWeight: "900",
     },
     quickCards: {
@@ -234,7 +230,9 @@ const styles = StyleSheet.create({
         width: 28,
         height: 28,
         borderRadius: 14,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },

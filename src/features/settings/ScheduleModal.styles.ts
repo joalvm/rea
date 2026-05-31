@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, radii, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     screen: {
@@ -9,10 +9,7 @@ const styles = StyleSheet.create({
         paddingTop: 52,
     },
     header: {
-        flexDirection: "row",
-        gap: 12,
-        alignItems: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: screen.horizontalPadding,
         paddingBottom: 14,
     },
     iconButton: {
@@ -21,27 +18,14 @@ const styles = StyleSheet.create({
         borderRadius: 22,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.primarySoft,
-    },
-    headerText: {
-        flex: 1,
-        minWidth: 0,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    title: {
-        color: colors.ink,
-        fontSize: type.title,
-        fontWeight: "900",
-        lineHeight: 28,
-        flexShrink: 1,
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
     },
     content: {
         gap: 16,
-        padding: 18,
+        paddingHorizontal: screen.horizontalPadding,
+        paddingTop: 8,
         paddingBottom: 36,
     },
     helper: {
@@ -91,7 +75,7 @@ const styles = StyleSheet.create({
     timeInput: {
         minHeight: 48,
         borderRadius: radii.md,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         color: colors.ink,
         paddingHorizontal: 16,
         fontSize: type.subtitle,
@@ -107,10 +91,10 @@ const styles = StyleSheet.create({
         borderRadius: 19,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
     },
     dayActive: {
-        backgroundColor: colors.primary,
+        backgroundColor: accents.primary.tint,
     },
     dayText: {
         color: colors.muted,
@@ -137,7 +121,7 @@ const styles = StyleSheet.create({
     input: {
         minHeight: 48,
         borderRadius: radii.md,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         color: colors.ink,
         paddingHorizontal: 16,
         fontSize: type.body,

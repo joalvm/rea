@@ -3,14 +3,12 @@ import { ScrollView, Text, View } from "react-native";
 
 import generateMonthDays from "@/modules/cycle/calendar/generateMonthDays";
 import { monthTitle, toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
-import { colors } from "@/theme";
-import { Cycle, CycleSnapshot } from "@/types/cycle.types";
+import { Cycle } from "@/types/cycle.types";
 import { DailyLog } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./CalendarScreen.styles";
-import CalendarLegend from "./components/CalendarLegend";
 import DayCell from "./components/DayCell";
 import MonthHeader from "./components/MonthHeader";
 
@@ -19,11 +17,11 @@ interface CalendarScreenProps {
     settings: AppSettings | null;
     cycles: Cycle[];
     dailyLogs: DailyLog[];
-    snapshot: CycleSnapshot;
     onOpenCheckIn: () => void;
+    onOpenDay: (iso: string) => void;
 }
 
-export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCheckIn }: CalendarScreenProps) {
+export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onOpenDay }: CalendarScreenProps) {
     const [month, setMonth] = useState(new Date());
     const todayIso = toIsoDate(new Date());
     const days = useMemo(
@@ -31,18 +29,7 @@ export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCh
         [cycles, dailyLogs, month, settings],
     );
     const loggedDates = useMemo(() => new Set(dailyLogs.map((log) => log.date)), [dailyLogs]);
-    const monthSummary = useMemo(() => {
-        const inMonthDays = days.filter((day) => day.inMonth);
-
-        return {
-            loggedCount: inMonthDays.filter((day) => loggedDates.has(day.iso)).length,
-            observedPeriodDays: inMonthDays.filter((day) => day.phase === "menstrual" && day.phaseSource === "observed")
-                .length,
-            estimatedPeriodDays: inMonthDays.filter(
-                (day) => day.phase === "menstrual" && day.phaseSource !== "observed",
-            ).length,
-        };
-    }, [days, loggedDates]);
+    const todayHasLog = loggedDates.has(todayIso);
 
     const shiftMonth = (delta: number) => {
         setMonth((current) => new Date(current.getFullYear(), current.getMonth() + delta, 1, 12));
@@ -50,50 +37,13 @@ export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCh
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-            <MonthHeader
-                monthLabel={monthTitle(month)}
-                onNext={() => shiftMonth(1)}
-                onPrevious={() => shiftMonth(-1)}
-            />
-
-            <SoftCard style={styles.summaryCard}>
-                <View style={styles.summaryTop}>
-                    <View>
-                        <Text style={styles.summaryTitle}>Qué pesa más este mes</Text>
-                        <Text style={styles.summaryText}>
-                            {snapshot.sourceLabel} y {snapshot.confidenceLabel.toLowerCase()} para leer este tramo.
-                        </Text>
-                    </View>
-                    <View style={styles.summaryBadge}>
-                        <Text style={styles.summaryBadgeText}>{monthSummary.loggedCount} registros</Text>
-                    </View>
-                </View>
-                <View style={styles.summaryMetrics}>
-                    {monthSummary.observedPeriodDays > 0 ? (
-                        <CalendarLegend
-                            color={colors.period}
-                            icon="water"
-                            label={`${monthSummary.observedPeriodDays} días observados`}
-                        />
-                    ) : null}
-                    {monthSummary.estimatedPeriodDays > 0 ? (
-                        <CalendarLegend
-                            color={colors.period}
-                            icon="circle-outline"
-                            label={`${monthSummary.estimatedPeriodDays} días estimados`}
-                        />
-                    ) : null}
-                    {monthSummary.observedPeriodDays === 0 && monthSummary.estimatedPeriodDays === 0 ? (
-                        <CalendarLegend
-                            color={colors.primaryDeep}
-                            icon="calendar-blank-outline"
-                            label="Sin periodo en este mes"
-                        />
-                    ) : null}
-                </View>
-            </SoftCard>
-
             <View style={styles.calendarPanel}>
+                <MonthHeader
+                    monthLabel={monthTitle(month)}
+                    onNext={() => shiftMonth(1)}
+                    onPrevious={() => shiftMonth(-1)}
+                />
+
                 <View style={styles.weekHeader}>
                     {["D", "L", "M", "M", "J", "V", "S"].map((day, index) => (
                         <Text key={`${day}-${index}`} style={styles.weekday}>
@@ -110,32 +60,45 @@ export function CalendarScreen({ settings, cycles, dailyLogs, snapshot, onOpenCh
                             isLogged={loggedDates.has(day.iso)}
                             isToday={day.iso === todayIso}
                             key={day.iso}
+                            onPress={() => onOpenDay(day.iso)}
                             phase={day.phase}
                             phaseSource={day.phaseSource}
-                            periodDay={day.phase === "menstrual" ? day.cycleDay : null}
                         />
                     ))}
                 </View>
+
+                <View style={styles.legend}>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendSwatch, styles.legendSwatchObservedPeriod]} />
+                        <Text style={styles.legendText}>Regla observada</Text>
+                    </View>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendSwatch, styles.legendSwatchEstimatedPeriod]} />
+                        <Text style={styles.legendText}>Regla estimada</Text>
+                    </View>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendSwatch, styles.legendSwatchFertile]} />
+                        <Text style={styles.legendText}>Fértil aprox.</Text>
+                    </View>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendSwatch, styles.legendSwatchLuteal]} />
+                        <Text style={styles.legendText}>Lútea</Text>
+                    </View>
+                </View>
             </View>
 
-            <View style={styles.legend}>
-                <CalendarLegend color={colors.period} icon="water" label="Regla observada" />
-                <CalendarLegend color={colors.period} icon="circle-outline" label="Regla estimada" />
-                {snapshot.fertilityVisible ? (
-                    <CalendarLegend color={colors.fertile} icon="leaf" label="Fértil aprox." />
-                ) : null}
-                <CalendarLegend color={colors.luteal} icon="weather-night" label="Lútea" />
-                <CalendarLegend color={colors.primaryDeep} icon="check-circle" label="Con registro" />
-            </View>
-
-            <View style={styles.panel}>
-                <Text style={styles.panelTitle}>¿Algo cambió?</Text>
-                <Text style={styles.panelText}>
-                    Base actual: {snapshot.sourceLabel.toLowerCase()} y {snapshot.confidenceLabel.toLowerCase()}. Marca
-                    tus días reales para ajustar mejor las estimaciones.
+            <SoftCard style={styles.todayCard} variant="soft">
+                <View style={styles.todayCardHeader}>
+                    <Text style={styles.todayCardTag}>Hoy</Text>
+                    <Text style={styles.todayCardTitle}>¿Quieres añadir algo a este día?</Text>
+                </View>
+                <Text style={styles.todayCardText}>
+                    {todayHasLog
+                        ? "Hoy ya tiene registro. Si cambió algo, actualízalo sin salir del calendario."
+                        : "Hoy sigue vacío. Regístralo ahora para no perder señales de este día."}
                 </Text>
-                <SoftButton label="Registrar mi día" onPress={onOpenCheckIn} />
-            </View>
+                <SoftButton label={todayHasLog ? "Actualizar hoy" : "Registrar hoy"} onPress={onOpenCheckIn} />
+            </SoftCard>
         </ScrollView>
     );
 }

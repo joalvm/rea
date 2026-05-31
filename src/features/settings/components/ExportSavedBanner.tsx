@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, radii, shadow, type } from "@/theme";
+import { accents, colors, radii, shadow, surfaces, type } from "@/theme";
 
 interface ExportSavedBannerProps {
     message: string;
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     shareButton: {
         minHeight: 34,
         borderRadius: 999,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: accents.primary.tint,
         paddingHorizontal: 12,
         alignItems: "center",
         justifyContent: "center",
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         width: 34,
         height: 34,
         borderRadius: 17,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         alignItems: "center",
         justifyContent: "center",
     },

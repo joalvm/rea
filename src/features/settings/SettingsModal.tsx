@@ -1,8 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Alert, Modal, Pressable, ScrollView, Text, View } from "react-native";
 
-import { colors } from "@/theme";
+import { colors, surfaces } from "@/theme";
 import { IconButton } from "@/ui/IconButton";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./SettingsModal.styles";
 import ExportSavedBanner from "./components/ExportSavedBanner";
@@ -60,16 +61,19 @@ export function SettingsModal({
         <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
             <View style={styles.screen}>
                 <View style={styles.header}>
-                    <IconButton
-                        backgroundColor={colors.primarySoft}
-                        icon="chevron-left"
-                        label="Cerrar ajustes"
-                        onPress={onClose}
+                    <ScreenHeader
+                        kicker="Ajustes"
+                        leading={
+                            <IconButton
+                                backgroundColor={surfaces.cardRaised}
+                                icon="chevron-left"
+                                label="Cerrar ajustes"
+                                onPress={onClose}
+                            />
+                        }
+                        subtitle="Recordatorios, respaldo y privacidad local en un solo lugar."
+                        title="Tu espacio, a tu ritmo"
                     />
-                    <View style={styles.headerCopy}>
-                        <Text style={styles.kicker}>Ajustes</Text>
-                        <Text style={styles.title}>Tu espacio, a tu ritmo</Text>
-                    </View>
                 </View>
 
                 <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -101,7 +105,7 @@ export function SettingsModal({
                         title="Importar respaldo"
                     />
 
-                    <SoftCard style={styles.privacyCard}>
+                    <SoftCard style={styles.privacyCard} tone="primary" variant="soft">
                         <View style={styles.privacyIcon}>
                             <MaterialCommunityIcons color={colors.primaryDeep} name="shield-check-outline" size={25} />
                         </View>
@@ -114,7 +118,7 @@ export function SettingsModal({
                         </View>
                     </SoftCard>
 
-                    <SoftCard style={styles.resetCard}>
+                    <SoftCard style={styles.resetCard} tone="period" variant="soft">
                         <View style={styles.resetHeader}>
                             <View style={styles.resetIcon}>
                                 <MaterialCommunityIcons color={colors.danger} name="refresh" size={24} />

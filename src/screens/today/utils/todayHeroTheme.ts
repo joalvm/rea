@@ -13,7 +13,6 @@ export default function getHeroTheme(phase: PhaseKey): TodayHeroTheme {
             "rgba(255,255,255,0.16)",
             "rgba(233,226,248,0.18)",
         ],
-        dateColor: colors.ink,
         iconButtonColor: "#6C59A8",
         iconButtonBackground: "rgba(255,255,255,0.82)",
         phaseIcon: "circle-outline",

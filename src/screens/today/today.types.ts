@@ -3,7 +3,6 @@ export interface TodayHeroTheme {
     background: string;
     glow: string;
     bubbleColors: string[];
-    dateColor: string;
     iconButtonColor: string;
     iconButtonBackground: string;
     phaseIcon: string;

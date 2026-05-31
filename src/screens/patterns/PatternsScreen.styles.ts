@@ -1,39 +1,18 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, radii, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     content: {
         backgroundColor: colors.background,
-        paddingTop: 58,
-        paddingHorizontal: 18,
-        paddingBottom: 32,
-        gap: 22,
-    },
-    header: {
-        gap: 10,
+        paddingTop: screen.topInset,
+        paddingHorizontal: screen.horizontalPadding,
+        paddingBottom: screen.bottomInset,
+        gap: screen.blockGap,
     },
     brandImage: {
-        width: 118,
-        height: 152,
-        marginBottom: 4,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-        textTransform: "uppercase",
-    },
-    title: {
-        color: colors.ink,
-        fontSize: 30,
-        lineHeight: 36,
-        fontWeight: "900",
-    },
-    subtitle: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 22,
+        width: 156,
+        height: 52,
     },
     statusCard: {
         flexDirection: "row",
@@ -43,9 +22,9 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: radii.md,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -65,11 +44,12 @@ const styles = StyleSheet.create({
         fontWeight: "700",
     },
     section: {
-        gap: 12,
+        gap: screen.sectionGap,
     },
     sectionTitle: {
         color: colors.ink,
         fontSize: type.subtitle,
+        lineHeight: screen.sectionTitleLineHeight,
         fontWeight: "900",
     },
     chartCard: {
@@ -127,7 +107,7 @@ const styles = StyleSheet.create({
     barTrack: {
         height: 12,
         borderRadius: 6,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         overflow: "hidden",
     },
     barFill: {
@@ -146,12 +126,15 @@ const styles = StyleSheet.create({
         width: 34,
         height: 34,
         borderRadius: 17,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
     insightIconWatch: {
-        backgroundColor: colors.periodSoft,
+        backgroundColor: accents.period.tint,
+        borderColor: accents.period.border,
     },
     insightCopy: {
         flex: 1,
@@ -195,16 +178,16 @@ const styles = StyleSheet.create({
     metricPill: {
         minHeight: 32,
         borderRadius: 16,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         paddingHorizontal: 12,
         alignItems: "center",
         justifyContent: "center",
     },
     metricPillWatch: {
-        backgroundColor: colors.periodSoft,
+        backgroundColor: accents.period.tint,
     },
     metricPillText: {
-        color: colors.primaryDeep,
+        color: colors.primaryInk,
         fontSize: type.small,
         fontWeight: "900",
     },
@@ -222,11 +205,13 @@ const styles = StyleSheet.create({
     symptomRow: {
         minHeight: 46,
         borderRadius: radii.md,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         paddingHorizontal: 14,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        borderWidth: 1,
+        borderColor: surfaces.borderSoft,
     },
     symptomLabel: {
         color: colors.ink,

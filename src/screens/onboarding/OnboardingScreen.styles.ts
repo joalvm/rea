@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, radii, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
         backgroundColor: colors.background,
-        paddingTop: 42,
     },
     brand: {
         alignItems: "center",
@@ -17,29 +16,32 @@ const styles = StyleSheet.create({
         height: 58,
     },
     brandText: {
-        color: colors.muted,
+        color: colors.primaryInk,
         fontSize: type.body,
         fontWeight: "700",
     },
     progressTrack: {
-        height: 5,
+        height: 6,
         marginHorizontal: 34,
         marginTop: 24,
         borderRadius: 999,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: surfaces.borderSoft,
     },
     progressFill: {
-        height: 5,
+        height: 6,
         borderRadius: 999,
         backgroundColor: colors.primaryDeep,
     },
     content: {
         flexGrow: 1,
-        padding: 24,
+        paddingHorizontal: screen.horizontalPadding,
+        paddingVertical: 24,
         justifyContent: "center",
     },
     body: {
-        color: colors.ink,
+        color: colors.primaryInk,
         fontSize: type.body,
         lineHeight: 23,
         textAlign: "center",
@@ -53,13 +55,13 @@ const styles = StyleSheet.create({
         width: "47%",
         borderRadius: radii.lg,
         padding: 16,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: surfaces.border,
     },
     optionActive: {
-        backgroundColor: colors.primary,
-        borderColor: colors.primary,
+        backgroundColor: surfaces.cardRaised,
+        borderColor: accents.primary.border,
     },
     optionText: {
         color: colors.ink,
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         fontWeight: "900",
     },
     optionTextActive: {
-        color: colors.primaryInk,
+        color: colors.primaryDeep,
     },
     optionMeta: {
         color: colors.muted,
@@ -85,12 +87,13 @@ const styles = StyleSheet.create({
         borderRadius: radii.md,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: surfaces.border,
     },
     segmentActive: {
-        backgroundColor: colors.primary,
+        backgroundColor: accents.primary.tint,
+        borderColor: accents.primary.border,
     },
     segmentText: {
         color: colors.muted,
@@ -103,16 +106,17 @@ const styles = StyleSheet.create({
     toggleRow: {
         minHeight: 58,
         borderRadius: radii.lg,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: surfaces.border,
         paddingHorizontal: 16,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
     },
     toggleRowActive: {
-        backgroundColor: colors.primarySoft,
+        backgroundColor: accents.primary.tint,
+        borderColor: accents.primary.border,
     },
     toggleText: {
         color: colors.ink,
@@ -128,13 +132,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: radii.lg,
         padding: 16,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: surfaces.border,
     },
     goalActive: {
-        borderColor: colors.primary,
-        backgroundColor: colors.primarySoft,
+        borderColor: accents.primary.border,
+        backgroundColor: accents.primary.tint,
     },
     goalText: {
         flex: 1,
@@ -156,15 +160,16 @@ const styles = StyleSheet.create({
         minHeight: 72,
         borderRadius: radii.lg,
         padding: 16,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: surfaces.border,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
     },
     reminderActive: {
-        backgroundColor: colors.primarySoft,
+        backgroundColor: accents.primary.tint,
+        borderColor: accents.primary.border,
     },
     reminderTitle: {
         color: colors.ink,
@@ -177,14 +182,14 @@ const styles = StyleSheet.create({
         fontWeight: "700",
     },
     footer: {
-        paddingHorizontal: 24,
+        paddingHorizontal: screen.horizontalPadding,
         paddingTop: 12,
         paddingBottom: 26,
-        gap: 10,
+        gap: 12,
     },
     footerRow: {
         flexDirection: "row",
-        gap: 10,
+        gap: 12,
     },
     footerAction: {
         flex: 1,

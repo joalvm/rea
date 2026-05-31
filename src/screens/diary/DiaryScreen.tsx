@@ -1,6 +1,7 @@
 import { ScrollView, Text, View } from "react-native";
 
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import styles from "./DiaryScreen.styles";
 import CheckInRow from "./components/CheckInRow";
@@ -29,13 +30,11 @@ export function DiaryScreen({
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-            <View style={styles.header}>
-                <Text style={styles.kicker}>Diario privado</Text>
-                <Text style={styles.title}>Tus registros, sin ruido.</Text>
-                <Text style={styles.subtitle}>
-                    Mañana, noche y momentos sueltos se guardan separados para que tengan sentido después.
-                </Text>
-            </View>
+            <ScreenHeader
+                kicker="Diario privado"
+                subtitle="Mañana, noche y momentos sueltos se guardan separados para que tengan sentido después."
+                title="Tus registros, sin ruido."
+            />
 
             <View style={styles.actions}>
                 <SoftButton label="Mi día" onPress={onOpenCheckIn} style={styles.actionButton} />

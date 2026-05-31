@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, radii, type } from "../theme";
+import { accents, colors, radii, surfaces, type } from "../theme";
 
 interface NumberPickerProps {
     label: string;
@@ -45,14 +45,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         borderRadius: radii.lg,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderColor: surfaces.border,
         padding: 10,
     },
     numberButton: {
         width: 44,
         height: 44,
         borderRadius: 22,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: accents.primary.tint,
         alignItems: "center",
         justifyContent: "center",
     },

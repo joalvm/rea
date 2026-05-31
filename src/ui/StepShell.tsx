@@ -1,8 +1,9 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { colors, shadow, type } from "../theme";
+import { accents, colors, elevations, radii, spacing, surfaces } from "../theme";
+import { ScreenHeader } from "./ScreenHeader";
 
 interface StepShellProps {
     icon: string;
@@ -14,11 +15,16 @@ interface StepShellProps {
 export function StepShell({ icon, title, subtitle, children }: StepShellProps) {
     return (
         <View style={styles.step}>
-            <View style={styles.illustration}>
-                <MaterialCommunityIcons color={colors.primaryDeep} name={icon as never} size={66} />
-            </View>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{subtitle}</Text>
+            <ScreenHeader
+                align="center"
+                media={
+                    <View style={styles.illustration}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name={icon as never} size={64} />
+                    </View>
+                }
+                subtitle={subtitle}
+                title={title}
+            />
             <View style={styles.stepBody}>{children}</View>
         </View>
     );
@@ -26,35 +32,29 @@ export function StepShell({ icon, title, subtitle, children }: StepShellProps) {
 
 const styles = StyleSheet.create({
     step: {
+        width: "100%",
         alignItems: "center",
+        gap: spacing.xl,
     },
     illustration: {
-        width: 150,
-        height: 150,
-        borderRadius: 75,
+        width: 140,
+        height: 140,
+        borderRadius: 70,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.primarySoft,
-        marginBottom: 26,
-        ...shadow,
-    },
-    title: {
-        color: colors.ink,
-        fontSize: 28,
-        lineHeight: 34,
-        fontWeight: "900",
-        textAlign: "center",
-    },
-    subtitle: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 22,
-        textAlign: "center",
-        marginTop: 10,
+        backgroundColor: surfaces.cardTinted,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
+        ...elevations.lift,
     },
     stepBody: {
         width: "100%",
-        marginTop: 26,
         gap: 14,
+        padding: spacing.lg,
+        borderRadius: radii.xl,
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderColor: surfaces.border,
+        ...elevations.card,
     },
 });

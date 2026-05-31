@@ -1,7 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { colors } from "@/theme";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { CheckInMode } from "../check-in.types";
 import styles from "../CheckInModal.styles";
 
@@ -16,15 +17,15 @@ interface CheckInModalHeaderProps {
 export default function CheckInModalHeader({ isEditing, mode, question, onClose }: CheckInModalHeaderProps) {
     return (
         <View style={styles.header}>
-            <View>
-                <Text style={styles.kicker}>
-                    {isEditing ? "Editar registro" : mode === "daily" ? "Tu día" : "Un minuto para ti"}
-                </Text>
-                <Text style={styles.title}>{question}</Text>
-            </View>
-            <Pressable accessibilityRole="button" onPress={onClose} style={styles.close}>
-                <MaterialCommunityIcons color={colors.primaryDeep} name="close" size={22} />
-            </Pressable>
+            <ScreenHeader
+                kicker={isEditing ? "Editar registro" : mode === "daily" ? "Tu día" : "Un minuto para ti"}
+                title={question}
+                trailing={
+                    <Pressable accessibilityRole="button" onPress={onClose} style={styles.close}>
+                        <MaterialCommunityIcons color={colors.primaryDeep} name="close" size={22} />
+                    </Pressable>
+                }
+            />
         </View>
     );
 }

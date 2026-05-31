@@ -40,7 +40,7 @@ export default function AppShellScene({
     selectedDayIso,
     snapshot,
 }: AppShellSceneProps) {
-    if (activeTab === "today" && selectedDayIso) {
+    if (selectedDayIso) {
         return (
             <DayDetailScreen
                 cycles={data.cycles}
@@ -60,8 +60,8 @@ export default function AppShellScene({
                 cycles={data.cycles}
                 dailyLogs={data.dailyLogs}
                 onOpenCheckIn={onOpenDailyCheckIn}
+                onOpenDay={onOpenDay}
                 settings={data.settings}
-                snapshot={snapshot}
             />
         );
     }

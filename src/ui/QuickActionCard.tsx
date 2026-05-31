@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, radii, type } from "../theme";
+import { accents, elevations, interactions, radii, surfaces, type } from "../theme";
 
 type Tone = "primary" | "period" | "fertile" | "luteal";
 
@@ -13,11 +13,11 @@ interface QuickActionCardProps {
     onPress: () => void;
 }
 
-const tones: Record<Tone, { bg: string; iconBg: string; ink: string }> = {
-    primary: { bg: colors.surface, iconBg: colors.primarySoft, ink: colors.primaryDeep },
-    period: { bg: "#FFF7FA", iconBg: colors.periodSoft, ink: colors.period },
-    fertile: { bg: "#F7FFFC", iconBg: colors.fertileSoft, ink: colors.success },
-    luteal: { bg: "#FBF8FF", iconBg: colors.lutealSoft, ink: "#7A5EC9" },
+const tones: Record<Tone, { border: string; iconBg: string; ink: string }> = {
+    primary: { border: accents.primary.border, iconBg: accents.primary.tint, ink: accents.primary.ink },
+    period: { border: accents.period.border, iconBg: accents.period.tint, ink: accents.period.ink },
+    fertile: { border: accents.fertile.border, iconBg: accents.fertile.tint, ink: accents.fertile.ink },
+    luteal: { border: accents.luteal.border, iconBg: accents.luteal.tint, ink: accents.luteal.ink },
 };
 
 export function QuickActionCard({ title, hint, icon, tone, onPress }: QuickActionCardProps) {
@@ -27,7 +27,7 @@ export function QuickActionCard({ title, hint, icon, tone, onPress }: QuickActio
         <Pressable
             accessibilityRole="button"
             onPress={onPress}
-            style={({ pressed }) => [styles.card, { backgroundColor: palette.bg }, pressed && styles.pressed]}
+            style={({ pressed }) => [styles.card, { borderColor: palette.border }, pressed && styles.pressed]}
         >
             <View style={[styles.iconWrap, { backgroundColor: palette.iconBg }]}>
                 <MaterialCommunityIcons color={palette.ink} name={icon as never} size={27} />
@@ -35,9 +35,11 @@ export function QuickActionCard({ title, hint, icon, tone, onPress }: QuickActio
             <Text numberOfLines={1} style={styles.title}>
                 {title}
             </Text>
-            <Text numberOfLines={1} style={[styles.hint, { color: palette.ink }]}>
-                {hint}
-            </Text>
+            <View style={[styles.hintPill, { backgroundColor: palette.iconBg }]}>
+                <Text numberOfLines={1} style={[styles.hint, { color: palette.ink }]}>
+                    {hint}
+                </Text>
+            </View>
         </Pressable>
     );
 }
@@ -48,12 +50,14 @@ const styles = StyleSheet.create({
         minHeight: 118,
         borderRadius: radii.lg,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.08)",
+        backgroundColor: surfaces.cardRaised,
         padding: 14,
         justifyContent: "space-between",
+        ...elevations.card,
     },
     pressed: {
-        transform: [{ scale: 0.98 }],
+        transform: [{ scale: interactions.pressScale }, { translateY: interactions.pressTranslateY }],
+        opacity: interactions.pressOpacity,
     },
     iconWrap: {
         width: 46,
@@ -63,10 +67,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     title: {
-        color: colors.ink,
+        color: accents.neutral.ink,
         fontSize: type.body,
         fontWeight: "900",
         marginTop: 12,
+    },
+    hintPill: {
+        alignSelf: "flex-start",
+        minHeight: 26,
+        borderRadius: radii.pill,
+        paddingHorizontal: 10,
+        alignItems: "center",
+        justifyContent: "center",
     },
     hint: {
         fontSize: type.small,

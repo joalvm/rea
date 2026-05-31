@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
 import { colors } from "@/theme";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { NotificationMoment } from "@/types/notifications.types";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
@@ -72,20 +73,19 @@ export function ScheduleModal({ visible, moments, onClose, onChange }: ScheduleM
         <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
             <View style={styles.screen}>
                 <View style={styles.header}>
-                    <Pressable accessibilityRole="button" onPress={onClose} style={styles.iconButton}>
-                        <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-left" size={26} />
-                    </Pressable>
-                    <View style={styles.headerText}>
-                        <Text style={styles.kicker}>Momentos del día</Text>
-                        <Text style={styles.title}>Cuándo quieres que te pregunte</Text>
-                    </View>
+                    <ScreenHeader
+                        kicker="Momentos del día"
+                        leading={
+                            <Pressable accessibilityRole="button" onPress={onClose} style={styles.iconButton}>
+                                <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-left" size={26} />
+                            </Pressable>
+                        }
+                        subtitle="Elige horarios cómodos. En pantalla bloqueada solo verás preguntas suaves."
+                        title="Cuándo quieres que te pregunte"
+                    />
                 </View>
 
                 <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-                    <Text style={styles.helper}>
-                        Elige horarios cómodos. En pantalla bloqueada solo verás preguntas suaves.
-                    </Text>
-
                     {moments.map((moment) => (
                         <MomentCard
                             days={DAYS}
@@ -96,7 +96,7 @@ export function ScheduleModal({ visible, moments, onClose, onChange }: ScheduleM
                         />
                     ))}
 
-                    <SoftCard style={styles.addCard}>
+                    <SoftCard style={styles.addCard} tone="primary" variant="soft">
                         <Text style={styles.cardTitle}>Añadir otro momento</Text>
                         <TextInput
                             onChangeText={setLabel}

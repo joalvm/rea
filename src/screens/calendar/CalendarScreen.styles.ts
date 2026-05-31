@@ -1,34 +1,56 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "@/theme";
 import { PhaseKey } from "@/types/cycle.types";
 
 /** Define tonos visuales por fase para celdas del calendario. */
-export const phaseStyles: Record<PhaseKey, { ink: string; line: string }> = {
-    menstrual: { ink: colors.period, line: "rgba(248,111,143,0.54)" },
-    follicular: { ink: colors.ink, line: "rgba(8,124,155,0.08)" },
-    fertile: { ink: colors.success, line: "rgba(61,190,134,0.42)" },
-    luteal: { ink: "#7A5EC9", line: "rgba(122,94,201,0.34)" },
+export const phaseStyles: Record<PhaseKey, { ink: string }> = {
+    menstrual: { ink: colors.period },
+    follicular: { ink: colors.ink },
+    fertile: { ink: colors.success },
+    luteal: { ink: accents.luteal.ink },
 };
 
 const styles = StyleSheet.create({
     content: {
         backgroundColor: colors.background,
         paddingTop: 44,
-        paddingHorizontal: 20,
-        paddingBottom: 32,
-        gap: 16,
+        paddingHorizontal: screen.horizontalPadding,
+        paddingBottom: screen.bottomInset,
+        gap: 14,
     },
-    header: {
+    calendarPanel: {
+        backgroundColor: surfaces.cardRaised,
+        borderRadius: radii.lg,
+        paddingHorizontal: 14,
+        paddingTop: 14,
+        paddingBottom: 16,
+        borderWidth: 1,
+        borderColor: surfaces.borderStrong,
+        ...elevations.card,
+    },
+    calendarHeader: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        gap: 12,
+        paddingBottom: 14,
     },
-    kicker: {
-        color: colors.muted,
+    headerCopy: {
+        flex: 1,
+        gap: 4,
+    },
+    calendarLabel: {
+        color: colors.primaryDeep,
         fontSize: type.small,
         fontWeight: "900",
         textTransform: "uppercase",
+    },
+    monthTitle: {
+        color: colors.ink,
+        fontSize: 28,
+        lineHeight: 32,
+        fontWeight: "900",
     },
     monthActions: {
         flexDirection: "row",
@@ -40,69 +62,20 @@ const styles = StyleSheet.create({
         borderRadius: radii.md,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardSoft,
         borderWidth: 1,
-        borderColor: colors.line,
+        borderColor: accents.primary.border,
     },
-    title: {
-        color: colors.ink,
-        fontSize: 28,
-        fontWeight: "900",
-        marginTop: 4,
-    },
-    summaryCard: {
-        gap: 14,
-    },
-    summaryTop: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        gap: 12,
-    },
-    summaryTitle: {
-        color: colors.ink,
-        fontSize: type.subtitle,
-        fontWeight: "900",
-    },
-    summaryText: {
-        color: colors.muted,
-        fontSize: type.body,
-        lineHeight: 22,
-        marginTop: 4,
-        maxWidth: 240,
-    },
-    summaryBadge: {
-        minHeight: 32,
-        borderRadius: 16,
-        paddingHorizontal: 12,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.surfaceSoft,
-        borderWidth: 1,
-        borderColor: colors.line,
-    },
-    summaryBadgeText: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    summaryMetrics: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 10,
-    },
-    calendarPanel: {
-        backgroundColor: colors.surface,
-        borderRadius: radii.md,
-        padding: 14,
-        borderWidth: 1,
-        borderColor: colors.line,
+    monthButtonPressed: {
+        transform: [{ scale: interactions.pressScaleSoft }, { translateY: interactions.pressTranslateY }],
+        opacity: interactions.pressOpacity,
     },
     weekHeader: {
         flexDirection: "row",
-        paddingBottom: 8,
+        paddingBottom: 10,
     },
     weekday: {
-        width: `${100 / 7}%`,
+        flex: 1,
         textAlign: "center",
         color: colors.muted,
         fontSize: type.small,
@@ -111,27 +84,85 @@ const styles = StyleSheet.create({
     grid: {
         flexDirection: "row",
         flexWrap: "wrap",
-        paddingTop: 10,
+        rowGap: 8,
+    },
+    legend: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 10,
+        paddingTop: 16,
+    },
+    legendItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+        minHeight: 32,
+        paddingHorizontal: 10,
+        borderRadius: 16,
+        backgroundColor: surfaces.cardSoft,
+        borderWidth: 1,
+        borderColor: surfaces.border,
+    },
+    legendSwatch: {
+        width: 14,
+        height: 14,
+        borderRadius: 7,
+    },
+    legendSwatchObservedPeriod: {
+        backgroundColor: colors.periodSoft,
+        borderWidth: 1,
+        borderColor: colors.period,
+    },
+    legendSwatchEstimatedPeriod: {
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderStyle: "dashed",
+        borderColor: colors.period,
+    },
+    legendSwatchFertile: {
+        backgroundColor: accents.fertile.tint,
+        borderWidth: 1,
+        borderStyle: "dashed",
+        borderColor: colors.fertile,
+    },
+    legendSwatchLuteal: {
+        backgroundColor: accents.luteal.tint,
+        borderWidth: 1,
+        borderColor: accents.luteal.border,
+    },
+    legendText: {
+        color: colors.muted,
+        fontSize: type.small,
+        fontWeight: "800",
     },
     cell: {
         width: `${100 / 7}%`,
-        minHeight: 58,
+        minHeight: 56,
         alignItems: "center",
         justifyContent: "center",
-        gap: 4,
     },
     cellMuted: {
-        opacity: 0.28,
+        opacity: 0.32,
+    },
+    cellPressed: {
+        transform: [{ scale: interactions.pressScaleSoft }, { translateY: interactions.pressTranslateY }],
+        opacity: interactions.pressOpacity,
     },
     dayCircle: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         alignItems: "center",
         justifyContent: "center",
     },
-    todayCircle: {
+    todayCircleFilled: {
         backgroundColor: colors.primaryDeep,
+        borderWidth: 1,
+        borderColor: colors.primaryDeep,
+    },
+    todayCircleOutlined: {
+        borderWidth: 2,
+        borderColor: colors.primaryDeep,
     },
     observedPeriodCircle: {
         backgroundColor: colors.periodSoft,
@@ -142,12 +173,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: "dashed",
         borderColor: colors.period,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
     },
     fertileCircle: {
         borderWidth: 1,
         borderStyle: "dashed",
         borderColor: colors.fertile,
+        backgroundColor: accents.fertile.tint,
+    },
+    lutealCircle: {
+        borderWidth: 1,
+        borderColor: accents.luteal.border,
+        backgroundColor: accents.luteal.tint,
     },
     dayText: {
         color: colors.ink,
@@ -157,73 +194,33 @@ const styles = StyleSheet.create({
     dayTextMuted: {
         color: colors.muted,
     },
-    dayTextToday: {
+    dayTextTodayFilled: {
         color: colors.surface,
     },
-    periodBadge: {
-        position: "absolute",
-        top: 5,
-        right: 5,
-        width: 7,
-        height: 7,
-        borderRadius: 4,
-        backgroundColor: colors.period,
-    },
-    loggedBadge: {
-        position: "absolute",
-        left: 1,
-        top: 4,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: colors.primaryDeep,
-    },
-    loggedBadgeToday: {
-        backgroundColor: colors.surface,
-    },
-    phaseLine: {
-        width: 24,
-        height: 3,
-        borderRadius: 2,
-    },
-    phaseLineMuted: {
-        opacity: 0.4,
-    },
-    legend: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 10,
-    },
-    legendItem: {
-        flexDirection: "row",
-        gap: 2,
-        alignItems: "center",
-        backgroundColor: colors.surfaceSoft,
-        borderRadius: 16,
-        paddingHorizontal: 11,
-        minHeight: 32,
-        borderWidth: 1,
-        borderColor: colors.line,
-    },
-    legendText: {
-        color: colors.muted,
-        fontSize: type.small,
-        fontWeight: "800",
-    },
-    panel: {
-        backgroundColor: colors.surface,
-        borderRadius: radii.lg,
-        padding: 18,
+    todayCard: {
         gap: 12,
-        borderWidth: 1,
-        borderColor: colors.line,
     },
-    panelTitle: {
+    todayCardHeader: {
+        gap: 6,
+    },
+    todayCardTag: {
+        alignSelf: "flex-start",
+        minHeight: 26,
+        borderRadius: 13,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        overflow: "hidden",
+        backgroundColor: accents.primary.tint,
+        color: colors.primaryDeep,
+        fontSize: type.small,
+        fontWeight: "900",
+    },
+    todayCardTitle: {
         color: colors.ink,
         fontSize: type.subtitle,
         fontWeight: "900",
     },
-    panelText: {
+    todayCardText: {
         color: colors.muted,
         fontSize: type.body,
         lineHeight: 22,

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { colors, type } from "../theme";
 import { CycleSnapshot, PhaseKey } from "../types/cycle.types";
@@ -34,6 +34,7 @@ const defaultPalette = {
 export function WeekStrip({ weeks, selectedIso, onSelectDay, initialPage = 0, palette }: WeekStripProps) {
     const resolvedPalette = { ...defaultPalette, ...palette };
     const scrollRef = useRef<ScrollView>(null);
+    const dragStartXRef = useRef(0);
     const [pageWidth, setPageWidth] = useState(0);
 
     useEffect(() => {
@@ -48,17 +49,41 @@ export function WeekStrip({ weeks, selectedIso, onSelectDay, initialPage = 0, pa
         return () => cancelAnimationFrame(frame);
     }, [initialPage, pageWidth]);
 
+    const handleScrollBeginDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        dragStartXRef.current = event.nativeEvent.contentOffset.x;
+    };
+
+    const handleScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        if (!pageWidth || weeks.length < 2) {
+            return;
+        }
+
+        const dragStartX = dragStartXRef.current;
+        const dragEndX = event.nativeEvent.contentOffset.x;
+        const velocityX = event.nativeEvent.velocity?.x ?? 0;
+        const dragDistance = dragEndX - dragStartX;
+        const currentPage = Math.round(dragStartX / pageWidth);
+        const shouldAdvance = Math.abs(dragDistance) >= pageWidth * 0.18 || Math.abs(velocityX) >= 0.25;
+        const direction = dragDistance === 0 ? Math.sign(velocityX) : Math.sign(dragDistance);
+        const targetPage = shouldAdvance ? clampPageIndex(currentPage + direction, weeks.length - 1) : currentPage;
+
+        scrollRef.current?.scrollTo({ animated: true, x: targetPage * pageWidth });
+    };
+
     return (
         <View style={styles.viewport} onLayout={(event) => setPageWidth(event.nativeEvent.layout.width)}>
             <ScrollView
                 bounces={false}
                 contentContainerStyle={styles.pages}
-                decelerationRate="fast"
+                decelerationRate="normal"
                 horizontal
-                pagingEnabled
+                onScrollBeginDrag={handleScrollBeginDrag}
+                onScrollEndDrag={handleScrollEndDrag}
                 ref={scrollRef}
                 scrollEnabled={weeks.length > 1}
                 showsHorizontalScrollIndicator={false}
+                snapToAlignment="start"
+                snapToInterval={pageWidth || undefined}
             >
                 {weeks.map((week, index) => (
                     <View
@@ -268,4 +293,8 @@ function getDayTone(
         circleBorderWidth: 1,
         circleBorderStyle: "solid" as const,
     };
+}
+
+function clampPageIndex(page: number, lastPage: number) {
+    return Math.max(0, Math.min(page, lastPage));
 }

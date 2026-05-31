@@ -12,6 +12,7 @@ import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./PatternsScreen.styles";
 import AlertCard from "./components/AlertCard";
@@ -48,17 +49,14 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-            <View style={styles.header}>
-                <Image resizeMode="contain" source={logoHorizontal} style={styles.brandImage} />
-                <Text style={styles.kicker}>Patrones propios</Text>
-                <Text style={styles.title}>Cuaderno de señales.</Text>
-                <Text style={styles.subtitle}>
-                    Lectura tranquila de dolor, energía, síntomas y cambios entre ciclos. Observa repeticiones, no
-                    certezas.
-                </Text>
-            </View>
+            <ScreenHeader
+                kicker="Patrones propios"
+                media={<Image resizeMode="contain" source={logoHorizontal} style={styles.brandImage} />}
+                subtitle="Lectura tranquila de dolor, energía, síntomas y cambios entre ciclos. Observa repeticiones, no certezas."
+                title="Cuaderno de señales."
+            />
 
-            <SoftCard style={styles.statusCard}>
+            <SoftCard style={styles.statusCard} tone="primary" variant="accent">
                 <View style={styles.statusIcon}>
                     <MaterialCommunityIcons
                         color={colors.primaryDeep}
@@ -101,7 +99,7 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                 <Text style={styles.sectionTitle}>Señales educativas para vigilar</Text>
                 <View style={styles.alertList}>
                     {alerts.length === 0 ? (
-                        <SoftCard>
+                        <SoftCard variant="soft">
                             <Text style={styles.emptyText}>
                                 No aparece una señal llamativa en tus registros actuales. Eso no equivale a descarte
                                 médico.
@@ -117,7 +115,7 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                 <Text style={styles.sectionTitle}>Tus últimos ciclos observados</Text>
                 <View style={styles.summaryList}>
                     {cycleSummaries.length === 0 ? (
-                        <SoftCard>
+                        <SoftCard variant="soft">
                             <Text style={styles.emptyText}>
                                 Cuando marques inicios y finales reales del periodo, aquí aparecerá la comparación entre
                                 ciclos.

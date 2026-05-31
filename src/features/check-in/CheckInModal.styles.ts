@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { colors, radii, type } from "@/theme";
+import { accents, colors, radii, screen, surfaces, type } from "@/theme";
 
 const styles = StyleSheet.create({
     scrim: {
@@ -32,27 +32,15 @@ const styles = StyleSheet.create({
         marginBottom: 14,
     },
     header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
         gap: 16,
-    },
-    kicker: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-    },
-    title: {
-        color: colors.ink,
-        fontSize: type.title,
-        fontWeight: "900",
-        marginTop: 4,
     },
     close: {
         width: 42,
         height: 42,
         borderRadius: 21,
-        backgroundColor: colors.primarySoft,
+        backgroundColor: surfaces.cardRaised,
+        borderWidth: 1,
+        borderColor: accents.primary.border,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -67,6 +55,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         color: colors.ink,
         fontSize: type.body,
+        lineHeight: screen.sectionTitleLineHeight,
         fontWeight: "900",
     },
     chips: {
@@ -80,13 +69,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.1)",
+        borderColor: surfaces.border,
     },
     chipActive: {
-        backgroundColor: colors.primary,
-        borderColor: colors.primary,
+        backgroundColor: accents.primary.tint,
+        borderColor: accents.primary.border,
     },
     chipText: {
         color: colors.muted,
@@ -99,9 +88,9 @@ const styles = StyleSheet.create({
     input: {
         minHeight: 96,
         borderRadius: radii.lg,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.1)",
+        borderColor: surfaces.border,
         color: colors.ink,
         padding: 16,
         fontSize: type.body,
@@ -110,9 +99,9 @@ const styles = StyleSheet.create({
     compactInput: {
         minHeight: 48,
         borderRadius: radii.md,
-        backgroundColor: colors.surface,
+        backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.1)",
+        borderColor: surfaces.border,
         color: colors.ink,
         paddingHorizontal: 16,
         fontSize: type.body,

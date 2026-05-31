@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, radii, type } from "../theme";
+import { accents, colors, radii, surfaces, type } from "../theme";
 
 interface MetricScaleProps {
     label: string;
@@ -71,15 +71,15 @@ const styles = StyleSheet.create({
         flex: 1,
         minHeight: 42,
         borderRadius: radii.md,
-        backgroundColor: colors.surfaceSoft,
+        backgroundColor: surfaces.cardSoft,
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
-        borderColor: "rgba(8, 124, 155, 0.08)",
+        borderColor: surfaces.borderSoft,
     },
     dotActive: {
-        backgroundColor: colors.primary,
-        borderColor: colors.primary,
+        backgroundColor: accents.primary.tint,
+        borderColor: accents.primary.border,
     },
     dotText: {
         color: colors.muted,
