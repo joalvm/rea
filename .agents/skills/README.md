@@ -14,9 +14,16 @@ Skills pequeñas, directas y reutilizables. Una skill por capacidad.
 - `standards-rea-code-style`
     - Reglas de exports, comentarios, props inline, tipado y componentizacion para Rea
 
+## Planning
+
+- `grounded-plan-building`
+    - Cómo estructurar trabajo por fases una vez que la idea ya merece avanzar
+- `grounded-critical-thinking`
+    - Cómo evaluar ideas y planes con criterio antes de comprometer estructura o trabajo
+
 ## Regla clave actual
 
-- Props de componentes React viven en mismo archivo que su duenio.
+- Props de componentes React viven en mismo archivo que su dueño.
 - Orden obligatorio: definicion de props primero, componente despues.
 - `*.types.ts` no se usa para dejar un solo `FooProps` aislado.
 - Imports y requires van siempre al inicio. Primero `import`, luego `require` solo si queda una excepcion real.

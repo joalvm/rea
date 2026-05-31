@@ -9,6 +9,15 @@ description: Convención del repo para redactar commits claros, descriptivos y c
 
 Mantener commits claros, útiles al leer historial y fáciles de entender sin abrir el diff completo.
 
+## Alcance
+
+Esta skill entra al final.
+
+- se usa cuando cambio ya fue hecho y validado;
+- no se usa para decidir si una idea conviene;
+- no se usa para convertir una idea en plan;
+- si todavía estás evaluando o planificando, la skill correcta es otra.
+
 ## Título
 
 - debe ser general y descriptivo
@@ -49,6 +58,8 @@ Mantener commits claros, útiles al leer historial y fáciles de entender sin ab
 - descripción puramente técnica sin explicar propósito
 - repetir en el cuerpo exactamente lo mismo que ya dice el título
 - mensajes demasiado crípticos o demasiado largos
+- mencionar agentes, planes, roadmaps o que el cambio siguió una fase del plan
+- describir intención futura en vez de cambio real ya entregado
 
 ## Plantillas
 
@@ -75,4 +86,5 @@ Mantener commits claros, útiles al leer historial y fáciles de entender sin ab
 - revisar que el staged diff sea coherente
 - asegurar que el título cubra el eje principal del cambio
 - asegurar que el cuerpo explique intención y motivo
+- asegurar que el mensaje hable del cambio aplicado, no del plan de trabajo ni del agente que lo ejecutó
 - si aplica, correr validaciones del repo antes de confirmar
