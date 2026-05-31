@@ -8,7 +8,7 @@ export interface SavedBackupResult {
     folderLabel: string;
 }
 
-/** Guarda respaldo en carpeta local estable para evitar pasos extra antes de compartirlo. */
+/** Guarda respaldo en carpeta local estable para evitar pedir una ubicación antes de compartirlo. */
 export default async function saveBackupToDevice(sourceBackup: File): Promise<SavedBackupResult> {
     const appBackupDirectory = new Directory(Paths.document, APP_BACKUP_DIRECTORY_NAME);
     appBackupDirectory.create({ idempotent: true, intermediates: true });

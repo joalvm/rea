@@ -1,9 +1,14 @@
 import { addNotificationResponseReceivedListener } from "expo-notifications/build/NotificationsEmitter";
-import * as DocumentPicker from "expo-document-picker";
+import { File } from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import { useEffect, useMemo, useState } from "react";
-import { Alert } from "react-native";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Alert, Linking } from "react-native";
 
+import {
+    BACKUP_IMPORT_FILE_HINT,
+    BACKUP_SHARE_MIME_TYPE,
+    isLikelyBackupUri,
+} from "../modules/storage/services/backupFile";
 import estimateCycle from "../modules/cycle/estimation/estimateCycle";
 import createDefaultNotificationMoments from "../modules/notifications/defaults/createDefaultNotificationMoments";
 import clearScheduledNotifications from "../modules/notifications/scheduler/clearScheduledNotifications";
@@ -43,6 +48,7 @@ registerNotificationHandler();
 
 /** Encapsula bootstrap, listeners y acciones raíz usadas por AppShell. */
 export default function useAppShellController() {
+    const pendingIncomingBackupUri = useRef<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<AppData>(initialData);
     const [activeTab, setActiveTab] = useState<TabKey>("today");
@@ -89,6 +95,89 @@ export default function useAppShellController() {
         return () => clearTimeout(timeoutId);
     }, [exportSavedNotice]);
 
+    const refreshData = useCallback(async () => {
+        const loaded = await loadAppData();
+        setData(normalizeAppData(loaded));
+    }, []);
+
+    const runBackupImport = useCallback(
+        async (backupUri: string) => {
+            if (exportingBackup || importingBackup) {
+                return;
+            }
+
+            try {
+                setImportingBackup(true);
+
+                await importAppBackup(backupUri);
+
+                const restoredData = await loadAppData();
+                if (restoredData.notificationMoments.length > 0) {
+                    const rescheduledMoments = await rescheduleNotificationMoments(restoredData.notificationMoments);
+                    await saveNotificationMoments(rescheduledMoments);
+                } else {
+                    await clearScheduledNotifications();
+                }
+
+                await refreshData();
+                setCheckIn((current) => ({ ...current, visible: false }));
+                setScheduleVisible(false);
+                setSettingsVisible(false);
+                setActiveTab("today");
+                setSelectedDayIso(null);
+
+                Alert.alert("Respaldo importado", "Tus registros volvieron a este teléfono.");
+            } catch (error) {
+                Alert.alert(
+                    "No pude importar el respaldo",
+                    getErrorMessage(error, "Revisa que sea un respaldo válido creado por Rea."),
+                );
+            } finally {
+                pendingIncomingBackupUri.current = null;
+                setImportingBackup(false);
+            }
+        },
+        [exportingBackup, importingBackup, refreshData],
+    );
+
+    const promptBackupImport = useCallback(
+        (backupUri: string, sourceLabel: string) => {
+            if (exportingBackup || importingBackup || pendingIncomingBackupUri.current === backupUri) {
+                return;
+            }
+
+            pendingIncomingBackupUri.current = backupUri;
+
+            Alert.alert(
+                "Importar respaldo",
+                buildBackupImportMessage(sourceLabel),
+                [
+                    {
+                        text: "Cancelar",
+                        style: "cancel",
+                        onPress: () => {
+                            pendingIncomingBackupUri.current = null;
+                        },
+                    },
+                    {
+                        text: "Importar",
+                        style: "destructive",
+                        onPress: () => {
+                            void runBackupImport(backupUri);
+                        },
+                    },
+                ],
+                {
+                    cancelable: true,
+                    onDismiss: () => {
+                        pendingIncomingBackupUri.current = null;
+                    },
+                },
+            );
+        },
+        [exportingBackup, importingBackup, runBackupImport],
+    );
+
     async function boot() {
         await initializeDatabase();
         const loaded = await loadAppData();
@@ -96,10 +185,21 @@ export default function useAppShellController() {
         setLoading(false);
     }
 
-    const refreshData = async () => {
-        const loaded = await loadAppData();
-        setData(normalizeAppData(loaded));
-    };
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+
+        const subscription = Linking.addEventListener("url", ({ url }) => {
+            maybePromptIncomingBackup(url, promptBackupImport);
+        });
+
+        void Linking.getInitialURL().then((url) => {
+            maybePromptIncomingBackup(url, promptBackupImport);
+        });
+
+        return () => subscription.remove();
+    }, [loading, promptBackupImport]);
 
     function openQuickCheckIn(momentType: MomentType = "now") {
         setCheckIn(
@@ -204,15 +304,27 @@ export default function useAppShellController() {
             const backupFile = await exportAppBackup();
             const savedBackup = await saveBackupToDevice(backupFile);
             const sharingAvailable = await Sharing.isAvailableAsync();
+            const savedBackupUri = savedBackup.file.uri;
 
             setExportSavedNotice(
                 buildExportSavedNotice(
                     savedBackup.file.name,
-                    savedBackup.file.uri,
+                    savedBackupUri,
                     savedBackup.folderLabel,
                     sharingAvailable,
                 ),
             );
+
+            if (sharingAvailable) {
+                try {
+                    await shareBackupFile(savedBackupUri);
+                } catch (error) {
+                    Alert.alert(
+                        "No pude abrir compartir",
+                        getErrorMessage(error, "El respaldo quedó guardado en este teléfono."),
+                    );
+                }
+            }
         } catch (error) {
             Alert.alert("No pude exportar tu respaldo", getErrorMessage(error, "Intenta de nuevo en unos segundos."));
         } finally {
@@ -230,10 +342,7 @@ export default function useAppShellController() {
         }
 
         try {
-            await Sharing.shareAsync(exportSavedNotice.fileUri, {
-                dialogTitle: "Compartir respaldo de Rea",
-                mimeType: "application/vnd.sqlite3",
-            });
+            await shareBackupFile(exportSavedNotice.fileUri);
 
             setExportSavedNotice(null);
         } catch (error) {
@@ -247,44 +356,23 @@ export default function useAppShellController() {
         }
 
         try {
-            setImportingBackup(true);
-
-            const result = await DocumentPicker.getDocumentAsync({
-                copyToCacheDirectory: true,
-                type: "*/*",
-            });
+            const result = await File.pickFileAsync();
 
             if (result.canceled) {
                 return;
             }
 
-            const selectedBackup = result.assets[0];
+            const selectedBackup = result.result;
             if (!selectedBackup) {
                 throw new Error("No recibí ningún archivo para importar.");
             }
 
-            await importAppBackup(selectedBackup.uri);
-
-            const restoredData = await loadAppData();
-            if (restoredData.notificationMoments.length > 0) {
-                const rescheduledMoments = await rescheduleNotificationMoments(restoredData.notificationMoments);
-                await saveNotificationMoments(rescheduledMoments);
-            } else {
-                await clearScheduledNotifications();
-            }
-
-            await refreshData();
-            setActiveTab("today");
-            setSelectedDayIso(null);
-
-            Alert.alert("Respaldo importado", "Tus registros volvieron a este teléfono.");
+            promptBackupImport(selectedBackup.uri, `el archivo ${selectedBackup.name}`);
         } catch (error) {
             Alert.alert(
                 "No pude importar el respaldo",
-                getErrorMessage(error, "Revisa que sea un respaldo válido creado por Rea."),
+                getErrorMessage(error, `Busca un respaldo ${BACKUP_IMPORT_FILE_HINT} creado por Rea.`),
             );
-        } finally {
-            setImportingBackup(false);
         }
     };
 
@@ -411,6 +499,32 @@ function questionForMoment(momentType: MomentType) {
 
 function getErrorMessage(error: unknown, fallback: string) {
     return error instanceof Error && error.message ? error.message : fallback;
+}
+
+function maybePromptIncomingBackup(
+    url: string | null,
+    promptBackupImport: (backupUri: string, sourceLabel: string) => void,
+) {
+    if (!url || !isIncomingBackupUrl(url)) {
+        return;
+    }
+
+    promptBackupImport(url, "el archivo que abriste");
+}
+
+function isIncomingBackupUrl(url: string) {
+    return url.startsWith("content://") || url.startsWith("file://") || isLikelyBackupUri(url);
+}
+
+function buildBackupImportMessage(sourceLabel: string) {
+    return `Se reemplazarán los registros actuales por ${sourceLabel}. Solo continúa si reconoces ese respaldo.`;
+}
+
+async function shareBackupFile(fileUri: string) {
+    await Sharing.shareAsync(fileUri, {
+        dialogTitle: "Compartir respaldo de Rea",
+        mimeType: BACKUP_SHARE_MIME_TYPE,
+    });
 }
 
 function buildExportSavedNotice(

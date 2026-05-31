@@ -19,9 +19,10 @@ interface BottomTabsProps {
 
 export function BottomTabs({ activeTab, onTabChange }: BottomTabsProps) {
     const insets = useSafeAreaInsets();
+    const safeBottomPadding = Math.max(insets.bottom - 2, 10);
 
     return (
-        <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+        <View style={[styles.wrap, { paddingBottom: safeBottomPadding }]}>
             {TABS.map((tab) => {
                 const active = tab.key === activeTab;
                 return (
@@ -50,12 +51,12 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: colors.line,
         backgroundColor: colors.background,
-        paddingTop: 8,
+        paddingTop: 6,
         paddingHorizontal: 10,
     },
     item: {
         flex: 1,
-        minHeight: 54,
+        minHeight: 52,
         alignItems: "center",
         justifyContent: "center",
         gap: 3,

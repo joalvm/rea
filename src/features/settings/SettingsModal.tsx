@@ -16,10 +16,12 @@ interface SettingsModalProps {
     visible: boolean;
     exportSavedNotice: ExportSavedNotice | null;
     exportingBackup: boolean;
+    importingBackup: boolean;
     moments: NotificationMoment[];
     onClose: () => void;
     onDismissExportSavedNotice: () => void;
     onExportBackup: () => Promise<void>;
+    onImportBackup: () => Promise<void>;
     onOpenSchedule: () => void;
     onReset: () => Promise<void>;
     onShareSavedBackup: () => Promise<void>;
@@ -29,10 +31,12 @@ export function SettingsModal({
     visible,
     exportSavedNotice,
     exportingBackup,
+    importingBackup,
     moments,
     onClose,
     onDismissExportSavedNotice,
     onExportBackup,
+    onImportBackup,
     onOpenSchedule,
     onReset,
     onShareSavedBackup,
@@ -79,12 +83,22 @@ export function SettingsModal({
 
                     <SettingRow
                         icon="database-export-outline"
-                        meta={exportingBackup ? "Preparando" : "SQLite"}
+                        meta={exportingBackup ? "Preparando" : ".rea"}
                         onPress={() => {
                             void onExportBackup();
                         }}
-                        text="Guarda una copia local al instante y luego puedes compartirla donde prefieras."
+                        text="Guarda una copia local y abre el panel para compartirla."
                         title="Exportar respaldo"
+                    />
+
+                    <SettingRow
+                        icon="database-import-outline"
+                        meta={importingBackup ? "Buscando" : "Abrir archivo"}
+                        onPress={() => {
+                            void onImportBackup();
+                        }}
+                        text="Abre un respaldo guardado y confirma antes de reemplazar los datos actuales."
+                        title="Importar respaldo"
                     />
 
                     <SoftCard style={styles.privacyCard}>

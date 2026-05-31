@@ -1,4 +1,5 @@
 import { Image, ScrollView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import brandHorizontal from "@assets/branding/logo-horizontal.png";
 import { NotificationMoment } from "@/types/notifications.types";
@@ -21,6 +22,7 @@ interface OnboardingScreenProps {
 }
 
 export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }: OnboardingScreenProps) {
+    const insets = useSafeAreaInsets();
     const {
         step,
         setStep,
@@ -73,7 +75,7 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
     ];
 
     return (
-        <View style={styles.screen}>
+        <View style={[styles.screen, { paddingTop: Math.max(insets.top + 10, 42) }]}>
             <View style={styles.brand}>
                 <Image resizeMode="contain" source={brandHorizontal} style={styles.brandImage} />
                 <Text style={styles.brandText}>Privada, local y sin nube.</Text>
@@ -83,11 +85,14 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
                 <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
             </View>
 
-            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+            <ScrollView
+                contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 12) }]}
+                showsVerticalScrollIndicator={false}
+            >
                 {steps[step]}
             </ScrollView>
 
-            <View style={styles.footer}>
+            <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom + 12, 26) }]}>
                 {step === 0 ? (
                     <View style={styles.footerRow}>
                         <SoftButton

@@ -109,10 +109,12 @@ export default function AppShell() {
             <SettingsModal
                 exportSavedNotice={exportSavedNotice}
                 exportingBackup={exportingBackup}
+                importingBackup={importingBackup}
                 moments={moments}
                 onClose={closeSettings}
                 onDismissExportSavedNotice={dismissExportSavedNotice}
                 onExportBackup={exportBackup}
+                onImportBackup={importBackup}
                 onOpenSchedule={openScheduleFromSettings}
                 onReset={resetApplication}
                 onShareSavedBackup={shareSavedBackup}

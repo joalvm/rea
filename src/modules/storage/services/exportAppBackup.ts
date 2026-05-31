@@ -1,10 +1,10 @@
 import * as SQLite from "expo-sqlite";
 import { Directory, File, Paths } from "expo-file-system";
 
+import { buildBackupFileName } from "./backupFile";
 import db from "../core/database";
 
 const BACKUP_DIRECTORY_NAME = "backups";
-const BACKUP_FILE_PREFIX = "rea-backup";
 const MAIN_DATABASE_NAME = "main";
 
 /** Genera una copia SQLite autocontenida lista para guardar fuera de la app. */
@@ -12,7 +12,7 @@ export default async function exportAppBackup() {
     const backupDirectory = new Directory(Paths.cache, BACKUP_DIRECTORY_NAME);
     backupDirectory.create({ idempotent: true, intermediates: true });
 
-    const fileName = `${BACKUP_FILE_PREFIX}-${buildBackupStamp()}.sqlite`;
+    const fileName = buildBackupFileName(buildBackupStamp());
     const backupDatabase = await SQLite.openDatabaseAsync(fileName, { useNewConnection: true }, backupDirectory.uri);
 
     try {

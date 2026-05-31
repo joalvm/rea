@@ -16,11 +16,54 @@
             "supportsTablet": true,
             "bundleIdentifier": "app.rea.personal",
             "buildNumber": "5",
-            "icon": "./assets/branding/icon.png"
+            "icon": "./assets/branding/icon.png",
+            "infoPlist": {
+                "CFBundleDocumentTypes": [
+                    {
+                        "CFBundleTypeName": "Respaldo de Rea",
+                        "LSHandlerRank": "Owner",
+                        "LSItemContentTypes": ["app.rea.backup"]
+                    }
+                ],
+                "UTExportedTypeDeclarations": [
+                    {
+                        "UTTypeIdentifier": "app.rea.backup",
+                        "UTTypeDescription": "Respaldo de Rea",
+                        "UTTypeConformsTo": ["public.data"],
+                        "UTTypeTagSpecification": {
+                            "public.filename-extension": ["rea"],
+                            "public.mime-type": "application/vnd.rea.backup"
+                        }
+                    }
+                ]
+            }
         },
         "android": {
             "package": "app.rea.personal",
             "versionCode": 5,
+            "intentFilters": [
+                {
+                    "action": "VIEW",
+                    "category": ["DEFAULT"],
+                    "data": [
+                        {
+                            "mimeType": "application/vnd.rea.backup"
+                        }
+                    ]
+                },
+                {
+                    "action": "VIEW",
+                    "category": ["DEFAULT"],
+                    "data": [
+                        {
+                            "scheme": "content",
+                            "host": "*",
+                            "mimeType": "application/octet-stream",
+                            "pathPattern": ".*\\\\.rea"
+                        }
+                    ]
+                }
+            ],
             "adaptiveIcon": {
                 "foregroundImage": "./assets/branding/adaptive-foreground.png",
                 "monochromeImage": "./assets/branding/adaptive-monochrome.png",
