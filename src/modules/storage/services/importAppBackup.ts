@@ -1,28 +1,31 @@
 import * as SQLite from "expo-sqlite";
-import { File } from "expo-file-system";
+import { Directory, File, Paths } from "expo-file-system";
 
 import db from "../core/database";
 import initializeDatabase from "../core/schema";
 
+const IMPORT_DIRECTORY_NAME = "backup-imports";
 const MAIN_DATABASE_NAME = "main";
 const REQUIRED_TABLES = ["app_settings", "cycles", "mood_checkins", "daily_logs", "notification_moments"];
 
 /** Restaura un respaldo externo tras validar integridad y forma mínima esperada. */
 export default async function importAppBackup(backupUri: string) {
-    const backupFile = new File(backupUri);
+    const backupFile = await copyBackupToImportCache(backupUri);
     const backupDirectory = backupFile.parentDirectory;
 
     if (!backupFile.exists || !backupDirectory) {
         throw new Error("No pude acceder al archivo de respaldo seleccionado.");
     }
 
-    const importedDatabase = await SQLite.openDatabaseAsync(
-        backupFile.name,
-        { useNewConnection: true },
-        backupDirectory.uri,
-    );
+    let importedDatabase: SQLite.SQLiteDatabase | null = null;
 
     try {
+        importedDatabase = await SQLite.openDatabaseAsync(
+            backupFile.name,
+            { useNewConnection: true },
+            backupDirectory.uri,
+        );
+
         await hardenImportedDatabase(importedDatabase);
         await validateImportedDatabase(importedDatabase);
 
@@ -33,10 +36,28 @@ export default async function importAppBackup(backupUri: string) {
             destDatabaseName: MAIN_DATABASE_NAME,
         });
     } finally {
-        await importedDatabase.closeAsync();
+        await importedDatabase?.closeAsync();
+        if (backupFile.exists) {
+            backupFile.delete();
+        }
     }
 
     await initializeDatabase();
+}
+
+async function copyBackupToImportCache(backupUri: string) {
+    const importDirectory = new Directory(Paths.cache, IMPORT_DIRECTORY_NAME);
+    importDirectory.create({ idempotent: true, intermediates: true });
+
+    const sourceFile = new File(backupUri);
+    if (!sourceFile.exists) {
+        throw new Error("No pude acceder al archivo de respaldo seleccionado.");
+    }
+
+    const cachedBackup = new File(importDirectory, `rea-import-${Date.now()}.rea`);
+    await sourceFile.copy(cachedBackup, { overwrite: true });
+
+    return cachedBackup;
 }
 
 /** Aplica pragmas defensivos recomendados antes de tocar un SQLite externo. */

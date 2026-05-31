@@ -24,7 +24,7 @@ import exportAppBackup from "../modules/storage/services/exportAppBackup";
 import importAppBackup from "../modules/storage/services/importAppBackup";
 import loadAppData from "../modules/storage/services/loadAppData";
 import resetAppData from "../modules/storage/services/resetAppData";
-import saveBackupToDevice from "../modules/storage/services/saveBackupToDevice";
+import saveBackupToDevice, { getLatestSavedBackup } from "../modules/storage/services/saveBackupToDevice";
 import syncObservedCyclesFromDailyLogs from "../modules/storage/services/syncObservedCycles";
 import { ExportSavedNotice } from "../features/settings/settings.types";
 import { AppData, TabKey } from "../types/app.types";
@@ -49,6 +49,7 @@ registerNotificationHandler();
 /** Encapsula bootstrap, listeners y acciones raíz usadas por AppShell. */
 export default function useAppShellController() {
     const pendingIncomingBackupUri = useRef<string | null>(null);
+    const lastIncomingShareKey = useRef<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<AppData>(initialData);
     const [activeTab, setActiveTab] = useState<TabKey>("today");
@@ -65,6 +66,7 @@ export default function useAppShellController() {
         [data.cycles, data.dailyLogs, data.settings],
     );
     const moments = data.notificationMoments.length > 0 ? data.notificationMoments : createDefaultNotificationMoments();
+    const incomingShare = Sharing.useIncomingShare();
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -200,6 +202,30 @@ export default function useAppShellController() {
 
         return () => subscription.remove();
     }, [loading, promptBackupImport]);
+
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+
+        const incomingBackup = getIncomingSharedBackup(
+            incomingShare.resolvedSharedPayloads,
+            incomingShare.sharedPayloads,
+        );
+        if (!incomingBackup || lastIncomingShareKey.current === incomingBackup.key) {
+            return;
+        }
+
+        lastIncomingShareKey.current = incomingBackup.key;
+        incomingShare.clearSharedPayloads();
+        promptBackupImport(incomingBackup.uri, incomingBackup.sourceLabel);
+    }, [
+        incomingShare,
+        incomingShare.resolvedSharedPayloads,
+        incomingShare.sharedPayloads,
+        loading,
+        promptBackupImport,
+    ]);
 
     function openQuickCheckIn(momentType: MomentType = "now") {
         setCheckIn(
@@ -350,13 +376,9 @@ export default function useAppShellController() {
         }
     };
 
-    const importBackup = async () => {
-        if (exportingBackup || importingBackup) {
-            return;
-        }
-
+    const openBackupFilePicker = useCallback(async () => {
         try {
-            const result = await File.pickFileAsync();
+            const result = await File.pickFileAsync({ mimeTypes: "*/*" });
 
             if (result.canceled) {
                 return;
@@ -374,6 +396,43 @@ export default function useAppShellController() {
                 getErrorMessage(error, `Busca un respaldo ${BACKUP_IMPORT_FILE_HINT} creado por Rea.`),
             );
         }
+    }, [promptBackupImport]);
+
+    const importBackup = async () => {
+        if (exportingBackup || importingBackup) {
+            return;
+        }
+
+        const latestSavedBackup = getLatestSavedBackup();
+        if (!latestSavedBackup) {
+            await openBackupFilePicker();
+            return;
+        }
+
+        Alert.alert(
+            "Importar respaldo",
+            `Encontré ${latestSavedBackup.name} guardado por Rea en este teléfono.`,
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel",
+                },
+                {
+                    text: "Buscar otro",
+                    onPress: () => {
+                        void openBackupFilePicker();
+                    },
+                },
+                {
+                    text: "Usar este",
+                    style: "destructive",
+                    onPress: () => {
+                        promptBackupImport(latestSavedBackup.uri, `el respaldo ${latestSavedBackup.name}`);
+                    },
+                },
+            ],
+            { cancelable: true },
+        );
     };
 
     const completeOnboarding = async (settings: AppSettings, notificationMoments: NotificationMoment[]) => {
@@ -514,6 +573,45 @@ function maybePromptIncomingBackup(
 
 function isIncomingBackupUrl(url: string) {
     return url.startsWith("content://") || url.startsWith("file://") || isLikelyBackupUri(url);
+}
+
+function getIncomingSharedBackup(
+    resolvedPayloads: Sharing.ResolvedSharePayload[],
+    sharedPayloads: Sharing.SharePayload[],
+) {
+    const resolvedBackup = resolvedPayloads.find((payload) =>
+        isLikelySharedBackup(payload.contentUri ?? payload.value, payload.originalName, payload.contentMimeType),
+    );
+    if (resolvedBackup?.contentUri) {
+        return {
+            key: `${resolvedBackup.contentUri}|${resolvedBackup.originalName ?? ""}`,
+            uri: resolvedBackup.contentUri,
+            sourceLabel: resolvedBackup.originalName
+                ? `el archivo ${resolvedBackup.originalName}`
+                : "el archivo que abriste",
+        };
+    }
+
+    const sharedBackup = sharedPayloads.find((payload) =>
+        isLikelySharedBackup(payload.value, null, payload.mimeType ?? null),
+    );
+    if (!sharedBackup) {
+        return null;
+    }
+
+    return {
+        key: `${sharedBackup.value}|${sharedBackup.mimeType ?? ""}`,
+        uri: sharedBackup.value,
+        sourceLabel: "el archivo que abriste",
+    };
+}
+
+function isLikelySharedBackup(uri: string, fileName?: string | null, mimeType?: string | null) {
+    return (
+        mimeType === BACKUP_SHARE_MIME_TYPE ||
+        isLikelyBackupUri(uri) ||
+        Boolean(fileName && isLikelyBackupUri(fileName))
+    );
 }
 
 function buildBackupImportMessage(sourceLabel: string) {

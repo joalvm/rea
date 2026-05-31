@@ -58,6 +58,22 @@
                         {
                             "scheme": "content",
                             "host": "*",
+                            "pathPattern": ".*\\\\.rea"
+                        },
+                        {
+                            "scheme": "content",
+                            "host": "*",
+                            "mimeType": "application/octet-stream",
+                            "pathPattern": ".*\\\\.rea"
+                        },
+                        {
+                            "scheme": "file",
+                            "host": "*",
+                            "pathPattern": ".*\\\\.rea"
+                        },
+                        {
+                            "scheme": "file",
+                            "host": "*",
                             "mimeType": "application/octet-stream",
                             "pathPattern": ".*\\\\.rea"
                         }
@@ -88,7 +104,16 @@
                 }
             ],
             "expo-status-bar",
-            "expo-sharing"
+            [
+                "expo-sharing",
+                {
+                    "android": {
+                        "enabled": true,
+                        "singleShareMimeTypes": ["application/vnd.rea.backup", "application/octet-stream"],
+                        "multipleShareMimeTypes": ["application/vnd.rea.backup", "application/octet-stream"]
+                    }
+                }
+            ]
         ],
         "extra": {
             "eas": {
