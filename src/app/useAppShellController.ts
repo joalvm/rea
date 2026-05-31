@@ -2,7 +2,7 @@ import { addNotificationResponseReceivedListener } from "expo-notifications/buil
 import { File } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Alert, Linking } from "react-native";
+import { Alert, BackHandler, Linking } from "react-native";
 
 import {
     BACKUP_IMPORT_FILE_HINT,
@@ -96,6 +96,19 @@ export default function useAppShellController() {
 
         return () => clearTimeout(timeoutId);
     }, [exportSavedNotice]);
+
+    useEffect(() => {
+        if (!selectedDayIso) {
+            return;
+        }
+
+        const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+            setSelectedDayIso(null);
+            return true;
+        });
+
+        return () => subscription.remove();
+    }, [selectedDayIso]);
 
     const refreshData = useCallback(async () => {
         const loaded = await loadAppData();

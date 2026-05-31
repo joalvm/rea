@@ -14,10 +14,7 @@ interface MonthHeaderProps {
 export default function MonthHeader({ monthLabel, onPrevious, onNext }: MonthHeaderProps) {
     return (
         <View style={styles.calendarHeader}>
-            <View style={styles.headerCopy}>
-                <Text style={styles.calendarLabel}>Calendario</Text>
-                <Text style={styles.monthTitle}>{monthLabel}</Text>
-            </View>
+            <Text style={styles.monthTitle}>{monthLabel}</Text>
 
             <View style={styles.monthActions}>
                 <Pressable

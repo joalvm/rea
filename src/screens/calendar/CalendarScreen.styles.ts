@@ -14,7 +14,7 @@ export const phaseStyles: Record<PhaseKey, { ink: string }> = {
 const styles = StyleSheet.create({
     content: {
         backgroundColor: colors.background,
-        paddingTop: 44,
+        paddingTop: screen.topInset,
         paddingHorizontal: screen.horizontalPadding,
         paddingBottom: screen.bottomInset,
         gap: 14,
@@ -36,17 +36,8 @@ const styles = StyleSheet.create({
         gap: 12,
         paddingBottom: 14,
     },
-    headerCopy: {
-        flex: 1,
-        gap: 4,
-    },
-    calendarLabel: {
-        color: colors.primaryDeep,
-        fontSize: type.small,
-        fontWeight: "900",
-        textTransform: "uppercase",
-    },
     monthTitle: {
+        flex: 1,
         color: colors.ink,
         fontSize: 28,
         lineHeight: 32,

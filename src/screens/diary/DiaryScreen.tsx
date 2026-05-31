@@ -1,6 +1,8 @@
 import { ScrollView, Text, View } from "react-native";
 
+import { colors } from "@/theme";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import styles from "./DiaryScreen.styles";
@@ -31,9 +33,9 @@ export function DiaryScreen({
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
-                kicker="Diario privado"
+                titleIcon={<BrandMark color={colors.primaryDeep} size={20} />}
                 subtitle="Mañana, noche y momentos sueltos se guardan separados para que tengan sentido después."
-                title="Tus registros, sin ruido."
+                title="Diario"
             />
 
             <View style={styles.actions}>

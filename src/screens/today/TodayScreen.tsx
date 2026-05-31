@@ -51,6 +51,7 @@ export function TodayScreen({
     const { insights, alerts } = buildTodaySummaries(settings, cycles, dailyLogs, moodCheckIns);
     const careTips = getCareTips(snapshot.phase);
     const heroSupport = getHeroSupport(snapshot);
+    const showHeroDataSummary = snapshot.observedCycleCount > 0;
     const todayIso = snapshot.week.find((day) => day.isToday)?.iso ?? toIsoDate(new Date());
     const weekPages = buildWeekPages(settings, cycles, dailyLogs, todayIso);
 
@@ -108,38 +109,40 @@ export function TodayScreen({
                         <Text style={[styles.phaseMessage, { color: heroTheme.messageColor }]}>
                             {snapshot.phaseMessage}
                         </Text>
-                        {heroSupport ? (
+                        {showHeroDataSummary && heroSupport ? (
                             <Text style={[styles.phaseSupport, { color: heroTheme.supportColor }]}>{heroSupport}</Text>
                         ) : null}
                     </View>
 
-                    <View
-                        style={[
-                            styles.heroStats,
-                            {
-                                backgroundColor: heroTheme.statCardBackground,
-                                borderColor: heroTheme.statCardBorder,
-                            },
-                        ]}
-                    >
-                        <MiniStat
-                            icon="calendar-clock"
-                            iconColor={heroTheme.statIconColor}
-                            label="Próxima regla"
-                            labelColor={heroTheme.statLabelColor}
-                            value={snapshot.nextPeriodLabel}
-                            valueColor={heroTheme.statValueColor}
-                        />
-                        <View style={[styles.statDivider, { backgroundColor: heroTheme.dividerColor }]} />
-                        <MiniStat
-                            icon="leaf"
-                            iconColor={heroTheme.statIconColor}
-                            label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
-                            labelColor={heroTheme.statLabelColor}
-                            value={snapshot.fertilityStatusLabel}
-                            valueColor={heroTheme.statValueColor}
-                        />
-                    </View>
+                    {showHeroDataSummary ? (
+                        <View
+                            style={[
+                                styles.heroStats,
+                                {
+                                    backgroundColor: heroTheme.statCardBackground,
+                                    borderColor: heroTheme.statCardBorder,
+                                },
+                            ]}
+                        >
+                            <MiniStat
+                                icon="calendar-clock"
+                                iconColor={heroTheme.statIconColor}
+                                label="Próxima regla"
+                                labelColor={heroTheme.statLabelColor}
+                                value={snapshot.nextPeriodLabel}
+                                valueColor={heroTheme.statValueColor}
+                            />
+                            <View style={[styles.statDivider, { backgroundColor: heroTheme.dividerColor }]} />
+                            <MiniStat
+                                icon="leaf"
+                                iconColor={heroTheme.statIconColor}
+                                label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
+                                labelColor={heroTheme.statLabelColor}
+                                value={snapshot.fertilityStatusLabel}
+                                valueColor={heroTheme.statValueColor}
+                            />
+                        </View>
+                    ) : null}
 
                     <SoftButton
                         icon={<MaterialCommunityIcons color={heroTheme.buttonTextColor} name="heart-pulse" size={18} />}

@@ -7,6 +7,7 @@ import { AccentToneName, colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
+import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
@@ -65,13 +66,13 @@ export function DayDetailScreen({
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
-                kicker="Detalle del día"
                 leading={
                     <Pressable accessibilityRole="button" onPress={onBack} style={styles.backButton}>
                         <MaterialCommunityIcons color={colors.primaryDeep} name="arrow-left" size={20} />
                     </Pressable>
                 }
                 subtitle={`${snapshot.phaseLabel} · ${snapshot.sourceLabel}`}
+                titleIcon={<BrandMark color={colors.primaryDeep} size={20} />}
                 title={formatLongDate(selectedIso)}
             />
 

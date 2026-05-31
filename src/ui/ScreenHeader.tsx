@@ -5,6 +5,8 @@ import { colors, screen, spacing, type, weights } from "../theme";
 
 interface ScreenHeaderProps {
     title: string;
+    titleIcon?: ReactNode;
+    titleColor?: string;
     kicker?: string;
     subtitle?: string;
     leading?: ReactNode;
@@ -17,6 +19,8 @@ interface ScreenHeaderProps {
 /** Renderiza encabezado editorial compartido para pantallas principales. */
 export function ScreenHeader({
     title,
+    titleIcon,
+    titleColor = colors.primaryDeep,
     kicker,
     subtitle,
     leading,
@@ -36,7 +40,12 @@ export function ScreenHeader({
 
                 <View style={[styles.copy, centered && styles.copyCentered]}>
                     {kicker ? <Text style={[styles.kicker, centered && styles.kickerCentered]}>{kicker}</Text> : null}
-                    <Text style={[styles.title, centered && styles.titleCentered]}>{title}</Text>
+                    <View style={[styles.titleRow, centered && styles.titleRowCentered]}>
+                        {titleIcon ? <View style={styles.titleIcon}>{titleIcon}</View> : null}
+                        <Text style={[styles.title, { color: titleColor }, centered && styles.titleCentered]}>
+                            {title}
+                        </Text>
+                    </View>
                     {subtitle ? (
                         <Text style={[styles.subtitle, centered && styles.subtitleCentered]}>{subtitle}</Text>
                     ) : null}
@@ -90,11 +99,22 @@ const styles = StyleSheet.create({
     kickerCentered: {
         textAlign: "center",
     },
+    titleRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: spacing.sm,
+    },
+    titleRowCentered: {
+        justifyContent: "center",
+    },
+    titleIcon: {
+        paddingTop: 2,
+    },
     title: {
-        color: colors.ink,
         fontSize: screen.titleSize,
         lineHeight: screen.titleLineHeight,
         fontWeight: weights.black,
+        flexShrink: 1,
         maxWidth: screen.maxTextWidth,
     },
     titleCentered: {

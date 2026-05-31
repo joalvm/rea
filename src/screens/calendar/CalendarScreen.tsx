@@ -3,9 +3,12 @@ import { ScrollView, Text, View } from "react-native";
 
 import generateMonthDays from "@/modules/cycle/calendar/generateMonthDays";
 import { monthTitle, toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
+import { BrandMark } from "@/ui/BrandMark";
+import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./CalendarScreen.styles";
@@ -37,6 +40,8 @@ export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onO
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+            <ScreenHeader title="Calendario" titleIcon={<BrandMark color={colors.primaryDeep} size={20} />} />
+
             <View style={styles.calendarPanel}>
                 <MonthHeader
                     monthLabel={monthTitle(month)}

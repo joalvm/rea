@@ -10,10 +10,6 @@ const styles = StyleSheet.create({
         paddingBottom: screen.bottomInset,
         gap: screen.blockGap,
     },
-    brandImage: {
-        width: 156,
-        height: 52,
-    },
     statusCard: {
         flexDirection: "row",
         gap: 14,

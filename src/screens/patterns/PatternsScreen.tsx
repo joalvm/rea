@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Image, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
-import logoHorizontal from "@assets/branding/logo-horizontal.png";
 import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
 import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
 import buildCycleSummaries from "@/modules/cycle/summaries/buildCycleSummaries";
@@ -12,6 +11,7 @@ import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
+import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./PatternsScreen.styles";
@@ -50,10 +50,9 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
-                kicker="Patrones propios"
-                media={<Image resizeMode="contain" source={logoHorizontal} style={styles.brandImage} />}
+                titleIcon={<BrandMark color={colors.primaryDeep} size={20} />}
                 subtitle="Lectura tranquila de dolor, energía, síntomas y cambios entre ciclos. Observa repeticiones, no certezas."
-                title="Cuaderno de señales."
+                title="Patrones"
             />
 
             <SoftCard style={styles.statusCard} tone="primary" variant="accent">
