@@ -2,6 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, View } from "react-native";
 
 import AppShellScene from "./AppShellScene";
+import useAppBackupController from "./useAppBackupController";
+import useAppDataController from "./useAppDataController";
+import useAppPersistenceController from "./useAppPersistenceController";
+import useAppQuickCheckInNotificationListener from "./useAppQuickCheckInNotificationListener";
+import useAppShellState from "./useAppShellState";
 import { CheckInModal } from "../features/check-in/CheckInModal";
 import { ScheduleModal } from "../features/settings/ScheduleModal";
 import { SettingsModal } from "../features/settings/SettingsModal";
@@ -9,7 +14,6 @@ import { OnboardingScreen } from "../screens/onboarding/OnboardingScreen";
 import { colors } from "../theme";
 import { BottomTabs } from "../ui/BottomTabs";
 import styles from "./AppShell.styles";
-import useAppShellController from "./useAppShellController";
 
 /** Orquesta bootstrap, navegación local y modales raíz de aplicación. */
 export default function AppShell() {
@@ -19,36 +23,52 @@ export default function AppShell() {
         closeCheckIn,
         closeDay,
         closeSchedule,
-        closeSettings,
-        completeOnboarding,
-        data,
-        deleteCheckIn,
-        dismissExportSavedNotice,
         editDailyLog,
         editQuickCheckIn,
-        exportBackup,
-        exportSavedNotice,
-        exportingBackup,
         handleTabChange,
-        importBackup,
-        importingBackup,
-        loading,
-        moments,
         openDailyCheckIn,
         openDay,
         openDiaryTab,
         openQuickCheckIn,
         openScheduleFromSettings,
         openSettings,
-        resetApplication,
-        saveCheckIn,
-        saveMoments,
+        closeSettings: closeShellSettings,
+        resetShellView,
         scheduleVisible,
         selectedDayIso,
-        shareSavedBackup,
         settingsVisible,
-        snapshot,
-    } = useAppShellController();
+    } = useAppShellState();
+    const { data, loading, moments, refreshData, replaceNotificationMoments, resetData, snapshot } =
+        useAppDataController();
+
+    useAppQuickCheckInNotificationListener(openQuickCheckIn);
+
+    const {
+        dismissExportSavedNotice,
+        exportBackup,
+        exportSavedNotice,
+        exportingBackup,
+        importBackup,
+        importingBackup,
+        shareSavedBackup,
+    } = useAppBackupController({
+        loading,
+        refreshData,
+        resetShellView,
+    });
+    const { completeOnboarding, deleteCheckIn, resetApplication, saveCheckIn, saveMoments } =
+        useAppPersistenceController({
+            dismissExportSavedNotice,
+            refreshData,
+            replaceNotificationMoments,
+            resetData,
+            resetShellView,
+        });
+
+    const closeSettings = () => {
+        dismissExportSavedNotice();
+        closeShellSettings();
+    };
 
     if (loading) {
         return (
