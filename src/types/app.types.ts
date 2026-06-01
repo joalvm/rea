@@ -1,5 +1,5 @@
 import { Cycle } from "./cycle.types";
-import { NotificationMoment } from "./notifications.types";
+import { NotificationCadence } from "./notifications.types";
 import { DailyLog, MoodCheckIn } from "./records.types";
 import { AppSettings } from "./settings.types";
 
@@ -12,5 +12,5 @@ export interface AppData {
     cycles: Cycle[];
     moodCheckIns: MoodCheckIn[];
     dailyLogs: DailyLog[];
-    notificationMoments: NotificationMoment[];
+    notificationCadence: NotificationCadence | null;
 }

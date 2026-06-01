@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     progressFill: {
         height: 6,
         borderRadius: 999,
-        backgroundColor: colors.primaryDeep,
+        backgroundColor: colors.primary,
     },
     content: {
         flexGrow: 1,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontWeight: "900",
     },
     segmentTextActive: {
-        color: colors.primaryInk,
+        color: colors.primary,
     },
     toggleRow: {
         minHeight: 52,

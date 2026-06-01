@@ -93,7 +93,13 @@ export function getPredictionConfidence(
     settings: AppSettings | null,
     observedCycleCount: number,
     measuredCycleCount: number,
+    observedBleedingToday: boolean,
+    observedInputToday: boolean,
 ): PredictionConfidence {
+    if (observedBleedingToday) {
+        return "high";
+    }
+
     if (settings?.hormonalContraception) {
         return "low";
     }
@@ -122,6 +128,10 @@ export function getPredictionConfidence(
     }
 
     if (score >= 1) {
+        return "medium";
+    }
+
+    if (observedInputToday && observedCycleCount >= 1) {
         return "medium";
     }
 

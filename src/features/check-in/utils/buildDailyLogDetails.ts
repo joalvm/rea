@@ -16,7 +16,11 @@ export default function buildDailyLogDetails(
         details.periodEnded = true;
     }
 
-    if (input.pmsStarted) {
+    if (input.pmsState !== "none") {
+        details.pmsState = input.pmsState;
+    }
+
+    if (input.pmsState === "starting") {
         details.pmsStarted = true;
     }
 
@@ -26,6 +30,18 @@ export default function buildDailyLogDetails(
 
     if (input.painImpact !== "none") {
         details.painImpact = input.painImpact;
+    }
+
+    if (input.painLocations.length > 0) {
+        details.painLocations = input.painLocations;
+    }
+
+    if (Object.keys(input.symptomIntensities).length > 0) {
+        details.symptomIntensities = input.symptomIntensities;
+    }
+
+    if (input.libidoLevel !== "steady") {
+        details.libidoLevel = input.libidoLevel;
     }
 
     if (input.breastSensitivity > 0) {

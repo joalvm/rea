@@ -1,5 +1,11 @@
-import { CycleSnapshot, PhaseKey, PredictionConfidence } from "@/types/cycle.types";
+import { CycleSnapshot, PhaseKey, PhaseSource, PredictionConfidence } from "@/types/cycle.types";
 import { AppSettings } from "@/types/settings.types";
+
+interface ConfidenceNoteContext {
+    observedBleedingToday: boolean;
+    observedInputToday: boolean;
+    source: CycleSnapshot["source"];
+}
 
 /** Devuelve label legible para origen de snapshot. */
 export function getSourceLabel(source: CycleSnapshot["source"]) {
@@ -12,6 +18,19 @@ export function getSourceLabel(source: CycleSnapshot["source"]) {
     }
 
     return "Sin datos";
+}
+
+/** Devuelve label legible para base actual de la fase mostrada. */
+export function getPhaseSourceLabel(source: PhaseSource) {
+    if (source === "observed_signals") {
+        return "Observado hoy";
+    }
+
+    if (source === "history_anchor") {
+        return "Historial reciente";
+    }
+
+    return "Configuración inicial";
 }
 
 /** Devuelve label legible para nivel de confianza. */
@@ -32,9 +51,28 @@ export function getConfidenceNote(
     settings: AppSettings | null,
     confidence: PredictionConfidence,
     observedCycleCount: number,
+    { observedBleedingToday, observedInputToday, source }: ConfidenceNoteContext,
 ) {
+    if (observedBleedingToday) {
+        return settings?.hormonalContraception
+            ? "Hoy manda sangrado observado. Con anticonceptivos priorizamos eso y no el calendario."
+            : "Hoy esta lectura se apoya en sangrado observado.";
+    }
+
     if (settings?.hormonalContraception) {
-        return "Con anticonceptivos hormonales priorizamos lo observado y bajamos confianza del calendario.";
+        return observedInputToday
+            ? "Hoy hay señales observadas. Con anticonceptivos priorizamos eso y bajamos ambición del calendario."
+            : "Con anticonceptivos hormonales priorizamos lo observado y bajamos confianza del calendario.";
+    }
+
+    if (observedInputToday) {
+        if (source === "unknown") {
+            return "Hay señales observadas hoy, pero todavía falta historial para ubicarlas mejor en tu ciclo.";
+        }
+
+        return confidence === "low"
+            ? "Hay señales observadas hoy, pero todavía no alcanzan para confirmar fase sin más historial."
+            : "Hay señales observadas hoy. La lectura ya no depende solo del calendario.";
     }
 
     if (confidence === "high") {

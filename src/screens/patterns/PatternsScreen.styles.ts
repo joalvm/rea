@@ -28,6 +28,12 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 5,
     },
+    statusMetrics: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 8,
+        marginTop: 4,
+    },
     statusTitle: {
         color: colors.ink,
         fontSize: type.subtitle,

@@ -13,13 +13,12 @@ interface AppShellSceneProps {
     data: AppData;
     onCloseDay: () => void;
     onEditDailyLog: (entry: DailyLog) => void;
-    onEditQuickCheckIn: (entry: MoodCheckIn) => void;
+    onEditQuickCheckIn: (entry: MoodCheckIn, initialDailyLog?: DailyLog | null) => void;
     onOpenDailyCheckIn: () => void;
     onOpenDay: (iso: string) => void;
     onOpenDiaryTab: () => void;
     onOpenQuickCheckInNow: () => void;
     onOpenSettings: () => void;
-    onOpenTab: (tab: TabKey) => void;
     selectedDayIso: string | null;
     snapshot: CycleSnapshot;
 }
@@ -36,7 +35,6 @@ export default function AppShellScene({
     onOpenDiaryTab,
     onOpenQuickCheckInNow,
     onOpenSettings,
-    onOpenTab,
     selectedDayIso,
     snapshot,
 }: AppShellSceneProps) {
@@ -95,11 +93,8 @@ export default function AppShellScene({
             cycles={data.cycles}
             dailyLogs={data.dailyLogs}
             moodCheckIns={data.moodCheckIns}
-            onOpenCalendar={() => onOpenTab("calendar")}
             onOpenCheckIn={onOpenDailyCheckIn}
             onOpenDay={onOpenDay}
-            onOpenPatterns={() => onOpenTab("patterns")}
-            onOpenQuickCheckIn={onOpenQuickCheckInNow}
             onOpenSettings={onOpenSettings}
             settings={data.settings}
             snapshot={snapshot}

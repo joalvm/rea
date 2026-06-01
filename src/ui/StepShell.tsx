@@ -19,7 +19,7 @@ export function StepShell({ icon, title, subtitle, children }: StepShellProps) {
                 align="center"
                 media={
                     <View style={styles.illustration}>
-                        <MaterialCommunityIcons color={colors.primaryDeep} name={icon as never} size={46} />
+                        <MaterialCommunityIcons color={colors.primary} name={icon as never} size={46} />
                     </View>
                 }
                 subtitle={subtitle}
@@ -42,8 +42,7 @@ const styles = StyleSheet.create({
         borderRadius: 48,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: surfaces.cardTinted,
-        borderWidth: 1,
+        borderWidth: 0,
         borderColor: accents.primary.border,
         ...elevations.lift,
     },

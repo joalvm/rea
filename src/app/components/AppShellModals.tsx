@@ -31,13 +31,13 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 onClose={shellState.closeCheckIn}
                 onDelete={persistence.deleteCheckIn}
                 onSave={persistence.saveCheckIn}
-                question={shellState.checkIn.question}
-                saveTarget={shellState.checkIn.saveTarget}
+                dailyLogOnly={shellState.checkIn.dailyLogOnly}
+                promptContext={shellState.checkIn.promptContext}
                 visible={shellState.checkIn.visible}
             />
             <ScheduleModal
-                moments={appData.moments}
-                onChange={persistence.saveMoments}
+                cadence={appData.notificationCadence}
+                onChange={persistence.saveNotificationCadence}
                 onClose={shellState.closeSchedule}
                 visible={shellState.scheduleVisible}
             />
@@ -45,14 +45,17 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 exportSavedNotice={backup.exportSavedNotice}
                 exportingBackup={backup.exportingBackup}
                 importingBackup={backup.importingBackup}
-                moments={appData.moments}
+                notificationCadence={appData.notificationCadence}
                 onClose={closeSettings}
                 onDismissExportSavedNotice={backup.dismissExportSavedNotice}
                 onExportBackup={backup.exportBackup}
+                onGenerateDevelopmentData={persistence.seedDevelopmentUserData}
                 onImportBackup={backup.importBackup}
                 onOpenSchedule={shellState.openScheduleFromSettings}
                 onReset={persistence.resetApplication}
+                onSaveSettings={persistence.saveAppSettings}
                 onShareSavedBackup={backup.shareSavedBackup}
+                settings={appData.data.settings}
                 visible={shellState.settingsVisible}
             />
         </>

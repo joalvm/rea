@@ -16,7 +16,7 @@ interface DiaryScreenProps {
     moodCheckIns: MoodCheckIn[];
     onOpenCheckIn: () => void;
     onOpenQuickCheckIn: () => void;
-    onEditCheckIn: (entry: MoodCheckIn) => void;
+    onEditCheckIn: (entry: MoodCheckIn, initialDailyLog?: DailyLog | null) => void;
     onEditDailyLog: (entry: DailyLog) => void;
 }
 
@@ -34,7 +34,7 @@ export function DiaryScreen({
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
                 titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
-                subtitle="Mañana, noche y momentos sueltos quedan separados para que después sea más fácil entender cómo estuvo tu día."
+                subtitle="Momentos puntuales y días observados quedan cerca para que luego sea más fácil leer contexto sin mezclar todo."
                 title="Diario"
             />
 
@@ -53,9 +53,18 @@ export function DiaryScreen({
                 {latest.length === 0 ? (
                     <DiaryEmptyState />
                 ) : (
-                    latest.map((item) => (
-                        <CheckInRow item={item} key={item.id ?? item.datetime} onEdit={() => onEditCheckIn(item)} />
-                    ))
+                    latest.map((item) => {
+                        const itemDate = item.datetime.slice(0, 10);
+                        const initialDailyLog = dailyLogs.find((log) => log.date === itemDate) ?? null;
+
+                        return (
+                            <CheckInRow
+                                item={item}
+                                key={item.id ?? item.datetime}
+                                onEdit={() => onEditCheckIn(item, initialDailyLog)}
+                            />
+                        );
+                    })
                 )}
             </View>
 

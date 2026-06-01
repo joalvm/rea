@@ -4,6 +4,9 @@ export type PhaseKey = "menstrual" | "follicular" | "fertile" | "luteal";
 /** Distingue origen observado, estimado o desconocido de dato. */
 export type DataSource = "observed" | "estimated" | "unknown";
 
+/** Explica qué base controla la fase actual mostrada. */
+export type PhaseSource = "observed_signals" | "history_anchor" | "initial_setup";
+
 /** Expresa confianza general de prediccion mostrada. */
 export type PredictionConfidence = "low" | "medium" | "high";
 
@@ -35,12 +38,17 @@ export interface CycleSnapshot {
     cycleDay: number;
     phase: PhaseKey;
     source: DataSource;
+    phaseSource: PhaseSource;
     sourceLabel: string;
+    phaseSourceLabel: string;
     confidence: PredictionConfidence;
     confidenceLabel: string;
     confidenceNote: string;
+    confidenceReason: string;
     phaseLabel: string;
     phaseMessage: string;
+    anchorDate: string | null;
+    activeSignals: string[];
     nextPeriodInDays: number;
     nextPeriodLabel: string;
     fertileWindowLabel: string;

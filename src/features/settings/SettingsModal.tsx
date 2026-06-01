@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Alert, Modal, Pressable, ScrollView, Text, View } from "react-native";
 
+import notificationCadenceSummary from "@/modules/notifications/utils/notificationCadenceSummary";
 import { colors, surfaces } from "@/theme";
 import { IconButton } from "@/ui/IconButton";
 import { ScreenHeader } from "@/ui/ScreenHeader";
@@ -9,7 +11,8 @@ import styles from "./SettingsModal.styles";
 import ExportSavedBanner from "./components/ExportSavedBanner";
 import SettingRow from "./components/SettingRow";
 
-import { NotificationMoment } from "@/types/notifications.types";
+import { NotificationCadence } from "@/types/notifications.types";
+import { AppSettings } from "@/types/settings.types";
 import { ExportSavedNotice } from "./settings.types";
 
 /** Props del modal principal de ajustes. */
@@ -18,13 +21,16 @@ interface SettingsModalProps {
     exportSavedNotice: ExportSavedNotice | null;
     exportingBackup: boolean;
     importingBackup: boolean;
-    moments: NotificationMoment[];
+    notificationCadence: NotificationCadence;
+    settings: AppSettings | null;
     onClose: () => void;
     onDismissExportSavedNotice: () => void;
     onExportBackup: () => Promise<void>;
+    onGenerateDevelopmentData: () => Promise<void>;
     onImportBackup: () => Promise<void>;
     onOpenSchedule: () => void;
     onReset: () => Promise<void>;
+    onSaveSettings: (settings: AppSettings) => Promise<void>;
     onShareSavedBackup: () => Promise<void>;
 }
 
@@ -33,16 +39,24 @@ export function SettingsModal({
     exportSavedNotice,
     exportingBackup,
     importingBackup,
-    moments,
+    notificationCadence,
+    settings,
     onClose,
     onDismissExportSavedNotice,
     onExportBackup,
+    onGenerateDevelopmentData,
     onImportBackup,
     onOpenSchedule,
     onReset,
+    onSaveSettings,
     onShareSavedBackup,
 }: SettingsModalProps) {
-    const activeMoments = moments.filter((moment) => moment.enabled).length;
+    const [seedingDevelopmentData, setSeedingDevelopmentData] = useState(false);
+    const cadenceMeta = notificationCadenceSummary(notificationCadence);
+    const goalMeta = settings?.tryingToConceive ? "Ciclo + búsqueda" : "Solo ciclo";
+    const goalText = settings?.tryingToConceive
+        ? "Entender tu ciclo sigue activo y también se suma contexto de ventana probable cuando hay base suficiente."
+        : "Entender tu ciclo ya viene activo. Si quieres, puedes sumar búsqueda de embarazo sin cambiar resto de Rea.";
 
     const confirmReset = () => {
         Alert.alert("Empezar de cero", "Se borran tus registros de este teléfono y vuelves al inicio.", [
@@ -55,6 +69,52 @@ export function SettingsModal({
                 },
             },
         ]);
+    };
+
+    const manageGoal = () => {
+        if (!settings) {
+            return;
+        }
+
+        const nextTryingToConceive = !settings.tryingToConceive;
+        const nextText = nextTryingToConceive
+            ? "Se suma capa de ventana probable y lecturas relacionadas, sin prometer precisión clínica."
+            : "Rea vuelve a quedarse solo con lectura general de ciclo y bienestar.";
+
+        Alert.alert(nextTryingToConceive ? "Sumar búsqueda de embarazo" : "Volver a solo entender tu ciclo", nextText, [
+            { text: "Cancelar", style: "cancel" },
+            {
+                text: nextTryingToConceive ? "Activar" : "Quitar",
+                onPress: () => {
+                    void onSaveSettings({ ...settings, tryingToConceive: nextTryingToConceive });
+                },
+            },
+        ]);
+    };
+
+    const runDevelopmentSeed = async () => {
+        setSeedingDevelopmentData(true);
+        try {
+            await onGenerateDevelopmentData();
+        } finally {
+            setSeedingDevelopmentData(false);
+        }
+    };
+
+    const confirmDevelopmentSeed = () => {
+        Alert.alert(
+            "Generar usuaria fake",
+            "Reemplaza datos actuales por historial largo y coherente para probar Hoy, Patrones, Diario y Calendario.",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Generar",
+                    onPress: () => {
+                        void runDevelopmentSeed();
+                    },
+                },
+            ],
+        );
     };
 
     return (
@@ -77,12 +137,22 @@ export function SettingsModal({
                 </View>
 
                 <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+                    {settings ? (
+                        <SettingRow
+                            icon="compass-outline"
+                            meta={goalMeta}
+                            onPress={manageGoal}
+                            text={goalText}
+                            title="Enfoque activo"
+                        />
+                    ) : null}
+
                     <SettingRow
                         icon="bell-outline"
-                        meta={`${activeMoments} activos`}
+                        meta={cadenceMeta}
                         onPress={onOpenSchedule}
-                        text="Elige cuándo quieres recibir una pregunta corta."
-                        title="Momentos del día"
+                        text="Elige cada cuánto quieres recibir una pregunta corta dentro de tu ventana activa."
+                        title="Recordatorios"
                     />
 
                     <SettingRow
@@ -104,6 +174,16 @@ export function SettingsModal({
                         text="Abre un respaldo guardado y confirma antes de reemplazar los datos actuales."
                         title="Importar respaldo"
                     />
+
+                    {__DEV__ ? (
+                        <SettingRow
+                            icon="flask-outline"
+                            meta={seedingDevelopmentData ? "Generando" : "Solo dev"}
+                            onPress={confirmDevelopmentSeed}
+                            text="Genera historial largo de una usuaria de prueba para revisar estados maduros de producto sin cargar todo a mano."
+                            title="Usuaria fake"
+                        />
+                    ) : null}
 
                     <SoftCard style={styles.privacyCard} tone="primary" variant="soft">
                         <View style={styles.privacyIcon}>

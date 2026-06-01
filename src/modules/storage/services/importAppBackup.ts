@@ -6,7 +6,7 @@ import initializeDatabase from "../core/schema";
 
 const IMPORT_DIRECTORY_NAME = "backup-imports";
 const MAIN_DATABASE_NAME = "main";
-const REQUIRED_TABLES = ["app_settings", "cycles", "mood_checkins", "daily_logs", "notification_moments"];
+const REQUIRED_TABLES = ["app_settings", "cycles", "mood_checkins", "daily_logs"];
 
 /** Restaura un respaldo externo tras validar integridad y forma mínima esperada. */
 export default async function importAppBackup(backupUri: string) {

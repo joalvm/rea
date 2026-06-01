@@ -1,5 +1,4 @@
 import db from "./database";
-import ensureTableColumn from "./migrations";
 
 /** Inicializa tablas y migraciones mínimas de almacenamiento local. */
 export default async function initializeDatabase() {
@@ -42,21 +41,5 @@ export default async function initializeDatabase() {
       details TEXT,
       updatedAt TEXT NOT NULL
     );
-
-    CREATE TABLE IF NOT EXISTS notification_moments (
-      id TEXT PRIMARY KEY NOT NULL,
-      label TEXT NOT NULL,
-      time TEXT NOT NULL,
-      enabled INTEGER NOT NULL,
-      days TEXT NOT NULL,
-      type TEXT NOT NULL,
-      question TEXT NOT NULL,
-      notificationIds TEXT NOT NULL
-    );
   `);
-
-    await ensureTableColumn(database, "cycles", "source", "TEXT NOT NULL DEFAULT 'observed'");
-    await ensureTableColumn(database, "mood_checkins", "breastSensitivity", "INTEGER NOT NULL DEFAULT 0");
-    await ensureTableColumn(database, "daily_logs", "source", "TEXT NOT NULL DEFAULT 'observed'");
-    await ensureTableColumn(database, "daily_logs", "details", "TEXT");
 }

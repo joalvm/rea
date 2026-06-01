@@ -2,7 +2,7 @@ import { Image, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import brandHorizontal from "@assets/branding/logo-horizontal.png";
-import { NotificationMoment } from "@/types/notifications.types";
+import { NotificationCadence } from "@/types/notifications.types";
 import { AppSettings } from "@/types/settings.types";
 import { SoftButton } from "@/ui/SoftButton";
 import styles from "./OnboardingScreen.styles";
@@ -17,7 +17,7 @@ import useOnboardingFlow from "./hooks/useOnboardingFlow";
 /** Props del flujo inicial de onboarding. */
 interface OnboardingScreenProps {
     importingBackup: boolean;
-    onComplete: (settings: AppSettings, moments: NotificationMoment[]) => Promise<void>;
+    onComplete: (settings: AppSettings, notificationCadence: NotificationCadence) => Promise<void>;
     onImportBackup: () => Promise<void>;
 }
 
@@ -26,8 +26,8 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
     const {
         step,
         setStep,
-        goals,
-        toggleGoal,
+        tryingToConceive,
+        setTryingToConceive,
         lastPeriodStart,
         setLastPeriodStart,
         cycleLength,
@@ -38,8 +38,8 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
         setRegularity,
         hormonalContraception,
         setHormonalContraception,
-        moments,
-        setMoments,
+        notificationCadence,
+        setNotificationCadence,
         saving,
         progress,
         finish,
@@ -62,14 +62,19 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
             onToggleHormonalContraception={() => setHormonalContraception((current) => !current)}
             regularity={regularity}
         />,
-        <OnboardingGoalStep key="goal" goals={goals} onToggleGoal={toggleGoal} />,
+        <OnboardingGoalStep
+            key="goal"
+            onToggleTryingToConceive={() => setTryingToConceive((current) => !current)}
+            tryingToConceive={tryingToConceive}
+        />,
         <OnboardingReminderStep
             key="reminders"
-            moments={moments}
-            onToggleMoment={(id) =>
-                setMoments((current) =>
-                    current.map((item) => (item.id === id ? { ...item, enabled: !item.enabled } : item)),
-                )
+            cadence={notificationCadence}
+            onToggleEnabled={() =>
+                setNotificationCadence((current) => ({
+                    ...current,
+                    enabled: !current.enabled,
+                }))
             }
         />,
     ];

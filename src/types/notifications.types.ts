@@ -1,13 +1,12 @@
-import { MomentType } from "./records.types";
-
-/** Define horario configurable para recordatorio recurrente. */
-export interface NotificationMoment {
-    id: string;
-    label: string;
-    time: string;
+/** Configura cadencia base de recordatorios contextuales. */
+export interface NotificationCadence {
     enabled: boolean;
-    days: number[];
-    type: MomentType;
-    question: string;
+    intervalHours: number;
+    activeWindowStart: string;
+    activeWindowEnd: string;
+    maxPromptsPerDay: number;
+    snoozeOptions: number[];
+    lastPromptAt?: string | null;
+    lastCompletedCheckInAt?: string | null;
     notificationIds?: string[];
 }

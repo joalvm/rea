@@ -6,7 +6,7 @@ import { colors } from "@/theme";
 import { DailyLog } from "@/types/records.types";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "../DiaryScreen.styles";
-import { bleedingLabel, buildDailyLogDetails, sourceLabel } from "../utils/diaryLabels";
+import { bleedingLabel, buildDailyLogDetails, sourceLabel, symptomLabel } from "../utils/diaryLabels";
 
 /** Props de una fila de día con registro completo. */
 interface DiaryDailyLogRowProps {
@@ -36,7 +36,7 @@ export default function DailyLogRow({ log, onEdit }: DiaryDailyLogRowProps) {
                 <View style={styles.symptoms}>
                     {log.symptoms.map((symptom) => (
                         <Text key={symptom} style={styles.symptom}>
-                            {symptom}
+                            {symptomLabel(symptom)}
                         </Text>
                     ))}
                 </View>

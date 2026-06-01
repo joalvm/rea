@@ -1,7 +1,17 @@
-import { BleedingOption, ClotSizeOption, MedicationReliefOption, PainImpactOption } from "../check-in.types";
+import { SYMPTOM_OPTIONS } from "@/modules/cycle/utils/symptomCatalog";
+import {
+    BleedingOption,
+    ClotSizeOption,
+    LibidoLevelOption,
+    MedicationReliefOption,
+    PainImpactOption,
+    PainLocationOption,
+    PmsStateOption,
+    SymptomOption,
+} from "../check-in.types";
 
 /** Síntomas rápidos disponibles en registro diario. */
-export const SYMPTOMS = ["cólicos", "migraña", "acné", "hinchazón", "antojos", "insomnio", "náuseas"];
+export const SYMPTOMS: SymptomOption[] = SYMPTOM_OPTIONS;
 
 /** Opciones de intensidad de sangrado. */
 export const BLEEDING_OPTIONS: BleedingOption[] = [
@@ -34,4 +44,28 @@ export const CLOT_SIZE_OPTIONS: ClotSizeOption[] = [
     { key: "small", label: "Pequeños" },
     { key: "medium", label: "Medios" },
     { key: "large", label: "Grandes" },
+];
+
+/** Opciones visibles de estado percibido de SPM. */
+export const PMS_STATE_OPTIONS: PmsStateOption[] = [
+    { key: "none", label: "No" },
+    { key: "starting", label: "Empezando" },
+    { key: "present", label: "Sí lo siento" },
+];
+
+/** Opciones visibles de libido. */
+export const LIBIDO_LEVEL_OPTIONS: LibidoLevelOption[] = [
+    { key: "very_low", label: "Muy baja" },
+    { key: "low", label: "Baja" },
+    { key: "steady", label: "Normal" },
+    { key: "high", label: "Alta" },
+];
+
+/** Ubicaciones frecuentes del dolor. */
+export const PAIN_LOCATION_OPTIONS: PainLocationOption[] = [
+    { key: "lower_abdomen", label: "Bajo vientre" },
+    { key: "lower_back", label: "Espalda baja" },
+    { key: "pelvis", label: "Pelvis" },
+    { key: "head", label: "Cabeza" },
+    { key: "breasts", label: "Pecho" },
 ];

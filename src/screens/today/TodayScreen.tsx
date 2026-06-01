@@ -8,7 +8,6 @@ import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 import { FloatingBubbles } from "@/ui/FloatingBubbles";
 import { IconButton } from "@/ui/IconButton";
-import { QuickActionCard } from "@/ui/QuickActionCard";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
 import { WeekStrip } from "@/ui/WeekStrip";
@@ -27,9 +26,6 @@ interface TodayScreenProps {
     dailyLogs: DailyLog[];
     onOpenCheckIn: () => void;
     onOpenDay: (iso: string) => void;
-    onOpenQuickCheckIn: () => void;
-    onOpenCalendar: () => void;
-    onOpenPatterns: () => void;
     onOpenSettings: () => void;
 }
 
@@ -41,18 +37,16 @@ export function TodayScreen({
     dailyLogs,
     onOpenCheckIn,
     onOpenDay,
-    onOpenQuickCheckIn,
-    onOpenCalendar,
-    onOpenPatterns,
     onOpenSettings,
 }: TodayScreenProps) {
-    const { alerts, careTips, heroSupport, heroTheme, insights, showHeroDataSummary, weekPages } = useTodayModel({
-        settings,
-        cycles,
-        snapshot,
-        moodCheckIns,
-        dailyLogs,
-    });
+    const { alerts, careTips, heroSecondaryStat, heroSupport, heroTheme, insights, showHeroDataSummary, weekPages } =
+        useTodayModel({
+            settings,
+            cycles,
+            snapshot,
+            moodCheckIns,
+            dailyLogs,
+        });
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -133,11 +127,11 @@ export function TodayScreen({
                             />
                             <View style={[styles.statDivider, { backgroundColor: heroTheme.dividerColor }]} />
                             <MiniStat
-                                icon="leaf"
+                                icon={heroSecondaryStat.icon}
                                 iconColor={heroTheme.statIconColor}
-                                label={snapshot.fertilityVisible ? "Ventana fértil" : "Fertilidad"}
+                                label={heroSecondaryStat.label}
                                 labelColor={heroTheme.statLabelColor}
-                                value={snapshot.fertilityStatusLabel}
+                                value={heroSecondaryStat.value}
                                 valueColor={heroTheme.statValueColor}
                             />
                         </View>
@@ -145,7 +139,7 @@ export function TodayScreen({
 
                     <SoftButton
                         icon={<MaterialCommunityIcons color={heroTheme.buttonTextColor} name="heart-pulse" size={18} />}
-                        label="Hoy me siento"
+                        label="Registrar ahora"
                         labelStyle={{ color: heroTheme.buttonTextColor }}
                         loadingColor={heroTheme.buttonTextColor}
                         onPress={onOpenCheckIn}
@@ -160,42 +154,8 @@ export function TodayScreen({
                 </View>
             </View>
 
-            <View style={[styles.section, styles.firstSection]}>
-                <Text style={styles.sectionTitle}>Acciones rápidas</Text>
-                <ScrollView horizontal contentContainerStyle={styles.quickCards} showsHorizontalScrollIndicator={false}>
-                    <QuickActionCard
-                        hint="ahora"
-                        icon="heart-pulse"
-                        onPress={onOpenQuickCheckIn}
-                        title="Me siento"
-                        tone="primary"
-                    />
-                    <QuickActionCard
-                        hint="flujo"
-                        icon="water-plus-outline"
-                        onPress={onOpenCheckIn}
-                        title="Mi día"
-                        tone="period"
-                    />
-                    <QuickActionCard
-                        hint="mes"
-                        icon="calendar-month-outline"
-                        onPress={onOpenCalendar}
-                        title="Calendario"
-                        tone="fertile"
-                    />
-                    <QuickActionCard
-                        hint="señales"
-                        icon="chart-bell-curve-cumulative"
-                        onPress={onOpenPatterns}
-                        title="Patrones"
-                        tone="luteal"
-                    />
-                </ScrollView>
-            </View>
-
             {alerts.length > 0 ? (
-                <View style={styles.section}>
+                <View style={[styles.section, styles.firstSection]}>
                     <Text style={styles.sectionTitle}>Señales para mirar</Text>
                     <SoftCard style={styles.alertCard}>
                         {alerts.map((alert) => (
@@ -220,7 +180,7 @@ export function TodayScreen({
                 </View>
             ) : null}
 
-            <View style={styles.section}>
+            <View style={[styles.section, alerts.length === 0 && styles.firstSection]}>
                 <Text style={styles.sectionTitle}>Para cuidarte hoy</Text>
                 <SoftCard style={styles.careCard}>
                     {careTips.map((tip) => (

@@ -1,4 +1,5 @@
 import { DailyLog } from "@/types/records.types";
+import { normalizeSymptomKey, normalizeSymptomKeys } from "@/modules/cycle/utils/symptomCatalog";
 
 import db from "../core/database";
 
@@ -43,13 +44,41 @@ async function loadDailyLogsFromQuery(query: string): Promise<DailyLog[]> {
         updatedAt: string;
     }>(query);
 
-    return rows.map((row) => ({
-        date: row.date,
-        bleedingLevel: row.bleedingLevel,
-        symptoms: JSON.parse(row.symptoms) as string[],
-        notes: row.notes,
-        source: row.source ?? "observed",
-        details: row.details ? (JSON.parse(row.details) as NonNullable<DailyLog["details"]>) : null,
-        updatedAt: row.updatedAt,
-    }));
+    return rows.map((row) => {
+        const details = row.details
+            ? normalizeDailyLogDetails(JSON.parse(row.details) as NonNullable<DailyLog["details"]>)
+            : null;
+
+        return {
+            date: row.date,
+            bleedingLevel: row.bleedingLevel,
+            symptoms: normalizeSymptomKeys(JSON.parse(row.symptoms) as string[]),
+            notes: row.notes,
+            source: row.source ?? "observed",
+            details,
+            updatedAt: row.updatedAt,
+        };
+    });
+}
+
+function normalizeDailyLogDetails(details: NonNullable<DailyLog["details"]>): NonNullable<DailyLog["details"]> {
+    const symptomIntensities = Object.entries(details.symptomIntensities ?? {}).reduce<
+        Partial<Record<DailyLog["symptoms"][number], number>>
+    >((accumulator, [key, value]) => {
+        const normalized = normalizeSymptomKey(key);
+        if (!normalized || typeof value !== "number") {
+            return accumulator;
+        }
+
+        accumulator[normalized] = value;
+        return accumulator;
+    }, {});
+    const hasSymptomIntensities = Object.keys(symptomIntensities).length > 0;
+
+    return {
+        ...details,
+        pmsState: details.pmsState ?? (details.pmsStarted ? "starting" : undefined),
+        symptomIntensities: hasSymptomIntensities ? symptomIntensities : undefined,
+        painLocations: details.painLocations ?? [],
+    };
 }

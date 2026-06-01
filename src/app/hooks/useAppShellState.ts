@@ -3,18 +3,23 @@ import { BackHandler } from "react-native";
 
 import { TabKey } from "../../types/app.types";
 import { DailyLog, MomentType, MoodCheckIn } from "../../types/records.types";
-import { CheckInState } from "../app-shell.types";
+import { CheckInPromptContext, CheckInState } from "../app-shell.types";
 
 const initialCheckInState: CheckInState = {
     visible: false,
     sessionKey: 0,
     mode: "daily",
     momentType: "now",
-    question: "¿Cómo te sientes hoy?",
-    saveTarget: "both",
+    promptContext: {
+        title: "¿Cómo te sientes ahora?",
+        subtitle: "Registra solo lo que este momento te está mostrando.",
+    },
+    dailyLogOnly: false,
     initialCheckIn: null,
     initialDailyLog: null,
 };
+
+type CheckInPromptSource = "manual" | "notification" | "edit";
 
 /** Contrato de salida de useAppShellState para pantallas y componentes del shell. */
 export interface UseAppShellStateResult {
@@ -33,17 +38,21 @@ export interface UseAppShellStateResult {
     /** Reabre modal rápido con datos de check-in existentes. */
     editDailyLog: (entry: DailyLog) => void;
     /** Reabre modal rápido con datos de check-in existentes. */
-    editQuickCheckIn: (entry: MoodCheckIn) => void;
+    editQuickCheckIn: (entry: MoodCheckIn, initialDailyLog?: DailyLog | null) => void;
     /** Cambia pestaña activa y limpia detalle de día si hacía falta. */
     handleTabChange: (tab: TabKey) => void;
     /** Abre check-in diario completo. */
-    openDailyCheckIn: () => void;
+    openDailyCheckIn: (initialDailyLog?: DailyLog | null) => void;
     /** Abre detalle de un día concreto. */
     openDay: (iso: string) => void;
     /** Salta directo a pestaña diario. */
     openDiaryTab: () => void;
     /** Abre check-in rápido para momento de notificación dado. */
-    openQuickCheckIn: (momentType?: MomentType) => void;
+    openQuickCheckIn: (
+        momentType?: MomentType,
+        source?: CheckInPromptSource,
+        initialDailyLog?: DailyLog | null,
+    ) => void;
     /** Cierra ajustes y abre modal de horario. */
     openScheduleFromSettings: () => void;
     /** Abre modal principal de ajustes. */
@@ -79,41 +88,48 @@ export default function useAppShellState(): UseAppShellStateResult {
         return () => subscription.remove();
     }, [selectedDayIso]);
 
-    const openQuickCheckIn = useCallback((momentType: MomentType = "now") => {
-        setCheckIn(
-            buildVisibleCheckInState({
-                mode: "quick",
-                momentType,
-                question: questionForMoment(momentType),
-                saveTarget: "checkIn",
-                initialCheckIn: null,
-                initialDailyLog: null,
-            }),
-        );
-    }, []);
+    const openQuickCheckIn = useCallback(
+        (
+            momentType: MomentType = "now",
+            source: CheckInPromptSource = "manual",
+            initialDailyLog: DailyLog | null = null,
+        ) => {
+            setCheckIn(
+                buildVisibleCheckInState({
+                    mode: "quick",
+                    momentType,
+                    promptContext: buildPromptContext({ mode: "quick", momentType, source }),
+                    dailyLogOnly: false,
+                    initialCheckIn: null,
+                    initialDailyLog,
+                }),
+            );
+        },
+        [],
+    );
 
-    function openDailyCheckIn() {
+    function openDailyCheckIn(initialDailyLog: DailyLog | null = null) {
         setCheckIn(
             buildVisibleCheckInState({
                 mode: "daily",
                 momentType: "now",
-                question: "¿Cómo te sientes hoy?",
-                saveTarget: "both",
+                promptContext: buildPromptContext({ mode: "daily", momentType: "now", source: "manual" }),
+                dailyLogOnly: false,
                 initialCheckIn: null,
-                initialDailyLog: null,
+                initialDailyLog,
             }),
         );
     }
 
-    function editQuickCheckIn(entry: MoodCheckIn) {
+    function editQuickCheckIn(entry: MoodCheckIn, initialDailyLog: DailyLog | null = null) {
         setCheckIn(
             buildVisibleCheckInState({
                 mode: "quick",
                 momentType: entry.momentType,
-                question: questionForMoment(entry.momentType),
-                saveTarget: "checkIn",
+                promptContext: buildPromptContext({ mode: "quick", momentType: entry.momentType, source: "edit" }),
+                dailyLogOnly: false,
                 initialCheckIn: entry,
-                initialDailyLog: null,
+                initialDailyLog,
             }),
         );
     }
@@ -123,8 +139,8 @@ export default function useAppShellState(): UseAppShellStateResult {
             buildVisibleCheckInState({
                 mode: "daily",
                 momentType: "now",
-                question: "Ajusta tu registro del día",
-                saveTarget: "dailyLog",
+                promptContext: buildPromptContext({ mode: "daily", momentType: "now", source: "edit" }),
+                dailyLogOnly: true,
                 initialCheckIn: null,
                 initialDailyLog: entry,
             }),
@@ -210,15 +226,54 @@ function buildVisibleCheckInState(config: Omit<CheckInState, "visible" | "sessio
     };
 }
 
-/** Traduce momento del día al prompt usado en check-ins rápidos. */
-function questionForMoment(momentType: MomentType) {
+interface BuildPromptContextParams {
+    mode: CheckInState["mode"];
+    momentType: MomentType;
+    source: CheckInPromptSource;
+}
+
+/** Mantiene el prompt principal estable y mueve el matiz al contexto secundario. */
+function buildPromptContext({ mode, momentType, source }: BuildPromptContextParams): CheckInPromptContext {
+    if (source === "notification") {
+        return {
+            title: "¿Cómo te sientes ahora?",
+            subtitle: "Vienes de un recordatorio suave. Responde solo si este momento te aporta algo.",
+        };
+    }
+
+    if (source === "edit") {
+        return {
+            title: "¿Cómo te sientes ahora?",
+            subtitle:
+                mode === "daily"
+                    ? "Puedes corregir o completar lo que observaste hoy sin rehacer todo el registro."
+                    : "Ajusta esta nota puntual sin tocar el resto del día.",
+        };
+    }
+
+    if (mode === "daily") {
+        return {
+            title: "¿Cómo te sientes ahora?",
+            subtitle: "Añade las señales del día que sí valen la pena, aunque no completes todo.",
+        };
+    }
+
     if (momentType === "morning") {
-        return "¿Cómo despertaste?";
+        return {
+            title: "¿Cómo te sientes ahora?",
+            subtitle: "Si acabas de despertar, basta con dejar una foto rápida de este momento.",
+        };
     }
 
     if (momentType === "night") {
-        return "¿Cómo estuvo tu día?";
+        return {
+            title: "¿Cómo te sientes ahora?",
+            subtitle: "Si estás cerrando el día, anota solo lo que todavía sigue presente.",
+        };
     }
 
-    return "¿Cómo te sientes ahora?";
+    return {
+        title: "¿Cómo te sientes ahora?",
+        subtitle: "Registra solo lo que este momento te está mostrando.",
+    };
 }

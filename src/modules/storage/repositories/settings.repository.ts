@@ -4,12 +4,13 @@ import db from "../core/database";
 
 type LegacyGoal = "full_picture" | "self_knowledge" | "trying_to_conceive" | "track_only";
 
-type StoredSettings =
-    | AppSettings
-    | (Omit<AppSettings, "goals"> & {
-          goal?: LegacyGoal;
-          goals?: AppSettings["goals"];
-      });
+type StoredSettings = AppSettings | LegacyStoredSettings;
+
+interface LegacyStoredSettings extends Omit<AppSettings, "tryingToConceive"> {
+    tryingToConceive?: boolean;
+    goal?: LegacyGoal;
+    goals?: LegacyGoal[];
+}
 
 /** Carga configuración persistida de aplicación si existe. */
 export async function loadSettings(): Promise<AppSettings | null> {
@@ -33,8 +34,6 @@ export async function saveSettings(settings: AppSettings) {
 }
 
 function normalizeSettings(settings: StoredSettings): AppSettings {
-    const goals = normalizeGoals(settings.goals, "goal" in settings ? settings.goal : undefined);
-
     return {
         onboarded: settings.onboarded,
         lastPeriodStart: settings.lastPeriodStart,
@@ -42,24 +41,27 @@ function normalizeSettings(settings: StoredSettings): AppSettings {
         periodLength: settings.periodLength,
         regularity: settings.regularity,
         hormonalContraception: settings.hormonalContraception,
-        goals,
+        tryingToConceive: normalizeTryingToConceive(settings),
         createdAt: settings.createdAt,
     };
 }
 
-function normalizeGoals(goals?: AppSettings["goals"], legacyGoal?: LegacyGoal): AppSettings["goals"] {
-    if (Array.isArray(goals) && goals.length > 0) {
-        return Array.from(new Set(goals.filter((goal) => goal === "self_knowledge" || goal === "trying_to_conceive")));
+function normalizeTryingToConceive(settings: StoredSettings) {
+    if (typeof settings.tryingToConceive === "boolean") {
+        return settings.tryingToConceive;
     }
 
-    switch (legacyGoal) {
+    if ("goals" in settings && Array.isArray(settings.goals)) {
+        return settings.goals.includes("trying_to_conceive");
+    }
+
+    switch ("goal" in settings ? settings.goal : undefined) {
         case "full_picture":
-            return ["self_knowledge", "trying_to_conceive"];
         case "trying_to_conceive":
-            return ["trying_to_conceive"];
+            return true;
         case "track_only":
         case "self_knowledge":
         default:
-            return ["self_knowledge"];
+            return false;
     }
 }

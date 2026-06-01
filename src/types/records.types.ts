@@ -15,6 +15,26 @@ export type PainImpact = "none" | "noticeable" | "limits_day" | "stops_day";
 /** Describe alivio percibido tras medicacion. */
 export type MedicationRelief = "not_applicable" | "helped" | "partly_helped" | "did_not_help";
 
+/** Sintomas observables que la app sabe comparar entre dias y ciclos. */
+export type SymptomKey =
+    | "cramps"
+    | "migraine"
+    | "acne"
+    | "bloating"
+    | "cravings"
+    | "insomnia"
+    | "nausea"
+    | "breast_tenderness";
+
+/** Ubicaciones frecuentes de dolor reportadas en un dia. */
+export type PainLocation = "lower_abdomen" | "lower_back" | "pelvis" | "head" | "breasts";
+
+/** Estado subjetivo de SPM observado ese dia. */
+export type PmsState = "none" | "starting" | "present";
+
+/** Estado breve de libido cuando la usuaria decide anotarlo. */
+export type LibidoLevel = "very_low" | "low" | "steady" | "high";
+
 /** Guarda anotacion puntual de estado emocional y fisico. */
 export interface MoodCheckIn {
     id?: number;
@@ -33,8 +53,12 @@ export interface DailyLogDetails {
     periodStarted?: boolean;
     periodEnded?: boolean;
     pmsStarted?: boolean;
+    pmsState?: PmsState;
     clotSize?: ClotSize;
     painImpact?: PainImpact;
+    painLocations?: PainLocation[];
+    symptomIntensities?: Partial<Record<SymptomKey, number>>;
+    libidoLevel?: LibidoLevel;
     breastSensitivity?: number;
     medicationName?: string | null;
     medicationRelief?: MedicationRelief;
@@ -44,7 +68,7 @@ export interface DailyLogDetails {
 export interface DailyLog {
     date: string;
     bleedingLevel: BleedingLevel;
-    symptoms: string[];
+    symptoms: SymptomKey[];
     notes?: string | null;
     source?: DataSource;
     details?: DailyLogDetails | null;

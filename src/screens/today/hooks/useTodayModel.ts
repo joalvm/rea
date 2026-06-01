@@ -4,7 +4,13 @@ import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { Cycle, CycleSnapshot } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
-import { buildTodaySummaries, buildWeekPages, getCareTips, getHeroSupport } from "../utils/todayContent";
+import {
+    buildTodaySummaries,
+    buildWeekPages,
+    getCareTips,
+    getHeroSecondaryStat,
+    getHeroSupport,
+} from "../utils/todayContent";
 import getHeroTheme from "../utils/todayHeroTheme";
 
 interface UseTodayModelParams {
@@ -23,20 +29,22 @@ export default function useTodayModel({ settings, cycles, snapshot, moodCheckIns
         [cycles, dailyLogs, moodCheckIns, settings],
     );
     const careTips = useMemo(() => getCareTips(snapshot.phase), [snapshot.phase]);
-    const heroSupport = useMemo(() => getHeroSupport(snapshot), [snapshot]);
+    const heroSecondaryStat = useMemo(() => getHeroSecondaryStat(snapshot, settings), [settings, snapshot]);
+    const heroSupport = useMemo(() => getHeroSupport(snapshot, settings), [settings, snapshot]);
     const showHeroDataSummary = snapshot.observedCycleCount > 0;
     const todayIso = useMemo(
         () => snapshot.week.find((day) => day.isToday)?.iso ?? toIsoDate(new Date()),
         [snapshot.week],
     );
     const weekPages = useMemo(
-        () => buildWeekPages(settings, cycles, dailyLogs, todayIso),
-        [cycles, dailyLogs, settings, todayIso],
+        () => buildWeekPages(settings, cycles, dailyLogs, moodCheckIns, todayIso),
+        [cycles, dailyLogs, moodCheckIns, settings, todayIso],
     );
 
     return {
         alerts,
         careTips,
+        heroSecondaryStat,
         heroSupport,
         heroTheme,
         insights,

@@ -1,4 +1,5 @@
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
+import { labelSymptom } from "@/modules/cycle/utils/symptomCatalog";
 
 /** Devuelve icono del momento registrado. */
 export function momentIcon(momentType: MoodCheckIn["momentType"]) {
@@ -36,7 +37,9 @@ export function buildDailyLogDetails(log: DailyLog) {
 
     if (log.details?.periodStarted) items.push("Empezó hoy");
     if (log.details?.periodEnded) items.push("Terminó hoy");
-    if (log.details?.pmsStarted) items.push("Empezó SPM");
+    if (log.details?.pmsState === "starting") items.push("SPM empezando");
+    if (log.details?.pmsState === "present") items.push("SPM presente");
+    if (!log.details?.pmsState && log.details?.pmsStarted) items.push("Empezó SPM");
 
     if (log.details?.painImpact === "noticeable") items.push("Dolor se notó");
     if (log.details?.painImpact === "limits_day") items.push("Dolor me limitó");
@@ -45,6 +48,14 @@ export function buildDailyLogDetails(log: DailyLog) {
     if ((log.details?.breastSensitivity ?? 0) > 0) {
         items.push(`Sensibilidad mamaria ${log.details?.breastSensitivity}/5`);
     }
+
+    if (log.details?.painLocations && log.details.painLocations.length > 0) {
+        items.push(`Dolor en ${log.details.painLocations.join(", ")}`);
+    }
+
+    if (log.details?.libidoLevel === "very_low") items.push("Libido muy baja");
+    if (log.details?.libidoLevel === "low") items.push("Libido baja");
+    if (log.details?.libidoLevel === "high") items.push("Libido alta");
 
     if (log.details?.medicationName) {
         items.push(log.details.medicationName);
@@ -59,4 +70,9 @@ export function buildDailyLogDetails(log: DailyLog) {
     if (log.details?.clotSize === "large") items.push("Coágulos grandes");
 
     return items;
+}
+
+/** Traduce síntomas guardados a etiquetas visibles. */
+export function symptomLabel(symptom: DailyLog["symptoms"][number]) {
+    return labelSymptom(symptom);
 }

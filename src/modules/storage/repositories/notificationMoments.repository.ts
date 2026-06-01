@@ -1,49 +1,20 @@
-import { NotificationMoment } from "@/types/notifications.types";
+import { NotificationCadence } from "@/types/notifications.types";
 
 import db from "../core/database";
 
-/** Reemplaza horarios guardados por conjunto reprogramado actual. */
-export async function saveNotificationMoments(moments: NotificationMoment[]) {
-    const database = db();
-    await database.withTransactionAsync(async () => {
-        await database.runAsync("DELETE FROM notification_moments");
-        for (const moment of moments) {
-            await database.runAsync(
-                "INSERT INTO notification_moments (id, label, time, enabled, days, type, question, notificationIds) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                moment.id,
-                moment.label,
-                moment.time,
-                moment.enabled ? 1 : 0,
-                JSON.stringify(moment.days),
-                moment.type,
-                moment.question,
-                JSON.stringify(moment.notificationIds ?? []),
-            );
-        }
-    });
+const KEY = "notificationCadence";
+
+/** Persiste preferencias actuales de cadencia de recordatorios. */
+export async function saveNotificationCadence(cadence: NotificationCadence) {
+    await db().runAsync("INSERT OR REPLACE INTO app_settings (key, value) VALUES (?, ?)", KEY, JSON.stringify(cadence));
 }
 
-/** Carga recordatorios persistidos ordenados por hora. */
-export async function loadNotificationMoments(): Promise<NotificationMoment[]> {
-    const rows = await db().getAllAsync<{
-        id: string;
-        label: string;
-        time: string;
-        enabled: number;
-        days: string;
-        type: NotificationMoment["type"];
-        question: string;
-        notificationIds: string;
-    }>("SELECT * FROM notification_moments ORDER BY time ASC");
+/** Carga preferencias de cadencia si ya existen. */
+export async function loadNotificationCadence(): Promise<NotificationCadence | null> {
+    const row = await db().getFirstAsync<{ value: string }>("SELECT value FROM app_settings WHERE key = ?", KEY);
+    if (!row) {
+        return null;
+    }
 
-    return rows.map((row) => ({
-        id: row.id,
-        label: row.label,
-        time: row.time,
-        enabled: row.enabled === 1,
-        days: JSON.parse(row.days) as number[],
-        type: row.type,
-        question: row.question,
-        notificationIds: JSON.parse(row.notificationIds) as string[],
-    }));
+    return JSON.parse(row.value) as NotificationCadence;
 }

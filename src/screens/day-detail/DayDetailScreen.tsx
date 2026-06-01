@@ -3,6 +3,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
 import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
+import { labelSymptom } from "@/modules/cycle/utils/symptomCatalog";
 import { AccentToneName, colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
@@ -43,7 +44,7 @@ export function DayDetailScreen({
     onBack,
     onOpenDiary,
 }: DayDetailScreenProps) {
-    const snapshot = estimateCycle(settings, cycles, dailyLogs, selectedIso);
+    const snapshot = estimateCycle(settings, cycles, dailyLogs, selectedIso, moodCheckIns);
     const todayIso = toIsoDate(new Date());
     const isFuture = selectedIso > todayIso;
     const dailyLog = dailyLogs.find((entry) => entry.date === selectedIso) ?? null;
@@ -71,7 +72,7 @@ export function DayDetailScreen({
                         <MaterialCommunityIcons color={colors.primaryDeep} name="arrow-left" size={20} />
                     </Pressable>
                 }
-                subtitle={`${snapshot.phaseLabel} · ${snapshot.sourceLabel}`}
+                subtitle={`${snapshot.phaseLabel} · ${snapshot.phaseSourceLabel}`}
                 titleIcon={<BrandMark color={colors.primaryDeep} size={20} />}
                 title={formatLongDate(selectedIso)}
             />
@@ -105,7 +106,7 @@ export function DayDetailScreen({
                         <View style={styles.chips}>
                             {dailyLog.symptoms.map((symptom) => (
                                 <Text key={symptom} style={styles.chip}>
-                                    {symptom}
+                                    {labelSymptom(symptom)}
                                 </Text>
                             ))}
                         </View>

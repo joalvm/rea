@@ -1,42 +1,42 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
+import notificationCadenceSummary from "@/modules/notifications/utils/notificationCadenceSummary";
 import { colors } from "@/theme";
-import { NotificationMoment } from "@/types/notifications.types";
+import { NotificationCadence } from "@/types/notifications.types";
 import { StepShell } from "@/ui/StepShell";
 import styles from "../OnboardingScreen.styles";
 
 interface OnboardingReminderStepProps {
-    moments: NotificationMoment[];
-    onToggleMoment: (id: string) => void;
+    cadence: NotificationCadence;
+    onToggleEnabled: () => void;
 }
 
 /** Permite activar o desactivar los recordatorios iniciales. */
-export default function OnboardingReminderStep({ moments, onToggleMoment }: OnboardingReminderStepProps) {
+export default function OnboardingReminderStep({ cadence, onToggleEnabled }: OnboardingReminderStepProps) {
     return (
         <StepShell
             icon="bell-outline"
-            subtitle="Puedes moverlos o apagarlos cuando quieras. La notificación no muestra nada íntimo."
+            subtitle="Puedes ajustar ritmo y ventana después. La notificación no muestra nada íntimo."
             title="¿Quieres recordatorios?"
         >
             <View style={styles.reminders}>
-                {moments.map((moment) => (
-                    <Pressable
-                        key={moment.id}
-                        onPress={() => onToggleMoment(moment.id)}
-                        style={[styles.reminder, moment.enabled && styles.reminderActive]}
-                    >
-                        <View>
-                            <Text style={styles.reminderTitle}>{moment.label}</Text>
-                            <Text style={styles.reminderMeta}>{moment.time}</Text>
-                        </View>
-                        <MaterialCommunityIcons
-                            color={moment.enabled ? colors.primaryDeep : colors.muted}
-                            name={moment.enabled ? "toggle-switch" : "toggle-switch-off-outline"}
-                            size={32}
-                        />
-                    </Pressable>
-                ))}
+                <Pressable
+                    onPress={onToggleEnabled}
+                    style={[styles.reminder, cadence.enabled && styles.reminderActive]}
+                >
+                    <View>
+                        <Text style={styles.reminderTitle}>
+                            {cadence.enabled ? "Recordatorios activos" : "Recordatorios pausados"}
+                        </Text>
+                        <Text style={styles.reminderMeta}>{notificationCadenceSummary(cadence)}</Text>
+                    </View>
+                    <MaterialCommunityIcons
+                        color={cadence.enabled ? colors.primaryDeep : colors.muted}
+                        name={cadence.enabled ? "toggle-switch" : "toggle-switch-off-outline"}
+                        size={32}
+                    />
+                </Pressable>
             </View>
         </StepShell>
     );

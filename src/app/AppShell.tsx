@@ -8,6 +8,7 @@ import useAppDataController from "./hooks/useAppDataController";
 import useAppPersistenceController from "./hooks/useAppPersistenceController";
 import useAppQuickCheckInNotificationListener from "./hooks/useAppQuickCheckInNotificationListener";
 import useAppShellState from "./hooks/useAppShellState";
+import { toIsoDate } from "../modules/cycle/utils/cycleDate.utils";
 import { OnboardingScreen } from "../screens/onboarding/OnboardingScreen";
 import { colors } from "../theme";
 import { BottomTabs } from "../ui/BottomTabs";
@@ -17,8 +18,12 @@ import styles from "./AppShell.styles";
 export default function AppShell() {
     const shellState = useAppShellState();
     const appData = useAppDataController();
+    const todayIso = toIsoDate(new Date());
+    const todayDailyLog = appData.data.dailyLogs.find((entry) => entry.date === todayIso) ?? null;
 
-    useAppQuickCheckInNotificationListener(shellState.openQuickCheckIn);
+    useAppQuickCheckInNotificationListener((momentType, source) =>
+        shellState.openQuickCheckIn(momentType, source, todayDailyLog),
+    );
 
     const backup = useAppBackupController({
         loading: appData.loading,
@@ -27,8 +32,9 @@ export default function AppShell() {
     });
     const persistence = useAppPersistenceController({
         dismissExportSavedNotice: backup.dismissExportSavedNotice,
+        notificationCadence: appData.notificationCadence,
         refreshData: appData.refreshData,
-        replaceNotificationMoments: appData.replaceNotificationMoments,
+        replaceNotificationCadence: appData.replaceNotificationCadence,
         resetData: appData.resetData,
         resetShellView: shellState.resetShellView,
     });
@@ -63,13 +69,17 @@ export default function AppShell() {
                     activeTab={shellState.activeTab}
                     onCloseDay={shellState.closeDay}
                     onEditDailyLog={shellState.editDailyLog}
-                    onEditQuickCheckIn={shellState.editQuickCheckIn}
-                    onOpenDailyCheckIn={shellState.openDailyCheckIn}
+                    onEditQuickCheckIn={(entry, initialDailyLog) => {
+                        const fallbackDailyLog =
+                            appData.data.dailyLogs.find((log) => log.date === toIsoDate(new Date(entry.datetime))) ??
+                            null;
+                        shellState.editQuickCheckIn(entry, initialDailyLog ?? fallbackDailyLog);
+                    }}
+                    onOpenDailyCheckIn={() => shellState.openDailyCheckIn(todayDailyLog)}
                     onOpenDay={shellState.openDay}
                     onOpenDiaryTab={shellState.openDiaryTab}
-                    onOpenQuickCheckInNow={() => shellState.openQuickCheckIn("now")}
+                    onOpenQuickCheckInNow={() => shellState.openQuickCheckIn("now", "manual", todayDailyLog)}
                     onOpenSettings={shellState.openSettings}
-                    onOpenTab={shellState.handleTabChange}
                     selectedDayIso={shellState.selectedDayIso}
                     snapshot={appData.snapshot}
                 />

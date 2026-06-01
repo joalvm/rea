@@ -22,17 +22,8 @@ export default function buildSpmPatternInsight(
         return null;
     }
 
-    const leadDays = dailyLogs
-        .filter((log) => log.details?.pmsStarted)
-        .map((log) => {
-            const nextRun = observedRuns.find((run) => run.start > log.date);
-            if (!nextRun) {
-                return null;
-            }
-
-            const lead = daysBetween(log.date, nextRun.start);
-            return lead >= 1 && lead <= 14 ? lead : null;
-        })
+    const leadDays = observedRuns
+        .map((run) => findSpmLeadDaysForRun(dailyLogs, run.start))
         .filter((value): value is number => value !== null);
 
     if (leadDays.length < 2) {
@@ -58,4 +49,27 @@ export default function buildSpmPatternInsight(
         detail: `Lo marcaste así en ${cycleLabel}. ${timing}`,
         tone: "supportive",
     };
+}
+
+function findSpmLeadDaysForRun(dailyLogs: DailyLog[], runStart: string) {
+    const candidateLogs = dailyLogs
+        .filter((log) => {
+            const lead = daysBetween(log.date, runStart);
+            return lead >= 1 && lead <= 14;
+        })
+        .sort((left, right) => left.date.localeCompare(right.date));
+
+    const explicitStart = candidateLogs.find(
+        (log) => log.details?.pmsState === "starting" || (!log.details?.pmsState && log.details?.pmsStarted),
+    );
+    if (explicitStart) {
+        return daysBetween(explicitStart.date, runStart);
+    }
+
+    const presentFallback = candidateLogs.find((log) => log.details?.pmsState === "present");
+    if (presentFallback) {
+        return daysBetween(presentFallback.date, runStart);
+    }
+
+    return null;
 }

@@ -10,6 +10,12 @@ import { AppSettings } from "@/types/settings.types";
 import { WeekStripDay } from "@/ui/WeekStrip";
 import { TodayAlertTone, TodayCareTip } from "../today.types";
 
+export interface TodayHeroStat {
+    icon: string;
+    label: string;
+    value: string;
+}
+
 /** Deriva tono breve para alertas visibles en Home. */
 export function getAlertTone(severity: EducationalAlert["severity"]): TodayAlertTone {
     if (severity === "consult") {
@@ -24,27 +30,78 @@ export function getAlertTone(severity: EducationalAlert["severity"]): TodayAlert
 }
 
 /** Resume el nivel actual de base observada o estimada del snapshot. */
-export function getHeroSupport(snapshot: CycleSnapshot) {
+export function getHeroSupport(snapshot: CycleSnapshot, settings: AppSettings | null) {
+    if (settings?.tryingToConceive && settings.hormonalContraception) {
+        return "Búsqueda activa, pero con anticonceptivos hormonales la ventana probable queda en pausa y hoy manda lo observado.";
+    }
+
     if (snapshot.source === "observed") {
-        return null;
+        if (snapshot.activeSignals.length > 0) {
+            return `Hoy manda lo observado: ${snapshot.activeSignals.join(" · ")}.`;
+        }
+
+        return `Hoy pesa más lo observado que el calendario. ${snapshot.confidenceReason}`;
     }
 
     if (snapshot.source === "estimated") {
-        return "Referencia del calendario mientras sumas más registros.";
+        if (snapshot.phaseSource === "observed_signals") {
+            return snapshot.confidenceReason;
+        }
+
+        return `${snapshot.phaseSourceLabel}. ${snapshot.confidenceReason}`;
     }
 
-    return "Empieza marcando tu regla para darle más contexto a esta vista.";
+    return snapshot.confidenceReason;
+}
+
+/** Decide qué utilidad ocupa slot secundario del hero sin cambiar su diseño. */
+export function getHeroSecondaryStat(snapshot: CycleSnapshot, settings: AppSettings | null): TodayHeroStat {
+    if (settings?.tryingToConceive && settings.hormonalContraception) {
+        return {
+            icon: "compass-outline",
+            label: "Objetivo",
+            value: "Búsqueda en pausa",
+        };
+    }
+
+    if (snapshot.fertilityVisible) {
+        return {
+            icon: "leaf",
+            label: "Ventana fértil",
+            value: snapshot.fertilityStatusLabel,
+        };
+    }
+
+    if (snapshot.activeSignals.length > 0) {
+        return {
+            icon: "pulse",
+            label: "Señal de hoy",
+            value: snapshot.activeSignals[0] ?? snapshot.confidenceLabel,
+        };
+    }
+
+    return {
+        icon: "information-outline",
+        label: "Confianza",
+        value: snapshot.confidenceLabel,
+    };
 }
 
 /** Construye páginas semanales alrededor de hoy para el carrusel del hero. */
-export function buildWeekPages(settings: AppSettings | null, cycles: Cycle[], dailyLogs: DailyLog[], todayIso: string) {
+export function buildWeekPages(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+    moodCheckIns: MoodCheckIn[],
+    todayIso: string,
+) {
     const phaseCache = new Map<string, PhaseKey>();
 
     return Array.from({ length: 15 }, (_, index) => {
         const focusIso = addDays(todayIso, (index - 7) * 7);
-        return estimateCycle(settings, cycles, dailyLogs, focusIso).week.map((day): WeekStripDay => {
+        return estimateCycle(settings, cycles, dailyLogs, focusIso, moodCheckIns).week.map((day): WeekStripDay => {
             const cachedPhase = phaseCache.get(day.iso);
-            const phase = cachedPhase ?? estimateCycle(settings, cycles, dailyLogs, day.iso).phase;
+            const phase = cachedPhase ?? estimateCycle(settings, cycles, dailyLogs, day.iso, moodCheckIns).phase;
 
             if (!cachedPhase) {
                 phaseCache.set(day.iso, phase);

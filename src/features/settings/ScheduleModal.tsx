@@ -1,72 +1,38 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState } from "react";
-import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { useMemo, useState } from "react";
+import { Modal, Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native";
 
+import notificationCadenceSummary from "@/modules/notifications/utils/notificationCadenceSummary";
 import { colors } from "@/theme";
 import { ScreenHeader } from "@/ui/ScreenHeader";
-import { NotificationMoment } from "@/types/notifications.types";
-import { SoftButton } from "@/ui/SoftButton";
+import { NotificationCadence } from "@/types/notifications.types";
 import { SoftCard } from "@/ui/SoftCard";
 import styles from "./ScheduleModal.styles";
-import MomentCard from "./components/MomentCard";
-import { ScheduleDayOption } from "./settings.types";
 
 /** Props del modal de horarios de recordatorio. */
 interface ScheduleModalProps {
     visible: boolean;
-    moments: NotificationMoment[];
+    cadence: NotificationCadence;
     onClose: () => void;
-    onChange: (moments: NotificationMoment[]) => Promise<void>;
+    onChange: (cadence: NotificationCadence) => Promise<void>;
 }
 
-const DAYS: ScheduleDayOption[] = [
-    { key: 1, label: "L" },
-    { key: 2, label: "M" },
-    { key: 3, label: "M" },
-    { key: 4, label: "J" },
-    { key: 5, label: "V" },
-    { key: 6, label: "S" },
-    { key: 0, label: "D" },
-];
+const INTERVAL_OPTIONS = [4, 6, 8, 12, 24];
+const MAX_PROMPTS_OPTIONS = [1, 2, 3, 4];
 
-export function ScheduleModal({ visible, moments, onClose, onChange }: ScheduleModalProps) {
-    const [label, setLabel] = useState("Tarde");
-    const [time, setTime] = useState("16:30");
-    const [saving, setSaving] = useState(false);
+export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleModalProps) {
+    const [draft, setDraft] = useState(cadence);
 
-    const commit = async (next: NotificationMoment[]) => {
-        setSaving(true);
-        try {
-            await onChange(next);
-        } finally {
-            setSaving(false);
-        }
+    const summary = useMemo(() => notificationCadenceSummary(draft), [draft]);
+
+    const commit = async (next: NotificationCadence) => {
+        setDraft(next);
+        await onChange(next);
     };
 
-    const updateMoment = (id: string, patch: Partial<NotificationMoment>) => {
-        void commit(moments.map((moment) => (moment.id === id ? { ...moment, ...patch } : moment)));
-    };
-
-    const removeMoment = (id: string) => {
-        void commit(moments.filter((moment) => moment.id !== id));
-    };
-
-    const addCustom = () => {
-        const cleanLabel = label.trim() || "Momento";
-        const id = `custom-${Date.now()}`;
-        const next: NotificationMoment = {
-            id,
-            label: cleanLabel,
-            time,
-            enabled: true,
-            days: [1, 2, 3, 4, 5],
-            type: "custom",
-            question: "¿Cómo te sientes ahora?",
-            notificationIds: [],
-        };
-        setLabel("Tarde");
-        setTime("16:30");
-        void commit([...moments, next]);
+    const updateDraft = (patch: Partial<NotificationCadence>) => {
+        const next = { ...draft, ...patch };
+        void commit(next);
     };
 
     return (
@@ -74,46 +40,95 @@ export function ScheduleModal({ visible, moments, onClose, onChange }: ScheduleM
             <View style={styles.screen}>
                 <View style={styles.header}>
                     <ScreenHeader
-                        kicker="Momentos del día"
+                        kicker="Cadencia"
                         leading={
                             <Pressable accessibilityRole="button" onPress={onClose} style={styles.iconButton}>
                                 <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-left" size={26} />
                             </Pressable>
                         }
-                        subtitle="Elige horarios cómodos. En pantalla bloqueada solo verás preguntas suaves."
+                        subtitle="La notificación sigue siendo discreta. Aquí solo defines ritmo, ventana y límite diario."
                         title="Cuándo quieres que te pregunte"
                     />
                 </View>
 
                 <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-                    {moments.map((moment) => (
-                        <MomentCard
-                            days={DAYS}
-                            key={moment.id}
-                            moment={moment}
-                            onRemove={removeMoment}
-                            onUpdate={updateMoment}
-                        />
-                    ))}
+                    <SoftCard style={styles.momentCard}>
+                        <View style={styles.cardHeader}>
+                            <View style={styles.momentTitleRow}>
+                                <View style={[styles.momentIcon, { backgroundColor: "rgba(8, 124, 155, 0.12)" }]}>
+                                    <MaterialCommunityIcons color={colors.primaryDeep} name="bell-outline" size={23} />
+                                </View>
+                                <View style={styles.momentCopy}>
+                                    <Text style={styles.cardTitle}>Recordatorios contextuales</Text>
+                                    <Text style={styles.question}>{summary}</Text>
+                                </View>
+                            </View>
+                            <Switch
+                                onValueChange={(enabled) => updateDraft({ enabled })}
+                                thumbColor={draft.enabled ? colors.primaryDeep : colors.surface}
+                                trackColor={{ false: "rgba(122,139,146,0.22)", true: colors.primary }}
+                                value={draft.enabled}
+                            />
+                        </View>
+                    </SoftCard>
 
                     <SoftCard style={styles.addCard} tone="primary" variant="soft">
-                        <Text style={styles.cardTitle}>Añadir otro momento</Text>
+                        <Text style={styles.cardTitle}>Cada cuántas horas</Text>
+                        <View style={styles.days}>
+                            {INTERVAL_OPTIONS.map((hours) => {
+                                const active = draft.intervalHours === hours;
+                                return (
+                                    <Pressable
+                                        key={`interval-${hours}`}
+                                        onPress={() => updateDraft({ intervalHours: hours })}
+                                        style={[styles.day, active && styles.dayActive]}
+                                    >
+                                        <Text style={[styles.dayText, active && styles.dayTextActive]}>{hours} h</Text>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    </SoftCard>
+
+                    <SoftCard style={styles.addCard} tone="primary" variant="soft">
+                        <Text style={styles.cardTitle}>Ventana activa</Text>
                         <TextInput
-                            onChangeText={setLabel}
-                            placeholder="Nombre"
+                            keyboardType="numbers-and-punctuation"
+                            onChangeText={(value) => setDraft((current) => ({ ...current, activeWindowStart: value }))}
+                            onEndEditing={() => updateDraft({ activeWindowStart: draft.activeWindowStart })}
+                            placeholder="09:00"
                             placeholderTextColor={colors.muted}
                             style={styles.input}
-                            value={label}
+                            value={draft.activeWindowStart}
                         />
                         <TextInput
                             keyboardType="numbers-and-punctuation"
-                            onChangeText={setTime}
-                            placeholder="16:30"
+                            onChangeText={(value) => setDraft((current) => ({ ...current, activeWindowEnd: value }))}
+                            onEndEditing={() => updateDraft({ activeWindowEnd: draft.activeWindowEnd })}
+                            placeholder="21:00"
                             placeholderTextColor={colors.muted}
                             style={styles.input}
-                            value={time}
+                            value={draft.activeWindowEnd}
                         />
-                        <SoftButton disabled={saving} label="Añadir momento" onPress={addCustom} variant="secondary" />
+                    </SoftCard>
+
+                    <SoftCard style={styles.addCard} tone="primary" variant="soft">
+                        <Text style={styles.cardTitle}>Máximo por día</Text>
+                        <View style={styles.days}>
+                            {MAX_PROMPTS_OPTIONS.map((count) => {
+                                const active = draft.maxPromptsPerDay === count;
+                                return (
+                                    <Pressable
+                                        key={`daily-${count}`}
+                                        onPress={() => updateDraft({ maxPromptsPerDay: count })}
+                                        style={[styles.day, active && styles.dayActive]}
+                                    >
+                                        <Text style={[styles.dayText, active && styles.dayTextActive]}>{count}</Text>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                        <Text style={styles.question}>Snooze fijo disponible: 1 h, 3 h o hoy no.</Text>
                     </SoftCard>
                 </ScrollView>
             </View>

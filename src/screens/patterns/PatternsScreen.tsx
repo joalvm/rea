@@ -25,13 +25,24 @@ interface PatternsScreenProps {
 }
 
 export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: PatternsScreenProps) {
-    const { alerts, cycleSummaries, insights, metricAverages, statusIconName, statusText, statusTitle, symptoms } =
-        usePatternsModel({
-            settings,
-            cycles,
-            moodCheckIns,
-            dailyLogs,
-        });
+    const {
+        alerts,
+        basisMetrics,
+        cycleSummaries,
+        enoughData,
+        insights,
+        metricVariability,
+        metricVariabilityEmptyText,
+        statusIconName,
+        statusText,
+        statusTitle,
+        symptoms,
+    } = usePatternsModel({
+        settings,
+        cycles,
+        moodCheckIns,
+        dailyLogs,
+    });
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -48,15 +59,31 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                 <View style={styles.statusBody}>
                     <Text style={styles.statusTitle}>{statusTitle}</Text>
                     <Text style={styles.statusText}>{statusText}</Text>
+                    <View style={styles.statusMetrics}>
+                        {basisMetrics.map((item) => (
+                            <MetricPill key={item} label={item} tone="soft" />
+                        ))}
+                    </View>
                 </View>
             </SoftCard>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Promedios recientes</Text>
+                <Text style={styles.sectionTitle}>Qué tanto cambia</Text>
                 <SoftCard style={styles.chartCard}>
-                    {metricAverages.map((metric) => (
-                        <MetricBar key={metric.key} color={metric.color} label={metric.label} value={metric.value} />
-                    ))}
+                    {enoughData ? (
+                        metricVariability.map((metric) => (
+                            <MetricBar
+                                key={metric.key}
+                                color={metric.color}
+                                label={metric.label}
+                                maxValue={4}
+                                value={metric.value}
+                                valueLabel={metric.valueLabel}
+                            />
+                        ))
+                    ) : (
+                        <Text style={styles.emptyText}>{metricVariabilityEmptyText}</Text>
+                    )}
                 </SoftCard>
             </View>
 

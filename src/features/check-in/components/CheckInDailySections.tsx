@@ -1,37 +1,57 @@
 import type { ReactNode } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
+import { labelSymptom } from "@/modules/cycle/utils/symptomCatalog";
 import { colors } from "@/theme";
-import { BleedingLevel, ClotSize, MedicationRelief, PainImpact } from "@/types/records.types";
+import {
+    BleedingLevel,
+    ClotSize,
+    LibidoLevel,
+    MedicationRelief,
+    PainLocation,
+    PainImpact,
+    PmsState,
+    SymptomKey,
+} from "@/types/records.types";
 import { MetricScale } from "@/ui/MetricScale";
 import {
     BLEEDING_OPTIONS,
     CLOT_SIZE_OPTIONS,
+    LIBIDO_LEVEL_OPTIONS,
     MEDICATION_RELIEF_OPTIONS,
+    PAIN_LOCATION_OPTIONS,
     PAIN_IMPACT_OPTIONS,
+    PMS_STATE_OPTIONS,
     SYMPTOMS,
 } from "../constants/checkInOptions";
 import styles from "../CheckInModal.styles";
 
 interface CheckInDailySectionsProps {
     showStandaloneBreastSensitivity: boolean;
+    pain: number;
     breastSensitivity: number;
     onBreastSensitivityChange: (value: number) => void;
     bleedingLevel: BleedingLevel;
     onBleedingLevelChange: (value: BleedingLevel) => void;
-    symptoms: string[];
-    onToggleSymptom: (value: string) => void;
+    symptoms: SymptomKey[];
+    symptomIntensities: Partial<Record<SymptomKey, number>>;
+    onToggleSymptom: (value: SymptomKey) => void;
+    onSymptomIntensityChange: (symptom: SymptomKey, value: number) => void;
     showPeriodSection: boolean;
     periodStarted: boolean;
     periodEnded: boolean;
     onTogglePeriodStarted: () => void;
     onTogglePeriodEnded: () => void;
-    pmsStarted: boolean;
-    onTogglePmsStarted: () => void;
+    pmsState: PmsState;
+    onPmsStateChange: (value: PmsState) => void;
     clotSize: ClotSize;
     onClotSizeChange: (value: ClotSize) => void;
     painImpact: PainImpact;
     onPainImpactChange: (value: PainImpact) => void;
+    painLocations: PainLocation[];
+    onTogglePainLocation: (value: PainLocation) => void;
+    libidoLevel: LibidoLevel;
+    onLibidoLevelChange: (value: LibidoLevel) => void;
     medicationName: string;
     onMedicationNameChange: (value: string) => void;
     medicationRelief: MedicationRelief;
@@ -69,23 +89,30 @@ function ChoiceChip({ label, active, onPress }: ChoiceChipProps) {
 /** Renderiza las secciones diarias del formulario observacional. */
 export default function CheckInDailySections({
     showStandaloneBreastSensitivity,
+    pain,
     breastSensitivity,
     onBreastSensitivityChange,
     bleedingLevel,
     onBleedingLevelChange,
     symptoms,
+    symptomIntensities,
     onToggleSymptom,
+    onSymptomIntensityChange,
     showPeriodSection,
     periodStarted,
     periodEnded,
     onTogglePeriodStarted,
     onTogglePeriodEnded,
-    pmsStarted,
-    onTogglePmsStarted,
+    pmsState,
+    onPmsStateChange,
     clotSize,
     onClotSizeChange,
     painImpact,
     onPainImpactChange,
+    painLocations,
+    onTogglePainLocation,
+    libidoLevel,
+    onLibidoLevelChange,
     medicationName,
     onMedicationNameChange,
     medicationRelief,
@@ -121,13 +148,24 @@ export default function CheckInDailySections({
                 <View style={styles.chips}>
                     {SYMPTOMS.map((symptom) => (
                         <ChoiceChip
-                            active={symptoms.includes(symptom)}
-                            key={symptom}
-                            label={symptom}
-                            onPress={() => onToggleSymptom(symptom)}
+                            active={symptoms.includes(symptom.key)}
+                            key={symptom.key}
+                            label={symptom.label}
+                            onPress={() => onToggleSymptom(symptom.key)}
                         />
                     ))}
                 </View>
+                {symptoms.map((symptom) => (
+                    <MetricScale
+                        highLabel="Fuerte"
+                        key={`symptom-${symptom}`}
+                        label={labelSymptom(symptom)}
+                        lowLabel="Leve"
+                        min={1}
+                        onChange={(value) => onSymptomIntensityChange(symptom, value)}
+                        value={symptomIntensities[symptom] ?? 3}
+                    />
+                ))}
             </FormSection>
 
             {showPeriodSection ? (
@@ -141,7 +179,42 @@ export default function CheckInDailySections({
 
             <FormSection title="SPM">
                 <View style={styles.chips}>
-                    <ChoiceChip active={pmsStarted} label="Empezó hoy" onPress={onTogglePmsStarted} />
+                    {PMS_STATE_OPTIONS.map((item) => (
+                        <ChoiceChip
+                            active={pmsState === item.key}
+                            key={item.key}
+                            label={item.label}
+                            onPress={() => onPmsStateChange(item.key)}
+                        />
+                    ))}
+                </View>
+            </FormSection>
+
+            {pain > 0 ? (
+                <FormSection title="Dónde lo sientes">
+                    <View style={styles.chips}>
+                        {PAIN_LOCATION_OPTIONS.map((item) => (
+                            <ChoiceChip
+                                active={painLocations.includes(item.key)}
+                                key={item.key}
+                                label={item.label}
+                                onPress={() => onTogglePainLocation(item.key)}
+                            />
+                        ))}
+                    </View>
+                </FormSection>
+            ) : null}
+
+            <FormSection title="Libido">
+                <View style={styles.chips}>
+                    {LIBIDO_LEVEL_OPTIONS.map((item) => (
+                        <ChoiceChip
+                            active={libidoLevel === item.key}
+                            key={item.key}
+                            label={item.label}
+                            onPress={() => onLibidoLevelChange(item.key)}
+                        />
+                    ))}
                 </View>
             </FormSection>
 

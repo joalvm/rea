@@ -1,13 +1,14 @@
 import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { CheckInPromptContext } from "@/app/app-shell.types";
 import styles from "./CheckInModal.styles";
 import CheckInActionsRow from "./components/CheckInActionsRow";
 import CheckInDailySections from "./components/CheckInDailySections";
 import CheckInModalHeader from "./components/CheckInModalHeader";
 import CheckInMetricsSection from "./components/CheckInMetricsSection";
 import CheckInNoteSection from "./components/CheckInNoteSection";
-import { CheckInMode, CheckInSaveTarget } from "./check-in.types";
+import { CheckInMode, CheckInSubmission } from "./check-in.types";
 import useCheckInForm from "./hooks/useCheckInForm";
 
 import { DailyLog, MomentType, MoodCheckIn } from "@/types/records.types";
@@ -17,26 +18,26 @@ interface CheckInModalProps {
     visible: boolean;
     mode: CheckInMode;
     momentType: MomentType;
-    question: string;
+    promptContext: CheckInPromptContext;
     onClose: () => void;
     onDelete?: (checkIn?: MoodCheckIn | null) => Promise<void>;
-    onSave: (checkIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
+    onSave: (submission: CheckInSubmission) => Promise<void>;
     initialCheckIn?: MoodCheckIn | null;
     initialDailyLog?: DailyLog | null;
-    saveTarget?: CheckInSaveTarget;
+    dailyLogOnly?: boolean;
 }
 
 export function CheckInModal({
     visible,
     mode,
     momentType,
-    question,
+    promptContext,
     onClose,
     onDelete,
     onSave,
     initialCheckIn = null,
     initialDailyLog = null,
-    saveTarget = mode === "daily" ? "both" : "checkIn",
+    dailyLogOnly = false,
 }: CheckInModalProps) {
     const insets = useSafeAreaInsets();
     const form = useCheckInForm({
@@ -47,7 +48,7 @@ export function CheckInModal({
         onSave,
         initialCheckIn,
         initialDailyLog,
-        saveTarget,
+        dailyLogOnly,
     });
 
     return (
@@ -71,7 +72,7 @@ export function CheckInModal({
                             isEditing={form.isEditing}
                             mode={mode}
                             onClose={form.handleClose}
-                            question={question}
+                            promptContext={promptContext}
                         />
 
                         <ScrollView
@@ -103,25 +104,32 @@ export function CheckInModal({
                                     bleedingLevel={form.bleedingLevel}
                                     breastSensitivity={form.breastSensitivity}
                                     clotSize={form.clotSize}
+                                    libidoLevel={form.libidoLevel}
                                     medicationName={form.medicationName}
                                     medicationRelief={form.medicationRelief}
                                     onBleedingLevelChange={form.setBleedingLevel}
                                     onBreastSensitivityChange={form.setBreastSensitivity}
                                     onClotSizeChange={form.setClotSize}
+                                    onLibidoLevelChange={form.setLibidoLevel}
                                     onMedicationNameChange={form.setMedicationName}
                                     onMedicationReliefChange={form.setMedicationRelief}
                                     onPainImpactChange={form.setPainImpact}
+                                    onPmsStateChange={form.setPmsState}
+                                    onSymptomIntensityChange={form.setSymptomIntensity}
+                                    onTogglePainLocation={form.togglePainLocation}
                                     onTogglePeriodEnded={() => form.setPeriodEnded((current) => !current)}
                                     onTogglePeriodStarted={() => form.setPeriodStarted((current) => !current)}
-                                    onTogglePmsStarted={() => form.setPmsStarted((current) => !current)}
                                     onToggleSymptom={form.toggleSymptom}
+                                    pain={form.pain}
                                     painImpact={form.painImpact}
+                                    painLocations={form.painLocations}
                                     periodEnded={form.periodEnded}
                                     periodStarted={form.periodStarted}
-                                    pmsStarted={form.pmsStarted}
+                                    pmsState={form.pmsState}
                                     showPeriodSection={form.showPeriodSection}
                                     showStandaloneBreastSensitivity={!form.showCheckInMetrics}
                                     symptoms={form.symptoms}
+                                    symptomIntensities={form.symptomIntensities}
                                 />
                             ) : null}
 

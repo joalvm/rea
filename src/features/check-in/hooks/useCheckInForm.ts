@@ -1,8 +1,20 @@
 import { useState } from "react";
 import { Alert } from "react-native";
 
+import { normalizeSymptomKeys } from "@/modules/cycle/utils/symptomCatalog";
 import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
-import { BleedingLevel, ClotSize, DailyLog, MedicationRelief, MoodCheckIn, PainImpact } from "@/types/records.types";
+import {
+    BleedingLevel,
+    ClotSize,
+    DailyLog,
+    LibidoLevel,
+    MedicationRelief,
+    MoodCheckIn,
+    PainLocation,
+    PainImpact,
+    PmsState,
+    SymptomKey,
+} from "@/types/records.types";
 import { CheckInFormConfig } from "../check-in.types";
 import buildDailyLogDetails from "../utils/buildDailyLogDetails";
 
@@ -15,7 +27,7 @@ export default function useCheckInForm({
     onSave,
     initialCheckIn = null,
     initialDailyLog = null,
-    saveTarget,
+    dailyLogOnly = false,
 }: CheckInFormConfig) {
     const [mood, setMood] = useState(initialCheckIn?.mood ?? 3);
     const [energy, setEnergy] = useState(initialCheckIn?.energy ?? 3);
@@ -26,12 +38,19 @@ export default function useCheckInForm({
     const [stress, setStress] = useState(initialCheckIn?.stress ?? 2);
     const [note, setNote] = useState(initialCheckIn?.note ?? initialDailyLog?.notes ?? "");
     const [bleedingLevel, setBleedingLevel] = useState<BleedingLevel>(initialDailyLog?.bleedingLevel ?? "none");
-    const [symptoms, setSymptoms] = useState<string[]>(initialDailyLog?.symptoms ?? []);
+    const [symptoms, setSymptoms] = useState<SymptomKey[]>(normalizeSymptomKeys(initialDailyLog?.symptoms ?? []));
     const [periodStarted, setPeriodStarted] = useState(Boolean(initialDailyLog?.details?.periodStarted));
     const [periodEnded, setPeriodEnded] = useState(Boolean(initialDailyLog?.details?.periodEnded));
-    const [pmsStarted, setPmsStarted] = useState(Boolean(initialDailyLog?.details?.pmsStarted));
+    const [pmsState, setPmsState] = useState<PmsState>(
+        initialDailyLog?.details?.pmsState ?? (initialDailyLog?.details?.pmsStarted ? "starting" : "none"),
+    );
     const [clotSize, setClotSize] = useState<ClotSize>(initialDailyLog?.details?.clotSize ?? "none");
     const [painImpact, setPainImpact] = useState<PainImpact>(initialDailyLog?.details?.painImpact ?? "none");
+    const [painLocations, setPainLocations] = useState<PainLocation[]>(initialDailyLog?.details?.painLocations ?? []);
+    const [symptomIntensities, setSymptomIntensities] = useState<Partial<Record<SymptomKey, number>>>(
+        initialDailyLog?.details?.symptomIntensities ?? {},
+    );
+    const [libidoLevel, setLibidoLevel] = useState<LibidoLevel>(initialDailyLog?.details?.libidoLevel ?? "steady");
     const [medicationName, setMedicationName] = useState(initialDailyLog?.details?.medicationName ?? "");
     const [medicationRelief, setMedicationRelief] = useState<MedicationRelief>(
         initialDailyLog?.details?.medicationRelief ?? "not_applicable",
@@ -40,9 +59,9 @@ export default function useCheckInForm({
     const [saving, setSaving] = useState(false);
 
     const isEditing = Boolean(initialCheckIn || initialDailyLog);
-    const showCheckInMetrics = saveTarget !== "dailyLog";
-    const showDailySections = mode === "daily";
-    const showPeriodSection = showDailySections && saveTarget === "both";
+    const showCheckInMetrics = !dailyLogOnly;
+    const showDailySections = true;
+    const showPeriodSection = !dailyLogOnly;
     const canDeleteMoment = Boolean(initialCheckIn?.id && onDelete);
 
     const handleClose = () => {
@@ -80,15 +99,55 @@ export default function useCheckInForm({
         ]);
     };
 
-    const toggleSymptom = (symptom: string) => {
-        setSymptoms((current) =>
-            current.includes(symptom) ? current.filter((item) => item !== symptom) : [...current, symptom],
+    const toggleSymptom = (symptom: SymptomKey) => {
+        setSymptoms((current) => {
+            if (current.includes(symptom)) {
+                setSymptomIntensities((values) => {
+                    const next = { ...values };
+                    delete next[symptom];
+                    return next;
+                });
+                return current.filter((item) => item !== symptom);
+            }
+
+            setSymptomIntensities((values) => ({ ...values, [symptom]: values[symptom] ?? 3 }));
+            return [...current, symptom];
+        });
+    };
+
+    const setSymptomIntensity = (symptom: SymptomKey, value: number) => {
+        setSymptomIntensities((current) => ({ ...current, [symptom]: value }));
+    };
+
+    const togglePainLocation = (location: PainLocation) => {
+        setPainLocations((current) =>
+            current.includes(location) ? current.filter((item) => item !== location) : [...current, location],
         );
     };
 
     const submit = async () => {
         const now = new Date();
         const trimmedNote = note.trim() || null;
+        const dailyLogDetails = buildDailyLogDetails({
+            periodStarted,
+            periodEnded,
+            pmsState,
+            clotSize,
+            painImpact,
+            painLocations,
+            symptomIntensities,
+            libidoLevel,
+            breastSensitivity,
+            medicationName,
+            medicationRelief,
+        });
+        const shouldPersistDailyLog =
+            dailyLogOnly ||
+            mode === "daily" ||
+            Boolean(initialDailyLog) ||
+            bleedingLevel !== "none" ||
+            symptoms.length > 0 ||
+            Boolean(dailyLogDetails);
         const checkIn: MoodCheckIn | undefined = showCheckInMetrics
             ? {
                   id: initialCheckIn?.id,
@@ -103,30 +162,21 @@ export default function useCheckInForm({
               }
             : undefined;
         const dailyLog: DailyLog | undefined =
-            showDailySections && saveTarget !== "checkIn"
+            showDailySections && shouldPersistDailyLog
                 ? {
                       date: initialDailyLog?.date ?? toIsoDate(now),
                       bleedingLevel,
                       symptoms,
                       notes: trimmedNote,
                       source: initialDailyLog?.source ?? "observed",
-                      details: buildDailyLogDetails({
-                          periodStarted,
-                          periodEnded,
-                          pmsStarted,
-                          clotSize,
-                          painImpact,
-                          breastSensitivity,
-                          medicationName,
-                          medicationRelief,
-                      }),
+                      details: dailyLogDetails,
                       updatedAt: now.toISOString(),
                   }
                 : undefined;
 
         setSaving(true);
         try {
-            await onSave(checkIn, dailyLog);
+            await onSave({ moodCheckIn: checkIn, dailyLog });
             handleClose();
         } finally {
             setSaving(false);
@@ -149,16 +199,22 @@ export default function useCheckInForm({
         bleedingLevel,
         setBleedingLevel,
         symptoms,
+        symptomIntensities,
+        setSymptomIntensity,
         periodStarted,
         setPeriodStarted,
         periodEnded,
         setPeriodEnded,
-        pmsStarted,
-        setPmsStarted,
+        pmsState,
+        setPmsState,
         clotSize,
         setClotSize,
         painImpact,
         setPainImpact,
+        painLocations,
+        togglePainLocation,
+        libidoLevel,
+        setLibidoLevel,
         medicationName,
         setMedicationName,
         medicationRelief,

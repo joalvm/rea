@@ -10,8 +10,8 @@ import {
     isLikelyBackupUri,
 } from "../../modules/storage/services/backupFile";
 import clearScheduledNotifications from "../../modules/notifications/scheduler/clearScheduledNotifications";
-import rescheduleNotificationMoments from "../../modules/notifications/scheduler/rescheduleNotificationMoments";
-import { saveNotificationMoments } from "../../modules/storage/repositories/notificationMoments.repository";
+import rescheduleNotificationCadence from "../../modules/notifications/scheduler/rescheduleNotificationCadence";
+import { saveNotificationCadence } from "../../modules/storage/repositories/notificationMoments.repository";
 import exportAppBackup from "../../modules/storage/services/exportAppBackup";
 import importAppBackup from "../../modules/storage/services/importAppBackup";
 import loadAppData from "../../modules/storage/services/loadAppData";
@@ -78,9 +78,9 @@ export default function useAppBackupController({
                 await importAppBackup(backupUri);
 
                 const restoredData = await loadAppData();
-                if (restoredData.notificationMoments.length > 0) {
-                    const rescheduledMoments = await rescheduleNotificationMoments(restoredData.notificationMoments);
-                    await saveNotificationMoments(rescheduledMoments);
+                if (restoredData.notificationCadence?.enabled) {
+                    const scheduledCadence = await rescheduleNotificationCadence(restoredData.notificationCadence);
+                    await saveNotificationCadence(scheduledCadence);
                 } else {
                     await clearScheduledNotifications();
                 }

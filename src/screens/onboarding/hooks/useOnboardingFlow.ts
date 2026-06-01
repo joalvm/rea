@@ -1,34 +1,23 @@
 import { useMemo, useState } from "react";
 
 import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
-import createDefaultNotificationMoments from "@/modules/notifications/defaults/createDefaultNotificationMoments";
-import { Goal, Regularity } from "@/types/settings.types";
+import createDefaultNotificationCadence from "@/modules/notifications/defaults/createDefaultNotificationCadence";
+import { Regularity } from "@/types/settings.types";
 import { OnboardingFlowConfig } from "../onboarding.types";
 
 /** Controla pasos, valores y guardado final del onboarding. */
 export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) {
     const [step, setStep] = useState(0);
-    const [goals, setGoals] = useState<Goal[]>(["self_knowledge"]);
+    const [tryingToConceive, setTryingToConceive] = useState(false);
     const [lastPeriodStart, setLastPeriodStart] = useState(toIsoDate(new Date()));
     const [cycleLength, setCycleLength] = useState(28);
     const [periodLength, setPeriodLength] = useState(5);
     const [regularity, setRegularity] = useState<Regularity>("regular");
     const [hormonalContraception, setHormonalContraception] = useState(false);
-    const [moments, setMoments] = useState(createDefaultNotificationMoments());
+    const [notificationCadence, setNotificationCadence] = useState(createDefaultNotificationCadence());
     const [saving, setSaving] = useState(false);
 
     const progress = useMemo(() => (step + 1) / 6, [step]);
-
-    const toggleGoal = (goal: Goal) => {
-        setGoals((current) => {
-            if (current.includes(goal)) {
-                return current.length === 1 ? current : current.filter((item) => item !== goal);
-            }
-
-            return [...current, goal];
-        });
-    };
-
     const finish = async () => {
         const now = new Date().toISOString();
         setSaving(true);
@@ -41,10 +30,10 @@ export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) 
                     periodLength,
                     regularity,
                     hormonalContraception,
-                    goals,
+                    tryingToConceive,
                     createdAt: now,
                 },
-                moments,
+                notificationCadence,
             );
         } finally {
             setSaving(false);
@@ -54,8 +43,8 @@ export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) 
     return {
         step,
         setStep,
-        goals,
-        toggleGoal,
+        tryingToConceive,
+        setTryingToConceive,
         lastPeriodStart,
         setLastPeriodStart,
         cycleLength,
@@ -66,8 +55,8 @@ export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) 
         setRegularity,
         hormonalContraception,
         setHormonalContraception,
-        moments,
-        setMoments,
+        notificationCadence,
+        setNotificationCadence,
         saving,
         progress,
         finish,

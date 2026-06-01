@@ -25,7 +25,7 @@ export default function buildPersonalInsights(checkIns: MoodCheckIn[], dailyLogs
         insights.push("Suele aparecer energía baja en tus registros recientes.");
     }
 
-    if (dailyLogs.some((log) => log.symptoms.includes("cólicos"))) {
+    if (dailyLogs.some((log) => log.symptoms.includes("cramps"))) {
         insights.push("Los cólicos aparecen en tu diario. Los iremos comparando con próximos ciclos.");
     }
 

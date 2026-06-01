@@ -5,6 +5,11 @@ import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
 import { phaseLabelWithArticle } from "../estimation/phaseLabels";
+import {
+    getObservedCycleLengths,
+    getObservedCycleStarts,
+    getObservedPeriodRuns,
+} from "../utils/cycleObservedData.utils";
 import { toIsoDate } from "../utils/cycleDate.utils";
 import { average } from "../utils/cycleMath.utils";
 import { countLimitingPainDays, summarizeTopSymptoms } from "../utils/cycleSummary.utils";
@@ -29,6 +34,7 @@ export default function buildPatternInsights(
     const insights: PatternInsight[] = [];
     const todayIso = toIsoDate(new Date());
     const phaseBuckets = buildPhaseBuckets(settings, cycles, dailyLogs, moodCheckIns);
+    const ttcInsight = buildTryingToConceiveInsight(settings, cycles, dailyLogs);
     const highestPain = findPhaseExtreme(phaseBuckets, "pain", "max");
     const lowestEnergy = findPhaseExtreme(phaseBuckets, "energy", "min");
     const highestStress = findPhaseExtreme(phaseBuckets, "stress", "max");
@@ -38,6 +44,10 @@ export default function buildPatternInsights(
     const medicationRoughDays = dailyLogs.filter(
         (log) => log.details?.medicationRelief === "partly_helped" || log.details?.medicationRelief === "did_not_help",
     ).length;
+
+    if (ttcInsight) {
+        insights.push(ttcInsight);
+    }
 
     if (highestPain && highestPain.average >= 2.8) {
         insights.push({
@@ -100,6 +110,58 @@ export default function buildPatternInsights(
     return insights.slice(0, 5);
 }
 
+function buildTryingToConceiveInsight(
+    settings: AppSettings | null,
+    cycles: Cycle[],
+    dailyLogs: DailyLog[],
+): PatternInsight | null {
+    if (!settings?.tryingToConceive) {
+        return null;
+    }
+
+    if (settings.hormonalContraception) {
+        return {
+            id: "ttc-paused",
+            title: "Búsqueda activa, ventana probable en pausa",
+            detail: "Marcaste anticonceptivos hormonales, así que Rea se queda con contexto general y no fuerza lectura fértil como si fuera precisa.",
+            tone: "supportive",
+        };
+    }
+
+    const observedRuns = getObservedPeriodRuns(dailyLogs);
+    const observedStarts = getObservedCycleStarts(settings, cycles, observedRuns);
+    const cycleLengths = getObservedCycleLengths(observedStarts);
+
+    if (cycleLengths.length < 3) {
+        return {
+            id: "ttc-low-basis",
+            title: "Aún falta base para ventana probable",
+            detail: "Con tres inicios observados o más, esta lectura empieza a servir mejor para ubicar días probables sin vender certeza falsa.",
+            tone: "supportive",
+        };
+    }
+
+    const minLength = Math.min(...cycleLengths);
+    const maxLength = Math.max(...cycleLengths);
+    const variability = maxLength - minLength;
+
+    if (variability <= 4) {
+        return {
+            id: "ttc-stable-window",
+            title: "Ventana probable con base más estable",
+            detail: `Tus últimos ${cycleLengths.length} ciclos observados se movieron entre ${minLength} y ${maxLength} días. Sigue siendo referencia, pero ya tiene mejor base para acompañarte.`,
+            tone: "supportive",
+        };
+    }
+
+    return {
+        id: "ttc-variable-window",
+        title: "Ventana probable más cambiante",
+        detail: `Tus últimos ${cycleLengths.length} ciclos observados variaron ${variability} días. Aquí conviene leer ventana fértil como rango abierto, no como fecha cerrada.`,
+        tone: "watch",
+    };
+}
+
 function buildPhaseBuckets(
     settings: AppSettings | null,
     cycles: Cycle[],
@@ -110,7 +172,7 @@ function buildPhaseBuckets(
 
     moodCheckIns.forEach((item) => {
         const iso = toIsoDate(new Date(item.datetime));
-        const phase = estimateCycle(settings, cycles, dailyLogs, iso).phase;
+        const phase = estimateCycle(settings, cycles, dailyLogs, iso, moodCheckIns).phase;
         const bucket = buckets.get(phase) ?? { mood: [], energy: [], pain: [], stress: [] };
         bucket.mood.push(item.mood);
         bucket.energy.push(item.energy);
