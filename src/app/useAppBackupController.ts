@@ -23,8 +23,29 @@ interface UseAppBackupControllerParams {
     resetShellView: () => void;
 }
 
+interface UseAppBackupControllerResult {
+    /** Oculta aviso temporal de respaldo exportado. */
+    dismissExportSavedNotice: () => void;
+    /** Exporta respaldo local actual y lo comparte si dispositivo lo permite. */
+    exportBackup: () => Promise<void>;
+    /** Aviso actual asociado a último respaldo guardado. */
+    exportSavedNotice: ExportSavedNotice | null;
+    /** Indica si flujo de exportación está corriendo. */
+    exportingBackup: boolean;
+    /** Abre flujo de importación desde archivo reciente o picker. */
+    importBackup: () => Promise<void>;
+    /** Indica si flujo de importación está corriendo. */
+    importingBackup: boolean;
+    /** Reintenta compartir respaldo ya guardado en dispositivo. */
+    shareSavedBackup: () => Promise<void>;
+}
+
 /** Encapsula flujo de respaldo local: detectar, importar, exportar y compartir. */
-export default function useAppBackupController({ loading, refreshData, resetShellView }: UseAppBackupControllerParams) {
+export default function useAppBackupController({
+    loading,
+    refreshData,
+    resetShellView,
+}: UseAppBackupControllerParams): UseAppBackupControllerResult {
     const pendingIncomingBackupUri = useRef<string | null>(null);
     const lastIncomingShareKey = useRef<string | null>(null);
     const [exportSavedNotice, setExportSavedNotice] = useState<ExportSavedNotice | null>(null);

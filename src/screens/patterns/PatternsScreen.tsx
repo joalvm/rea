@@ -52,6 +52,15 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </SoftCard>
 
             <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Promedios recientes</Text>
+                <SoftCard style={styles.chartCard}>
+                    {metricAverages.map((metric) => (
+                        <MetricBar key={metric.key} color={metric.color} label={metric.label} value={metric.value} />
+                    ))}
+                </SoftCard>
+            </View>
+
+            <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Lo que sí se repite</Text>
                 <SoftCard style={styles.insightCard}>
                     {insights.length === 0 ? (
@@ -127,15 +136,6 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                         ))
                     )}
                 </View>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Promedios recientes</Text>
-                <SoftCard style={styles.chartCard}>
-                    {metricAverages.map((metric) => (
-                        <MetricBar key={metric.key} color={metric.color} label={metric.label} value={metric.value} />
-                    ))}
-                </SoftCard>
             </View>
 
             <View style={styles.section}>

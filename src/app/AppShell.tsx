@@ -17,60 +17,30 @@ import styles from "./AppShell.styles";
 
 /** Orquesta bootstrap, navegación local y modales raíz de aplicación. */
 export default function AppShell() {
-    const {
-        activeTab,
-        checkIn,
-        closeCheckIn,
-        closeDay,
-        closeSchedule,
-        editDailyLog,
-        editQuickCheckIn,
-        handleTabChange,
-        openDailyCheckIn,
-        openDay,
-        openDiaryTab,
-        openQuickCheckIn,
-        openScheduleFromSettings,
-        openSettings,
-        closeSettings: closeShellSettings,
-        resetShellView,
-        scheduleVisible,
-        selectedDayIso,
-        settingsVisible,
-    } = useAppShellState();
-    const { data, loading, moments, refreshData, replaceNotificationMoments, resetData, snapshot } =
-        useAppDataController();
+    const shellState = useAppShellState();
+    const appData = useAppDataController();
 
-    useAppQuickCheckInNotificationListener(openQuickCheckIn);
+    useAppQuickCheckInNotificationListener(shellState.openQuickCheckIn);
 
-    const {
-        dismissExportSavedNotice,
-        exportBackup,
-        exportSavedNotice,
-        exportingBackup,
-        importBackup,
-        importingBackup,
-        shareSavedBackup,
-    } = useAppBackupController({
-        loading,
-        refreshData,
-        resetShellView,
+    const backup = useAppBackupController({
+        loading: appData.loading,
+        refreshData: appData.refreshData,
+        resetShellView: shellState.resetShellView,
     });
-    const { completeOnboarding, deleteCheckIn, resetApplication, saveCheckIn, saveMoments } =
-        useAppPersistenceController({
-            dismissExportSavedNotice,
-            refreshData,
-            replaceNotificationMoments,
-            resetData,
-            resetShellView,
-        });
+    const persistence = useAppPersistenceController({
+        dismissExportSavedNotice: backup.dismissExportSavedNotice,
+        refreshData: appData.refreshData,
+        replaceNotificationMoments: appData.replaceNotificationMoments,
+        resetData: appData.resetData,
+        resetShellView: shellState.resetShellView,
+    });
 
     const closeSettings = () => {
-        dismissExportSavedNotice();
-        closeShellSettings();
+        backup.dismissExportSavedNotice();
+        shellState.closeSettings();
     };
 
-    if (loading) {
+    if (appData.loading) {
         return (
             <View style={styles.loading}>
                 <ActivityIndicator color={colors.primaryDeep} size="large" />
@@ -79,13 +49,13 @@ export default function AppShell() {
         );
     }
 
-    if (!data.settings?.onboarded) {
+    if (!appData.data.settings?.onboarded) {
         return (
             <>
                 <OnboardingScreen
-                    importingBackup={importingBackup}
-                    onComplete={completeOnboarding}
-                    onImportBackup={importBackup}
+                    importingBackup={backup.importingBackup}
+                    onComplete={persistence.completeOnboarding}
+                    onImportBackup={backup.importBackup}
                 />
                 <StatusBar style="dark" />
             </>
@@ -96,49 +66,54 @@ export default function AppShell() {
         <View style={styles.app}>
             <View style={styles.scene}>
                 <AppShellScene
-                    activeTab={activeTab}
-                    data={data}
-                    onCloseDay={closeDay}
-                    onEditDailyLog={editDailyLog}
-                    onEditQuickCheckIn={editQuickCheckIn}
-                    onOpenDailyCheckIn={openDailyCheckIn}
-                    onOpenDay={openDay}
-                    onOpenDiaryTab={openDiaryTab}
-                    onOpenQuickCheckInNow={() => openQuickCheckIn("now")}
-                    onOpenSettings={openSettings}
-                    onOpenTab={handleTabChange}
-                    selectedDayIso={selectedDayIso}
-                    snapshot={snapshot}
+                    data={appData.data}
+                    activeTab={shellState.activeTab}
+                    onCloseDay={shellState.closeDay}
+                    onEditDailyLog={shellState.editDailyLog}
+                    onEditQuickCheckIn={shellState.editQuickCheckIn}
+                    onOpenDailyCheckIn={shellState.openDailyCheckIn}
+                    onOpenDay={shellState.openDay}
+                    onOpenDiaryTab={shellState.openDiaryTab}
+                    onOpenQuickCheckInNow={() => shellState.openQuickCheckIn("now")}
+                    onOpenSettings={shellState.openSettings}
+                    onOpenTab={shellState.handleTabChange}
+                    selectedDayIso={shellState.selectedDayIso}
+                    snapshot={appData.snapshot}
                 />
+                <BottomTabs activeTab={shellState.activeTab} onTabChange={shellState.handleTabChange} />
             </View>
-            <BottomTabs activeTab={activeTab} onTabChange={handleTabChange} />
             <CheckInModal
-                key={checkIn.sessionKey}
-                initialCheckIn={checkIn.initialCheckIn}
-                initialDailyLog={checkIn.initialDailyLog}
-                mode={checkIn.mode}
-                momentType={checkIn.momentType}
-                onClose={closeCheckIn}
-                onDelete={deleteCheckIn}
-                onSave={saveCheckIn}
-                question={checkIn.question}
-                saveTarget={checkIn.saveTarget}
-                visible={checkIn.visible}
+                key={shellState.checkIn.sessionKey}
+                initialCheckIn={shellState.checkIn.initialCheckIn}
+                initialDailyLog={shellState.checkIn.initialDailyLog}
+                mode={shellState.checkIn.mode}
+                momentType={shellState.checkIn.momentType}
+                onClose={shellState.closeCheckIn}
+                onDelete={persistence.deleteCheckIn}
+                onSave={persistence.saveCheckIn}
+                question={shellState.checkIn.question}
+                saveTarget={shellState.checkIn.saveTarget}
+                visible={shellState.checkIn.visible}
             />
-            <ScheduleModal moments={moments} onChange={saveMoments} onClose={closeSchedule} visible={scheduleVisible} />
+            <ScheduleModal
+                moments={appData.moments}
+                onChange={persistence.saveMoments}
+                onClose={shellState.closeSchedule}
+                visible={shellState.scheduleVisible}
+            />
             <SettingsModal
-                exportSavedNotice={exportSavedNotice}
-                exportingBackup={exportingBackup}
-                importingBackup={importingBackup}
-                moments={moments}
+                exportSavedNotice={backup.exportSavedNotice}
+                exportingBackup={backup.exportingBackup}
+                importingBackup={backup.importingBackup}
+                moments={appData.moments}
                 onClose={closeSettings}
-                onDismissExportSavedNotice={dismissExportSavedNotice}
-                onExportBackup={exportBackup}
-                onImportBackup={importBackup}
-                onOpenSchedule={openScheduleFromSettings}
-                onReset={resetApplication}
-                onShareSavedBackup={shareSavedBackup}
-                visible={settingsVisible}
+                onDismissExportSavedNotice={backup.dismissExportSavedNotice}
+                onExportBackup={backup.exportBackup}
+                onImportBackup={backup.importBackup}
+                onOpenSchedule={shellState.openScheduleFromSettings}
+                onReset={persistence.resetApplication}
+                onShareSavedBackup={backup.shareSavedBackup}
+                visible={shellState.settingsVisible}
             />
             <StatusBar style="dark" />
         </View>

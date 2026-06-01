@@ -16,8 +16,49 @@ const initialCheckInState: CheckInState = {
     initialDailyLog: null,
 };
 
+interface UseAppShellStateResult {
+    /** Pestaña principal visible en el shell raíz. */
+    activeTab: TabKey;
+    /** Sesión completa del modal de check-in activo. */
+    checkIn: CheckInState;
+    /** Oculta modal de check-in actual. */
+    closeCheckIn: () => void;
+    /** Sale del detalle de día abierto. */
+    closeDay: () => void;
+    /** Cierra modal de horario de notificaciones. */
+    closeSchedule: () => void;
+    /** Cierra modal principal de ajustes. */
+    closeSettings: () => void;
+    /** Reabre modal rápido con datos de check-in existentes. */
+    editDailyLog: (entry: DailyLog) => void;
+    /** Reabre modal rápido con datos de check-in existentes. */
+    editQuickCheckIn: (entry: MoodCheckIn) => void;
+    /** Cambia pestaña activa y limpia detalle de día si hacía falta. */
+    handleTabChange: (tab: TabKey) => void;
+    /** Abre check-in diario completo. */
+    openDailyCheckIn: () => void;
+    /** Abre detalle de un día concreto. */
+    openDay: (iso: string) => void;
+    /** Salta directo a pestaña diario. */
+    openDiaryTab: () => void;
+    /** Abre check-in rápido para momento de notificación dado. */
+    openQuickCheckIn: (momentType?: MomentType) => void;
+    /** Cierra ajustes y abre modal de horario. */
+    openScheduleFromSettings: () => void;
+    /** Abre modal principal de ajustes. */
+    openSettings: () => void;
+    /** Devuelve shell a estado visual base tras reset o importación. */
+    resetShellView: () => void;
+    /** Visibilidad actual del modal de horario. */
+    scheduleVisible: boolean;
+    /** Día actualmente seleccionado en detalle, si existe. */
+    selectedDayIso: string | null;
+    /** Visibilidad actual del modal de ajustes. */
+    settingsVisible: boolean;
+}
+
 /** Centraliza estado visual del shell: tabs, detalle, modales y sesión de check-in. */
-export default function useAppShellState() {
+export default function useAppShellState(): UseAppShellStateResult {
     const [activeTab, setActiveTab] = useState<TabKey>("today");
     const [selectedDayIso, setSelectedDayIso] = useState<string | null>(null);
     const [scheduleVisible, setScheduleVisible] = useState(false);

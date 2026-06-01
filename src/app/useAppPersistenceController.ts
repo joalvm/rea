@@ -21,6 +21,19 @@ interface UseAppPersistenceControllerParams {
     resetShellView: () => void;
 }
 
+interface UseAppPersistenceControllerResult {
+    /** Finaliza onboarding persistiendo settings, ciclo inicial y momentos. */
+    completeOnboarding: (settings: AppSettings, notificationMoments: NotificationMoment[]) => Promise<void>;
+    /** Borra check-in existente y sincroniza snapshot raíz. */
+    deleteCheckIn: (moodCheckIn?: MoodCheckIn | null) => Promise<void>;
+    /** Limpia datos locales, notificaciones y estado visual del shell. */
+    resetApplication: () => Promise<void>;
+    /** Guarda check-in y/o daily log según payload recibido. */
+    saveCheckIn: (moodCheckIn?: MoodCheckIn, dailyLog?: DailyLog) => Promise<void>;
+    /** Persiste momentos de notificación y actualiza snapshot en memoria. */
+    saveMoments: (next: NotificationMoment[]) => Promise<void>;
+}
+
 /** Encapsula acciones persistentes raíz: onboarding, check-ins, momentos y reset. */
 export default function useAppPersistenceController({
     dismissExportSavedNotice,
@@ -28,7 +41,7 @@ export default function useAppPersistenceController({
     replaceNotificationMoments,
     resetData,
     resetShellView,
-}: UseAppPersistenceControllerParams) {
+}: UseAppPersistenceControllerParams): UseAppPersistenceControllerResult {
     const completeOnboarding = useCallback(
         async (settings: AppSettings, notificationMoments: NotificationMoment[]) => {
             await saveSettings(settings);
