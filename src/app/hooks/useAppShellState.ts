@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { BackHandler } from "react-native";
 
-import { TabKey } from "../types/app.types";
-import { DailyLog, MomentType, MoodCheckIn } from "../types/records.types";
-import { CheckInState } from "./app-shell.types";
+import { TabKey } from "../../types/app.types";
+import { DailyLog, MomentType, MoodCheckIn } from "../../types/records.types";
+import { CheckInState } from "../app-shell.types";
 
 const initialCheckInState: CheckInState = {
     visible: false,
@@ -16,7 +16,8 @@ const initialCheckInState: CheckInState = {
     initialDailyLog: null,
 };
 
-interface UseAppShellStateResult {
+/** Contrato de salida de useAppShellState para pantallas y componentes del shell. */
+export interface UseAppShellStateResult {
     /** Pestaña principal visible en el shell raíz. */
     activeTab: TabKey;
     /** Sesión completa del modal de check-in activo. */

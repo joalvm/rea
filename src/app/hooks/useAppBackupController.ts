@@ -3,19 +3,19 @@ import * as Sharing from "expo-sharing";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, Linking } from "react-native";
 
-import { ExportSavedNotice } from "../features/settings/settings.types";
+import { ExportSavedNotice } from "../../features/settings/settings.types";
 import {
     BACKUP_IMPORT_FILE_HINT,
     BACKUP_SHARE_MIME_TYPE,
     isLikelyBackupUri,
-} from "../modules/storage/services/backupFile";
-import clearScheduledNotifications from "../modules/notifications/scheduler/clearScheduledNotifications";
-import rescheduleNotificationMoments from "../modules/notifications/scheduler/rescheduleNotificationMoments";
-import { saveNotificationMoments } from "../modules/storage/repositories/notificationMoments.repository";
-import exportAppBackup from "../modules/storage/services/exportAppBackup";
-import importAppBackup from "../modules/storage/services/importAppBackup";
-import loadAppData from "../modules/storage/services/loadAppData";
-import saveBackupToDevice, { getLatestSavedBackup } from "../modules/storage/services/saveBackupToDevice";
+} from "../../modules/storage/services/backupFile";
+import clearScheduledNotifications from "../../modules/notifications/scheduler/clearScheduledNotifications";
+import rescheduleNotificationMoments from "../../modules/notifications/scheduler/rescheduleNotificationMoments";
+import { saveNotificationMoments } from "../../modules/storage/repositories/notificationMoments.repository";
+import exportAppBackup from "../../modules/storage/services/exportAppBackup";
+import importAppBackup from "../../modules/storage/services/importAppBackup";
+import loadAppData from "../../modules/storage/services/loadAppData";
+import saveBackupToDevice, { getLatestSavedBackup } from "../../modules/storage/services/saveBackupToDevice";
 
 interface UseAppBackupControllerParams {
     loading: boolean;
@@ -23,7 +23,8 @@ interface UseAppBackupControllerParams {
     resetShellView: () => void;
 }
 
-interface UseAppBackupControllerResult {
+/** Contrato de salida de useAppBackupController para flujos de respaldo del shell. */
+export interface UseAppBackupControllerResult {
     /** Oculta aviso temporal de respaldo exportado. */
     dismissExportSavedNotice: () => void;
     /** Exporta respaldo local actual y lo comparte si dispositivo lo permite. */

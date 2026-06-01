@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import estimateCycle from "../modules/cycle/estimation/estimateCycle";
-import createDefaultNotificationMoments from "../modules/notifications/defaults/createDefaultNotificationMoments";
-import initializeDatabase from "../modules/storage/core/schema";
-import loadAppData from "../modules/storage/services/loadAppData";
-import { AppData } from "../types/app.types";
-import { NotificationMoment } from "../types/notifications.types";
-import { initialData } from "./app-shell.types";
+import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
+import createDefaultNotificationMoments from "../../modules/notifications/defaults/createDefaultNotificationMoments";
+import initializeDatabase from "../../modules/storage/core/schema";
+import loadAppData from "../../modules/storage/services/loadAppData";
+import { AppData } from "../../types/app.types";
+import { NotificationMoment } from "../../types/notifications.types";
+import { initialData } from "../app-shell.types";
 
-interface UseAppDataControllerResult {
+/** Contrato de salida de useAppDataController para consumidores del shell raíz. */
+export interface UseAppDataControllerResult {
     /** Snapshot completo de datos persistidos cargados en shell. */
     data: AppData;
     /** Indica si bootstrap raíz sigue corriendo. */

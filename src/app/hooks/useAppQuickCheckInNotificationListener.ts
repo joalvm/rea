@@ -1,8 +1,8 @@
 import { addNotificationResponseReceivedListener } from "expo-notifications/build/NotificationsEmitter";
 import { useEffect } from "react";
 
-import registerNotificationHandler from "../modules/notifications/scheduler/registerNotificationHandler";
-import { MomentType } from "../types/records.types";
+import registerNotificationHandler from "../../modules/notifications/scheduler/registerNotificationHandler";
+import { MomentType } from "../../types/records.types";
 
 registerNotificationHandler();
 

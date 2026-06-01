@@ -1,11 +1,11 @@
-import { CalendarScreen } from "../screens/calendar/CalendarScreen";
-import { DayDetailScreen } from "../screens/day-detail/DayDetailScreen";
-import { DiaryScreen } from "../screens/diary/DiaryScreen";
-import { PatternsScreen } from "../screens/patterns/PatternsScreen";
-import { TodayScreen } from "../screens/today/TodayScreen";
-import { AppData, TabKey } from "../types/app.types";
-import { CycleSnapshot } from "../types/cycle.types";
-import { DailyLog, MoodCheckIn } from "../types/records.types";
+import { CalendarScreen } from "../../screens/calendar/CalendarScreen";
+import { DayDetailScreen } from "../../screens/day-detail/DayDetailScreen";
+import { DiaryScreen } from "../../screens/diary/DiaryScreen";
+import { PatternsScreen } from "../../screens/patterns/PatternsScreen";
+import { TodayScreen } from "../../screens/today/TodayScreen";
+import { AppData, TabKey } from "../../types/app.types";
+import { CycleSnapshot } from "../../types/cycle.types";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
 
 /** Props mínimas para resolver escena activa desde shell principal. */
 interface AppShellSceneProps {

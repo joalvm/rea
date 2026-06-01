@@ -1,17 +1,17 @@
 import { useCallback } from "react";
 
-import clearScheduledNotifications from "../modules/notifications/scheduler/clearScheduledNotifications";
-import rescheduleNotificationMoments from "../modules/notifications/scheduler/rescheduleNotificationMoments";
-import { addCycle } from "../modules/storage/repositories/cycles.repository";
-import { upsertDailyLog } from "../modules/storage/repositories/dailyLogs.repository";
-import { deleteMoodCheckIn, upsertMoodCheckIn } from "../modules/storage/repositories/moodCheckIns.repository";
-import { saveNotificationMoments } from "../modules/storage/repositories/notificationMoments.repository";
-import { saveSettings } from "../modules/storage/repositories/settings.repository";
-import resetAppData from "../modules/storage/services/resetAppData";
-import syncObservedCyclesFromDailyLogs from "../modules/storage/services/syncObservedCycles";
-import { NotificationMoment } from "../types/notifications.types";
-import { DailyLog, MoodCheckIn } from "../types/records.types";
-import { AppSettings } from "../types/settings.types";
+import clearScheduledNotifications from "../../modules/notifications/scheduler/clearScheduledNotifications";
+import rescheduleNotificationMoments from "../../modules/notifications/scheduler/rescheduleNotificationMoments";
+import { addCycle } from "../../modules/storage/repositories/cycles.repository";
+import { upsertDailyLog } from "../../modules/storage/repositories/dailyLogs.repository";
+import { deleteMoodCheckIn, upsertMoodCheckIn } from "../../modules/storage/repositories/moodCheckIns.repository";
+import { saveNotificationMoments } from "../../modules/storage/repositories/notificationMoments.repository";
+import { saveSettings } from "../../modules/storage/repositories/settings.repository";
+import resetAppData from "../../modules/storage/services/resetAppData";
+import syncObservedCyclesFromDailyLogs from "../../modules/storage/services/syncObservedCycles";
+import { NotificationMoment } from "../../types/notifications.types";
+import { DailyLog, MoodCheckIn } from "../../types/records.types";
+import { AppSettings } from "../../types/settings.types";
 
 interface UseAppPersistenceControllerParams {
     dismissExportSavedNotice: () => void;
@@ -21,7 +21,8 @@ interface UseAppPersistenceControllerParams {
     resetShellView: () => void;
 }
 
-interface UseAppPersistenceControllerResult {
+/** Contrato de salida de useAppPersistenceController para acciones persistentes del shell. */
+export interface UseAppPersistenceControllerResult {
     /** Finaliza onboarding persistiendo settings, ciclo inicial y momentos. */
     completeOnboarding: (settings: AppSettings, notificationMoments: NotificationMoment[]) => Promise<void>;
     /** Borra check-in existente y sincroniza snapshot raíz. */
