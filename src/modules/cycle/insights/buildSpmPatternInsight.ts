@@ -4,9 +4,9 @@ import { DailyLog } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
-import { getObservedPeriodRuns } from "../shared/cycleObservedData.utils";
-import { addDays, daysBetween, formatShortDate } from "../shared/cycleDate.utils";
-import { average } from "../shared/cycleMath.utils";
+import { getObservedPeriodRuns } from "../utils/cycleObservedData.utils";
+import { addDays, daysBetween, formatShortDate } from "../utils/cycleDate.utils";
+import { average } from "../utils/cycleMath.utils";
 
 /** Detecta patrón de inicio de SPM a partir de marcas reales. */
 export default function buildSpmPatternInsight(

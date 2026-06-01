@@ -1,4 +1,4 @@
-import { parseIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { parseIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { colors } from "@/theme";
 import { PhaseKey } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";

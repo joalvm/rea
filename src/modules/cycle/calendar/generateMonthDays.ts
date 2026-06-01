@@ -3,7 +3,7 @@ import { DailyLog } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
-import { toIsoDate } from "../shared/cycleDate.utils";
+import { toIsoDate } from "../utils/cycleDate.utils";
 
 /** Genera grilla mensual completa usando estimación por día. */
 export default function generateMonthDays(

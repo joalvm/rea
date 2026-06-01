@@ -2,9 +2,9 @@ import { Cycle, CycleSummary } from "@/types/cycle.types";
 import { DailyLog } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 
-import { getObservedPeriodRuns } from "../shared/cycleObservedData.utils";
-import { daysBetween } from "../shared/cycleDate.utils";
-import { countLimitingPainDays, summarizeTopSymptoms } from "../shared/cycleSummary.utils";
+import { getObservedPeriodRuns } from "../utils/cycleObservedData.utils";
+import { daysBetween } from "../utils/cycleDate.utils";
+import { countLimitingPainDays, summarizeTopSymptoms } from "../utils/cycleSummary.utils";
 
 /** Resume últimos ciclos observados para vista de patrones. */
 export default function buildCycleSummaries(

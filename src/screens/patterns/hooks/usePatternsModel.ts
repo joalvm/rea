@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
 import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
-import { average } from "@/modules/cycle/shared/cycleMath.utils";
-import { summarizeTopSymptoms } from "@/modules/cycle/shared/cycleSummary.utils";
+import { average } from "@/modules/cycle/utils/cycleMath.utils";
+import { summarizeTopSymptoms } from "@/modules/cycle/utils/cycleSummary.utils";
 import buildCycleSummaries from "@/modules/cycle/summaries/buildCycleSummaries";
 import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";

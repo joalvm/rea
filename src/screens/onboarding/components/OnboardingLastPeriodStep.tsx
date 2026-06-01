@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
-import { addDays, formatShortDate, toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { addDays, formatShortDate, toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { StepShell } from "@/ui/StepShell";
 import styles from "../OnboardingScreen.styles";
 

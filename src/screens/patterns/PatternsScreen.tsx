@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
 
-import { formatShortDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { formatShortDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
@@ -14,7 +14,7 @@ import AlertCard from "./components/AlertCard";
 import InsightRow from "./components/InsightRow";
 import MetricBar from "./components/MetricBar";
 import MetricPill from "./components/MetricPill";
-import usePatternsModel from "./usePatternsModel";
+import usePatternsModel from "./hooks/usePatternsModel";
 
 /** Props del screen de patrones e insights. */
 interface PatternsScreenProps {

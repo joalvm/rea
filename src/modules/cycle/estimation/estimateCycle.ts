@@ -9,16 +9,16 @@ import {
     getObservedCycleLengths,
     getObservedCycleStarts,
     getObservedPeriodRuns,
-} from "../shared/cycleObservedData.utils";
-import { addDays, daysBetween, toIsoDate } from "../shared/cycleDate.utils";
-import { roundOrFallback } from "../shared/cycleMath.utils";
+} from "../utils/cycleObservedData.utils";
+import { addDays, daysBetween, toIsoDate } from "../utils/cycleDate.utils";
+import { roundOrFallback } from "../utils/cycleMath.utils";
 import {
     getPhase,
     getPhaseMessage,
     getPredictionConfidence,
     getSnapshotSource,
     getVariabilityDays,
-} from "./estimateCycle.helpers";
+} from "./helpers/estimateCycle.helpers";
 import getPhaseLabel from "./phaseLabels";
 import {
     getConfidenceLabel,

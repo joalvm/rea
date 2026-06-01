@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import createDefaultNotificationMoments from "@/modules/notifications/defaults/createDefaultNotificationMoments";
 import { Goal, Regularity } from "@/types/settings.types";
 import { OnboardingFlowConfig } from "../onboarding.types";

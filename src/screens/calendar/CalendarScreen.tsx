@@ -8,8 +8,8 @@ import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
 import { SoftCard } from "@/ui/SoftCard";
+import useCalendarModel from "./hooks/useCalendarModel";
 import styles from "./CalendarScreen.styles";
-import useCalendarModel from "./useCalendarModel";
 import DayCell from "./components/DayCell";
 import MonthHeader from "./components/MonthHeader";
 

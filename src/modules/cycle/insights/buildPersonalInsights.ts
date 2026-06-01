@@ -1,6 +1,6 @@
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 
-import { average } from "../shared/cycleMath.utils";
+import { average } from "../utils/cycleMath.utils";
 
 /** Construye insights simples desde registros recientes. */
 export default function buildPersonalInsights(checkIns: MoodCheckIn[], dailyLogs: DailyLog[]): string[] {

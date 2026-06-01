@@ -1,7 +1,7 @@
 import { CycleSnapshot, PhaseKey, PredictionConfidence } from "@/types/cycle.types";
 import { AppSettings } from "@/types/settings.types";
 
-import { findLastOnOrBefore } from "../shared/cycleObservedData.utils";
+import { findLastOnOrBefore } from "../../utils/cycleObservedData.utils";
 
 interface PhaseMessageContext {
     phase: PhaseKey;

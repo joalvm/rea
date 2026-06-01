@@ -15,7 +15,7 @@ import { WeekStrip } from "@/ui/WeekStrip";
 import styles from "./TodayScreen.styles";
 import MiniStat from "./components/MiniStat";
 import { HeroCurve } from "./components/HeroCurve";
-import useTodayModel from "./useTodayModel";
+import useTodayModel from "./hooks/useTodayModel";
 import { getAlertTone } from "./utils/todayContent";
 
 /** Props del screen principal de hoy. */

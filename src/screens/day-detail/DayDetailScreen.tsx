@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
-import { toIsoDate } from "@/modules/cycle/shared/cycleDate.utils";
+import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { AccentToneName, colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";

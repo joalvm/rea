@@ -7,9 +7,9 @@ import {
     getObservedCycleLengths,
     getObservedCycleStarts,
     getObservedPeriodRuns,
-} from "../shared/cycleObservedData.utils";
-import { daysBetween, toIsoDate } from "../shared/cycleDate.utils";
-import { countLimitingPainDays } from "../shared/cycleSummary.utils";
+} from "../utils/cycleObservedData.utils";
+import { daysBetween, toIsoDate } from "../utils/cycleDate.utils";
+import { countLimitingPainDays } from "../utils/cycleSummary.utils";
 
 /** Genera alertas educativas desde patrones observados y no diagnósticos. */
 export default function buildEducationalAlerts(

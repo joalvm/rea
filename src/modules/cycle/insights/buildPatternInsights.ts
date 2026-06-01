@@ -5,9 +5,9 @@ import { AppSettings } from "@/types/settings.types";
 
 import estimateCycle from "../estimation/estimateCycle";
 import { phaseLabelWithArticle } from "../estimation/phaseLabels";
-import { toIsoDate } from "../shared/cycleDate.utils";
-import { average } from "../shared/cycleMath.utils";
-import { countLimitingPainDays, summarizeTopSymptoms } from "../shared/cycleSummary.utils";
+import { toIsoDate } from "../utils/cycleDate.utils";
+import { average } from "../utils/cycleMath.utils";
+import { countLimitingPainDays, summarizeTopSymptoms } from "../utils/cycleSummary.utils";
 import buildSpmPatternInsight from "./buildSpmPatternInsight";
 
 type PhaseBucket = {

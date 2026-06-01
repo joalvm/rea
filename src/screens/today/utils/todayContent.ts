@@ -1,7 +1,7 @@
 import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
 import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
-import { addDays } from "@/modules/cycle/shared/cycleDate.utils";
+import { addDays } from "@/modules/cycle/utils/cycleDate.utils";
 import { colors } from "@/theme";
 import { Cycle, CycleSnapshot, PhaseKey } from "@/types/cycle.types";
 import { EducationalAlert } from "@/types/insights.types";
