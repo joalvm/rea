@@ -18,8 +18,8 @@ export default function OnboardingRhythmStep({
     return (
         <StepShell
             icon="tune-variant"
-            subtitle="Puedes corregirlo luego cuando tengas más registros."
-            title="Tu ritmo aproximado"
+            subtitle="Si no estás segura, deja una aproximación. Después se ajusta con tus registros reales."
+            title="¿Más o menos cómo suele ser tu ciclo?"
         >
             <NumberPicker label="Duración del ciclo" onChange={onChangeCycleLength} suffix="días" value={cycleLength} />
             <NumberPicker

@@ -1,5 +1,5 @@
-/** Define objetivo principal de uso de Rea. */
-export type Goal = "self_knowledge" | "trying_to_conceive" | "track_only";
+/** Define intereses principales que la usuaria quiere priorizar en Rea. */
+export type Goal = "self_knowledge" | "trying_to_conceive";
 
 /** Describe regularidad percibida del ciclo. */
 export type Regularity = "regular" | "variable" | "irregular";
@@ -12,6 +12,6 @@ export interface AppSettings {
     periodLength: number;
     regularity: Regularity;
     hormonalContraception: boolean;
-    goal: Goal;
+    goals: Goal[];
     createdAt: string;
 }

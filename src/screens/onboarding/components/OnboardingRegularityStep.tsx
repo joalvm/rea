@@ -24,8 +24,8 @@ export default function OnboardingRegularityStep({
     return (
         <StepShell
             icon="chart-timeline-variant"
-            subtitle="Esto cambia el nivel de confianza de las predicciones."
-            title="¿Qué tan regular suele ser?"
+            subtitle="Esto nos ayuda a mostrar con más honestidad qué tan confiable es lo estimado al inicio."
+            title="¿Tu regla suele llegar en fechas parecidas?"
         >
             <View style={styles.segmentGroup}>
                 {REGULARITY.map((item) => (
@@ -44,7 +44,7 @@ export default function OnboardingRegularityStep({
                 onPress={onToggleHormonalContraception}
                 style={[styles.toggleRow, hormonalContraception && styles.toggleRowActive]}
             >
-                <Text style={styles.toggleText}>Uso anticonceptivos hormonales</Text>
+                <Text style={styles.toggleText}>Estoy usando anticonceptivos hormonales</Text>
                 <MaterialCommunityIcons
                     color={hormonalContraception ? colors.primaryDeep : colors.muted}
                     name={hormonalContraception ? "check-circle" : "circle-outline"}

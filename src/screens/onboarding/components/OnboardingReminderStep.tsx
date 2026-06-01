@@ -16,8 +16,8 @@ export default function OnboardingReminderStep({ moments, onToggleMoment }: Onbo
     return (
         <StepShell
             icon="bell-outline"
-            subtitle="Podrás cambiarlo en Ajustes. Nada sensible aparece en la notificación."
-            title="Preguntas suaves"
+            subtitle="Puedes moverlos o apagarlos cuando quieras. La notificación no muestra nada íntimo."
+            title="¿Quieres recordatorios?"
         >
             <View style={styles.reminders}>
                 {moments.map((moment) => (

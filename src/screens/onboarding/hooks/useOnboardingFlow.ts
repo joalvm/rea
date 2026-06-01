@@ -8,7 +8,7 @@ import { OnboardingFlowConfig } from "../onboarding.types";
 /** Controla pasos, valores y guardado final del onboarding. */
 export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) {
     const [step, setStep] = useState(0);
-    const [goal, setGoal] = useState<Goal>("self_knowledge");
+    const [goals, setGoals] = useState<Goal[]>(["self_knowledge"]);
     const [lastPeriodStart, setLastPeriodStart] = useState(toIsoDate(new Date()));
     const [cycleLength, setCycleLength] = useState(28);
     const [periodLength, setPeriodLength] = useState(5);
@@ -18,6 +18,16 @@ export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) 
     const [saving, setSaving] = useState(false);
 
     const progress = useMemo(() => (step + 1) / 6, [step]);
+
+    const toggleGoal = (goal: Goal) => {
+        setGoals((current) => {
+            if (current.includes(goal)) {
+                return current.length === 1 ? current : current.filter((item) => item !== goal);
+            }
+
+            return [...current, goal];
+        });
+    };
 
     const finish = async () => {
         const now = new Date().toISOString();
@@ -31,7 +41,7 @@ export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) 
                     periodLength,
                     regularity,
                     hormonalContraception,
-                    goal,
+                    goals,
                     createdAt: now,
                 },
                 moments,
@@ -44,8 +54,8 @@ export default function useOnboardingFlow({ onComplete }: OnboardingFlowConfig) 
     return {
         step,
         setStep,
-        goal,
-        setGoal,
+        goals,
+        toggleGoal,
         lastPeriodStart,
         setLastPeriodStart,
         cycleLength,

@@ -4,25 +4,19 @@ export const GOALS: { key: Goal; label: string; description: string; icon: strin
     {
         key: "self_knowledge",
         label: "Entender mi ciclo",
-        description: "Fases, registros y señales personales.",
+        description: "Ver mis patrones, síntomas y cambios del mes con más claridad.",
         icon: "heart-pulse",
     },
     {
-        key: "track_only",
-        label: "Solo registrar",
-        description: "Calendario, síntomas y notas privadas.",
-        icon: "notebook-heart-outline",
-    },
-    {
         key: "trying_to_conceive",
-        label: "Buscar embarazo",
-        description: "Señales fértiles como orientación.",
+        label: "También buscar embarazo",
+        description: "Tener a mano referencias fértiles orientativas además de mis registros.",
         icon: "sprout-outline",
     },
 ];
 
 export const REGULARITY: { key: Regularity; label: string }[] = [
-    { key: "regular", label: "Regular" },
-    { key: "variable", label: "Variable" },
-    { key: "irregular", label: "Irregular" },
+    { key: "regular", label: "Sí, casi siempre" },
+    { key: "variable", label: "A veces cambia" },
+    { key: "irregular", label: "No, cambia bastante" },
 ];

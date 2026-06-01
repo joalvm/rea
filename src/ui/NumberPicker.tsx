@@ -7,24 +7,26 @@ interface NumberPickerProps {
     label: string;
     value: number;
     suffix: string;
+    formatValue?: (value: number) => string;
     min?: number;
     max?: number;
     onChange: (value: number) => void;
 }
 
-export function NumberPicker({ label, value, suffix, min = 20, max = 40, onChange }: NumberPickerProps) {
+export function NumberPicker({ label, value, suffix, formatValue, min = 20, max = 40, onChange }: NumberPickerProps) {
     return (
         <View style={styles.numberRow}>
             <Text style={styles.numberLabel}>{label}</Text>
             <View style={styles.numberControl}>
                 <Pressable onPress={() => onChange(Math.max(min, value - 1))} style={styles.numberButton}>
-                    <MaterialCommunityIcons color={colors.primaryDeep} name="minus" size={20} />
+                    <MaterialCommunityIcons color={colors.primaryDeep} name="minus" size={18} />
                 </Pressable>
                 <Text style={styles.numberValue}>
-                    {value} {suffix}
+                    {formatValue ? formatValue(value) : value}
+                    {suffix ? ` ${suffix}` : ""}
                 </Text>
                 <Pressable onPress={() => onChange(Math.min(max, value + 1))} style={styles.numberButton}>
-                    <MaterialCommunityIcons color={colors.primaryDeep} name="plus" size={20} />
+                    <MaterialCommunityIcons color={colors.primaryDeep} name="plus" size={18} />
                 </Pressable>
             </View>
         </View>
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     },
     numberLabel: {
         color: colors.ink,
-        fontSize: type.body,
+        fontSize: type.small,
         fontWeight: "900",
     },
     numberControl: {
@@ -48,19 +50,24 @@ const styles = StyleSheet.create({
         backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
         borderColor: surfaces.border,
-        padding: 10,
+        paddingHorizontal: 8,
+        paddingVertical: 8,
+        minHeight: 54,
     },
     numberButton: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         backgroundColor: accents.primary.tint,
         alignItems: "center",
         justifyContent: "center",
     },
     numberValue: {
         color: colors.ink,
-        fontSize: type.title,
+        fontSize: type.subtitle,
         fontWeight: "900",
+        flex: 1,
+        textAlign: "center",
+        paddingHorizontal: 8,
     },
 });

@@ -19,7 +19,7 @@ export function StepShell({ icon, title, subtitle, children }: StepShellProps) {
                 align="center"
                 media={
                     <View style={styles.illustration}>
-                        <MaterialCommunityIcons color={colors.primaryDeep} name={icon as never} size={64} />
+                        <MaterialCommunityIcons color={colors.primaryDeep} name={icon as never} size={46} />
                     </View>
                 }
                 subtitle={subtitle}
@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
     step: {
         width: "100%",
         alignItems: "center",
-        gap: spacing.xl,
+        gap: spacing.lg,
     },
     illustration: {
-        width: 140,
-        height: 140,
-        borderRadius: 70,
+        width: 96,
+        height: 96,
+        borderRadius: 48,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: surfaces.cardTinted,
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     },
     stepBody: {
         width: "100%",
-        gap: 14,
-        padding: spacing.lg,
+        gap: 12,
+        padding: spacing.md,
         borderRadius: radii.xl,
         backgroundColor: surfaces.cardRaised,
         borderWidth: 1,

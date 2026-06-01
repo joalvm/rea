@@ -15,11 +15,6 @@ const styles = StyleSheet.create({
         width: 176,
         height: 58,
     },
-    brandText: {
-        color: colors.primaryInk,
-        fontSize: type.body,
-        fontWeight: "700",
-    },
     progressTrack: {
         height: 6,
         marginHorizontal: 34,
@@ -37,7 +32,7 @@ const styles = StyleSheet.create({
     content: {
         flexGrow: 1,
         paddingHorizontal: screen.horizontalPadding,
-        paddingVertical: 24,
+        paddingVertical: 18,
         justifyContent: "center",
     },
     body: {
@@ -46,36 +41,21 @@ const styles = StyleSheet.create({
         lineHeight: 23,
         textAlign: "center",
     },
-    dateOptions: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 10,
-    },
-    option: {
-        width: "47%",
-        borderRadius: radii.lg,
-        padding: 16,
-        backgroundColor: surfaces.cardRaised,
-        borderWidth: 1,
-        borderColor: surfaces.border,
-    },
-    optionActive: {
-        backgroundColor: surfaces.cardRaised,
-        borderColor: accents.primary.border,
-    },
-    optionText: {
-        color: colors.ink,
-        fontSize: type.body,
-        fontWeight: "900",
-    },
-    optionTextActive: {
-        color: colors.primaryDeep,
-    },
-    optionMeta: {
-        color: colors.muted,
-        marginTop: 6,
+    helperText: {
+        color: colors.primaryInk,
         fontSize: type.small,
         fontWeight: "700",
+        textAlign: "center",
+    },
+    datePickerRow: {
+        flexDirection: "row",
+        gap: 10,
+    },
+    datePickerMonth: {
+        flex: 1.25,
+    },
+    datePickerDay: {
+        flex: 0.75,
     },
     segmentGroup: {
         flexDirection: "row",
@@ -83,7 +63,7 @@ const styles = StyleSheet.create({
     },
     segment: {
         flex: 1,
-        minHeight: 48,
+        minHeight: 44,
         borderRadius: radii.md,
         alignItems: "center",
         justifyContent: "center",
@@ -104,12 +84,12 @@ const styles = StyleSheet.create({
         color: colors.primaryInk,
     },
     toggleRow: {
-        minHeight: 58,
+        minHeight: 52,
         borderRadius: radii.lg,
         backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
         borderColor: surfaces.border,
-        paddingHorizontal: 16,
+        paddingHorizontal: 14,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
@@ -128,10 +108,10 @@ const styles = StyleSheet.create({
     },
     goal: {
         flexDirection: "row",
-        gap: 14,
+        gap: 12,
         alignItems: "center",
         borderRadius: radii.lg,
-        padding: 16,
+        padding: 14,
         backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
         borderColor: surfaces.border,
@@ -157,9 +137,9 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     reminder: {
-        minHeight: 72,
+        minHeight: 64,
         borderRadius: radii.lg,
-        padding: 16,
+        padding: 14,
         backgroundColor: surfaces.cardRaised,
         borderWidth: 1,
         borderColor: surfaces.border,
@@ -193,6 +173,12 @@ const styles = StyleSheet.create({
     },
     footerAction: {
         flex: 1,
+    },
+    footerNote: {
+        color: colors.muted,
+        fontSize: type.small,
+        lineHeight: 19,
+        textAlign: "center",
     },
     nextButton: {
         width: "100%",

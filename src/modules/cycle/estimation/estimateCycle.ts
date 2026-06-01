@@ -44,7 +44,8 @@ export default function estimateCycle(
 
     const cycleLength = roundOrFallback(observedCycleLengths, settings?.cycleLength ?? 28, 21, 40);
     const periodLength = roundOrFallback(observedPeriodLengths, settings?.periodLength ?? 5, 2, 10);
-    const fertilityVisible = !settings?.hormonalContraception && settings?.goal !== "track_only";
+    const fertilityVisible =
+        !settings?.hormonalContraception && Boolean(settings?.goals?.includes("trying_to_conceive"));
     const confidence = getPredictionConfidence(settings, observedStarts.length, observedCycleLengths.length);
     const anchorStart = findCurrentAnchorStart(observedRuns, observedStarts, settings, todayIso) ?? fallbackStart;
     const source = getSnapshotSource(observedBleedingDates, observedStarts, todayIso);

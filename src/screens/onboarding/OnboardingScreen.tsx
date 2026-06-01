@@ -26,8 +26,8 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
     const {
         step,
         setStep,
-        goal,
-        setGoal,
+        goals,
+        toggleGoal,
         lastPeriodStart,
         setLastPeriodStart,
         cycleLength,
@@ -62,7 +62,7 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
             onToggleHormonalContraception={() => setHormonalContraception((current) => !current)}
             regularity={regularity}
         />,
-        <OnboardingGoalStep key="goal" goal={goal} onChangeGoal={setGoal} />,
+        <OnboardingGoalStep key="goal" goals={goals} onToggleGoal={toggleGoal} />,
         <OnboardingReminderStep
             key="reminders"
             moments={moments}
@@ -78,7 +78,6 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
         <View style={[styles.screen, { paddingTop: Math.max(insets.top + 10, 42) }]}>
             <View style={styles.brand}>
                 <Image resizeMode="contain" source={brandHorizontal} style={styles.brandImage} />
-                <Text style={styles.brandText}>Privada, local y sin nube.</Text>
             </View>
 
             <View style={styles.progressTrack}>
@@ -110,6 +109,11 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
                             style={styles.footerAction}
                         />
                     </View>
+                ) : null}
+                {step === 0 ? (
+                    <Text style={styles.footerNote}>
+                        Tus datos se quedan en este teléfono. No hace falta crear cuenta para empezar.
+                    </Text>
                 ) : null}
                 {step > 0 ? (
                     <SoftButton label="Atrás" onPress={() => setStep((current) => current - 1)} variant="ghost" />

@@ -8,12 +8,14 @@ export default function OnboardingPrivacyStep() {
     return (
         <StepShell
             icon="shield-check-outline"
-            subtitle="Datos en tu teléfono. Sin cuenta, sin nube, sin contenido invasivo."
-            title="Tu ciclo, en privado."
+            subtitle="Vamos a dejar una base simple para empezar, sin pedirte más de la cuenta."
+            title="Empecemos contigo"
         >
-            <Text style={styles.body}>Vamos a separar lo que registras de lo que solo se estima.</Text>
             <Text style={styles.body}>
-                Si ya tenías datos guardados, puedes importar tu respaldo antes de continuar.
+                Lo que registres y lo que solo se estime se va a ver distinto, para no mezclar referencia con realidad.
+            </Text>
+            <Text style={styles.body}>
+                Si ya habías usado Rea antes, puedes traer tus datos guardados antes de seguir.
             </Text>
         </StepShell>
     );
