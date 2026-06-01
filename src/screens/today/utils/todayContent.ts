@@ -26,24 +26,14 @@ export function getAlertTone(severity: EducationalAlert["severity"]): TodayAlert
 /** Resume el nivel actual de base observada o estimada del snapshot. */
 export function getHeroSupport(snapshot: CycleSnapshot) {
     if (snapshot.source === "observed") {
-        return snapshot.confidence === "high"
-            ? null
-            : "Base actual: usando tus registros, pero aún puede ajustarse un poco.";
+        return null;
     }
 
     if (snapshot.source === "estimated") {
-        if (snapshot.confidence === "low") {
-            return "Base actual: estimación inicial. Se ajusta mejor cuando marques más periodos reales.";
-        }
-
-        if (snapshot.confidence === "medium") {
-            return "Base actual: estimación provisional. Se afina con más registros.";
-        }
-
-        return "Base actual: estimación ya bastante alineada con tus registros recientes.";
+        return "Referencia del calendario mientras sumas más registros.";
     }
 
-    return snapshot.confidenceNote ? `Base actual: ${snapshot.confidenceNote}` : null;
+    return "Empieza marcando tu regla para darle más contexto a esta vista.";
 }
 
 /** Construye páginas semanales alrededor de hoy para el carrusel del hero. */
@@ -110,13 +100,13 @@ export function getCareTips(phase: PhaseKey): TodayCareTip[] {
         return [
             {
                 icon: "leaf",
-                text: "La ventana es aproximada; mira también tus señales reales.",
+                text: "Si este momento te importa, mira también las señales de tu cuerpo.",
                 color: colors.success,
                 background: colors.fertileSoft,
             },
             {
                 icon: "thermometer-lines",
-                text: "Si buscas precisión, temperatura o tests ayudan más.",
+                text: "Temperatura, moco cervical o tests pueden darte más contexto.",
                 color: colors.primaryDeep,
                 background: colors.primarySoft,
             },

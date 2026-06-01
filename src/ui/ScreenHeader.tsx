@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
     titleRow: {
         flexDirection: "row",
         alignItems: "center",
-        gap: spacing.sm,
+        gap: spacing.xs,
     },
     titleRowCentered: {
         justifyContent: "center",
     },
     titleIcon: {
-        paddingTop: 2,
+        paddingTop: 0,
     },
     title: {
         fontSize: screen.titleSize,

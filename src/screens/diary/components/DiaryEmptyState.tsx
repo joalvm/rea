@@ -12,7 +12,7 @@ interface DiaryEmptyStateProps {
 
 /** Renderiza un vacío amable cuando aún no hay historial suficiente. */
 export default function DiaryEmptyState({
-    label = "Aún no hay datos. Iremos mostrando patrones cuando haya historial suficiente.",
+    label = "Todavía no hay nada por aquí. En cuanto empieces a registrar, este espacio se va llenando.",
 }: DiaryEmptyStateProps) {
     return (
         <SoftCard style={styles.empty} tone="primary" variant="soft">

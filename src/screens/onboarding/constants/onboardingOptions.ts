@@ -10,7 +10,7 @@ export const GOALS: { key: Goal; label: string; description: string; icon: strin
     {
         key: "trying_to_conceive",
         label: "También buscar embarazo",
-        description: "Tener a mano referencias fértiles orientativas además de mis registros.",
+        description: "Tener a mano referencias de fertilidad junto con mis registros.",
         icon: "sprout-outline",
     },
 ];

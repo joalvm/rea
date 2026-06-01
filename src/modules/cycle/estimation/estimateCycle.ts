@@ -96,7 +96,6 @@ export default function estimateCycle(
         phaseMessage: getPhaseMessage({
             phase,
             source,
-            confidence,
             nextPeriodInDays,
             fertilityVisible,
             settings,

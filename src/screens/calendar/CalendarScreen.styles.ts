@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
     },
     monthTitle: {
         flex: 1,
-        color: colors.ink,
-        fontSize: 28,
-        lineHeight: 32,
+        color: colors.primaryDeep,
+        fontSize: 20,
+        lineHeight: 28,
         fontWeight: "900",
     },
     monthActions: {

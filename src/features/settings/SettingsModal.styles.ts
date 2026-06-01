@@ -124,6 +124,15 @@ const styles = StyleSheet.create({
         fontSize: type.body,
         fontWeight: "900",
     },
+    referenceNote: {
+        alignSelf: "center",
+        color: colors.muted,
+        fontSize: type.tiny,
+        lineHeight: 18,
+        maxWidth: screen.maxTextWidth,
+        paddingHorizontal: 8,
+        textAlign: "center",
+    },
 });
 
 export default styles;

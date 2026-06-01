@@ -74,7 +74,7 @@ export default function buildPatternInsights(
         insights.push({
             id: "top-symptom",
             title: `Síntoma que más se repite: ${topSymptoms[0].label}`,
-            detail: `Aparece en ${topSymptoms[0].count} días registrados. Si vuelve a repetirse, ya deja de ser dato aislado.`,
+            detail: `Aparece en ${topSymptoms[0].count} días registrados. Si vuelve seguido, ya te da una pista más clara.`,
             tone: "supportive",
         });
     }
@@ -83,7 +83,7 @@ export default function buildPatternInsights(
         insights.push({
             id: "pain-impact",
             title: `Dolor que sí frenó tu día: ${limitingPainDays}`,
-            detail: `Ya no es solo molestia leve. Vale ver si cae siempre en el mismo tramo del ciclo.`,
+            detail: `Ya aparece como algo que te frena, no solo como molestia. Vale mirar en qué tramo del ciclo cae.`,
             tone: "watch",
         });
     }
@@ -92,7 +92,7 @@ export default function buildPatternInsights(
         insights.push({
             id: "medication-relief",
             title: `Alivio parcial o nulo: ${medicationRoughDays} días`,
-            detail: `Te da una señal concreta para comparar qué tan manejable fue ese dolor de un ciclo a otro.`,
+            detail: `Puede ayudarte a comparar qué tan llevadero fue ese dolor de un ciclo a otro.`,
             tone: "watch",
         });
     }

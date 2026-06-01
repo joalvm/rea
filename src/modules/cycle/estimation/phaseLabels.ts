@@ -25,7 +25,7 @@ export function phaseLabelWithArticle(phase: PhaseKey) {
     }
 
     if (phase === "fertile") {
-        return "tu ventana fértil orientativa";
+        return "tu ventana fértil";
     }
 
     return "tu fase lútea";

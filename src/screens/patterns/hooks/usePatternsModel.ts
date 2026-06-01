@@ -47,15 +47,15 @@ export default function usePatternsModel({ settings, cycles, moodCheckIns, daily
     const enoughObservedCycles = cycleSummaries.length >= 3;
     const statusIconName = enoughData ? "chart-line" : "timer-sand";
     const statusTitle = enoughObservedCycles
-        ? "Ya hay base útil"
+        ? "Ya hay historia útil"
         : enoughData
-          ? "Historial inicial listo"
-          : "Aún juntando señales";
+          ? "Primeras señales a la vista"
+          : "Recién empezando";
     const statusText = enoughObservedCycles
-        ? `Ya hay ${cycleSummaries.length} ciclos observados para comparar duración, dolor y síntomas repetidos.`
+        ? `Ya hay ${cycleSummaries.length} ciclos observados para comparar duración, dolor y síntomas con más contexto.`
         : enoughData
-          ? "Ya hay suficientes momentos para enseñar tendencias, pero con 3 ciclos observados ganan contexto."
-          : "Con 4 momentos aparecen los primeros patrones. Con 3 ciclos observados serán más defendibles.";
+          ? "Ya hay varios momentos guardados. Cuando sumes más ciclos observados, todo esto se va a leer mejor."
+          : "Con unos pocos registros empiezan a asomar las primeras repeticiones.";
     const metricAverages = useMemo(
         () =>
             METRICS.map((metric) => ({

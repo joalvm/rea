@@ -62,7 +62,7 @@ export function TodayScreen({
 
                 <View style={styles.heroContent}>
                     <View style={styles.topRow}>
-                        <BrandLogo color={heroTheme.titleColor} width={56} />
+                        <BrandLogo color={heroTheme.titleColor} width={82} />
                         <IconButton
                             backgroundColor={heroTheme.iconButtonBackground}
                             color={heroTheme.iconButtonColor}
@@ -239,7 +239,7 @@ export function TodayScreen({
                 <SoftCard style={styles.insightCard}>
                     {insights.length === 0 ? (
                         <Text style={styles.emptyText}>
-                            Con algunos registros más, esta zona podrá comparar fases y repeticiones reales.
+                            Con un poco más de historia, aquí empezarán a verse repeticiones y cambios del ciclo.
                         </Text>
                     ) : (
                         insights.map((insight) => (

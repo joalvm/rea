@@ -41,7 +41,7 @@ export default function DailyLogRow({ log, onEdit }: DiaryDailyLogRowProps) {
                     ))}
                 </View>
             ) : (
-                <Text style={styles.rowMeta}>Sin síntomas marcados.</Text>
+                <Text style={styles.rowMeta}>Sin síntomas anotados.</Text>
             )}
             {details.length > 0 ? (
                 <View style={styles.symptoms}>

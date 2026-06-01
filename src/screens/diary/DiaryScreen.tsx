@@ -33,8 +33,8 @@ export function DiaryScreen({
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
-                titleIcon={<BrandMark color={colors.primaryDeep} size={20} />}
-                subtitle="Mañana, noche y momentos sueltos se guardan separados para que tengan sentido después."
+                titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
+                subtitle="Mañana, noche y momentos sueltos quedan separados para que después sea más fácil entender cómo estuvo tu día."
                 title="Diario"
             />
 
@@ -62,7 +62,7 @@ export function DiaryScreen({
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Días con registro completo</Text>
                 {dailyLogs.length === 0 ? (
-                    <DiaryEmptyState label="Aún no hay días completos. El primero tarda menos de un minuto." />
+                    <DiaryEmptyState label="Todavía no hay días completos. El primero te toma menos de un minuto." />
                 ) : (
                     dailyLogs.map((log) => <DailyLogRow key={log.date} log={log} onEdit={() => onEditDailyLog(log)} />)
                 )}

@@ -81,7 +81,6 @@ export function DayDetailScreen({
                 <Text style={styles.summaryText}>{summary}</Text>
                 <View style={styles.badges}>
                     <Text style={styles.badge}>{snapshot.fertilityStatusLabel}</Text>
-                    <Text style={styles.badge}>Confianza {snapshot.confidenceLabel.toLowerCase()}</Text>
                     {dailyLog?.bleedingLevel && dailyLog.bleedingLevel !== "none" ? (
                         <Text style={styles.badge}>{bleedingLabel(dailyLog.bleedingLevel)}</Text>
                     ) : null}
@@ -89,7 +88,7 @@ export function DayDetailScreen({
             </SoftCard>
 
             <SoftCard style={styles.card}>
-                <Text style={styles.cardTitle}>{isFuture ? "Referencia orientativa" : "Qué mirar aquí"}</Text>
+                <Text style={styles.cardTitle}>{isFuture ? "Vista del día" : "Qué mirar aquí"}</Text>
                 <Text style={styles.cardBody}>{snapshot.phaseMessage}</Text>
                 {careTips.map((tip) => (
                     <CareTipRow key={tip.text} tip={tip} />
@@ -111,7 +110,7 @@ export function DayDetailScreen({
                             ))}
                         </View>
                     ) : (
-                        <Text style={styles.softText}>Sin síntomas marcados.</Text>
+                        <Text style={styles.softText}>Sin síntomas anotados.</Text>
                     )}
                     {detailItems.length > 0 ? (
                         <View style={styles.chips}>

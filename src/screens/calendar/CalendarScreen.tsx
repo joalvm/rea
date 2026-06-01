@@ -31,7 +31,11 @@ export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onO
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-            <ScreenHeader title="Calendario" titleIcon={<BrandMark color={colors.primaryDeep} size={20} />} />
+            <ScreenHeader
+                title="Calendario"
+                titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
+                subtitle="Mira el mes completo y abre cada día para ubicarte mejor dentro de tu ciclo."
+            />
 
             <View style={styles.calendarPanel}>
                 <MonthHeader monthLabel={monthLabel} onNext={() => shiftMonth(1)} onPrevious={() => shiftMonth(-1)} />
@@ -70,7 +74,7 @@ export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onO
                     </View>
                     <View style={styles.legendItem}>
                         <View style={[styles.legendSwatch, styles.legendSwatchFertile]} />
-                        <Text style={styles.legendText}>Fértil aprox.</Text>
+                        <Text style={styles.legendText}>Ventana fértil</Text>
                     </View>
                     <View style={styles.legendItem}>
                         <View style={[styles.legendSwatch, styles.legendSwatchLuteal]} />
@@ -86,8 +90,8 @@ export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onO
                 </View>
                 <Text style={styles.todayCardText}>
                     {todayHasLog
-                        ? "Hoy ya tiene registro. Si cambió algo, actualízalo sin salir del calendario."
-                        : "Hoy sigue vacío. Regístralo ahora para no perder señales de este día."}
+                        ? "Hoy ya tiene algo anotado. Si cambió algo, puedes ajustarlo sin salir del calendario."
+                        : "Hoy sigue libre. Si quieres, déjalo registrado ahora y sigues con tu mes."}
                 </Text>
                 <SoftButton label={todayHasLog ? "Actualizar hoy" : "Registrar hoy"} onPress={onOpenCheckIn} />
             </SoftCard>

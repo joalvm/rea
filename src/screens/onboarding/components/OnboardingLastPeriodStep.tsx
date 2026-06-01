@@ -32,7 +32,7 @@ export default function OnboardingLastPeriodStep({ lastPeriodStart, onChange }: 
     return (
         <StepShell
             icon="calendar-start"
-            subtitle="Elige la fecha que más se acerque. Si no recuerdas el día exacto, una aproximada sirve para empezar."
+            subtitle="Elige la fecha que recuerdes mejor. Luego puedes ajustarla si hace falta."
             title="¿Cuándo empezó tu última regla?"
         >
             <View style={styles.datePickerRow}>

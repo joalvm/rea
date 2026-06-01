@@ -135,7 +135,7 @@ export const screen = {
     blockGap: 22,
     sectionGap: 12,
     headerGap: 10,
-    titleSize: 18,
+    titleSize: 20,
     titleLineHeight: 34,
     subtitleLineHeight: 23,
     sectionTitleLineHeight: 28,

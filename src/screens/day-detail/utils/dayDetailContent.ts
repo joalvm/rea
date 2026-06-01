@@ -16,7 +16,7 @@ export function buildDaySummary(
         const symptomCopy =
             dailyLog.symptoms.length > 0
                 ? `Síntomas marcados: ${dailyLog.symptoms.slice(0, 3).join(", ")}.`
-                : "Sin síntomas marcados.";
+                : "Sin síntomas anotados.";
         const noteCopy = dailyLog.notes ? ` Nota: ${dailyLog.notes}` : "";
         return `Día observado. ${symptomCopy}${noteCopy}`.trim();
     }
@@ -31,7 +31,7 @@ export function buildDaySummary(
     }
 
     if (selectedIso > todayIso) {
-        return `Aún no hay anotación. Vista usa referencia estimada: ${phaseMessage}`;
+        return "Aún no hay anotación. Puedes usar esta vista para ubicarte dentro del mes y volver si algo cambia.";
     }
 
     if (selectedIso === todayIso) {
@@ -142,13 +142,13 @@ export function getCareTips(phase: PhaseKey): DayDetailCareTip[] {
         return [
             {
                 icon: "leaf",
-                text: "Ventana sigue siendo orientativa; señales reales valen más que calendario.",
+                text: "Si este momento te importa, mira también las señales de tu cuerpo.",
                 color: colors.success,
                 background: colors.fertileSoft,
             },
             {
                 icon: "thermometer-lines",
-                text: "Si buscas más precisión, temperatura o tests ayudan más.",
+                text: "Temperatura o tests pueden darte más contexto.",
                 color: colors.primaryDeep,
                 background: colors.primarySoft,
             },

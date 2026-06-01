@@ -36,8 +36,8 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
-                titleIcon={<BrandMark color={colors.primaryDeep} size={20} />}
-                subtitle="Lectura tranquila de dolor, energía, síntomas y cambios entre ciclos. Observa repeticiones, no certezas."
+                titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
+                subtitle="Aquí se van armando repeticiones de dolor, energía y síntomas entre ciclos para darte más contexto."
                 title="Patrones"
             />
 
@@ -65,7 +65,7 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                 <SoftCard style={styles.insightCard}>
                     {insights.length === 0 ? (
                         <Text style={styles.emptyText}>
-                            Aún faltan datos para detectar repeticiones sólidas por fase o intensidad.
+                            Cuando haya un poco más de historia, aquí empezarán a verse repeticiones entre fases.
                         </Text>
                     ) : (
                         insights.map((insight) => <InsightRow insight={insight} key={insight.id} />)
@@ -74,13 +74,12 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Señales educativas para vigilar</Text>
+                <Text style={styles.sectionTitle}>Señales para tener presentes</Text>
                 <View style={styles.alertList}>
                     {alerts.length === 0 ? (
                         <SoftCard variant="soft">
                             <Text style={styles.emptyText}>
-                                No aparece una señal llamativa en tus registros actuales. Eso no equivale a descarte
-                                médico.
+                                Por ahora no asoma una señal que destaque en tus registros.
                             </Text>
                         </SoftCard>
                     ) : (
@@ -95,8 +94,8 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                     {cycleSummaries.length === 0 ? (
                         <SoftCard variant="soft">
                             <Text style={styles.emptyText}>
-                                Cuando marques inicios y finales reales del periodo, aquí aparecerá la comparación entre
-                                ciclos.
+                                Cuando empieces a marcar inicios y finales del periodo, aquí vas a poder comparar un
+                                ciclo con otro.
                             </Text>
                         </SoftCard>
                     ) : (
@@ -130,7 +129,7 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                                 <Text style={styles.summaryFoot}>
                                     {summary.topSymptoms.length > 0
                                         ? `Síntomas que destacaron: ${summary.topSymptoms.join(", ")}.`
-                                        : "Sin síntomas repetidos destacados en ese ciclo."}
+                                        : "En ese ciclo no se repitió un síntoma con tanta fuerza."}
                                 </Text>
                             </SoftCard>
                         ))
@@ -142,7 +141,9 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                 <Text style={styles.sectionTitle}>Síntomas más registrados</Text>
                 <SoftCard style={styles.symptomCard}>
                     {symptoms.length === 0 ? (
-                        <Text style={styles.emptyText}>Aún no hay síntomas suficientes para ordenar tendencias.</Text>
+                        <Text style={styles.emptyText}>
+                            Todavía no hay suficientes síntomas para ver qué se repite más.
+                        </Text>
                     ) : (
                         symptoms.map((item) => (
                             <View key={item.label} style={styles.symptomRow}>

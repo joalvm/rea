@@ -6,7 +6,6 @@ import { findLastOnOrBefore } from "../../utils/cycleObservedData.utils";
 interface PhaseMessageContext {
     phase: PhaseKey;
     source: CycleSnapshot["source"];
-    confidence: PredictionConfidence;
     nextPeriodInDays: number;
     fertilityVisible: boolean;
     settings: AppSettings | null;
@@ -44,36 +43,31 @@ export function getPhase(
 export function getPhaseMessage({
     phase,
     source,
-    confidence,
     nextPeriodInDays,
     fertilityVisible,
     settings,
 }: PhaseMessageContext): string {
     if (settings?.hormonalContraception) {
-        return "Con anticonceptivos hormonales esta vista es orientativa. Priorizamos tus registros sobre calendario.";
+        return "Con anticonceptivos hormonales damos más peso a lo que registres día a día.";
     }
 
     if (source === "unknown") {
-        return "Base inicial. Marca periodos reales para pasar de referencia suave a seguimiento mas confiable.";
-    }
-
-    if (confidence === "low") {
-        return "Todavía depende bastante de tu fecha inicial. Cuantos más periodos reales marques, mejor ajusta.";
+        return "Base inicial. Empieza marcando tus periodos y esta vista irá tomando más forma.";
     }
 
     switch (phase) {
         case "menstrual":
             return source === "observed"
-                ? "Hoy cuenta como observación real de sangrado. Úsalo para ajustar mejor tu ciclo."
-                : "Esta etapa se sigue comparando contra tus registros. Flujo, dolor y energía ayudan a afinarla.";
+                ? "Hoy cuenta como un día registrado de sangrado. Úsalo para darle más forma a tu ciclo."
+                : "Aquí conviene mirar flujo, dolor y energía si luego quieres comparar este tramo.";
         case "follicular":
-            return "Etapa de recuperación orientativa. Lo útil aquí es comparar energía, sueño y ánimo con tus registros.";
+            return "Suele ser un tramo más liviano para mirar energía, sueño y ánimo.";
         case "fertile":
             return fertilityVisible
-                ? "Ventana fértil orientativa. Si buscas precisión, combina señales reales como moco cervical, temperatura o test."
-                : "Seguimos mostrando referencia de ciclo, pero no una ventana fértil activa en este modo.";
+                ? "Si este momento te importa, acompaña el calendario con señales de tu cuerpo."
+                : "Seguimos mostrándote el ciclo completo también en este tramo.";
         case "luteal":
-            return `Próxima regla estimada en ${nextPeriodInDays} días. Observa sueño, ánimo y estrés para comparar este tramo.`;
+            return `La próxima regla asoma en ${nextPeriodInDays} días. Sueño, ánimo y estrés suelen dar buen contexto aquí.`;
     }
 }
 

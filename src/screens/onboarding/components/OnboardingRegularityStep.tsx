@@ -24,7 +24,7 @@ export default function OnboardingRegularityStep({
     return (
         <StepShell
             icon="chart-timeline-variant"
-            subtitle="Esto nos ayuda a mostrar con más honestidad qué tan confiable es lo estimado al inicio."
+            subtitle="Esto nos ayuda a acomodar mejor el calendario al empezar."
             title="¿Tu regla suele llegar en fechas parecidas?"
         >
             <View style={styles.segmentGroup}>

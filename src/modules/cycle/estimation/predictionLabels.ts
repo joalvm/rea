@@ -46,8 +46,8 @@ export function getConfidenceNote(
     }
 
     return observedCycleCount <= 1
-        ? "Base inicial. Todavia depende bastante de la fecha con la que empezaste."
-        : `Base parcial: ${observedCycleCount} ciclos observados aun no bastan para dar mucha confianza.`;
+        ? "Base inicial con tus primeros registros."
+        : `Base parcial: ${observedCycleCount} ciclos observados recientes.`;
 }
 
 /** Describe rango esperado para siguiente periodo. */
@@ -71,14 +71,14 @@ export function getNextPeriodLabel(
     return `Entre ${start} y ${end} días`;
 }
 
-/** Describe estado visible de ventana fértil orientativa. */
+/** Describe estado visible de ventana fértil. */
 export function getFertilityStatusLabel(
     cycleDay: number,
     fertileStart: number,
     cycleLength: number,
     phase: PhaseKey,
     fertilityVisible: boolean,
-    confidence: PredictionConfidence,
+    _confidence: PredictionConfidence,
     settings: AppSettings | null,
 ) {
     if (!fertilityVisible) {
@@ -86,11 +86,11 @@ export function getFertilityStatusLabel(
     }
 
     if (phase === "fertile") {
-        return confidence === "low" ? "Aprox. ahora" : "Ahora";
+        return "Ahora";
     }
 
     const daysToFertility = getDaysToFertility(cycleDay, fertileStart, cycleLength);
-    return confidence === "low" ? `Aprox. en ${daysToFertility} días` : `En ${daysToFertility} días`;
+    return `En ${daysToFertility} días`;
 }
 
 function getDaysToFertility(cycleDay: number, fertileStart: number, cycleLength: number) {

@@ -136,6 +136,10 @@ export function SettingsModal({
                             <Text style={styles.resetButtonText}>Borrar mis datos</Text>
                         </Pressable>
                     </SoftCard>
+
+                    <Text style={styles.referenceNote}>
+                        Cómo leer Rea: Observado sale de lo que registras. Estimado usa el calendario como referencia.
+                    </Text>
                 </ScrollView>
 
                 {exportSavedNotice ? (
