@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { formatShortDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { colors } from "@/theme";
@@ -25,6 +26,7 @@ interface PatternsScreenProps {
 }
 
 export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: PatternsScreenProps) {
+    const { t } = useTranslation("patterns");
     const {
         alerts,
         basisMetrics,
@@ -48,8 +50,8 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
                 titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
-                subtitle="Aquí se van armando repeticiones de dolor, energía y síntomas entre ciclos para darte más contexto."
-                title="Patrones"
+                subtitle={t("header.subtitle")}
+                title={t("header.title")}
             />
 
             <SoftCard style={styles.statusCard} tone="primary" variant="accent">
@@ -68,7 +70,7 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </SoftCard>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Qué tanto cambia</Text>
+                <Text style={styles.sectionTitle}>{t("sections.variability")}</Text>
                 <SoftCard style={styles.chartCard}>
                     {enoughData ? (
                         metricVariability.map((metric) => (
@@ -88,12 +90,10 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Lo que sí se repite</Text>
+                <Text style={styles.sectionTitle}>{t("sections.insights")}</Text>
                 <SoftCard style={styles.insightCard}>
                     {insights.length === 0 ? (
-                        <Text style={styles.emptyText}>
-                            Cuando haya un poco más de historia, aquí empezarán a verse repeticiones entre fases.
-                        </Text>
+                        <Text style={styles.emptyText}>{t("empty.insights")}</Text>
                     ) : (
                         insights.map((insight) => <InsightRow insight={insight} key={insight.id} />)
                     )}
@@ -101,13 +101,11 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Señales para tener presentes</Text>
+                <Text style={styles.sectionTitle}>{t("sections.alerts")}</Text>
                 <View style={styles.alertList}>
                     {alerts.length === 0 ? (
                         <SoftCard variant="soft">
-                            <Text style={styles.emptyText}>
-                                Por ahora no asoma una señal que destaque en tus registros.
-                            </Text>
+                            <Text style={styles.emptyText}>{t("empty.alerts")}</Text>
                         </SoftCard>
                     ) : (
                         alerts.map((alert) => <AlertCard alert={alert} key={alert.id} />)
@@ -116,38 +114,47 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Tus últimos ciclos observados</Text>
+                <Text style={styles.sectionTitle}>{t("sections.cycleSummaries")}</Text>
                 <View style={styles.summaryList}>
                     {cycleSummaries.length === 0 ? (
                         <SoftCard variant="soft">
-                            <Text style={styles.emptyText}>
-                                Cuando empieces a marcar inicios y finales del periodo, aquí vas a poder comparar un
-                                ciclo con otro.
-                            </Text>
+                            <Text style={styles.emptyText}>{t("cycleSummaries.empty")}</Text>
                         </SoftCard>
                     ) : (
                         cycleSummaries.map((summary) => (
                             <SoftCard key={summary.id} style={styles.summaryCard}>
                                 <View style={styles.summaryHeader}>
                                     <Text style={styles.summaryTitle}>
-                                        {formatShortDate(summary.startDate)}
-                                        {summary.endDate ? ` al ${formatShortDate(summary.endDate)}` : ""}
+                                        {summary.endDate
+                                            ? t("cycleSummaries.range", {
+                                                  end: formatShortDate(summary.endDate),
+                                                  start: formatShortDate(summary.startDate),
+                                              })
+                                            : formatShortDate(summary.startDate)}
                                     </Text>
                                     <Text style={styles.summaryMeta}>
                                         {summary.cycleLengthDays
-                                            ? `${summary.cycleLengthDays} días de ciclo`
-                                            : "Esperando siguiente inicio"}
+                                            ? t("cycleSummaries.cycleLength", { count: summary.cycleLengthDays })
+                                            : t("cycleSummaries.pendingNextStart")}
                                     </Text>
                                 </View>
 
                                 <View style={styles.summaryMetrics}>
-                                    <MetricPill label={`${summary.bleedingDays} días de sangrado`} tone="soft" />
+                                    <MetricPill
+                                        label={t("cycleSummaries.bleedingDays", { count: summary.bleedingDays })}
+                                        tone="soft"
+                                    />
                                     {summary.heavyDays > 0 ? (
-                                        <MetricPill label={`${summary.heavyDays} días abundantes`} tone="watch" />
+                                        <MetricPill
+                                            label={t("cycleSummaries.heavyDays", { count: summary.heavyDays })}
+                                            tone="watch"
+                                        />
                                     ) : null}
                                     {summary.painImpactDays > 0 ? (
                                         <MetricPill
-                                            label={`${summary.painImpactDays} días con dolor que frenó`}
+                                            label={t("cycleSummaries.painImpactDays", {
+                                                count: summary.painImpactDays,
+                                            })}
                                             tone="watch"
                                         />
                                     ) : null}
@@ -155,8 +162,10 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
 
                                 <Text style={styles.summaryFoot}>
                                     {summary.topSymptoms.length > 0
-                                        ? `Síntomas que destacaron: ${summary.topSymptoms.join(", ")}.`
-                                        : "En ese ciclo no se repitió un síntoma con tanta fuerza."}
+                                        ? t("cycleSummaries.topSymptoms", {
+                                              symptoms: summary.topSymptoms.join(", "),
+                                          })
+                                        : t("cycleSummaries.topSymptomsEmpty")}
                                 </Text>
                             </SoftCard>
                         ))
@@ -165,12 +174,10 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Síntomas más registrados</Text>
+                <Text style={styles.sectionTitle}>{t("sections.symptoms")}</Text>
                 <SoftCard style={styles.symptomCard}>
                     {symptoms.length === 0 ? (
-                        <Text style={styles.emptyText}>
-                            Todavía no hay suficientes síntomas para ver qué se repite más.
-                        </Text>
+                        <Text style={styles.emptyText}>{t("empty.symptoms")}</Text>
                     ) : (
                         symptoms.map((item) => (
                             <View key={item.label} style={styles.symptomRow}>

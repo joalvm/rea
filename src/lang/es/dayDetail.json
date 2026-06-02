@@ -1,0 +1,56 @@
+{
+    "care": {
+        "fertile": {
+            "bodySigns": "Si este momento te importa, mira también las señales de tu cuerpo.",
+            "temperature": "Temperatura o tests pueden darte más contexto."
+        },
+        "follicular": {
+            "movement": "Si energía acompaña, algo de movimiento suave suele sentar bien.",
+            "trackSleepMood": "Sueño y ánimo aquí suelen dar contexto útil para resto de ciclo."
+        },
+        "luteal": {
+            "observeMoodStress": "Ánimo y estrés aquí suelen merecer seguimiento suave, sin juicio.",
+            "rest": "Prioriza sueño, comida tranquila y pausas pequeñas."
+        },
+        "menstrual": {
+            "painChange": "Si dolor cambia, conviene dejarlo anotado para comparar luego.",
+            "warmth": "Calor suave, agua cerca y descanso sin culpa."
+        }
+    },
+    "daily": {
+        "noSymptoms": "Sin síntomas anotados.",
+        "title": "Registro del día"
+    },
+    "empty": {
+        "body": "Ese día quedó vacío. Si hace falta corregirlo o completar algo, Diario sigue siendo punto de edición.",
+        "title": "Sin anotaciones"
+    },
+    "metrics": {
+        "breast": "Pecho {{value}}/5",
+        "mood": "Ánimo {{value}}/5",
+        "pain": "Dolor {{value}}/5"
+    },
+    "moments": {
+        "title": "Momentos anotados"
+    },
+    "quickRead": {
+        "future": "Aún no hay anotación. Puedes usar esta vista para ubicarte dentro del mes y volver si algo cambia.",
+        "latestMoment": "Hay {{count}} momentos guardados. Último ánimo {{mood}}/5 y dolor {{pain}}/5.",
+        "latestMoment_one": "Hay {{count}} momento guardado. Último ánimo {{mood}}/5 y dolor {{pain}}/5.",
+        "momentsFallback": "Hay momentos guardados para este día.",
+        "noRecord": "No quedó registro ese día.",
+        "note": " Nota: {{note}}",
+        "observed": "Día observado. {{symptomCopy}}{{noteCopy}}",
+        "symptoms": "Síntomas marcados: {{symptoms}}.",
+        "symptomsEmpty": "Sin síntomas anotados.",
+        "today": "Hoy todavía no tiene registro completo. Esta vista sirve como contexto antes de anotar.",
+        "title": "Lectura rápida"
+    },
+    "sections": {
+        "futureView": "Vista del día",
+        "whatToWatch": "Qué mirar aquí"
+    },
+    "actions": {
+        "openDiary": "Abrir diario"
+    }
+}

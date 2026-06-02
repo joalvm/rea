@@ -1,3 +1,4 @@
+import { translate } from "@/modules/localization/i18n";
 import { Cycle } from "@/types/cycle.types";
 import { EducationalAlert } from "@/types/insights.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
@@ -38,8 +39,8 @@ export default function buildEducationalAlerts(
         alerts.push({
             id: "long-period",
             severity: "consult",
-            title: "Sangrado más largo de lo habitual",
-            detail: `Ya registraste un periodo de ${longest} días. Si vuelve a pasar, vale comentarlo con un profesional.`,
+            title: translate("cycle:alerts.longPeriod.title"),
+            detail: translate("cycle:alerts.longPeriod.detail", { count: longest }),
         });
     }
 
@@ -47,8 +48,8 @@ export default function buildEducationalAlerts(
         alerts.push({
             id: "heavy-bleeding",
             severity: heavyDays >= 3 || largeClotDays >= 2 ? "consult" : "watch",
-            title: "Flujo abundante para vigilar",
-            detail: "Hay registros de sangrado abundante o coágulos grandes. Si vuelve a repetirse o te empapa muy rápido, conviene consultar.",
+            title: translate("cycle:alerts.heavyBleeding.title"),
+            detail: translate("cycle:alerts.heavyBleeding.detail"),
         });
     }
 
@@ -56,8 +57,8 @@ export default function buildEducationalAlerts(
         alerts.push({
             id: "pain-impact",
             severity: "consult",
-            title: "Dolor que ya impacta tu rutina",
-            detail: "Ya marcaste días en los que el dolor te frenó o no alivió bien. Si vuelve a pasar, vale hablarlo con un profesional.",
+            title: translate("cycle:alerts.painImpact.title"),
+            detail: translate("cycle:alerts.painImpact.detail"),
         });
     }
 
@@ -65,8 +66,8 @@ export default function buildEducationalAlerts(
         alerts.push({
             id: "cycle-range",
             severity: "watch",
-            title: "Ciclos fuera de rango típico",
-            detail: "Tus ciclos observados a veces se salen del rango de 21 a 35 días. Puede servir seguirlo de cerca y, si persiste, consultarlo.",
+            title: translate("cycle:alerts.cycleRange.title"),
+            detail: translate("cycle:alerts.cycleRange.detail"),
         });
     }
 
@@ -74,8 +75,8 @@ export default function buildEducationalAlerts(
         alerts.push({
             id: "long-gap",
             severity: "consult",
-            title: "Mucho tiempo sin periodo observado",
-            detail: "Pasaron más de 90 días desde el último inicio observado. Si no hay una explicación clara, conviene consultarlo.",
+            title: translate("cycle:alerts.longGap.title"),
+            detail: translate("cycle:alerts.longGap.detail"),
         });
     }
 

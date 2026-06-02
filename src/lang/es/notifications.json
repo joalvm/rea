@@ -1,0 +1,8 @@
+{
+    "body": "¿Cómo te sientes ahora?",
+    "cadence": {
+        "paused": "Pausados",
+        "summary": "Cada {{intervalHours}} h entre {{start}} y {{end}}"
+    },
+    "title": "Un momento para ti"
+}

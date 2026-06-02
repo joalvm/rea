@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { translate } from "@/modules/localization/i18n";
 import { colors, type } from "../theme";
 import { CycleSnapshot, PhaseKey } from "../types/cycle.types";
 
@@ -92,7 +93,7 @@ export function WeekStrip({ weeks, selectedIso, onSelectDay, initialPage = 0, pa
                     >
                         {week.map((day) => (
                             <Pressable
-                                accessibilityLabel={`Ver ${day.iso}`}
+                                accessibilityLabel={translate("common:accessibility.viewDate", { date: day.iso })}
                                 accessibilityRole="button"
                                 disabled={!onSelectDay}
                                 key={day.iso}

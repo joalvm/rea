@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { colors } from "@/theme";
 import { Regularity } from "@/types/settings.types";
@@ -21,12 +22,10 @@ export default function OnboardingRegularityStep({
     onToggleHormonalContraception,
     regularity,
 }: OnboardingRegularityStepProps) {
+    const { t } = useTranslation("onboarding");
+
     return (
-        <StepShell
-            icon="chart-timeline-variant"
-            subtitle="Esto nos ayuda a acomodar mejor el calendario al empezar."
-            title="¿Tu regla suele llegar en fechas parecidas?"
-        >
+        <StepShell icon="chart-timeline-variant" subtitle={t("regularity.subtitle")} title={t("regularity.title")}>
             <View style={styles.segmentGroup}>
                 {REGULARITY.map((item) => (
                     <Pressable
@@ -44,7 +43,7 @@ export default function OnboardingRegularityStep({
                 onPress={onToggleHormonalContraception}
                 style={[styles.toggleRow, hormonalContraception && styles.toggleRowActive]}
             >
-                <Text style={styles.toggleText}>Estoy usando anticonceptivos hormonales</Text>
+                <Text style={styles.toggleText}>{t("regularity.hormonalContraception")}</Text>
                 <MaterialCommunityIcons
                     color={hormonalContraception ? colors.primaryDeep : colors.muted}
                     name={hormonalContraception ? "check-circle" : "circle-outline"}

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { labelSymptom } from "@/modules/cycle/utils/symptomCatalog";
 import { colors } from "@/theme";
@@ -118,20 +119,22 @@ export default function CheckInDailySections({
     medicationRelief,
     onMedicationReliefChange,
 }: CheckInDailySectionsProps) {
+    const { t } = useTranslation("checkIn");
+
     return (
         <>
             {showStandaloneBreastSensitivity ? (
                 <MetricScale
-                    highLabel="Muy sensible"
-                    label="Sensibilidad mamaria"
-                    lowLabel="Nada"
+                    highLabel={t("scale.verySensitive")}
+                    label={t("metrics.breastSensitivity")}
+                    lowLabel={t("scale.nothing")}
                     min={0}
                     onChange={onBreastSensitivityChange}
                     value={breastSensitivity}
                 />
             ) : null}
 
-            <FormSection title="Sangrado">
+            <FormSection title={t("sections.bleeding")}>
                 <View style={styles.chips}>
                     {BLEEDING_OPTIONS.map((item) => (
                         <ChoiceChip
@@ -144,7 +147,7 @@ export default function CheckInDailySections({
                 </View>
             </FormSection>
 
-            <FormSection title="Síntomas">
+            <FormSection title={t("sections.symptoms")}>
                 <View style={styles.chips}>
                     {SYMPTOMS.map((symptom) => (
                         <ChoiceChip
@@ -157,10 +160,10 @@ export default function CheckInDailySections({
                 </View>
                 {symptoms.map((symptom) => (
                     <MetricScale
-                        highLabel="Fuerte"
+                        highLabel={t("scale.strong")}
                         key={`symptom-${symptom}`}
                         label={labelSymptom(symptom)}
-                        lowLabel="Leve"
+                        lowLabel={t("scale.soft")}
                         min={1}
                         onChange={(value) => onSymptomIntensityChange(symptom, value)}
                         value={symptomIntensities[symptom] ?? 3}
@@ -169,15 +172,23 @@ export default function CheckInDailySections({
             </FormSection>
 
             {showPeriodSection ? (
-                <FormSection title="Periodo">
+                <FormSection title={t("sections.period")}>
                     <View style={styles.chips}>
-                        <ChoiceChip active={periodStarted} label="Empezó hoy" onPress={onTogglePeriodStarted} />
-                        <ChoiceChip active={periodEnded} label="Terminó hoy" onPress={onTogglePeriodEnded} />
+                        <ChoiceChip
+                            active={periodStarted}
+                            label={t("daily.period.started")}
+                            onPress={onTogglePeriodStarted}
+                        />
+                        <ChoiceChip
+                            active={periodEnded}
+                            label={t("daily.period.ended")}
+                            onPress={onTogglePeriodEnded}
+                        />
                     </View>
                 </FormSection>
             ) : null}
 
-            <FormSection title="SPM">
+            <FormSection title={t("sections.pms")}>
                 <View style={styles.chips}>
                     {PMS_STATE_OPTIONS.map((item) => (
                         <ChoiceChip
@@ -191,7 +202,7 @@ export default function CheckInDailySections({
             </FormSection>
 
             {pain > 0 ? (
-                <FormSection title="Dónde lo sientes">
+                <FormSection title={t("sections.painLocation")}>
                     <View style={styles.chips}>
                         {PAIN_LOCATION_OPTIONS.map((item) => (
                             <ChoiceChip
@@ -205,7 +216,7 @@ export default function CheckInDailySections({
                 </FormSection>
             ) : null}
 
-            <FormSection title="Libido">
+            <FormSection title={t("sections.libido")}>
                 <View style={styles.chips}>
                     {LIBIDO_LEVEL_OPTIONS.map((item) => (
                         <ChoiceChip
@@ -218,7 +229,7 @@ export default function CheckInDailySections({
                 </View>
             </FormSection>
 
-            <FormSection title="Coágulos">
+            <FormSection title={t("sections.clots")}>
                 <View style={styles.chips}>
                     {CLOT_SIZE_OPTIONS.map((item) => (
                         <ChoiceChip
@@ -231,7 +242,7 @@ export default function CheckInDailySections({
                 </View>
             </FormSection>
 
-            <FormSection title="¿Cuánto te frenó el dolor?">
+            <FormSection title={t("sections.painImpact")}>
                 <View style={styles.chips}>
                     {PAIN_IMPACT_OPTIONS.map((item) => (
                         <ChoiceChip
@@ -244,10 +255,10 @@ export default function CheckInDailySections({
                 </View>
             </FormSection>
 
-            <FormSection title="Si tomaste algo">
+            <FormSection title={t("sections.medication")}>
                 <TextInput
                     onChangeText={onMedicationNameChange}
-                    placeholder="Ibuprofeno, naproxeno..."
+                    placeholder={t("placeholders.medicationName")}
                     placeholderTextColor={colors.muted}
                     style={styles.compactInput}
                     value={medicationName}

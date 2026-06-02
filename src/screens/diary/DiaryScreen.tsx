@@ -1,4 +1,5 @@
 import { ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { colors } from "@/theme";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
@@ -28,20 +29,21 @@ export function DiaryScreen({
     onEditCheckIn,
     onEditDailyLog,
 }: DiaryScreenProps) {
+    const { t } = useTranslation("diary");
     const latest = moodCheckIns.slice(0, 12);
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
                 titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
-                subtitle="Momentos puntuales y días observados quedan cerca para que luego sea más fácil leer contexto sin mezclar todo."
-                title="Diario"
+                subtitle={t("header.subtitle")}
+                title={t("header.title")}
             />
 
             <View style={styles.actions}>
-                <SoftButton label="Mi día" onPress={onOpenCheckIn} style={styles.actionButton} />
+                <SoftButton label={t("quickActions.daily")} onPress={onOpenCheckIn} style={styles.actionButton} />
                 <SoftButton
-                    label="Ahora"
+                    label={t("quickActions.now")}
                     onPress={onOpenQuickCheckIn}
                     style={styles.actionButton}
                     variant="secondary"
@@ -49,7 +51,7 @@ export function DiaryScreen({
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Últimos momentos</Text>
+                <Text style={styles.sectionTitle}>{t("sections.latestMoments")}</Text>
                 {latest.length === 0 ? (
                     <DiaryEmptyState />
                 ) : (
@@ -69,9 +71,9 @@ export function DiaryScreen({
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Días con registro completo</Text>
+                <Text style={styles.sectionTitle}>{t("sections.dailyLogs")}</Text>
                 {dailyLogs.length === 0 ? (
-                    <DiaryEmptyState label="Todavía no hay días completos. El primero te toma menos de un minuto." />
+                    <DiaryEmptyState label={t("empty.dailyLogs")} />
                 ) : (
                     dailyLogs.map((log) => <DailyLogRow key={log.date} log={log} onEdit={() => onEditDailyLog(log)} />)
                 )}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Alert, Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import notificationCadenceSummary from "@/modules/notifications/utils/notificationCadenceSummary";
 import { colors, surfaces } from "@/theme";
@@ -51,18 +52,17 @@ export function SettingsModal({
     onSaveSettings,
     onShareSavedBackup,
 }: SettingsModalProps) {
+    const { t } = useTranslation("settings");
     const [seedingDevelopmentData, setSeedingDevelopmentData] = useState(false);
     const cadenceMeta = notificationCadenceSummary(notificationCadence);
-    const goalMeta = settings?.tryingToConceive ? "Ciclo + búsqueda" : "Solo ciclo";
-    const goalText = settings?.tryingToConceive
-        ? "Entender tu ciclo sigue activo y también se suma contexto de ventana probable cuando hay base suficiente."
-        : "Entender tu ciclo ya viene activo. Si quieres, puedes sumar búsqueda de embarazo sin cambiar resto de Rea.";
+    const goalMeta = settings?.tryingToConceive ? t("goal.activeMeta") : t("goal.inactiveMeta");
+    const goalText = settings?.tryingToConceive ? t("goal.activeText") : t("goal.inactiveText");
 
     const confirmReset = () => {
-        Alert.alert("Empezar de cero", "Se borran tus registros de este teléfono y vuelves al inicio.", [
-            { text: "Cancelar", style: "cancel" },
+        Alert.alert(t("reset.title"), t("reset.body"), [
+            { text: t("common:actions.cancel"), style: "cancel" },
             {
-                text: "Borrar todo",
+                text: t("reset.confirm"),
                 style: "destructive",
                 onPress: () => {
                     void onReset();
@@ -77,14 +77,12 @@ export function SettingsModal({
         }
 
         const nextTryingToConceive = !settings.tryingToConceive;
-        const nextText = nextTryingToConceive
-            ? "Se suma capa de ventana probable y lecturas relacionadas, sin prometer precisión clínica."
-            : "Rea vuelve a quedarse solo con lectura general de ciclo y bienestar.";
+        const nextText = nextTryingToConceive ? t("goal.enableBody") : t("goal.removeBody");
 
-        Alert.alert(nextTryingToConceive ? "Sumar búsqueda de embarazo" : "Volver a solo entender tu ciclo", nextText, [
-            { text: "Cancelar", style: "cancel" },
+        Alert.alert(nextTryingToConceive ? t("goal.enableTitle") : t("goal.removeTitle"), nextText, [
+            { text: t("common:actions.cancel"), style: "cancel" },
             {
-                text: nextTryingToConceive ? "Activar" : "Quitar",
+                text: nextTryingToConceive ? t("goal.activate") : t("goal.disable"),
                 onPress: () => {
                     void onSaveSettings({ ...settings, tryingToConceive: nextTryingToConceive });
                 },
@@ -102,19 +100,15 @@ export function SettingsModal({
     };
 
     const confirmDevelopmentSeed = () => {
-        Alert.alert(
-            "Generar usuaria fake",
-            "Reemplaza datos actuales por historial largo y coherente para probar Hoy, Patrones, Diario y Calendario.",
-            [
-                { text: "Cancelar", style: "cancel" },
-                {
-                    text: "Generar",
-                    onPress: () => {
-                        void runDevelopmentSeed();
-                    },
+        Alert.alert(t("developmentSeed.title"), t("developmentSeed.body"), [
+            { text: t("common:actions.cancel"), style: "cancel" },
+            {
+                text: t("developmentSeed.confirm"),
+                onPress: () => {
+                    void runDevelopmentSeed();
                 },
-            ],
-        );
+            },
+        ]);
     };
 
     return (
@@ -122,17 +116,17 @@ export function SettingsModal({
             <View style={styles.screen}>
                 <View style={styles.header}>
                     <ScreenHeader
-                        kicker="Ajustes"
+                        kicker={t("header.kicker")}
                         leading={
                             <IconButton
                                 backgroundColor={surfaces.cardRaised}
                                 icon="chevron-left"
-                                label="Cerrar ajustes"
+                                label={t("header.close")}
                                 onPress={onClose}
                             />
                         }
-                        subtitle="Recordatorios, respaldo y privacidad local en un solo lugar."
-                        title="Tu espacio, a tu ritmo"
+                        subtitle={t("header.subtitle")}
+                        title={t("header.title")}
                     />
                 </View>
 
@@ -143,7 +137,7 @@ export function SettingsModal({
                             meta={goalMeta}
                             onPress={manageGoal}
                             text={goalText}
-                            title="Enfoque activo"
+                            title={t("goal.title")}
                         />
                     ) : null}
 
@@ -151,37 +145,37 @@ export function SettingsModal({
                         icon="bell-outline"
                         meta={cadenceMeta}
                         onPress={onOpenSchedule}
-                        text="Elige cada cuánto quieres recibir una pregunta corta dentro de tu ventana activa."
-                        title="Recordatorios"
+                        text={t("rows.reminders.text")}
+                        title={t("rows.reminders.title")}
                     />
 
                     <SettingRow
                         icon="database-export-outline"
-                        meta={exportingBackup ? "Preparando" : ".rea"}
+                        meta={exportingBackup ? t("rows.exportBackup.metaLoading") : t("rows.exportBackup.meta")}
                         onPress={() => {
                             void onExportBackup();
                         }}
-                        text="Guarda una copia local y abre el panel para compartirla."
-                        title="Exportar respaldo"
+                        text={t("rows.exportBackup.text")}
+                        title={t("rows.exportBackup.title")}
                     />
 
                     <SettingRow
                         icon="database-import-outline"
-                        meta={importingBackup ? "Buscando" : "Abrir archivo"}
+                        meta={importingBackup ? t("rows.importBackup.metaLoading") : t("rows.importBackup.meta")}
                         onPress={() => {
                             void onImportBackup();
                         }}
-                        text="Abre un respaldo guardado y confirma antes de reemplazar los datos actuales."
-                        title="Importar respaldo"
+                        text={t("rows.importBackup.text")}
+                        title={t("rows.importBackup.title")}
                     />
 
                     {__DEV__ ? (
                         <SettingRow
                             icon="flask-outline"
-                            meta={seedingDevelopmentData ? "Generando" : "Solo dev"}
+                            meta={seedingDevelopmentData ? t("developmentSeed.metaLoading") : t("developmentSeed.meta")}
                             onPress={confirmDevelopmentSeed}
-                            text="Genera historial largo de una usuaria de prueba para revisar estados maduros de producto sin cargar todo a mano."
-                            title="Usuaria fake"
+                            text={t("developmentSeed.text")}
+                            title={t("developmentSeed.title")}
                         />
                     ) : null}
 
@@ -190,11 +184,8 @@ export function SettingsModal({
                             <MaterialCommunityIcons color={colors.primaryDeep} name="shield-check-outline" size={25} />
                         </View>
                         <View style={styles.privacyCopy}>
-                            <Text style={styles.cardTitle}>Tus datos se quedan aquí</Text>
-                            <Text style={styles.cardText}>
-                                Tus registros viven solo en este teléfono. Las notificaciones son discretas y no
-                                muestran regla, fertilidad ni síntomas.
-                            </Text>
+                            <Text style={styles.cardTitle}>{t("privacy.title")}</Text>
+                            <Text style={styles.cardText}>{t("privacy.body")}</Text>
                         </View>
                     </SoftCard>
 
@@ -204,8 +195,8 @@ export function SettingsModal({
                                 <MaterialCommunityIcons color={colors.danger} name="refresh" size={24} />
                             </View>
                             <View style={styles.resetCopy}>
-                                <Text style={styles.cardTitle}>Empezar de cero</Text>
-                                <Text style={styles.cardText}>Borra todo y vuelve al primer paso.</Text>
+                                <Text style={styles.cardTitle}>{t("reset.title")}</Text>
+                                <Text style={styles.cardText}>{t("reset.text")}</Text>
                             </View>
                         </View>
                         <Pressable
@@ -213,13 +204,11 @@ export function SettingsModal({
                             onPress={confirmReset}
                             style={({ pressed }) => [styles.resetButton, pressed && styles.pressed]}
                         >
-                            <Text style={styles.resetButtonText}>Borrar mis datos</Text>
+                            <Text style={styles.resetButtonText}>{t("reset.button")}</Text>
                         </Pressable>
                     </SoftCard>
 
-                    <Text style={styles.referenceNote}>
-                        Cómo leer Rea: Observado sale de lo que registras. Estimado usa el calendario como referencia.
-                    </Text>
+                    <Text style={styles.referenceNote}>{t("privacy.reference")}</Text>
                 </ScrollView>
 
                 {exportSavedNotice ? (

@@ -1,3 +1,4 @@
+import { translate } from "@/modules/localization/i18n";
 import { CycleSnapshot, PhaseKey, PredictionConfidence } from "@/types/cycle.types";
 import { AppSettings } from "@/types/settings.types";
 
@@ -48,26 +49,26 @@ export function getPhaseMessage({
     settings,
 }: PhaseMessageContext): string {
     if (settings?.hormonalContraception) {
-        return "Con anticonceptivos hormonales damos más peso a lo que registres día a día.";
+        return translate("cycle:phaseMessage.hormonal");
     }
 
     if (source === "unknown") {
-        return "Base inicial. Empieza marcando tus periodos y esta vista irá tomando más forma.";
+        return translate("cycle:phaseMessage.unknown");
     }
 
     switch (phase) {
         case "menstrual":
             return source === "observed"
-                ? "Hoy cuenta como un día registrado de sangrado. Úsalo para darle más forma a tu ciclo."
-                : "Aquí conviene mirar flujo, dolor y energía si luego quieres comparar este tramo.";
+                ? translate("cycle:phaseMessage.menstrualObserved")
+                : translate("cycle:phaseMessage.menstrualEstimated");
         case "follicular":
-            return "Suele ser un tramo más liviano para mirar energía, sueño y ánimo.";
+            return translate("cycle:phaseMessage.follicular");
         case "fertile":
             return fertilityVisible
-                ? "Si este momento te importa, acompaña el calendario con señales de tu cuerpo."
-                : "Seguimos mostrándote el ciclo completo también en este tramo.";
+                ? translate("cycle:phaseMessage.fertileVisible")
+                : translate("cycle:phaseMessage.fertileHidden");
         case "luteal":
-            return `La próxima regla asoma en ${nextPeriodInDays} días. Sueño, ánimo y estrés suelen dar buen contexto aquí.`;
+            return translate("cycle:phaseMessage.luteal", { count: nextPeriodInDays });
     }
 }
 

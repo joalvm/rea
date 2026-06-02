@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useMemo, useState } from "react";
 import { Modal, Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import notificationCadenceSummary from "@/modules/notifications/utils/notificationCadenceSummary";
 import { colors } from "@/theme";
@@ -21,6 +22,7 @@ const INTERVAL_OPTIONS = [4, 6, 8, 12, 24];
 const MAX_PROMPTS_OPTIONS = [1, 2, 3, 4];
 
 export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleModalProps) {
+    const { t } = useTranslation("settings");
     const [draft, setDraft] = useState(cadence);
 
     const summary = useMemo(() => notificationCadenceSummary(draft), [draft]);
@@ -40,14 +42,14 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
             <View style={styles.screen}>
                 <View style={styles.header}>
                     <ScreenHeader
-                        kicker="Cadencia"
+                        kicker={t("schedule.cadenceKicker")}
                         leading={
                             <Pressable accessibilityRole="button" onPress={onClose} style={styles.iconButton}>
                                 <MaterialCommunityIcons color={colors.primaryDeep} name="chevron-left" size={26} />
                             </Pressable>
                         }
-                        subtitle="La notificación sigue siendo discreta. Aquí solo defines ritmo, ventana y límite diario."
-                        title="Cuándo quieres que te pregunte"
+                        subtitle={t("schedule.subtitle")}
+                        title={t("schedule.title")}
                     />
                 </View>
 
@@ -59,7 +61,7 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                                     <MaterialCommunityIcons color={colors.primaryDeep} name="bell-outline" size={23} />
                                 </View>
                                 <View style={styles.momentCopy}>
-                                    <Text style={styles.cardTitle}>Recordatorios contextuales</Text>
+                                    <Text style={styles.cardTitle}>{t("schedule.cardTitle")}</Text>
                                     <Text style={styles.question}>{summary}</Text>
                                 </View>
                             </View>
@@ -73,7 +75,7 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                     </SoftCard>
 
                     <SoftCard style={styles.addCard} tone="primary" variant="soft">
-                        <Text style={styles.cardTitle}>Cada cuántas horas</Text>
+                        <Text style={styles.cardTitle}>{t("schedule.intervalTitle")}</Text>
                         <View style={styles.days}>
                             {INTERVAL_OPTIONS.map((hours) => {
                                 const active = draft.intervalHours === hours;
@@ -83,7 +85,9 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                                         onPress={() => updateDraft({ intervalHours: hours })}
                                         style={[styles.day, active && styles.dayActive]}
                                     >
-                                        <Text style={[styles.dayText, active && styles.dayTextActive]}>{hours} h</Text>
+                                        <Text style={[styles.dayText, active && styles.dayTextActive]}>
+                                            {hours} {t("common:units.hourShort")}
+                                        </Text>
                                     </Pressable>
                                 );
                             })}
@@ -91,12 +95,12 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                     </SoftCard>
 
                     <SoftCard style={styles.addCard} tone="primary" variant="soft">
-                        <Text style={styles.cardTitle}>Ventana activa</Text>
+                        <Text style={styles.cardTitle}>{t("schedule.windowTitle")}</Text>
                         <TextInput
                             keyboardType="numbers-and-punctuation"
                             onChangeText={(value) => setDraft((current) => ({ ...current, activeWindowStart: value }))}
                             onEndEditing={() => updateDraft({ activeWindowStart: draft.activeWindowStart })}
-                            placeholder="09:00"
+                            placeholder={t("schedule.windowStartPlaceholder")}
                             placeholderTextColor={colors.muted}
                             style={styles.input}
                             value={draft.activeWindowStart}
@@ -105,7 +109,7 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                             keyboardType="numbers-and-punctuation"
                             onChangeText={(value) => setDraft((current) => ({ ...current, activeWindowEnd: value }))}
                             onEndEditing={() => updateDraft({ activeWindowEnd: draft.activeWindowEnd })}
-                            placeholder="21:00"
+                            placeholder={t("schedule.windowEndPlaceholder")}
                             placeholderTextColor={colors.muted}
                             style={styles.input}
                             value={draft.activeWindowEnd}
@@ -113,7 +117,7 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                     </SoftCard>
 
                     <SoftCard style={styles.addCard} tone="primary" variant="soft">
-                        <Text style={styles.cardTitle}>Máximo por día</Text>
+                        <Text style={styles.cardTitle}>{t("schedule.maxPerDayTitle")}</Text>
                         <View style={styles.days}>
                             {MAX_PROMPTS_OPTIONS.map((count) => {
                                 const active = draft.maxPromptsPerDay === count;
@@ -128,7 +132,7 @@ export function ScheduleModal({ visible, cadence, onClose, onChange }: ScheduleM
                                 );
                             })}
                         </View>
-                        <Text style={styles.question}>Snooze fijo disponible: 1 h, 3 h o hoy no.</Text>
+                        <Text style={styles.question}>{t("schedule.snoozeText")}</Text>
                     </SoftCard>
                 </ScrollView>
             </View>

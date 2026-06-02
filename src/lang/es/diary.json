@@ -1,0 +1,59 @@
+{
+    "bleeding": {
+        "heavy": "Abundante",
+        "light": "Leve",
+        "medium": "Medio",
+        "none": "Sin sangrado",
+        "spotting": "Manchado"
+    },
+    "dailyDetails": {
+        "breastSensitivity": "Sensibilidad mamaria {{value}}/5",
+        "clotLarge": "Coágulos grandes",
+        "clotMedium": "Coágulos medios",
+        "clotSmall": "Coágulos leves",
+        "libidoHigh": "Libido alta",
+        "libidoLow": "Libido baja",
+        "libidoVeryLow": "Libido muy baja",
+        "medicationHelped": "Sí ayudó",
+        "medicationNoHelp": "No ayudó",
+        "medicationPartly": "Ayudó poco",
+        "painImpactLimits": "Dolor me limitó",
+        "painImpactNoticeable": "Dolor se notó",
+        "painImpactStops": "Dolor me tumbó",
+        "painLocations": "Dolor en {{locations}}",
+        "periodEnded": "Terminó hoy",
+        "periodStarted": "Empezó hoy",
+        "pmsPresent": "SPM presente",
+        "pmsStarted": "Empezó SPM",
+        "pmsStarting": "SPM empezando"
+    },
+    "empty": {
+        "dailyLogs": "Todavía no hay días completos. El primero te toma menos de un minuto.",
+        "default": "Todavía no hay nada por aquí. En cuanto empieces a registrar, este espacio se va llenando.",
+        "noSymptoms": "Sin síntomas anotados."
+    },
+    "header": {
+        "subtitle": "Momentos puntuales y días observados quedan cerca para que luego sea más fácil leer contexto sin mezclar todo.",
+        "title": "Diario"
+    },
+    "metrics": {
+        "breast": "Pecho",
+        "energy": "Energía",
+        "mood": "Ánimo",
+        "pain": "Dolor",
+        "stress": "Estrés"
+    },
+    "moment": {
+        "morning": "Cómo despertaste",
+        "night": "Cómo estuvo tu día",
+        "now": "Cómo te sientes ahora"
+    },
+    "quickActions": {
+        "daily": "Mi día",
+        "now": "Ahora"
+    },
+    "sections": {
+        "dailyLogs": "Días con registro completo",
+        "latestMoments": "Últimos momentos"
+    }
+}

@@ -1,3 +1,4 @@
+import { translate } from "@/modules/localization/i18n";
 import { CycleSnapshot, PhaseKey, PhaseSource, PredictionConfidence } from "@/types/cycle.types";
 import { AppSettings } from "@/types/settings.types";
 
@@ -10,40 +11,40 @@ interface ConfidenceNoteContext {
 /** Devuelve label legible para origen de snapshot. */
 export function getSourceLabel(source: CycleSnapshot["source"]) {
     if (source === "observed") {
-        return "Observado";
+        return translate("common:sources.observed");
     }
 
     if (source === "estimated") {
-        return "Estimado";
+        return translate("common:sources.estimated");
     }
 
-    return "Sin datos";
+    return translate("common:sources.unknown");
 }
 
 /** Devuelve label legible para base actual de la fase mostrada. */
 export function getPhaseSourceLabel(source: PhaseSource) {
     if (source === "observed_signals") {
-        return "Observado hoy";
+        return translate("cycle:phaseSource.observed");
     }
 
     if (source === "history_anchor") {
-        return "Historial reciente";
+        return translate("cycle:phaseSource.history");
     }
 
-    return "Configuración inicial";
+    return translate("cycle:phaseSource.initial");
 }
 
 /** Devuelve label legible para nivel de confianza. */
 export function getConfidenceLabel(confidence: PredictionConfidence) {
     if (confidence === "high") {
-        return "Confianza alta";
+        return translate("cycle:confidence.high");
     }
 
     if (confidence === "medium") {
-        return "Confianza media";
+        return translate("cycle:confidence.medium");
     }
 
-    return "Confianza baja";
+    return translate("cycle:confidence.low");
 }
 
 /** Explica por qué snapshot tiene cierto nivel de confianza. */
@@ -55,37 +56,37 @@ export function getConfidenceNote(
 ) {
     if (observedBleedingToday) {
         return settings?.hormonalContraception
-            ? "Hoy manda sangrado observado. Con anticonceptivos priorizamos eso y no el calendario."
-            : "Hoy esta lectura se apoya en sangrado observado.";
+            ? translate("cycle:confidenceNote.bleedingHormonal")
+            : translate("cycle:confidenceNote.bleedingObserved");
     }
 
     if (settings?.hormonalContraception) {
         return observedInputToday
-            ? "Hoy hay señales observadas. Con anticonceptivos priorizamos eso y bajamos ambición del calendario."
-            : "Con anticonceptivos hormonales priorizamos lo observado y bajamos confianza del calendario.";
+            ? translate("cycle:confidenceNote.hormonalObserved")
+            : translate("cycle:confidenceNote.hormonalUnobserved");
     }
 
     if (observedInputToday) {
         if (source === "unknown") {
-            return "Hay señales observadas hoy, pero todavía falta historial para ubicarlas mejor en tu ciclo.";
+            return translate("cycle:confidenceNote.observedUnknown");
         }
 
         return confidence === "low"
-            ? "Hay señales observadas hoy, pero todavía no alcanzan para confirmar fase sin más historial."
-            : "Hay señales observadas hoy. La lectura ya no depende solo del calendario.";
+            ? translate("cycle:confidenceNote.observedLow")
+            : translate("cycle:confidenceNote.observedEstimated");
     }
 
     if (confidence === "high") {
-        return `Base fuerte: ${observedCycleCount} ciclos observados recientes.`;
+        return translate("cycle:confidenceNote.high", { count: observedCycleCount });
     }
 
     if (confidence === "medium") {
-        return `Base mixta: ${observedCycleCount} ciclos observados y tu configuracion inicial.`;
+        return translate("cycle:confidenceNote.medium", { count: observedCycleCount });
     }
 
     return observedCycleCount <= 1
-        ? "Base inicial con tus primeros registros."
-        : `Base parcial: ${observedCycleCount} ciclos observados recientes.`;
+        ? translate("cycle:confidenceNote.initialFirst")
+        : translate("cycle:confidenceNote.partial", { count: observedCycleCount });
 }
 
 /** Describe rango esperado para siguiente periodo. */
@@ -96,17 +97,17 @@ export function getNextPeriodLabel(
     source: CycleSnapshot["source"],
 ) {
     if (source === "unknown") {
-        return "Sin rango claro";
+        return translate("cycle:nextPeriod.unknown");
     }
 
     if (confidence === "high" && variabilityDays <= 2) {
-        return `En ${nextPeriodInDays} días`;
+        return translate("cycle:nextPeriod.clearRange", { count: nextPeriodInDays });
     }
 
     const halfRange = Math.max(1, Math.ceil(variabilityDays / 2));
     const start = Math.max(1, nextPeriodInDays - halfRange);
     const end = nextPeriodInDays + halfRange;
-    return `Entre ${start} y ${end} días`;
+    return translate("cycle:nextPeriod.range", { end, start });
 }
 
 /** Describe estado visible de ventana fértil. */
@@ -120,15 +121,17 @@ export function getFertilityStatusLabel(
     settings: AppSettings | null,
 ) {
     if (!fertilityVisible) {
-        return settings?.hormonalContraception ? "Oculta" : "No priorizada";
+        return settings?.hormonalContraception
+            ? translate("cycle:fertilityStatus.hidden")
+            : translate("cycle:fertilityStatus.notPrioritized");
     }
 
     if (phase === "fertile") {
-        return "Ahora";
+        return translate("cycle:fertilityStatus.now");
     }
 
     const daysToFertility = getDaysToFertility(cycleDay, fertileStart, cycleLength);
-    return `En ${daysToFertility} días`;
+    return translate("cycle:fertilityStatus.inDays", { count: daysToFertility });
 }
 
 function getDaysToFertility(cycleDay: number, fertileStart: number, cycleLength: number) {

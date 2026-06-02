@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { parseIsoDate, toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
+import { formatFullDate, formatMonthName } from "@/modules/localization/formatters";
 import { NumberPicker } from "@/ui/NumberPicker";
 import { StepShell } from "@/ui/StepShell";
 import styles from "../OnboardingScreen.styles";
@@ -13,6 +15,7 @@ interface OnboardingLastPeriodStepProps {
 
 /** Permite elegir la fecha base del último periodo observado. */
 export default function OnboardingLastPeriodStep({ lastPeriodStart, onChange }: OnboardingLastPeriodStepProps) {
+    const { t } = useTranslation("onboarding");
     const today = useMemo(() => parseIsoDate(toIsoDate(new Date())), []);
     const selectedDate = useMemo(() => parseIsoDate(lastPeriodStart), [lastPeriodStart]);
     const selectedYear = selectedDate.getFullYear();
@@ -30,16 +33,12 @@ export default function OnboardingLastPeriodStep({ lastPeriodStart, onChange }: 
     };
 
     return (
-        <StepShell
-            icon="calendar-start"
-            subtitle="Elige la fecha que recuerdes mejor. Luego puedes ajustarla si hace falta."
-            title="¿Cuándo empezó tu última regla?"
-        >
+        <StepShell icon="calendar-start" subtitle={t("lastPeriod.subtitle")} title={t("lastPeriod.title")}>
             <View style={styles.datePickerRow}>
                 <View style={styles.datePickerMonth}>
                     <NumberPicker
                         formatValue={formatMonthLabel}
-                        label="Mes"
+                        label={t("lastPeriod.month")}
                         max={selectedYear === today.getFullYear() ? today.getMonth() + 1 : 12}
                         min={1}
                         onChange={(value) => updateDate({ month: value })}
@@ -49,7 +48,7 @@ export default function OnboardingLastPeriodStep({ lastPeriodStart, onChange }: 
                 </View>
                 <View style={styles.datePickerDay}>
                     <NumberPicker
-                        label="Día"
+                        label={t("lastPeriod.day")}
                         max={getMaxDay(selectedYear, selectedMonth, today)}
                         min={1}
                         onChange={(value) => updateDate({ day: value })}
@@ -59,14 +58,16 @@ export default function OnboardingLastPeriodStep({ lastPeriodStart, onChange }: 
                 </View>
             </View>
             <NumberPicker
-                label="Año"
+                label={t("lastPeriod.year")}
                 max={today.getFullYear()}
                 min={today.getFullYear() - 5}
                 onChange={(value) => updateDate({ year: value })}
                 suffix=""
                 value={selectedYear}
             />
-            <Text style={styles.helperText}>Fecha elegida: {formatLongDate(lastPeriodStart)}</Text>
+            <Text style={styles.helperText}>
+                {t("lastPeriod.chosenDate", { date: formatFullDate(lastPeriodStart) })}
+            </Text>
         </StepShell>
     );
 }
@@ -81,14 +82,5 @@ function getMaxDay(year: number, month: number, today: Date) {
 }
 
 function formatMonthLabel(month: number) {
-    const label = new Date(2026, month - 1, 1, 12, 0, 0, 0).toLocaleDateString("es-PE", { month: "long" });
-    return label.charAt(0).toUpperCase() + label.slice(1);
-}
-
-function formatLongDate(iso: string) {
-    return parseIsoDate(iso).toLocaleDateString("es-PE", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    });
+    return formatMonthName(new Date(2026, month - 1, 1, 12, 0, 0, 0));
 }

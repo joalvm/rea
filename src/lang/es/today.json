@@ -1,0 +1,44 @@
+{
+    "accessibility": {
+        "openSettings": "Abrir ajustes"
+    },
+    "alerts": {
+        "sectionTitle": "Señales para mirar"
+    },
+    "care": {
+        "fertile": {
+            "bodySigns": "Si este momento te importa, mira también las señales de tu cuerpo.",
+            "temperature": "Temperatura, moco cervical o tests pueden darte más contexto."
+        },
+        "follicular": {
+            "movement": "Si tienes energía, muévete un poco sin exigirte.",
+            "trackSleepMood": "Anota sueño y ánimo; suelen dar pistas útiles."
+        },
+        "luteal": {
+            "observeMoodStress": "Observa ánimo y estrés sin juzgarte.",
+            "rest": "Prioriza sueño, comida tranquila y pausas pequeñas."
+        },
+        "menstrual": {
+            "painChange": "Si el dolor cambia, déjalo marcado para compararlo luego.",
+            "warmth": "Calor suave, agua cerca y descanso sin culpa."
+        },
+        "sectionTitle": "Para cuidarte hoy"
+    },
+    "hero": {
+        "activeObservedSignals": "Hoy manda lo observado: {{signals}}.",
+        "confidenceLabel": "Confianza",
+        "cycleDay": "Día",
+        "estimatedSupport": "{{phaseSourceLabel}}. {{confidenceReason}}",
+        "nextPeriod": "Próxima regla",
+        "observedSupport": "Hoy pesa más lo observado que el calendario. {{confidenceReason}}",
+        "pausedGoalLabel": "Objetivo",
+        "pausedGoalValue": "Búsqueda en pausa",
+        "pausedSupport": "Búsqueda activa, pero con anticonceptivos hormonales la ventana probable queda en pausa y hoy manda lo observado.",
+        "todaySignalLabel": "Señal de hoy"
+    },
+    "insights": {
+        "empty": "Con un poco más de historia, aquí empezarán a verse repeticiones y cambios del ciclo.",
+        "sectionTitle": "Lo que vamos notando"
+    },
+    "primaryAction": "Registrar ahora"
+}

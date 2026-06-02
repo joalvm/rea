@@ -1,15 +1,16 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "../theme";
 import { TabKey } from "../types/app.types";
 
-const TABS: { key: TabKey; label: string; icon: string }[] = [
-    { key: "today", label: "Hoy", icon: "calendar-heart" },
-    { key: "calendar", label: "Calendario", icon: "calendar-month-outline" },
-    { key: "diary", label: "Diario", icon: "notebook-outline" },
-    { key: "patterns", label: "Patrones", icon: "chart-bell-curve-cumulative" },
+const TABS: { key: TabKey; labelKey: string; icon: string }[] = [
+    { key: "today", labelKey: "today", icon: "calendar-heart" },
+    { key: "calendar", labelKey: "calendar", icon: "calendar-month-outline" },
+    { key: "diary", labelKey: "diary", icon: "notebook-outline" },
+    { key: "patterns", labelKey: "patterns", icon: "chart-bell-curve-cumulative" },
 ];
 
 interface BottomTabsProps {
@@ -19,6 +20,7 @@ interface BottomTabsProps {
 
 export function BottomTabs({ activeTab, onTabChange }: BottomTabsProps) {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation("navigation");
     const safeBottomPadding = Math.max(insets.bottom - 2, 10);
 
     return (
@@ -43,7 +45,7 @@ export function BottomTabs({ activeTab, onTabChange }: BottomTabsProps) {
                             name={tab.icon as never}
                             size={22}
                         />
-                        <Text style={[styles.label, active && styles.activeLabel]}>{tab.label}</Text>
+                        <Text style={[styles.label, active && styles.activeLabel]}>{t(tab.labelKey)}</Text>
                     </Pressable>
                 );
             })}

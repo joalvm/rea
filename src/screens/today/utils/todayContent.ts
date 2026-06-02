@@ -2,6 +2,7 @@ import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlert
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
 import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
 import { addDays } from "@/modules/cycle/utils/cycleDate.utils";
+import { translate } from "@/modules/localization/i18n";
 import { colors } from "@/theme";
 import { Cycle, CycleSnapshot, PhaseKey } from "@/types/cycle.types";
 import { EducationalAlert } from "@/types/insights.types";
@@ -19,28 +20,28 @@ export interface TodayHeroStat {
 /** Deriva tono breve para alertas visibles en Home. */
 export function getAlertTone(severity: EducationalAlert["severity"]): TodayAlertTone {
     if (severity === "consult") {
-        return { label: "Consultar", background: colors.periodSoft, ink: colors.period };
+        return { label: translate("common:alertTone.consult"), background: colors.periodSoft, ink: colors.period };
     }
 
     if (severity === "watch") {
-        return { label: "Vigilar", background: colors.primarySoft, ink: colors.primaryDeep };
+        return { label: translate("common:alertTone.watch"), background: colors.primarySoft, ink: colors.primaryDeep };
     }
 
-    return { label: "Info", background: colors.surfaceSoft, ink: colors.muted };
+    return { label: translate("common:alertTone.info"), background: colors.surfaceSoft, ink: colors.muted };
 }
 
 /** Resume el nivel actual de base observada o estimada del snapshot. */
 export function getHeroSupport(snapshot: CycleSnapshot, settings: AppSettings | null) {
     if (settings?.tryingToConceive && settings.hormonalContraception) {
-        return "Búsqueda activa, pero con anticonceptivos hormonales la ventana probable queda en pausa y hoy manda lo observado.";
+        return translate("today:hero.pausedSupport");
     }
 
     if (snapshot.source === "observed") {
         if (snapshot.activeSignals.length > 0) {
-            return `Hoy manda lo observado: ${snapshot.activeSignals.join(" · ")}.`;
+            return translate("today:hero.activeObservedSignals", { signals: snapshot.activeSignals.join(" · ") });
         }
 
-        return `Hoy pesa más lo observado que el calendario. ${snapshot.confidenceReason}`;
+        return translate("today:hero.observedSupport", { confidenceReason: snapshot.confidenceReason });
     }
 
     if (snapshot.source === "estimated") {
@@ -48,7 +49,10 @@ export function getHeroSupport(snapshot: CycleSnapshot, settings: AppSettings | 
             return snapshot.confidenceReason;
         }
 
-        return `${snapshot.phaseSourceLabel}. ${snapshot.confidenceReason}`;
+        return translate("today:hero.estimatedSupport", {
+            confidenceReason: snapshot.confidenceReason,
+            phaseSourceLabel: snapshot.phaseSourceLabel,
+        });
     }
 
     return snapshot.confidenceReason;
@@ -59,15 +63,15 @@ export function getHeroSecondaryStat(snapshot: CycleSnapshot, settings: AppSetti
     if (settings?.tryingToConceive && settings.hormonalContraception) {
         return {
             icon: "compass-outline",
-            label: "Objetivo",
-            value: "Búsqueda en pausa",
+            label: translate("today:hero.pausedGoalLabel"),
+            value: translate("today:hero.pausedGoalValue"),
         };
     }
 
     if (snapshot.fertilityVisible) {
         return {
             icon: "leaf",
-            label: "Ventana fértil",
+            label: translate("terms:fertileWindow"),
             value: snapshot.fertilityStatusLabel,
         };
     }
@@ -75,14 +79,14 @@ export function getHeroSecondaryStat(snapshot: CycleSnapshot, settings: AppSetti
     if (snapshot.activeSignals.length > 0) {
         return {
             icon: "pulse",
-            label: "Señal de hoy",
+            label: translate("today:hero.todaySignalLabel"),
             value: snapshot.activeSignals[0] ?? snapshot.confidenceLabel,
         };
     }
 
     return {
         icon: "information-outline",
-        label: "Confianza",
+        label: translate("today:hero.confidenceLabel"),
         value: snapshot.confidenceLabel,
     };
 }
@@ -123,13 +127,13 @@ export function getCareTips(phase: PhaseKey): TodayCareTip[] {
         return [
             {
                 icon: "tea-outline",
-                text: "Calor suave, agua cerca y descanso sin culpa.",
+                text: translate("today:care.menstrual.warmth"),
                 color: colors.period,
                 background: colors.periodSoft,
             },
             {
                 icon: "pulse",
-                text: "Si el dolor cambia, déjalo marcado para compararlo luego.",
+                text: translate("today:care.menstrual.painChange"),
                 color: colors.primaryDeep,
                 background: colors.primarySoft,
             },
@@ -140,13 +144,13 @@ export function getCareTips(phase: PhaseKey): TodayCareTip[] {
         return [
             {
                 icon: "walk",
-                text: "Si tienes energía, muévete un poco sin exigirte.",
+                text: translate("today:care.follicular.movement"),
                 color: colors.success,
                 background: colors.fertileSoft,
             },
             {
                 icon: "notebook-heart-outline",
-                text: "Anota sueño y ánimo; suelen dar pistas útiles.",
+                text: translate("today:care.follicular.trackSleepMood"),
                 color: colors.primaryDeep,
                 background: colors.primarySoft,
             },
@@ -157,13 +161,13 @@ export function getCareTips(phase: PhaseKey): TodayCareTip[] {
         return [
             {
                 icon: "leaf",
-                text: "Si este momento te importa, mira también las señales de tu cuerpo.",
+                text: translate("today:care.fertile.bodySigns"),
                 color: colors.success,
                 background: colors.fertileSoft,
             },
             {
                 icon: "thermometer-lines",
-                text: "Temperatura, moco cervical o tests pueden darte más contexto.",
+                text: translate("today:care.fertile.temperature"),
                 color: colors.primaryDeep,
                 background: colors.primarySoft,
             },
@@ -173,13 +177,13 @@ export function getCareTips(phase: PhaseKey): TodayCareTip[] {
     return [
         {
             icon: "weather-night",
-            text: "Prioriza sueño, comida tranquila y pausas pequeñas.",
+            text: translate("today:care.luteal.rest"),
             color: "#7A5EC9",
             background: colors.lutealSoft,
         },
         {
             icon: "heart-outline",
-            text: "Observa ánimo y estrés sin juzgarte.",
+            text: translate("today:care.luteal.observeMoodStress"),
             color: colors.period,
             background: colors.periodSoft,
         },

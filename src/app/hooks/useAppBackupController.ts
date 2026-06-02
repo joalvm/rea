@@ -3,6 +3,7 @@ import * as Sharing from "expo-sharing";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, Linking } from "react-native";
 
+import { translate } from "@/modules/localization/i18n";
 import { ExportSavedNotice } from "../../features/settings/settings.types";
 import {
     BACKUP_IMPORT_FILE_HINT,
@@ -88,11 +89,14 @@ export default function useAppBackupController({
                 await refreshData();
                 resetShellView();
 
-                Alert.alert("Respaldo importado", "Tus registros volvieron a este teléfono.");
+                Alert.alert(
+                    translate("settings:backup.import.successTitle"),
+                    translate("settings:backup.import.successBody"),
+                );
             } catch (error) {
                 Alert.alert(
-                    "No pude importar el respaldo",
-                    getErrorMessage(error, "Revisa que sea un respaldo válido creado por Rea."),
+                    translate("settings:backup.import.cannotImport"),
+                    getErrorMessage(error, translate("settings:backup.import.fallbackInvalid")),
                 );
             } finally {
                 pendingIncomingBackupUri.current = null;
@@ -111,18 +115,18 @@ export default function useAppBackupController({
             pendingIncomingBackupUri.current = backupUri;
 
             Alert.alert(
-                "Importar respaldo",
+                translate("settings:backup.import.title"),
                 buildBackupImportMessage(sourceLabel),
                 [
                     {
-                        text: "Cancelar",
+                        text: translate("settings:backup.import.cancel"),
                         style: "cancel",
                         onPress: () => {
                             pendingIncomingBackupUri.current = null;
                         },
                     },
                     {
-                        text: "Importar",
+                        text: translate("settings:backup.import.confirm"),
                         style: "destructive",
                         onPress: () => {
                             void runBackupImport(backupUri);
@@ -207,13 +211,16 @@ export default function useAppBackupController({
                     await shareBackupFile(savedBackupUri);
                 } catch (error) {
                     Alert.alert(
-                        "No pude abrir compartir",
-                        getErrorMessage(error, "El respaldo quedó guardado en este teléfono."),
+                        translate("settings:backup.export.cannotOpenShare"),
+                        getErrorMessage(error, translate("settings:backup.export.fallbackSaved")),
                     );
                 }
             }
         } catch (error) {
-            Alert.alert("No pude exportar tu respaldo", getErrorMessage(error, "Intenta de nuevo en unos segundos."));
+            Alert.alert(
+                translate("settings:backup.export.cannotExport"),
+                getErrorMessage(error, translate("settings:backup.export.fallbackRetry")),
+            );
         } finally {
             setExportingBackup(false);
         }
@@ -232,7 +239,10 @@ export default function useAppBackupController({
             await shareBackupFile(exportSavedNotice.fileUri);
             setExportSavedNotice(null);
         } catch (error) {
-            Alert.alert("No pude compartir tu respaldo", getErrorMessage(error, "Intenta de nuevo en unos segundos."));
+            Alert.alert(
+                translate("settings:backup.export.cannotShare"),
+                getErrorMessage(error, translate("settings:backup.export.fallbackRetry")),
+            );
         }
     };
 
@@ -246,14 +256,20 @@ export default function useAppBackupController({
 
             const selectedBackup = result.result;
             if (!selectedBackup) {
-                throw new Error("No recibí ningún archivo para importar.");
+                throw new Error(translate("settings:backup.import.missingFile"));
             }
 
-            promptBackupImport(selectedBackup.uri, `el archivo ${selectedBackup.name}`);
+            promptBackupImport(
+                selectedBackup.uri,
+                translate("settings:backup.import.fileLabel", { name: selectedBackup.name }),
+            );
         } catch (error) {
             Alert.alert(
-                "No pude importar el respaldo",
-                getErrorMessage(error, `Busca un respaldo ${BACKUP_IMPORT_FILE_HINT} creado por Rea.`),
+                translate("settings:backup.import.cannotImport"),
+                getErrorMessage(
+                    error,
+                    translate("settings:backup.import.fallbackHint", { hint: BACKUP_IMPORT_FILE_HINT }),
+                ),
             );
         }
     }, [promptBackupImport]);
@@ -270,24 +286,27 @@ export default function useAppBackupController({
         }
 
         Alert.alert(
-            "Importar respaldo",
-            `Encontré ${latestSavedBackup.name} guardado por Rea en este teléfono.`,
+            translate("settings:backup.import.title"),
+            translate("settings:backup.import.latestFound", { name: latestSavedBackup.name }),
             [
                 {
-                    text: "Cancelar",
+                    text: translate("settings:backup.import.cancel"),
                     style: "cancel",
                 },
                 {
-                    text: "Buscar otro",
+                    text: translate("settings:backup.import.chooseOther"),
                     onPress: () => {
                         void openBackupFilePicker();
                     },
                 },
                 {
-                    text: "Usar este",
+                    text: translate("settings:backup.import.useThis"),
                     style: "destructive",
                     onPress: () => {
-                        promptBackupImport(latestSavedBackup.uri, `el respaldo ${latestSavedBackup.name}`);
+                        promptBackupImport(
+                            latestSavedBackup.uri,
+                            translate("settings:backup.import.latestBackup", { name: latestSavedBackup.name }),
+                        );
                     },
                 },
             ],
@@ -318,7 +337,7 @@ function maybePromptIncomingBackup(
         return;
     }
 
-    promptBackupImport(url, "el archivo que abriste");
+    promptBackupImport(url, translate("settings:backup.import.incomingFile"));
 }
 
 function isIncomingBackupUrl(url: string) {
@@ -337,8 +356,8 @@ function getIncomingSharedBackup(
             key: `${resolvedBackup.contentUri}|${resolvedBackup.originalName ?? ""}`,
             uri: resolvedBackup.contentUri,
             sourceLabel: resolvedBackup.originalName
-                ? `el archivo ${resolvedBackup.originalName}`
-                : "el archivo que abriste",
+                ? translate("settings:backup.import.fileLabel", { name: resolvedBackup.originalName })
+                : translate("settings:backup.import.incomingFile"),
         };
     }
 
@@ -352,7 +371,7 @@ function getIncomingSharedBackup(
     return {
         key: `${sharedBackup.value}|${sharedBackup.mimeType ?? ""}`,
         uri: sharedBackup.value,
-        sourceLabel: "el archivo que abriste",
+        sourceLabel: translate("settings:backup.import.incomingFile"),
     };
 }
 
@@ -365,12 +384,12 @@ function isLikelySharedBackup(uri: string, fileName?: string | null, mimeType?: 
 }
 
 function buildBackupImportMessage(sourceLabel: string) {
-    return `Se reemplazarán los registros actuales por ${sourceLabel}. Solo continúa si reconoces ese respaldo.`;
+    return translate("settings:backup.import.message", { sourceLabel });
 }
 
 async function shareBackupFile(fileUri: string) {
     await Sharing.shareAsync(fileUri, {
-        dialogTitle: "Compartir respaldo de Rea",
+        dialogTitle: translate("settings:backup.export.shareDialogTitle"),
         mimeType: BACKUP_SHARE_MIME_TYPE,
     });
 }
@@ -384,7 +403,7 @@ function buildExportSavedNotice(
     return {
         fileName,
         fileUri,
-        message: `Se guardó en ${folderLabel}.`,
+        message: translate("settings:backup.export.savedMessage", { folder: folderLabel }),
         canShare,
     };
 }

@@ -1,8 +1,7 @@
 import { CycleSnapshot } from "@/types/cycle.types";
+import { getWeekdayNarrowLabels } from "@/modules/localization/formatters";
 
 import { daysBetween, parseIsoDate, toIsoDate } from "../utils/cycleDate.utils";
-
-const WEEKDAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
 /** Construye semana contextual alrededor de fecha objetivo. */
 export default function buildWeek(
@@ -15,6 +14,7 @@ export default function buildWeek(
     observedBleedingDates: Set<string>,
     fertilityVisible: boolean,
 ): CycleSnapshot["week"] {
+    const weekdays = getWeekdayNarrowLabels();
     const today = parseIsoDate(todayIso);
     const start = new Date(today);
     start.setDate(today.getDate() - 3);
@@ -30,7 +30,7 @@ export default function buildWeek(
         return {
             iso,
             day: date.getDate(),
-            weekday: WEEKDAYS[date.getDay()] ?? "",
+            weekday: weekdays[date.getDay()] ?? "",
             isToday: iso === todayIso,
             isPeriod: isObservedPeriod || projectedCycleDay <= periodLength,
             periodSource: isObservedPeriod ? "observed" : projectedCycleDay <= periodLength ? "estimated" : "unknown",

@@ -1,0 +1,53 @@
+{
+    "actions": {
+        "back": "Atrás",
+        "continue": "Continuar",
+        "importBackup": "Importar respaldo",
+        "next": "Siguiente",
+        "start": "Empezar"
+    },
+    "footer": {
+        "privacy": "Tus datos se quedan en este teléfono. No hace falta crear cuenta para empezar."
+    },
+    "goal": {
+        "description": "Activa referencias probables de fertilidad junto con tus registros, sin promesas clínicas.",
+        "label": "También buscar embarazo",
+        "subtitle": "Entender tu ciclo ya viene incluido. Activa esto solo si también quieres referencias probables de fertilidad.",
+        "title": "¿Quieres sumar búsqueda de embarazo?"
+    },
+    "lastPeriod": {
+        "chosenDate": "Fecha elegida: {{date}}",
+        "day": "Día",
+        "month": "Mes",
+        "subtitle": "Elige la fecha que recuerdes mejor. Luego puedes ajustarla si hace falta.",
+        "title": "¿Cuándo empezó tu última regla?",
+        "year": "Año"
+    },
+    "privacy": {
+        "bodyEstimate": "Lo que registres y lo que solo se estime se va a ver distinto, para no mezclar referencia con realidad.",
+        "bodyImport": "Si ya habías usado Rea antes, puedes traer tus datos guardados antes de seguir.",
+        "subtitle": "Vamos a dejar una base simple para empezar, sin pedirte más de la cuenta.",
+        "title": "Empecemos contigo"
+    },
+    "regularity": {
+        "hormonalContraception": "Estoy usando anticonceptivos hormonales",
+        "irregular": "No, cambia bastante",
+        "regular": "Sí, casi siempre",
+        "subtitle": "Esto nos ayuda a acomodar mejor el calendario al empezar.",
+        "title": "¿Tu regla suele llegar en fechas parecidas?",
+        "variable": "A veces cambia"
+    },
+    "reminders": {
+        "active": "Recordatorios activos",
+        "paused": "Recordatorios pausados",
+        "subtitle": "Puedes ajustar ritmo y ventana después. La notificación no muestra nada íntimo.",
+        "title": "¿Quieres recordatorios?"
+    },
+    "rhythm": {
+        "cycleLength": "Duración del ciclo",
+        "days": "días",
+        "periodLength": "Duración del sangrado",
+        "subtitle": "Si no la tienes clara, empieza con un valor cercano y luego lo ajustas.",
+        "title": "¿Más o menos cómo suele ser tu ciclo?"
+    }
+}

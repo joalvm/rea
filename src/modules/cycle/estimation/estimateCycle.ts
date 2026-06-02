@@ -1,6 +1,7 @@
 import { Cycle, CycleSnapshot } from "@/types/cycle.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
+import { translate } from "@/modules/localization/i18n";
 
 import buildWeek from "../calendar/buildWeek";
 import {
@@ -155,11 +156,11 @@ function getActiveSignals(dailyLogs: DailyLog[], moodCheckIns: MoodCheckIn[], to
     }
 
     if (todayLog?.details?.periodStarted) {
-        signals.push("Inicio de periodo");
+        signals.push(translate("cycle:activeSignals.periodStarted"));
     }
 
     if (todayLog?.details?.periodEnded) {
-        signals.push("Cierre de periodo");
+        signals.push(translate("cycle:activeSignals.periodEnded"));
     }
 
     if (todayLog?.symptoms?.length) {
@@ -167,27 +168,27 @@ function getActiveSignals(dailyLogs: DailyLog[], moodCheckIns: MoodCheckIn[], to
     }
 
     if (todayLog?.details?.pmsState === "starting") {
-        signals.push("SPM empezando");
+        signals.push(translate("cycle:activeSignals.pmsStarting"));
     }
 
     if (todayLog?.details?.pmsState === "present") {
-        signals.push("SPM presente");
+        signals.push(translate("cycle:activeSignals.pmsPresent"));
     }
 
     if (todayLog?.details?.painImpact === "limits_day" || todayLog?.details?.painImpact === "stops_day") {
-        signals.push("Dolor limitante");
+        signals.push(translate("cycle:activeSignals.painLimiting"));
     }
 
     if (todayCheckIns.some((item) => item.pain >= 4)) {
-        signals.push("Dolor alto");
+        signals.push(translate("cycle:activeSignals.painHigh"));
     }
 
     if (todayCheckIns.some((item) => item.energy >= 4)) {
-        signals.push("Energía alta");
+        signals.push(translate("cycle:activeSignals.energyHigh"));
     }
 
     if (todayCheckIns.some((item) => item.mood <= 2)) {
-        signals.push("Ánimo bajo");
+        signals.push(translate("cycle:activeSignals.moodLow"));
     }
 
     return [...new Set(signals)].slice(0, 4);
@@ -203,16 +204,16 @@ function hasObservedInputToday(dailyLogs: DailyLog[], moodCheckIns: MoodCheckIn[
 
 function bleedingSignalLabel(level: DailyLog["bleedingLevel"]) {
     if (level === "spotting") {
-        return "Manchado observado";
+        return translate("cycle:activeSignals.bleedingSpotting");
     }
 
     if (level === "light") {
-        return "Sangrado leve";
+        return translate("cycle:activeSignals.bleedingLight");
     }
 
     if (level === "medium") {
-        return "Sangrado medio";
+        return translate("cycle:activeSignals.bleedingMedium");
     }
 
-    return "Sangrado abundante";
+    return translate("cycle:activeSignals.bleedingHeavy");
 }

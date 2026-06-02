@@ -1,5 +1,7 @@
 import { ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
+import { getWeekdayNarrowLabels } from "@/modules/localization/formatters";
 import { colors } from "@/theme";
 import { Cycle } from "@/types/cycle.types";
 import { DailyLog } from "@/types/records.types";
@@ -23,25 +25,27 @@ interface CalendarScreenProps {
 }
 
 export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onOpenDay }: CalendarScreenProps) {
+    const { t } = useTranslation("calendar");
     const { days, loggedDates, monthLabel, shiftMonth, todayHasLog, todayIso } = useCalendarModel({
         settings,
         cycles,
         dailyLogs,
     });
+    const weekdays = getWeekdayNarrowLabels();
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <ScreenHeader
-                title="Calendario"
+                title={t("header.title")}
                 titleIcon={<BrandMark color={colors.primaryDeep} size={24} />}
-                subtitle="Mira el mes completo y abre cada día para ubicarte mejor dentro de tu ciclo."
+                subtitle={t("header.subtitle")}
             />
 
             <View style={styles.calendarPanel}>
                 <MonthHeader monthLabel={monthLabel} onNext={() => shiftMonth(1)} onPrevious={() => shiftMonth(-1)} />
 
                 <View style={styles.weekHeader}>
-                    {["D", "L", "M", "M", "J", "V", "S"].map((day, index) => (
+                    {weekdays.map((day, index) => (
                         <Text key={`${day}-${index}`} style={styles.weekday}>
                             {day}
                         </Text>
@@ -66,34 +70,33 @@ export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onO
                 <View style={styles.legend}>
                     <View style={styles.legendItem}>
                         <View style={[styles.legendSwatch, styles.legendSwatchObservedPeriod]} />
-                        <Text style={styles.legendText}>Regla observada</Text>
+                        <Text style={styles.legendText}>{t("legend.observedPeriod")}</Text>
                     </View>
                     <View style={styles.legendItem}>
                         <View style={[styles.legendSwatch, styles.legendSwatchEstimatedPeriod]} />
-                        <Text style={styles.legendText}>Regla estimada</Text>
+                        <Text style={styles.legendText}>{t("legend.estimatedPeriod")}</Text>
                     </View>
                     <View style={styles.legendItem}>
                         <View style={[styles.legendSwatch, styles.legendSwatchFertile]} />
-                        <Text style={styles.legendText}>Ventana fértil</Text>
+                        <Text style={styles.legendText}>{t("legend.fertileWindow")}</Text>
                     </View>
                     <View style={styles.legendItem}>
                         <View style={[styles.legendSwatch, styles.legendSwatchLuteal]} />
-                        <Text style={styles.legendText}>Lútea</Text>
+                        <Text style={styles.legendText}>{t("legend.luteal")}</Text>
                     </View>
                 </View>
             </View>
 
             <SoftCard style={styles.todayCard} variant="soft">
                 <View style={styles.todayCardHeader}>
-                    <Text style={styles.todayCardTag}>Hoy</Text>
-                    <Text style={styles.todayCardTitle}>¿Quieres añadir algo a este día?</Text>
+                    <Text style={styles.todayCardTag}>{t("todayCard.tag")}</Text>
+                    <Text style={styles.todayCardTitle}>{t("todayCard.title")}</Text>
                 </View>
-                <Text style={styles.todayCardText}>
-                    {todayHasLog
-                        ? "Hoy ya tiene algo anotado. Si cambió algo, puedes ajustarlo sin salir del calendario."
-                        : "Hoy sigue libre. Si quieres, déjalo registrado ahora y sigues con tu mes."}
-                </Text>
-                <SoftButton label={todayHasLog ? "Actualizar hoy" : "Registrar hoy"} onPress={onOpenCheckIn} />
+                <Text style={styles.todayCardText}>{todayHasLog ? t("todayCard.logged") : t("todayCard.open")}</Text>
+                <SoftButton
+                    label={todayHasLog ? t("todayCard.buttonLogged") : t("todayCard.buttonOpen")}
+                    onPress={onOpenCheckIn}
+                />
             </SoftCard>
         </ScrollView>
     );
