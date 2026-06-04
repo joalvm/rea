@@ -9,18 +9,11 @@ import {
     BACKUP_IMPORT_FILE_HINT,
     BACKUP_SHARE_MIME_TYPE,
     isLikelyBackupUri,
-} from "../../modules/storage/services/backupFile";
-import clearScheduledNotifications from "../../modules/notifications/scheduler/clearScheduledNotifications";
-import rescheduleNotificationCadence from "../../modules/notifications/scheduler/rescheduleNotificationCadence";
-import exportAppBackup from "../../modules/storage/services/exportAppBackup";
-import importAppBackup from "../../modules/storage/services/importAppBackup";
-import loadAppStoreData from "../../modules/storage/services/loadAppStoreData";
-import { saveReminderPreferences } from "../../modules/storage/services/profileState";
-import saveBackupToDevice, { getLatestSavedBackup } from "../../modules/storage/services/saveBackupToDevice";
+} from "../../modules/storage/backup/backupFile";
+import useBackupStore from "../../modules/state/useBackupStore";
 
 interface UseAppBackupControllerParams {
     loading: boolean;
-    refreshData: () => Promise<void>;
     resetShellView: () => void;
 }
 
@@ -45,7 +38,6 @@ export interface UseAppBackupControllerResult {
 /** Encapsula flujo de respaldo local: detectar, importar, exportar y compartir. */
 export default function useAppBackupController({
     loading,
-    refreshData,
     resetShellView,
 }: UseAppBackupControllerParams): UseAppBackupControllerResult {
     const pendingIncomingBackupUri = useRef<string | null>(null);
@@ -53,6 +45,9 @@ export default function useAppBackupController({
     const [exportSavedNotice, setExportSavedNotice] = useState<ExportSavedNotice | null>(null);
     const [exportingBackup, setExportingBackup] = useState(false);
     const [importingBackup, setImportingBackup] = useState(false);
+    const exportBackupFile = useBackupStore((state) => state.exportBackupFile);
+    const getLatestBackupCandidate = useBackupStore((state) => state.getLatestBackupCandidate);
+    const importBackupFile = useBackupStore((state) => state.importBackupFile);
     const incomingShare = Sharing.useIncomingShare();
 
     useEffect(() => {
@@ -76,17 +71,7 @@ export default function useAppBackupController({
             try {
                 setImportingBackup(true);
 
-                await importAppBackup(backupUri);
-
-                const restoredData = await loadAppStoreData();
-                if (restoredData.notificationCadence?.enabled) {
-                    const scheduledCadence = await rescheduleNotificationCadence(restoredData.notificationCadence);
-                    await saveReminderPreferences(scheduledCadence);
-                } else {
-                    await clearScheduledNotifications();
-                }
-
-                await refreshData();
+                await importBackupFile(backupUri);
                 resetShellView();
 
                 Alert.alert(
@@ -103,7 +88,7 @@ export default function useAppBackupController({
                 setImportingBackup(false);
             }
         },
-        [exportingBackup, importingBackup, refreshData, resetShellView],
+        [exportingBackup, importBackupFile, importingBackup, resetShellView],
     );
 
     const promptBackupImport = useCallback(
@@ -192,18 +177,12 @@ export default function useAppBackupController({
         try {
             setExportingBackup(true);
 
-            const backupFile = await exportAppBackup();
-            const savedBackup = await saveBackupToDevice(backupFile);
+            const savedBackup = await exportBackupFile();
             const sharingAvailable = await Sharing.isAvailableAsync();
-            const savedBackupUri = savedBackup.file.uri;
+            const savedBackupUri = savedBackup.fileUri;
 
             setExportSavedNotice(
-                buildExportSavedNotice(
-                    savedBackup.file.name,
-                    savedBackupUri,
-                    savedBackup.folderLabel,
-                    sharingAvailable,
-                ),
+                buildExportSavedNotice(savedBackup.fileName, savedBackupUri, savedBackup.folderLabel, sharingAvailable),
             );
 
             if (sharingAvailable) {
@@ -279,7 +258,7 @@ export default function useAppBackupController({
             return;
         }
 
-        const latestSavedBackup = getLatestSavedBackup();
+        const latestSavedBackup = getLatestBackupCandidate();
         if (!latestSavedBackup) {
             await openBackupFilePicker();
             return;

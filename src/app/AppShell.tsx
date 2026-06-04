@@ -5,9 +5,9 @@ import AppShellModals from "./components/AppShellModals";
 import AppShellScene from "./components/AppShellScene";
 import useAppBackupController from "./hooks/useAppBackupController";
 import useAppBootstrapController from "./hooks/useAppBootstrapController";
-import useAppPersistenceController from "./hooks/useAppPersistenceController";
 import useAppQuickCheckInNotificationListener from "./hooks/useAppQuickCheckInNotificationListener";
 import useAppShellState from "./hooks/useAppShellState";
+import useAppStore from "../modules/state/useAppStore";
 import useDiaryStore from "../modules/state/useDiaryStore";
 import { toIsoDate } from "../modules/cycle/utils/cycleDate.utils";
 import { OnboardingScreen } from "../screens/onboarding/OnboardingScreen";
@@ -22,6 +22,13 @@ export default function AppShell() {
     const { dailyRecords } = useDiaryStore();
     const todayIso = toIsoDate(new Date());
     const todayDailyLog = dailyRecords.find((entry) => entry.date === todayIso) ?? null;
+    const completeOnboarding = useAppStore((state) => state.completeOnboarding);
+    const deleteCheckIn = useAppStore((state) => state.deleteCheckIn);
+    const resetApplicationData = useAppStore((state) => state.resetApplication);
+    const saveAppSettings = useAppStore((state) => state.saveAppSettings);
+    const saveCheckIn = useAppStore((state) => state.saveCheckIn);
+    const saveNotificationCadence = useAppStore((state) => state.saveNotificationCadence);
+    const seedDevelopmentUserData = useAppStore((state) => state.seedDevelopmentUserData);
 
     useAppQuickCheckInNotificationListener((momentType, source) =>
         shellState.openQuickCheckIn(momentType, source, todayDailyLog),
@@ -29,17 +36,14 @@ export default function AppShell() {
 
     const backup = useAppBackupController({
         loading: bootstrap.loading,
-        refreshData: bootstrap.refreshData,
         resetShellView: shellState.resetShellView,
     });
-    const persistence = useAppPersistenceController({
-        dismissExportSavedNotice: backup.dismissExportSavedNotice,
-        notificationCadence: bootstrap.notificationCadence,
-        refreshData: bootstrap.refreshData,
-        replaceNotificationCadence: bootstrap.replaceNotificationCadence,
-        resetData: bootstrap.resetData,
-        resetShellView: shellState.resetShellView,
-    });
+
+    const resetApplication = async () => {
+        await resetApplicationData();
+        backup.dismissExportSavedNotice();
+        shellState.resetShellView();
+    };
 
     if (bootstrap.loading) {
         return (
@@ -55,7 +59,7 @@ export default function AppShell() {
             <>
                 <OnboardingScreen
                     importingBackup={backup.importingBackup}
-                    onComplete={persistence.completeOnboarding}
+                    onComplete={completeOnboarding}
                     onImportBackup={backup.importBackup}
                 />
                 <StatusBar style="dark" />
@@ -84,7 +88,17 @@ export default function AppShell() {
                 />
                 <BottomTabs activeTab={shellState.activeTab} onTabChange={shellState.handleTabChange} />
             </View>
-            <AppShellModals bootstrap={bootstrap} backup={backup} persistence={persistence} shellState={shellState} />
+            <AppShellModals
+                bootstrap={bootstrap}
+                backup={backup}
+                deleteCheckIn={deleteCheckIn}
+                onResetApplication={resetApplication}
+                saveAppSettings={saveAppSettings}
+                saveCheckIn={saveCheckIn}
+                saveNotificationCadence={saveNotificationCadence}
+                seedDevelopmentUserData={seedDevelopmentUserData}
+                shellState={shellState}
+            />
             <StatusBar style="dark" />
         </View>
     );

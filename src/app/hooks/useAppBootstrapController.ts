@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
 
-import useSettingsStore from "../../modules/state/useSettingsStore";
-import useAppStore from "../../modules/state/useAppStore";
-import { NotificationCadence } from "../../types/notifications.types";
-import { AppSettings } from "../../types/settings.types";
+import useSettingsStore from "@/modules/state/useSettingsStore";
+import useAppStore from "@/modules/state/useAppStore";
+import { NotificationCadence } from "@/types/notifications.types";
+import { AppSettings } from "@/types/settings.types";
 
 /** Contrato de salida de useAppBootstrapController para consumidores del shell raíz. */
 export interface UseAppBootstrapControllerResult {
@@ -13,12 +13,6 @@ export interface UseAppBootstrapControllerResult {
     loading: boolean;
     /** Momentos de notificación listos para consumir en UI. */
     notificationCadence: NotificationCadence;
-    /** Recarga datos persistidos desde almacenamiento local. */
-    refreshData: () => Promise<void>;
-    /** Actualiza sólo momentos en snapshot actual sin recarga completa. */
-    replaceNotificationCadence: (notificationCadence: NotificationCadence) => void;
-    /** Limpia snapshot raíz tras reset de aplicación. */
-    resetData: () => void;
 }
 
 /** Encapsula bootstrap raíz y estado mínimo usado por shell principal. */
@@ -26,9 +20,6 @@ export default function useAppBootstrapController(): UseAppBootstrapControllerRe
     const { notificationCadence, settings } = useSettingsStore();
     const loading = useAppStore((state) => state.loading);
     const bootstrap = useAppStore((state) => state.bootstrap);
-    const refreshAppStoreData = useAppStore((state) => state.refreshData);
-    const replaceNotificationCadence = useAppStore((state) => state.replaceNotificationCadence);
-    const resetData = useAppStore((state) => state.resetData);
 
     const boot = useCallback(async () => {
         await bootstrap();
@@ -42,16 +33,9 @@ export default function useAppBootstrapController(): UseAppBootstrapControllerRe
         return () => cancelAnimationFrame(frame);
     }, [boot]);
 
-    const refreshData = useCallback(async () => {
-        await refreshAppStoreData();
-    }, [refreshAppStoreData]);
-
     return {
         loading,
         notificationCadence,
-        refreshData,
-        replaceNotificationCadence,
-        resetData,
         settings,
     };
 }

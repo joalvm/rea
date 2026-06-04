@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { Directory, File, Paths } from "expo-file-system";
 
-import { buildBackupFileName } from "./backupFile";
+import { buildBackupFileName } from "../backup/backupFile";
 import getDatabase from "../connection";
 
 const BACKUP_DIRECTORY_NAME = "backups";
