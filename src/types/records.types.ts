@@ -18,13 +18,35 @@ export type MedicationRelief = "not_applicable" | "helped" | "partly_helped" | "
 /** Sintomas observables que la app sabe comparar entre dias y ciclos. */
 export type SymptomKey =
     | "cramps"
+    | "pelvic_pain"
+    | "lower_back_pain"
+    | "headache"
     | "migraine"
-    | "acne"
     | "bloating"
-    | "cravings"
-    | "insomnia"
     | "nausea"
-    | "breast_tenderness";
+    | "diarrhea"
+    | "constipation"
+    | "acne"
+    | "cravings"
+    | "fatigue"
+    | "insomnia"
+    | "sleepiness"
+    | "breast_tenderness"
+    | "breast_swelling"
+    | "mood_swings"
+    | "irritability"
+    | "anxiety"
+    | "sadness"
+    | "brain_fog"
+    | "dizziness"
+    | "ovulation_pain"
+    | "spotting"
+    | "heavy_bleeding"
+    | "clots"
+    | "hot_flashes"
+    | "chills"
+    | "vulvar_discomfort"
+    | "vaginal_dryness";
 
 /** Ubicaciones frecuentes de dolor reportadas en un dia. */
 export type PainLocation = "lower_abdomen" | "lower_back" | "pelvis" | "head" | "breasts";
@@ -37,7 +59,7 @@ export type LibidoLevel = "very_low" | "low" | "steady" | "high";
 
 /** Guarda anotacion puntual de estado emocional y fisico. */
 export interface MoodCheckIn {
-    id?: number;
+    id?: string | number;
     datetime: string;
     momentType: MomentType;
     mood: number;

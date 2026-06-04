@@ -6,7 +6,4 @@ export interface NotificationCadence {
     activeWindowEnd: string;
     maxPromptsPerDay: number;
     snoozeOptions: number[];
-    lastPromptAt?: string | null;
-    lastCompletedCheckInAt?: string | null;
-    notificationIds?: string[];
 }

@@ -9,8 +9,5 @@ export default function createDefaultNotificationCadence(): NotificationCadence 
         activeWindowEnd: "21:00",
         maxPromptsPerDay: 3,
         snoozeOptions: [1, 3, 24],
-        lastPromptAt: null,
-        lastCompletedCheckInAt: null,
-        notificationIds: [],
     };
 }

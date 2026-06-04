@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import estimateCycle from "../../modules/cycle/estimation/estimateCycle";
 import createDefaultNotificationCadence from "../../modules/notifications/defaults/createDefaultNotificationCadence";
-import initializeDatabase from "../../modules/storage/core/schema";
-import loadAppData from "../../modules/storage/services/loadAppData";
+import useAppStore from "../../modules/state/useAppStore";
 import { AppData } from "../../types/app.types";
 import { NotificationCadence } from "../../types/notifications.types";
-import { initialData } from "../app-shell.types";
 
 /** Contrato de salida de useAppDataController para consumidores del shell raíz. */
 export interface UseAppDataControllerResult {
@@ -28,15 +26,16 @@ export interface UseAppDataControllerResult {
 
 /** Encapsula bootstrap, snapshot y fuente de datos usada por shell principal. */
 export default function useAppDataController(): UseAppDataControllerResult {
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState<AppData>(initialData);
+    const data = useAppStore((state) => state.data);
+    const loading = useAppStore((state) => state.loading);
+    const bootstrap = useAppStore((state) => state.bootstrap);
+    const refreshAppData = useAppStore((state) => state.refreshData);
+    const replaceNotificationCadence = useAppStore((state) => state.replaceNotificationCadence);
+    const resetData = useAppStore((state) => state.resetData);
 
     const boot = useCallback(async () => {
-        await initializeDatabase();
-        const loaded = await loadAppData();
-        setData(normalizeAppData(loaded));
-        setLoading(false);
-    }, []);
+        await bootstrap();
+    }, [bootstrap]);
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -47,18 +46,8 @@ export default function useAppDataController(): UseAppDataControllerResult {
     }, [boot]);
 
     const refreshData = useCallback(async () => {
-        const loaded = await loadAppData();
-        setData(normalizeAppData(loaded));
-    }, []);
-
-    const replaceNotificationCadence = useCallback((notificationCadence: NotificationCadence) => {
-        setData((current) => ({ ...current, notificationCadence }));
-    }, []);
-
-    const resetData = useCallback(() => {
-        setLoading(false);
-        setData(initialData);
-    }, []);
+        await refreshAppData();
+    }, [refreshAppData]);
 
     const snapshot = useMemo(
         () => estimateCycle(data.settings, data.cycles, data.dailyLogs, undefined, data.moodCheckIns),
@@ -77,13 +66,5 @@ export default function useAppDataController(): UseAppDataControllerResult {
         replaceNotificationCadence,
         resetData,
         snapshot,
-    };
-}
-
-/** Rehidrata defaults locales para que shell siempre tenga momentos utilizables. */
-function normalizeAppData(loaded: AppData): AppData {
-    return {
-        ...loaded,
-        notificationCadence: loaded.notificationCadence ?? createDefaultNotificationCadence(),
     };
 }

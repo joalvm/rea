@@ -17,6 +17,7 @@
             "chooseOther": "Buscar otro",
             "confirm": "Importar",
             "errorForbiddenObjects": "El respaldo incluye objetos no soportados para una importación segura.",
+            "errorIncompatibleVersion": "Ese respaldo pertenece a una versión anterior de Rea y no puede importarse en este corte.",
             "errorIntegrity": "El archivo no pasa la verificación de integridad de SQLite.",
             "errorMissingFile": "No pude acceder al archivo de respaldo seleccionado.",
             "errorWrongFormat": "El archivo no coincide con formato esperado de respaldo de Rea.",

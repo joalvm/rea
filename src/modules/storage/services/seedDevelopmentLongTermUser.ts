@@ -1,15 +1,12 @@
 import { addDays, toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import createDefaultNotificationCadence from "@/modules/notifications/defaults/createDefaultNotificationCadence";
-import { saveNotificationCadence } from "@/modules/storage/repositories/notificationMoments.repository";
-import { upsertDailyLog } from "@/modules/storage/repositories/dailyLogs.repository";
-import { upsertMoodCheckIn } from "@/modules/storage/repositories/moodCheckIns.repository";
-import { saveSettings } from "@/modules/storage/repositories/settings.repository";
 import { NotificationCadence } from "@/types/notifications.types";
 import { DailyLog, MoodCheckIn, SymptomKey } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 
+import { completeUserProfile } from "./profileState";
 import resetAppData from "./resetAppData";
-import syncObservedCyclesFromDailyLogs from "./syncObservedCycles";
+import saveCheckIn from "./saveCheckIn";
 
 const CYCLE_LENGTHS = [29, 30, 28, 31, 29, 27, 30, 29, 28];
 const PERIOD_LENGTHS = [5, 4, 5, 6, 5, 4, 5, 5, 4];
@@ -38,24 +35,18 @@ export default async function seedDevelopmentLongTermUser({
     const latestCheckInAt = moodCheckIns[moodCheckIns.length - 1]?.datetime ?? `${todayIso}T20:15:00.000Z`;
     const nextCadence = {
         ...(notificationCadence ?? createDefaultNotificationCadence()),
-        notificationIds: [],
-        lastPromptAt: null,
-        lastCompletedCheckInAt: latestCheckInAt,
     };
 
     await resetAppData();
-    await saveSettings(settings);
-    await saveNotificationCadence(nextCadence);
+    await completeUserProfile(settings, nextCadence);
 
     for (const log of dailyLogs) {
-        await upsertDailyLog(log);
+        await saveCheckIn({ dailyLog: log });
     }
 
     for (const checkIn of moodCheckIns) {
-        await upsertMoodCheckIn(checkIn);
+        await saveCheckIn({ moodCheckIn: checkIn });
     }
-
-    await syncObservedCyclesFromDailyLogs();
 
     return {
         latestCheckInAt,

@@ -12,10 +12,10 @@ import {
 } from "../../modules/storage/services/backupFile";
 import clearScheduledNotifications from "../../modules/notifications/scheduler/clearScheduledNotifications";
 import rescheduleNotificationCadence from "../../modules/notifications/scheduler/rescheduleNotificationCadence";
-import { saveNotificationCadence } from "../../modules/storage/repositories/notificationMoments.repository";
 import exportAppBackup from "../../modules/storage/services/exportAppBackup";
 import importAppBackup from "../../modules/storage/services/importAppBackup";
 import loadAppData from "../../modules/storage/services/loadAppData";
+import { saveReminderPreferences } from "../../modules/storage/services/profileState";
 import saveBackupToDevice, { getLatestSavedBackup } from "../../modules/storage/services/saveBackupToDevice";
 
 interface UseAppBackupControllerParams {
@@ -81,7 +81,7 @@ export default function useAppBackupController({
                 const restoredData = await loadAppData();
                 if (restoredData.notificationCadence?.enabled) {
                     const scheduledCadence = await rescheduleNotificationCadence(restoredData.notificationCadence);
-                    await saveNotificationCadence(scheduledCadence);
+                    await saveReminderPreferences(scheduledCadence);
                 } else {
                     await clearScheduledNotifications();
                 }

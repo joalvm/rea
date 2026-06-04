@@ -36,7 +36,8 @@
         "react-i18next": "^17.0.8",
         "react-native": "0.85.3",
         "react-native-safe-area-context": "~5.7.0",
-        "react-native-svg": "15.15.4"
+        "react-native-svg": "15.15.4",
+        "zustand": "^5.0.14"
     },
     "devDependencies": {
         "@expo/metro-config": "^56.0.13",

@@ -1,16 +1,16 @@
 import { useCallback } from "react";
 
+import { CheckInSubmission } from "../../features/check-in/check-in.types";
 import clearScheduledNotifications from "../../modules/notifications/scheduler/clearScheduledNotifications";
 import rescheduleNotificationCadence from "../../modules/notifications/scheduler/rescheduleNotificationCadence";
-import { addCycle } from "../../modules/storage/repositories/cycles.repository";
-import { upsertDailyLog } from "../../modules/storage/repositories/dailyLogs.repository";
-import { deleteMoodCheckIn, upsertMoodCheckIn } from "../../modules/storage/repositories/moodCheckIns.repository";
-import { saveNotificationCadence as persistNotificationCadence } from "../../modules/storage/repositories/notificationMoments.repository";
-import { saveSettings } from "../../modules/storage/repositories/settings.repository";
+import {
+    completeUserProfile,
+    saveReminderPreferences,
+    saveUserSettings,
+} from "../../modules/storage/services/profileState";
 import resetAppData from "../../modules/storage/services/resetAppData";
+import saveCheckInEntry, { deleteCheckIn as deleteCheckInEntry } from "../../modules/storage/services/saveCheckIn";
 import seedDevelopmentLongTermUser from "../../modules/storage/services/seedDevelopmentLongTermUser";
-import syncObservedCyclesFromDailyLogs from "../../modules/storage/services/syncObservedCycles";
-import { CheckInSubmission } from "../../features/check-in/check-in.types";
 import { NotificationCadence } from "../../types/notifications.types";
 import { MoodCheckIn } from "../../types/records.types";
 import { AppSettings } from "../../types/settings.types";
@@ -26,23 +26,23 @@ interface UseAppPersistenceControllerParams {
 
 /** Contrato de salida de useAppPersistenceController para acciones persistentes del shell. */
 export interface UseAppPersistenceControllerResult {
-    /** Finaliza onboarding persistiendo settings, ciclo inicial y momentos. */
+    /** Finaliza onboarding persistiendo perfil, intencion, periodo inicial y recordatorios minimos. */
     completeOnboarding: (settings: AppSettings, notificationCadence: NotificationCadence) => Promise<void>;
-    /** Borra check-in existente y sincroniza snapshot raíz. */
+    /** Borra check-in existente y recalcula modelos derivados. */
     deleteCheckIn: (moodCheckIn?: MoodCheckIn | null) => Promise<void>;
     /** Genera dataset fake largo para pruebas visuales en desarrollo. */
     seedDevelopmentUserData: () => Promise<void>;
     /** Limpia datos locales, notificaciones y estado visual del shell. */
     resetApplication: () => Promise<void>;
-    /** Persiste ajustes base y refresca snapshot raíz. */
+    /** Persiste ajustes base como nuevo contexto reproductivo activo. */
     saveAppSettings: (settings: AppSettings) => Promise<void>;
-    /** Guarda check-in y/o daily log según payload recibido. */
+    /** Guarda check-in canonico y sus detalles observados. */
     saveCheckIn: (submission: CheckInSubmission) => Promise<void>;
-    /** Persiste cadencia de notificación y actualiza snapshot en memoria. */
+    /** Persiste preferencias minimas de notificacion y actualiza snapshot en memoria. */
     saveNotificationCadence: (next: NotificationCadence) => Promise<void>;
 }
 
-/** Encapsula acciones persistentes raíz: onboarding, check-ins, momentos y reset. */
+/** Encapsula acciones persistentes raíz sin exponer repositorios a componentes. */
 export default function useAppPersistenceController({
     dismissExportSavedNotice,
     notificationCadence,
@@ -52,16 +52,9 @@ export default function useAppPersistenceController({
     resetShellView,
 }: UseAppPersistenceControllerParams): UseAppPersistenceControllerResult {
     const completeOnboarding = useCallback(
-        async (settings: AppSettings, notificationCadence: NotificationCadence) => {
-            await saveSettings(settings);
-            await addCycle({
-                startDate: settings.lastPeriodStart,
-                endDate: null,
-                predicted: false,
-                createdAt: new Date().toISOString(),
-            });
-            const scheduled = await rescheduleNotificationCadence(notificationCadence);
-            await persistNotificationCadence(scheduled);
+        async (settings: AppSettings, nextCadence: NotificationCadence) => {
+            const scheduled = await rescheduleNotificationCadence(nextCadence);
+            await completeUserProfile(settings, scheduled);
             await refreshData();
         },
         [refreshData],
@@ -70,7 +63,7 @@ export default function useAppPersistenceController({
     const saveNotificationCadence = useCallback(
         async (next: NotificationCadence) => {
             const scheduled = await rescheduleNotificationCadence(next);
-            await persistNotificationCadence(scheduled);
+            await saveReminderPreferences(scheduled);
             replaceNotificationCadence(scheduled);
         },
         [replaceNotificationCadence],
@@ -78,29 +71,18 @@ export default function useAppPersistenceController({
 
     const saveAppSettings = useCallback(
         async (settings: AppSettings) => {
-            await saveSettings(settings);
+            await saveUserSettings(settings);
             await refreshData();
         },
         [refreshData],
     );
 
     const saveCheckIn = useCallback(
-        async ({ moodCheckIn, dailyLog }: CheckInSubmission) => {
-            if (moodCheckIn) {
-                await upsertMoodCheckIn(moodCheckIn);
-            }
+        async (submission: CheckInSubmission) => {
+            await saveCheckInEntry(submission);
 
-            if (dailyLog) {
-                await upsertDailyLog(dailyLog);
-                await syncObservedCyclesFromDailyLogs();
-            }
-
-            const nextCadence = {
-                ...notificationCadence,
-                lastCompletedCheckInAt: new Date().toISOString(),
-            };
-            const scheduledCadence = await rescheduleNotificationCadence(nextCadence);
-            await persistNotificationCadence(scheduledCadence);
+            const scheduledCadence = await rescheduleNotificationCadence(notificationCadence);
+            await saveReminderPreferences(scheduledCadence);
             replaceNotificationCadence(scheduledCadence);
 
             await refreshData();
@@ -114,7 +96,7 @@ export default function useAppPersistenceController({
                 return;
             }
 
-            await deleteMoodCheckIn(moodCheckIn.id);
+            await deleteCheckInEntry(moodCheckIn.id);
             await refreshData();
         },
         [refreshData],
@@ -123,7 +105,7 @@ export default function useAppPersistenceController({
     const seedDevelopmentUserData = useCallback(async () => {
         const seeded = await seedDevelopmentLongTermUser({ notificationCadence });
         const scheduledCadence = await rescheduleNotificationCadence(seeded.notificationCadence);
-        await persistNotificationCadence(scheduledCadence);
+        await saveReminderPreferences(scheduledCadence);
         replaceNotificationCadence(scheduledCadence);
         await refreshData();
     }, [notificationCadence, refreshData, replaceNotificationCadence]);

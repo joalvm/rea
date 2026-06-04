@@ -1,4 +1,3 @@
-import { AppData } from "../types/app.types";
 import { DailyLog, MomentType, MoodCheckIn } from "../types/records.types";
 
 /** Contexto breve que acompaña el prompt principal del check-in. */
@@ -18,12 +17,3 @@ export interface CheckInState {
     initialCheckIn: MoodCheckIn | null;
     initialDailyLog: DailyLog | null;
 }
-
-/** Estado inicial vacío para shell antes de bootstrap local. */
-export const initialData: AppData = {
-    settings: null,
-    cycles: [],
-    moodCheckIns: [],
-    dailyLogs: [],
-    notificationCadence: null,
-};

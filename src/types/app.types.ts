@@ -14,3 +14,12 @@ export interface AppData {
     dailyLogs: DailyLog[];
     notificationCadence: NotificationCadence | null;
 }
+
+/** Estado inicial vacío antes de bootstrap local. */
+export const initialAppData: AppData = {
+    settings: null,
+    cycles: [],
+    moodCheckIns: [],
+    dailyLogs: [],
+    notificationCadence: null,
+};

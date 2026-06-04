@@ -19,19 +19,18 @@ export default async function rescheduleNotificationCadence(
     await cancelAllScheduledNotificationsAsync();
 
     if (!cadence.enabled) {
-        return { ...cadence, notificationIds: [] };
+        return cadence;
     }
 
     const allowed = await ensureNotificationPermission();
     if (!allowed) {
-        return { ...cadence, notificationIds: [] };
+        return cadence;
     }
 
     const triggerDates = buildUpcomingTriggerDates(cadence, new Date());
-    const ids: string[] = [];
 
     for (const triggerDate of triggerDates) {
-        const id = await scheduleNotificationAsync({
+        await scheduleNotificationAsync({
             content: {
                 title: translate("notifications:title"),
                 body: notificationBody(),
@@ -44,22 +43,13 @@ export default async function rescheduleNotificationCadence(
                 date: triggerDate,
             },
         });
-
-        ids.push(id);
     }
 
-    return {
-        ...cadence,
-        notificationIds: ids,
-        lastPromptAt: triggerDates[0]?.toISOString() ?? cadence.lastPromptAt ?? null,
-    };
+    return cadence;
 }
 
 function buildUpcomingTriggerDates(cadence: NotificationCadence, now: Date) {
     const slots = buildDailySlots(cadence);
-    const minAllowedTime = cadence.lastCompletedCheckInAt
-        ? new Date(new Date(cadence.lastCompletedCheckInAt).getTime() + cadence.intervalHours * 3600000)
-        : now;
     const triggerDates: Date[] = [];
 
     for (let offset = 0; offset < LOOKAHEAD_DAYS; offset += 1) {
@@ -71,7 +61,7 @@ function buildUpcomingTriggerDates(cadence: NotificationCadence, now: Date) {
             const triggerDate = new Date(dayBase);
             triggerDate.setHours(slot.hour, slot.minute, 0, 0);
 
-            if (triggerDate <= now || triggerDate < minAllowedTime) {
+            if (triggerDate <= now) {
                 continue;
             }
 
