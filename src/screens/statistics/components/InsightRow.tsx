@@ -2,12 +2,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
 import { colors } from "@/theme";
-import { PatternInsight } from "@/types/insights.types";
-import styles from "../PatternsScreen.styles";
+import { ObservedInsight } from "@/types/insights.types";
+import styles from "../StatisticsScreen.styles";
 
 /** Props de una fila de insight detectado. */
 interface InsightRowProps {
-    insight: PatternInsight;
+    insight: ObservedInsight;
 }
 
 /** Renderiza un insight detectado en el historial reciente. */

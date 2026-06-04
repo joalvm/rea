@@ -10,7 +10,7 @@ const TABS: { key: TabKey; labelKey: string; icon: string }[] = [
     { key: "today", labelKey: "today", icon: "calendar-heart" },
     { key: "calendar", labelKey: "calendar", icon: "calendar-month-outline" },
     { key: "diary", labelKey: "diary", icon: "notebook-outline" },
-    { key: "patterns", labelKey: "patterns", icon: "chart-bell-curve-cumulative" },
+    { key: "statistics", labelKey: "statistics", icon: "chart-bell-curve-cumulative" },
 ];
 
 interface BottomTabsProps {

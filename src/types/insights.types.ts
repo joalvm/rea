@@ -5,7 +5,7 @@ export type AlertSeverity = "info" | "watch" | "consult";
 export type InsightTone = "supportive" | "watch";
 
 /** Representa insight sintetizado desde historial real. */
-export interface PatternInsight {
+export interface ObservedInsight {
     id: string;
     title: string;
     detail: string;

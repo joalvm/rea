@@ -40,6 +40,16 @@ export default async function recalculateDailySummary(localDate: string) {
             FROM checkins
             WHERE user_id = ? AND local_date = ? AND deleted_at IS NULL
         ),
+        period_metrics AS (
+            SELECT COUNT(id) > 0 AS is_confirmed_period_day
+            FROM period_runs
+            WHERE user_id = ?
+              AND deleted_at IS NULL
+              AND status != 'excluded'
+              AND source IN ('user_confirmed', 'mixed')
+              AND start_date <= ?
+              AND (end_date IS NULL OR end_date >= ?)
+        ),
         symptom_metrics AS (
             SELECT symptom_key, MAX(intensity) AS max_intensity
             FROM checkin_symptoms
@@ -66,12 +76,20 @@ export default async function recalculateDailySummary(localDate: string) {
         SELECT
             ?,
             ?,
-            COALESCE(checkin_metrics.is_menstruation_day, 0),
-            CASE WHEN COALESCE(checkin_metrics.is_menstruation_day, 0) = 1
+            CASE
+                WHEN COALESCE(period_metrics.is_confirmed_period_day, 0) = 1 THEN 1
+                ELSE COALESCE(checkin_metrics.is_menstruation_day, 0)
+            END,
+            CASE WHEN COALESCE(period_metrics.is_confirmed_period_day, 0) = 1
+                 THEN 'confirmed_period'
+                 WHEN COALESCE(checkin_metrics.is_menstruation_day, 0) = 1
                  THEN 'inferred_bleeding'
                  ELSE 'none'
             END,
-            COALESCE(checkin_metrics.is_spotting_day, 0),
+            CASE
+                WHEN COALESCE(period_metrics.is_confirmed_period_day, 0) = 1 THEN 0
+                ELSE COALESCE(checkin_metrics.is_spotting_day, 0)
+            END,
             COALESCE(medication_metrics.had_medication, 0),
             checkin_metrics.avg_mood,
             checkin_metrics.avg_energy,
@@ -85,6 +103,7 @@ export default async function recalculateDailySummary(localDate: string) {
             'low',
             ?
         FROM checkin_metrics
+        LEFT JOIN period_metrics ON 1 = 1
         LEFT JOIN symptom_metrics ON 1 = 1
         LEFT JOIN medication_metrics ON 1 = 1
         ON CONFLICT(user_id, local_date) DO UPDATE SET
@@ -101,6 +120,9 @@ export default async function recalculateDailySummary(localDate: string) {
             medication_relief_score = excluded.medication_relief_score,
             updated_at = excluded.updated_at`,
         userId,
+        localDate,
+        userId,
+        localDate,
         localDate,
         userId,
         localDate,

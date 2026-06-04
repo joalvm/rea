@@ -36,7 +36,7 @@
         }
     },
     "developmentSeed": {
-        "body": "Reemplaza datos actuales por historial largo y coherente para probar Hoy, Patrones, Diario y Calendario.",
+        "body": "Reemplaza datos actuales por historial largo y coherente para probar Hoy, Estadísticas, Diario y Calendario.",
         "confirm": "Generar",
         "meta": "Solo dev",
         "metaLoading": "Generando",

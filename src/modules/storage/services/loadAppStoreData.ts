@@ -1,8 +1,9 @@
-import { AppData } from "@/types/app.types";
+import { AppStoreData } from "@/types/app.types";
 
 import getDatabase from "../connection";
 import {
     CheckInEntity,
+    CheckInMedicationEntity,
     CheckInSymptomEntity,
     PeriodRunEntity,
     ReproductiveIntentEntity,
@@ -14,10 +15,10 @@ import {
     buildSettings,
     mapCheckInToMoment,
     mapPeriodRunToCycle,
-} from "./loadAppDataMappers";
+} from "./loadAppStoreDataMappers";
 
 /** Carga modelos de vista desde el esquema normalizado vigente. */
-export default async function loadAppData(): Promise<AppData> {
+export default async function loadAppStoreData(): Promise<AppStoreData> {
     const database = await getDatabase();
     const [profile, activeIntent, periodRuns, checkInRows] = await Promise.all([
         database.getFirstAsync<UserProfileEntity>("SELECT * FROM user_profile ORDER BY created_at ASC LIMIT 1"),
@@ -40,9 +41,9 @@ export default async function loadAppData(): Promise<AppData> {
 
     return {
         settings,
-        cycles: periodRuns.map(mapPeriodRunToCycle),
-        moodCheckIns: checkInRows.checkins.map(mapCheckInToMoment),
-        dailyLogs: buildDailyLogs(checkInRows),
+        periodHistory: periodRuns.map(mapPeriodRunToCycle),
+        checkInMoments: checkInRows.checkins.map(mapCheckInToMoment),
+        dailyRecords: buildDailyLogs(checkInRows),
         notificationCadence: profile ? buildNotificationCadence(profile) : null,
     };
 }
@@ -63,6 +64,16 @@ async function loadCheckIns(database: Awaited<ReturnType<typeof getDatabase>>) {
            AND checkins.deleted_at IS NULL
          ORDER BY checkins.recorded_at DESC`,
     );
+    const medications = await database.getAllAsync<CheckInMedicationEntity & { medication_name: string }>(
+        `SELECT checkin_medications.*, medication_catalog.name AS medication_name
+         FROM checkin_medications
+         INNER JOIN checkins ON checkins.id = checkin_medications.checkin_id
+         INNER JOIN medication_catalog ON medication_catalog.id = checkin_medications.medication_id
+         WHERE checkin_medications.deleted_at IS NULL
+           AND checkins.deleted_at IS NULL
+           AND medication_catalog.deleted_at IS NULL
+         ORDER BY checkin_medications.taken_at DESC`,
+    );
 
-    return { checkins, symptoms };
+    return { checkins, medications, symptoms };
 }

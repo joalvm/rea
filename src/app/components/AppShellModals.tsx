@@ -1,5 +1,5 @@
 import type { UseAppBackupControllerResult } from "../hooks/useAppBackupController";
-import type { UseAppDataControllerResult } from "../hooks/useAppDataController";
+import type { UseAppBootstrapControllerResult } from "../hooks/useAppBootstrapController";
 import type { UseAppPersistenceControllerResult } from "../hooks/useAppPersistenceController";
 import type { UseAppShellStateResult } from "../hooks/useAppShellState";
 import { CheckInModal } from "../../features/check-in/CheckInModal";
@@ -7,14 +7,14 @@ import { ScheduleModal } from "../../features/settings/ScheduleModal";
 import { SettingsModal } from "../../features/settings/SettingsModal";
 
 interface AppShellModalsProps {
-    appData: UseAppDataControllerResult;
+    bootstrap: UseAppBootstrapControllerResult;
     backup: UseAppBackupControllerResult;
     persistence: UseAppPersistenceControllerResult;
     shellState: UseAppShellStateResult;
 }
 
 /** Renderiza modales raíz del shell usando contratos reales de estado y acciones. */
-export default function AppShellModals({ appData, backup, persistence, shellState }: AppShellModalsProps) {
+export default function AppShellModals({ bootstrap, backup, persistence, shellState }: AppShellModalsProps) {
     const closeSettings = () => {
         backup.dismissExportSavedNotice();
         shellState.closeSettings();
@@ -36,7 +36,7 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 visible={shellState.checkIn.visible}
             />
             <ScheduleModal
-                cadence={appData.notificationCadence}
+                cadence={bootstrap.notificationCadence}
                 onChange={persistence.saveNotificationCadence}
                 onClose={shellState.closeSchedule}
                 visible={shellState.scheduleVisible}
@@ -45,7 +45,7 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 exportSavedNotice={backup.exportSavedNotice}
                 exportingBackup={backup.exportingBackup}
                 importingBackup={backup.importingBackup}
-                notificationCadence={appData.notificationCadence}
+                notificationCadence={bootstrap.notificationCadence}
                 onClose={closeSettings}
                 onDismissExportSavedNotice={backup.dismissExportSavedNotice}
                 onExportBackup={backup.exportBackup}
@@ -55,7 +55,7 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 onReset={persistence.resetApplication}
                 onSaveSettings={persistence.saveAppSettings}
                 onShareSavedBackup={backup.shareSavedBackup}
-                settings={appData.data.settings}
+                settings={bootstrap.settings}
                 visible={shellState.settingsVisible}
             />
         </>

@@ -154,7 +154,7 @@ export async function saveUserSettings(settings: AppSettings) {
     });
 }
 
-/** Devuelve usuario local unico usado por repositorios canonicos. */
+/** Devuelve usuario local unico usado por servicios canonicos. */
 export async function getActiveProfileId() {
     const database = await getDatabase();
     const row = await database.getFirstAsync<ActiveProfileRow>(

@@ -26,14 +26,23 @@
     "empty": {
         "alerts": "Por ahora no asoma una señal que destaque en tus registros.",
         "insights": "Cuando haya un poco más de historia, aquí empezarán a verse repeticiones entre fases.",
+        "medications": "Cuando registres medicación y alivio, Rea podrá comparar qué aparece asociado a más alivio en tus propios registros.",
         "metricNoMoments": "Todavía no hay momentos suficientes para leer cuánto cambia ánimo, energía o dolor.",
         "metricPending_one": "Falta {{count}} momento para empezar a leer variación real entre registros.",
         "metricPending_other": "Faltan {{count}} momentos para empezar a leer variación real entre registros.",
+        "recentTrend": "Cuando haya momentos registrados, aquí verás cómo se movió el dolor reciente.",
         "symptoms": "Todavía no hay suficientes síntomas para ver qué se repite más."
+    },
+    "editorial": {
+        "source": "Fuente: {{label}}, {{reference}}"
     },
     "header": {
         "subtitle": "Aquí se van armando repeticiones de dolor, energía y síntomas entre ciclos para darte más contexto.",
-        "title": "Patrones"
+        "title": "Estadísticas"
+    },
+    "medications": {
+        "reliefScore_one": "{{value}}/2 en {{count}} registro",
+        "reliefScore_other": "{{value}}/2 en {{count}} registros"
     },
     "metrics": {
         "energy": "Energía",
@@ -46,7 +55,10 @@
     "sections": {
         "alerts": "Señales para tener presentes",
         "cycleSummaries": "Tus últimos ciclos observados",
+        "editorial": "Contenido útil según tus registros",
         "insights": "Lo que sí se repite",
+        "medications": "Alivio asociado a medicación",
+        "recentTrend": "Dolor reciente",
         "symptoms": "Síntomas más registrados",
         "variability": "Qué tanto cambia"
     },

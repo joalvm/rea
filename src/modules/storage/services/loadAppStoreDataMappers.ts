@@ -5,17 +5,27 @@ import { AppSettings } from "@/types/settings.types";
 
 import {
     CheckInEntity,
+    CheckInMedicationEntity,
     CheckInSymptomEntity,
     PeriodRunEntity,
     ReproductiveIntentEntity,
     UserProfileEntity,
 } from "../schemas/entities";
-import { mapBleedingLevel, mapClotSize, mapLibidoLevel, mapPainImpact } from "./checkInFieldMappers";
+import {
+    mapBleedingLevel,
+    mapClotSize,
+    mapLibidoLevel,
+    mapMedicationReliefLabel,
+    mapPainImpact,
+} from "./checkInFieldMappers";
 
 export interface CheckInWithSymptomRows {
     checkins: CheckInEntity[];
+    medications: CheckInMedicationRow[];
     symptoms: CheckInSymptomEntity[];
 }
+
+type CheckInMedicationRow = CheckInMedicationEntity & { medication_name: string };
 
 /** Construye settings de vista desde perfil local e intencion activa. */
 export function buildSettings(
@@ -78,8 +88,9 @@ export function mapCheckInToMoment(checkIn: CheckInEntity): MoodCheckIn {
 }
 
 /** Agrupa check-ins canonicos por dia para superficies de diario/calendario. */
-export function buildDailyLogs({ checkins, symptoms }: CheckInWithSymptomRows) {
+export function buildDailyLogs({ checkins, medications, symptoms }: CheckInWithSymptomRows) {
     const symptomsByCheckIn = groupSymptomsByCheckIn(symptoms);
+    const medicationsByCheckIn = groupMedicationsByCheckIn(medications);
     const checkInsByDate = groupCheckInsByDate(checkins);
 
     return Array.from(checkInsByDate.entries())
@@ -92,7 +103,7 @@ export function buildDailyLogs({ checkins, symptoms }: CheckInWithSymptomRows) {
                 symptoms: Object.keys(symptomIntensities) as SymptomKey[],
                 notes: entries.find((entry) => entry.note)?.note ?? null,
                 source: "observed",
-                details: buildDailyLogDetails(entries, symptomIntensities),
+                details: buildDailyLogDetails(entries, symptomIntensities, medicationsByCheckIn),
                 updatedAt: entries[0]?.updated_at ?? new Date().toISOString(),
             };
         })
@@ -104,6 +115,16 @@ function groupSymptomsByCheckIn(symptoms: CheckInSymptomEntity[]) {
         const current = accumulator.get(symptom.checkin_id) ?? [];
         current.push(symptom);
         accumulator.set(symptom.checkin_id, current);
+
+        return accumulator;
+    }, new Map());
+}
+
+function groupMedicationsByCheckIn(medications: CheckInMedicationRow[]) {
+    return medications.reduce<Map<string, CheckInMedicationRow[]>>((accumulator, medication) => {
+        const current = accumulator.get(medication.checkin_id) ?? [];
+        current.push(medication);
+        accumulator.set(medication.checkin_id, current);
 
         return accumulator;
     }, new Map());
@@ -138,8 +159,10 @@ function buildSymptomIntensities(
 function buildDailyLogDetails(
     entries: CheckInEntity[],
     symptomIntensities: Partial<Record<SymptomKey, number>>,
+    medicationsByCheckIn: Map<string, CheckInMedicationRow[]>,
 ): DailyLogDetails | null {
     const maxPms = maxMetric(entries, "pms_intensity");
+    const medication = getLatestMedication(entries, medicationsByCheckIn);
     const details: DailyLogDetails = {
         periodStarted: entries.some((entry) => entry.period_status_signal === "started"),
         periodEnded: entries.some((entry) => entry.period_status_signal === "ended"),
@@ -150,8 +173,8 @@ function buildDailyLogDetails(
         symptomIntensities,
         libidoLevel: mapLibidoLevel(maxMetric(entries, "libido")),
         breastSensitivity: maxMetric(entries, "breast_sensitivity"),
-        medicationName: null,
-        medicationRelief: "not_applicable",
+        medicationName: medication?.medication_name ?? null,
+        medicationRelief: mapMedicationReliefLabel(medication?.relief),
     };
     const hasDetails =
         details.periodStarted ||
@@ -161,9 +184,19 @@ function buildDailyLogDetails(
         details.painImpact !== "none" ||
         Object.keys(symptomIntensities).length > 0 ||
         details.libidoLevel !== "steady" ||
-        (details.breastSensitivity ?? 0) > 0;
+        (details.breastSensitivity ?? 0) > 0 ||
+        Boolean(details.medicationName);
 
     return hasDetails ? details : null;
+}
+
+function getLatestMedication(
+    entries: CheckInEntity[],
+    medicationsByCheckIn: Map<string, CheckInMedicationRow[]>,
+): CheckInMedicationRow | null {
+    const medications = entries.flatMap((entry) => medicationsByCheckIn.get(entry.id) ?? []);
+
+    return medications.sort((left, right) => right.taken_at.localeCompare(left.taken_at))[0] ?? null;
 }
 
 function maxMetric<T extends keyof CheckInEntity>(entries: CheckInEntity[], key: T) {

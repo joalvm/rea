@@ -1,16 +1,14 @@
 import { CalendarScreen } from "../../screens/calendar/CalendarScreen";
 import { DayDetailScreen } from "../../screens/day-detail/DayDetailScreen";
 import { DiaryScreen } from "../../screens/diary/DiaryScreen";
-import { PatternsScreen } from "../../screens/patterns/PatternsScreen";
+import { StatisticsScreen } from "../../screens/statistics/StatisticsScreen";
 import { TodayScreen } from "../../screens/today/TodayScreen";
-import { AppData, TabKey } from "../../types/app.types";
-import { CycleSnapshot } from "../../types/cycle.types";
+import { TabKey } from "../../types/app.types";
 import { DailyLog, MoodCheckIn } from "../../types/records.types";
 
 /** Props mínimas para resolver escena activa desde shell principal. */
 interface AppShellSceneProps {
     activeTab: TabKey;
-    data: AppData;
     onCloseDay: () => void;
     onEditDailyLog: (entry: DailyLog) => void;
     onEditQuickCheckIn: (entry: MoodCheckIn, initialDailyLog?: DailyLog | null) => void;
@@ -20,13 +18,11 @@ interface AppShellSceneProps {
     onOpenQuickCheckInNow: () => void;
     onOpenSettings: () => void;
     selectedDayIso: string | null;
-    snapshot: CycleSnapshot;
 }
 
 /** Renderiza la escena principal según la pestaña activa y el día seleccionado. */
 export default function AppShellScene({
     activeTab,
-    data,
     onCloseDay,
     onEditDailyLog,
     onEditQuickCheckIn,
@@ -36,39 +32,18 @@ export default function AppShellScene({
     onOpenQuickCheckInNow,
     onOpenSettings,
     selectedDayIso,
-    snapshot,
 }: AppShellSceneProps) {
     if (selectedDayIso) {
-        return (
-            <DayDetailScreen
-                cycles={data.cycles}
-                dailyLogs={data.dailyLogs}
-                moodCheckIns={data.moodCheckIns}
-                onBack={onCloseDay}
-                onOpenDiary={onOpenDiaryTab}
-                selectedIso={selectedDayIso}
-                settings={data.settings}
-            />
-        );
+        return <DayDetailScreen onBack={onCloseDay} onOpenDiary={onOpenDiaryTab} selectedIso={selectedDayIso} />;
     }
 
     if (activeTab === "calendar") {
-        return (
-            <CalendarScreen
-                cycles={data.cycles}
-                dailyLogs={data.dailyLogs}
-                onOpenCheckIn={onOpenDailyCheckIn}
-                onOpenDay={onOpenDay}
-                settings={data.settings}
-            />
-        );
+        return <CalendarScreen onOpenCheckIn={onOpenDailyCheckIn} onOpenDay={onOpenDay} />;
     }
 
     if (activeTab === "diary") {
         return (
             <DiaryScreen
-                dailyLogs={data.dailyLogs}
-                moodCheckIns={data.moodCheckIns}
                 onEditCheckIn={onEditQuickCheckIn}
                 onEditDailyLog={onEditDailyLog}
                 onOpenCheckIn={onOpenDailyCheckIn}
@@ -77,27 +52,9 @@ export default function AppShellScene({
         );
     }
 
-    if (activeTab === "patterns") {
-        return (
-            <PatternsScreen
-                cycles={data.cycles}
-                dailyLogs={data.dailyLogs}
-                moodCheckIns={data.moodCheckIns}
-                settings={data.settings}
-            />
-        );
+    if (activeTab === "statistics") {
+        return <StatisticsScreen />;
     }
 
-    return (
-        <TodayScreen
-            cycles={data.cycles}
-            dailyLogs={data.dailyLogs}
-            moodCheckIns={data.moodCheckIns}
-            onOpenCheckIn={onOpenDailyCheckIn}
-            onOpenDay={onOpenDay}
-            onOpenSettings={onOpenSettings}
-            settings={data.settings}
-            snapshot={snapshot}
-        />
-    );
+    return <TodayScreen onOpenCheckIn={onOpenDailyCheckIn} onOpenDay={onOpenDay} onOpenSettings={onOpenSettings} />;
 }

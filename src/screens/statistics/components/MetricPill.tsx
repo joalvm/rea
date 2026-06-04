@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import styles from "../PatternsScreen.styles";
+import styles from "../StatisticsScreen.styles";
 
 /** Props de una pill métrica usada en resúmenes de ciclo. */
 interface MetricPillProps {

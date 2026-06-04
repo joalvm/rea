@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-import loadAppData from "@/modules/storage/services/loadAppData";
-import { AppData, initialAppData } from "@/types/app.types";
+import loadAppStoreData from "@/modules/storage/services/loadAppStoreData";
+import { AppStoreData, initialAppStoreData } from "@/types/app.types";
 import { NotificationCadence } from "@/types/notifications.types";
 
 interface AppStoreState {
-    data: AppData;
+    data: AppStoreData;
     loading: boolean;
     bootstrap: () => Promise<void>;
     refreshData: () => Promise<void>;
@@ -15,15 +15,15 @@ interface AppStoreState {
 
 /** Store raiz para bootstrap y snapshot local de Rea; no persiste tablas ni reemplaza SQLite. */
 const useAppStore = create<AppStoreState>((set) => ({
-    data: initialAppData,
+    data: initialAppStoreData,
     loading: true,
     bootstrap: async () => {
         set({ loading: true });
-        const data = await loadAppData();
+        const data = await loadAppStoreData();
         set({ data, loading: false });
     },
     refreshData: async () => {
-        const data = await loadAppData();
+        const data = await loadAppStoreData();
         set({ data, loading: false });
     },
     replaceNotificationCadence: (notificationCadence) => {
@@ -35,7 +35,7 @@ const useAppStore = create<AppStoreState>((set) => ({
         }));
     },
     resetData: () => {
-        set({ data: initialAppData, loading: false });
+        set({ data: initialAppStoreData, loading: false });
     },
 }));
 

@@ -1,6 +1,6 @@
 import { translate } from "@/modules/localization/i18n";
 import { Cycle, PhaseKey } from "@/types/cycle.types";
-import { PatternInsight } from "@/types/insights.types";
+import { ObservedInsight } from "@/types/insights.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 
@@ -14,7 +14,7 @@ import {
 import { toIsoDate } from "../utils/cycleDate.utils";
 import { average } from "../utils/cycleMath.utils";
 import { countLimitingPainDays, summarizeTopSymptoms } from "../utils/cycleSummary.utils";
-import buildSpmPatternInsight from "./buildSpmPatternInsight";
+import buildSpmInsight from "./buildSpmInsight";
 
 type PhaseBucket = {
     mood: number[];
@@ -26,20 +26,20 @@ type PhaseBucket = {
 type PhaseMetricKey = keyof PhaseBucket;
 
 /** Construye insights comparativos por fase usando historial observado. */
-export default function buildPatternInsights(
+export default function buildObservedInsights(
     settings: AppSettings | null,
     cycles: Cycle[],
     dailyLogs: DailyLog[],
     moodCheckIns: MoodCheckIn[],
-): PatternInsight[] {
-    const insights: PatternInsight[] = [];
+): ObservedInsight[] {
+    const insights: ObservedInsight[] = [];
     const todayIso = toIsoDate(new Date());
     const phaseBuckets = buildPhaseBuckets(settings, cycles, dailyLogs, moodCheckIns);
     const ttcInsight = buildTryingToConceiveInsight(settings, cycles, dailyLogs);
     const highestPain = findPhaseExtreme(phaseBuckets, "pain", "max");
     const lowestEnergy = findPhaseExtreme(phaseBuckets, "energy", "min");
     const highestStress = findPhaseExtreme(phaseBuckets, "stress", "max");
-    const spmInsight = buildSpmPatternInsight(settings, cycles, dailyLogs, todayIso);
+    const spmInsight = buildSpmInsight(settings, cycles, dailyLogs, todayIso);
     const topSymptoms = summarizeTopSymptoms(dailyLogs, 2);
     const limitingPainDays = countLimitingPainDays(dailyLogs);
     const medicationRoughDays = dailyLogs.filter(
@@ -130,7 +130,7 @@ function buildTryingToConceiveInsight(
     settings: AppSettings | null,
     cycles: Cycle[],
     dailyLogs: DailyLog[],
-): PatternInsight | null {
+): ObservedInsight | null {
     if (!settings?.tryingToConceive) {
         return null;
     }

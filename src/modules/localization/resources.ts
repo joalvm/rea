@@ -11,8 +11,8 @@ import esFormats from "@/lang/es/formats.json";
 import esNavigation from "@/lang/es/navigation.json";
 import esNotifications from "@/lang/es/notifications.json";
 import esOnboarding from "@/lang/es/onboarding.json";
-import esPatterns from "@/lang/es/patterns.json";
 import esSettings from "@/lang/es/settings.json";
+import esStatistics from "@/lang/es/statistics.json";
 import esTerms from "@/lang/es/terms.json";
 import esToday from "@/lang/es/today.json";
 import esPEContent from "@/lang/es-PE/content.json";
@@ -30,7 +30,7 @@ export const namespaces = [
     "calendar",
     "diary",
     "dayDetail",
-    "patterns",
+    "statistics",
     "checkIn",
     "content",
     "contentSources",
@@ -85,8 +85,8 @@ export const resources = {
         navigation: esNavigation,
         notifications: esNotifications,
         onboarding: esOnboarding,
-        patterns: esPatterns,
         settings: esSettings,
+        statistics: esStatistics,
         terms: esTerms,
         today: esToday,
     },

@@ -160,3 +160,20 @@ export function mapMedicationRelief(value: MedicationRelief) {
             return 0;
     }
 }
+
+/** Convierte escala canonica 0-2 a alivio visible en UI. */
+export function mapMedicationReliefLabel(value: number | null | undefined): MedicationRelief {
+    if (value === 2) {
+        return "helped";
+    }
+
+    if (value === 1) {
+        return "partly_helped";
+    }
+
+    if (value === 0) {
+        return "did_not_help";
+    }
+
+    return "not_applicable";
+}

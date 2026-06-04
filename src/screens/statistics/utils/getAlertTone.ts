@@ -1,7 +1,7 @@
 import { colors } from "@/theme";
 import { EducationalAlert } from "@/types/insights.types";
 import { translate } from "@/modules/localization/i18n";
-import { AlertTone } from "../patterns.types";
+import { AlertTone } from "../statistics.types";
 
 /** Define tono visual y rótulo para alertas educativas. */
 export default function getAlertTone(severity: EducationalAlert["severity"]): AlertTone {

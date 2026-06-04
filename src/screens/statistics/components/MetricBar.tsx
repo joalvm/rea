@@ -1,7 +1,7 @@
 import { DimensionValue, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import styles from "../PatternsScreen.styles";
+import styles from "../StatisticsScreen.styles";
 
 /** Props de una barra de promedio reciente. */
 interface MetricBarProps {
@@ -14,7 +14,7 @@ interface MetricBarProps {
 
 /** Renderiza una barra horizontal con promedio reciente. */
 export default function MetricBar({ label, value, color, maxValue = 5, valueLabel }: MetricBarProps) {
-    const { t } = useTranslation("patterns");
+    const { t } = useTranslation("statistics");
     const width = `${Math.min(100, Math.max(4, (value / maxValue) * 100))}%` as DimensionValue;
 
     return (

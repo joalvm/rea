@@ -201,6 +201,24 @@ const styles = StyleSheet.create({
         fontSize: type.body,
         lineHeight: 22,
     },
+    editorialCard: {
+        gap: 8,
+    },
+    editorialTitle: {
+        color: colors.ink,
+        fontSize: type.body,
+        fontWeight: "900",
+    },
+    editorialBody: {
+        color: colors.ink,
+        fontSize: type.body,
+        lineHeight: 22,
+    },
+    editorialSource: {
+        color: colors.muted,
+        fontSize: type.small,
+        fontWeight: "800",
+    },
     symptomCard: {
         gap: 10,
     },

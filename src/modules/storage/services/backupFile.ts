@@ -9,16 +9,11 @@ export function buildBackupFileName(stamp: string) {
     return `${BACKUP_FILE_PREFIX}-${stamp}${BACKUP_FILE_EXTENSION}`;
 }
 
-/** Distingue rutas que parecen respaldos de Rea o respaldos legados compatibles. */
+/** Distingue rutas que parecen respaldos actuales de Rea. */
 export function isLikelyBackupUri(uri: string) {
     const normalizedUri = stripQueryAndFragment(uri).toLowerCase();
 
-    return (
-        normalizedUri.endsWith(BACKUP_FILE_EXTENSION) ||
-        normalizedUri.endsWith(".rea.sqlite3") ||
-        normalizedUri.endsWith(".sqlite3") ||
-        normalizedUri.endsWith(".sqlite")
-    );
+    return normalizedUri.endsWith(BACKUP_FILE_EXTENSION);
 }
 
 function stripQueryAndFragment(uri: string) {

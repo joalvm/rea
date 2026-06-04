@@ -2,10 +2,8 @@ import { ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import { getWeekdayNarrowLabels } from "@/modules/localization/formatters";
+import useCalendarStore from "@/modules/state/useCalendarStore";
 import { colors } from "@/theme";
-import { Cycle } from "@/types/cycle.types";
-import { DailyLog } from "@/types/records.types";
-import { AppSettings } from "@/types/settings.types";
 import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
@@ -17,19 +15,17 @@ import MonthHeader from "./components/MonthHeader";
 
 /** Props del screen de calendario del ciclo. */
 interface CalendarScreenProps {
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    dailyLogs: DailyLog[];
     onOpenCheckIn: () => void;
     onOpenDay: (iso: string) => void;
 }
 
-export function CalendarScreen({ settings, cycles, dailyLogs, onOpenCheckIn, onOpenDay }: CalendarScreenProps) {
+export function CalendarScreen({ onOpenCheckIn, onOpenDay }: CalendarScreenProps) {
     const { t } = useTranslation("calendar");
+    const { dailyRecords, periodHistory, settings } = useCalendarStore();
     const { days, loggedDates, monthLabel, shiftMonth, todayHasLog, todayIso } = useCalendarModel({
         settings,
-        cycles,
-        dailyLogs,
+        cycles: periodHistory,
+        dailyLogs: dailyRecords,
     });
     const weekdays = getWeekdayNarrowLabels();
 

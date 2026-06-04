@@ -3,47 +3,42 @@ import { ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import { formatShortDate } from "@/modules/cycle/utils/cycleDate.utils";
+import useStatisticsStore from "@/modules/state/useStatisticsStore";
 import { colors } from "@/theme";
-import { Cycle } from "@/types/cycle.types";
-import { DailyLog, MoodCheckIn } from "@/types/records.types";
-import { AppSettings } from "@/types/settings.types";
 import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftCard } from "@/ui/SoftCard";
-import styles from "./PatternsScreen.styles";
+import styles from "./StatisticsScreen.styles";
 import AlertCard from "./components/AlertCard";
 import InsightRow from "./components/InsightRow";
 import MetricBar from "./components/MetricBar";
 import MetricPill from "./components/MetricPill";
-import usePatternsModel from "./hooks/usePatternsModel";
+import useStatisticsModel from "./hooks/useStatisticsModel";
 
-/** Props del screen de patrones e insights. */
-interface PatternsScreenProps {
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    moodCheckIns: MoodCheckIn[];
-    dailyLogs: DailyLog[];
-}
-
-export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: PatternsScreenProps) {
-    const { t } = useTranslation("patterns");
+/** Screen de estadisticas e insights observados. */
+export function StatisticsScreen() {
+    const { t } = useTranslation("statistics");
+    const { checkInMoments, dailyRecords, periodHistory, settings } = useStatisticsStore();
     const {
         alerts,
         basisMetrics,
         cycleSummaries,
+        editorialCards,
         enoughData,
         insights,
+        medicationEffectiveness,
         metricVariability,
         metricVariabilityEmptyText,
+        recentTrend,
         statusIconName,
         statusText,
         statusTitle,
         symptoms,
-    } = usePatternsModel({
+    } = useStatisticsModel({
         settings,
-        cycles,
-        moodCheckIns,
-        dailyLogs,
+        periodHistory,
+        checkInMoments,
+        dailyRecords,
     });
 
     return (
@@ -90,6 +85,46 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
             </View>
 
             <View style={styles.section}>
+                <Text style={styles.sectionTitle}>{t("sections.recentTrend")}</Text>
+                <SoftCard style={styles.chartCard}>
+                    {recentTrend.length === 0 ? (
+                        <Text style={styles.emptyText}>{t("empty.recentTrend")}</Text>
+                    ) : (
+                        recentTrend.map((metric) => (
+                            <MetricBar
+                                key={metric.key}
+                                color={metric.color}
+                                label={metric.label}
+                                maxValue={5}
+                                value={metric.value}
+                                valueLabel={metric.valueLabel}
+                            />
+                        ))
+                    )}
+                </SoftCard>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>{t("sections.medications")}</Text>
+                <SoftCard style={styles.chartCard}>
+                    {medicationEffectiveness.length === 0 ? (
+                        <Text style={styles.emptyText}>{t("empty.medications")}</Text>
+                    ) : (
+                        medicationEffectiveness.map((metric) => (
+                            <MetricBar
+                                key={metric.key}
+                                color={colors.primary}
+                                label={metric.label}
+                                maxValue={2}
+                                value={metric.value}
+                                valueLabel={metric.valueLabel}
+                            />
+                        ))
+                    )}
+                </SoftCard>
+            </View>
+
+            <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{t("sections.insights")}</Text>
                 <SoftCard style={styles.insightCard}>
                     {insights.length === 0 ? (
@@ -112,6 +147,21 @@ export function PatternsScreen({ settings, cycles, moodCheckIns, dailyLogs }: Pa
                     )}
                 </View>
             </View>
+
+            {editorialCards.length > 0 ? (
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>{t("sections.editorial")}</Text>
+                    <View style={styles.summaryList}>
+                        {editorialCards.map((card) => (
+                            <SoftCard key={card.id} style={styles.editorialCard} variant="soft">
+                                <Text style={styles.editorialTitle}>{card.title}</Text>
+                                <Text style={styles.editorialBody}>{card.body}</Text>
+                                {card.source ? <Text style={styles.editorialSource}>{card.source}</Text> : null}
+                            </SoftCard>
+                        ))}
+                    </View>
+                </View>
+            ) : null}
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{t("sections.cycleSummaries")}</Text>

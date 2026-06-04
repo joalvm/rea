@@ -14,7 +14,7 @@ import clearScheduledNotifications from "../../modules/notifications/scheduler/c
 import rescheduleNotificationCadence from "../../modules/notifications/scheduler/rescheduleNotificationCadence";
 import exportAppBackup from "../../modules/storage/services/exportAppBackup";
 import importAppBackup from "../../modules/storage/services/importAppBackup";
-import loadAppData from "../../modules/storage/services/loadAppData";
+import loadAppStoreData from "../../modules/storage/services/loadAppStoreData";
 import { saveReminderPreferences } from "../../modules/storage/services/profileState";
 import saveBackupToDevice, { getLatestSavedBackup } from "../../modules/storage/services/saveBackupToDevice";
 
@@ -78,7 +78,7 @@ export default function useAppBackupController({
 
                 await importAppBackup(backupUri);
 
-                const restoredData = await loadAppData();
+                const restoredData = await loadAppStoreData();
                 if (restoredData.notificationCadence?.enabled) {
                     const scheduledCadence = await rescheduleNotificationCadence(restoredData.notificationCadence);
                     await saveReminderPreferences(scheduledCadence);

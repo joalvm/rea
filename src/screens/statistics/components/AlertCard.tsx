@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 
 import { EducationalAlert } from "@/types/insights.types";
 import { SoftCard } from "@/ui/SoftCard";
-import styles from "../PatternsScreen.styles";
+import styles from "../StatisticsScreen.styles";
 import getAlertTone from "../utils/getAlertTone";
 
 /** Props de una alerta educativa visual. */

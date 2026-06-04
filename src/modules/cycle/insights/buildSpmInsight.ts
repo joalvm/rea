@@ -1,6 +1,6 @@
 import { translate } from "@/modules/localization/i18n";
 import { Cycle } from "@/types/cycle.types";
-import { PatternInsight } from "@/types/insights.types";
+import { ObservedInsight } from "@/types/insights.types";
 import { DailyLog } from "@/types/records.types";
 import { AppSettings } from "@/types/settings.types";
 
@@ -9,13 +9,13 @@ import { getObservedPeriodRuns } from "../utils/cycleObservedData.utils";
 import { addDays, daysBetween, formatShortDate } from "../utils/cycleDate.utils";
 import { average } from "../utils/cycleMath.utils";
 
-/** Detecta patrón de inicio de SPM a partir de marcas reales. */
-export default function buildSpmPatternInsight(
+/** Detecta repetición de inicio de SPM a partir de marcas reales. */
+export default function buildSpmInsight(
     settings: AppSettings | null,
     cycles: Cycle[],
     dailyLogs: DailyLog[],
     todayIso: string,
-): PatternInsight | null {
+): ObservedInsight | null {
     const observedRuns = [...getObservedPeriodRuns(dailyLogs)].sort((left, right) =>
         left.start.localeCompare(right.start),
     );

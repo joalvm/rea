@@ -15,18 +15,24 @@ import getHeroTheme from "../utils/todayHeroTheme";
 
 interface UseTodayModelParams {
     settings: AppSettings | null;
-    cycles: Cycle[];
+    periodHistory: Cycle[];
     snapshot: CycleSnapshot;
-    moodCheckIns: MoodCheckIn[];
-    dailyLogs: DailyLog[];
+    checkInMoments: MoodCheckIn[];
+    dailyRecords: DailyLog[];
 }
 
 /** Agrupa derivados editoriales y de lectura que usa la pantalla de hoy. */
-export default function useTodayModel({ settings, cycles, snapshot, moodCheckIns, dailyLogs }: UseTodayModelParams) {
+export default function useTodayModel({
+    settings,
+    periodHistory,
+    snapshot,
+    checkInMoments,
+    dailyRecords,
+}: UseTodayModelParams) {
     const heroTheme = useMemo(() => getHeroTheme(snapshot.phase), [snapshot.phase]);
     const { insights, alerts } = useMemo(
-        () => buildTodaySummaries(settings, cycles, dailyLogs, moodCheckIns),
-        [cycles, dailyLogs, moodCheckIns, settings],
+        () => buildTodaySummaries(settings, periodHistory, dailyRecords, checkInMoments),
+        [checkInMoments, dailyRecords, periodHistory, settings],
     );
     const careTips = useMemo(() => getCareTips(snapshot.phase), [snapshot.phase]);
     const heroSecondaryStat = useMemo(() => getHeroSecondaryStat(snapshot, settings), [settings, snapshot]);
@@ -37,8 +43,8 @@ export default function useTodayModel({ settings, cycles, snapshot, moodCheckIns
         [snapshot.week],
     );
     const weekPages = useMemo(
-        () => buildWeekPages(settings, cycles, dailyLogs, moodCheckIns, todayIso),
-        [cycles, dailyLogs, moodCheckIns, settings, todayIso],
+        () => buildWeekPages(settings, periodHistory, dailyRecords, checkInMoments, todayIso),
+        [checkInMoments, dailyRecords, periodHistory, settings, todayIso],
     );
 
     return {

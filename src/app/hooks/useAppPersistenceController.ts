@@ -8,6 +8,7 @@ import {
     saveReminderPreferences,
     saveUserSettings,
 } from "../../modules/storage/services/profileState";
+import useContentStore from "../../modules/state/useContentStore";
 import resetAppData from "../../modules/storage/services/resetAppData";
 import saveCheckInEntry, { deleteCheckIn as deleteCheckInEntry } from "../../modules/storage/services/saveCheckIn";
 import seedDevelopmentLongTermUser from "../../modules/storage/services/seedDevelopmentLongTermUser";
@@ -116,6 +117,7 @@ export default function useAppPersistenceController({
         dismissExportSavedNotice();
         resetShellView();
         resetData();
+        useContentStore.getState().resetContent();
     }, [dismissExportSavedNotice, resetData, resetShellView]);
 
     return {
