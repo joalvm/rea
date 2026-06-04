@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "../theme";
+import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "@/theme";
 import { TabKey } from "../types/app.types";
 
 const TABS: { key: TabKey; labelKey: string; icon: string }[] = [

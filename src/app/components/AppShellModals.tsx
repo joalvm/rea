@@ -1,13 +1,13 @@
 import type { UseAppBackupControllerResult } from "../hooks/useAppBackupController";
 import type { UseAppBootstrapControllerResult } from "../hooks/useAppBootstrapController";
 import type { UseAppShellStateResult } from "../hooks/useAppShellState";
-import { CheckInModal } from "../../features/check-in/CheckInModal";
-import { CheckInSubmission } from "../../features/check-in/check-in.types";
-import { ScheduleModal } from "../../features/settings/ScheduleModal";
-import { SettingsModal } from "../../features/settings/SettingsModal";
-import { NotificationCadence } from "../../types/notifications.types";
-import { MoodCheckIn } from "../../types/records.types";
-import { AppSettings } from "../../types/settings.types";
+import { CheckInModal } from "@/features/check-in/CheckInModal";
+import { CheckInSubmission } from "@/features/check-in/check-in.types";
+import { ScheduleModal } from "@/features/settings/ScheduleModal";
+import { SettingsModal } from "@/features/settings/SettingsModal";
+import { NotificationCadence } from "@/types/notifications.types";
+import { MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 interface AppShellModalsProps {
     bootstrap: UseAppBootstrapControllerResult;

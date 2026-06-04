@@ -59,24 +59,54 @@ export default function useStatisticsModel({
         () => estimateCycle(settings, periodHistory, dailyRecords, undefined, checkInMoments),
         [checkInMoments, dailyRecords, periodHistory, settings],
     );
+    const contentPhase = mapPhaseToContentPhase(currentSnapshot.phase);
+    const symptomKeySignature = useMemo(
+        () =>
+            Array.from(new Set(dailyRecords.flatMap((record) => record.symptoms)))
+                .sort()
+                .join("|"),
+        [dailyRecords],
+    );
+    const symptomKeys = useMemo(
+        () => (symptomKeySignature ? symptomKeySignature.split("|") : []),
+        [symptomKeySignature],
+    );
+    const bleedingIntensity = useMemo(() => getMaxBleedingIntensity(dailyRecords), [dailyRecords]);
+    const averageEnergyLevel = useMemo(
+        () => averageNumber(checkInMoments.map((entry) => entry.energy)),
+        [checkInMoments],
+    );
+    const maxPainIntensity = useMemo(() => maxNumber(checkInMoments.map((entry) => entry.pain)), [checkInMoments]);
+    const maxStressLevel = useMemo(() => maxNumber(checkInMoments.map((entry) => entry.stress)), [checkInMoments]);
+    const contentMetrics = useMemo(
+        () => ({
+            bleeding_intensity: bleedingIntensity,
+            energy_level: averageEnergyLevel,
+            pain_intensity: maxPainIntensity,
+            stress_level: maxStressLevel,
+        }),
+        [averageEnergyLevel, bleedingIntensity, maxPainIntensity, maxStressLevel],
+    );
     const contentContext = useMemo(
         () => ({
             surface: "statistics" as const,
             locale: selectedLanguage,
-            phase: mapPhaseToContentPhase(currentSnapshot.phase),
+            phase: contentPhase,
             phaseConfidence: currentSnapshot.confidence,
-            symptomKeys: Array.from(new Set(dailyRecords.flatMap((record) => record.symptoms))),
-            metrics: {
-                bleeding_intensity: getMaxBleedingIntensity(dailyRecords),
-                energy_level: averageNumber(checkInMoments.map((entry) => entry.energy)),
-                pain_intensity: maxNumber(checkInMoments.map((entry) => entry.pain)),
-                stress_level: maxNumber(checkInMoments.map((entry) => entry.stress)),
-            },
+            symptomKeys,
+            metrics: contentMetrics,
             tryingToConceive: settings?.tryingToConceive ?? false,
             hormonalContraception: settings?.hormonalContraception ?? false,
             limit: 2,
         }),
-        [checkInMoments, currentSnapshot.confidence, currentSnapshot.phase, dailyRecords, settings],
+        [
+            contentMetrics,
+            contentPhase,
+            currentSnapshot.confidence,
+            settings?.hormonalContraception,
+            settings?.tryingToConceive,
+            symptomKeys,
+        ],
     );
 
     useEffect(() => {

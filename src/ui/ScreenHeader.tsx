@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 
-import { colors, screen, spacing, type, weights } from "../theme";
+import { colors, screen, spacing, type, weights } from "@/theme";
 
 interface ScreenHeaderProps {
     title: string;

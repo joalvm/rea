@@ -4,13 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, Linking } from "react-native";
 
 import { translate } from "@/modules/localization/i18n";
-import { ExportSavedNotice } from "../../features/settings/settings.types";
+import { ExportSavedNotice } from "@/features/settings/settings.types";
 import {
     BACKUP_IMPORT_FILE_HINT,
     BACKUP_SHARE_MIME_TYPE,
     isLikelyBackupUri,
-} from "../../modules/storage/backup/backupFile";
-import useBackupStore from "../../modules/state/useBackupStore";
+} from "@/modules/storage/backup/backupFile";
+import useBackupStore from "@/modules/state/useBackupStore";
 
 interface UseAppBackupControllerParams {
     loading: boolean;

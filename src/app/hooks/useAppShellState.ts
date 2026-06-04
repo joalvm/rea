@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { BackHandler } from "react-native";
 
 import { translate } from "@/modules/localization/i18n";
-import { TabKey } from "../../types/app.types";
-import { DailyLog, MomentType, MoodCheckIn } from "../../types/records.types";
+import { TabKey } from "@/types/app.types";
+import { DailyLog, MomentType, MoodCheckIn } from "@/types/records.types";
 import { CheckInPromptContext, CheckInState } from "../app-shell.types";
 
 const initialCheckInState: CheckInState = {

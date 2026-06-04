@@ -7,12 +7,12 @@ import useAppBackupController from "./hooks/useAppBackupController";
 import useAppBootstrapController from "./hooks/useAppBootstrapController";
 import useAppQuickCheckInNotificationListener from "./hooks/useAppQuickCheckInNotificationListener";
 import useAppShellState from "./hooks/useAppShellState";
-import useAppStore from "../modules/state/useAppStore";
-import useDiaryStore from "../modules/state/useDiaryStore";
-import { toIsoDate } from "../modules/cycle/utils/cycleDate.utils";
-import { OnboardingScreen } from "../screens/onboarding/OnboardingScreen";
-import { colors } from "../theme";
-import { BottomTabs } from "../ui/BottomTabs";
+import useAppStore from "@/modules/state/useAppStore";
+import useDiaryStore from "@/modules/state/useDiaryStore";
+import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
+import { OnboardingScreen } from "@/screens/onboarding/OnboardingScreen";
+import { colors } from "@/theme";
+import { BottomTabs } from "@/ui/BottomTabs";
 import styles from "./AppShell.styles";
 
 /** Orquesta bootstrap, navegación local y modales raíz de aplicación. */

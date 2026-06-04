@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { accents, colors, elevations, radii, spacing, surfaces } from "../theme";
+import { accents, colors, elevations, radii, spacing, surfaces } from "@/theme";
 import { ScreenHeader } from "./ScreenHeader";
 
 interface StepShellProps {

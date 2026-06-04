@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from "react-native";
 
-import { colors, interactions } from "../theme";
+import { colors, interactions } from "@/theme";
 
 interface IconButtonProps {
     icon: string;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import useNotificationStore from "../../modules/state/useNotificationStore";
-import { MomentType } from "../../types/records.types";
+import useNotificationStore from "@/modules/state/useNotificationStore";
+import { MomentType } from "@/types/records.types";
 
 /** Abre check-in rápido cuando usuaria responde desde una notificación local. */
 export default function useAppQuickCheckInNotificationListener(
