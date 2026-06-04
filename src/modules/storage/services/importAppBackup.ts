@@ -1,6 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { Directory, File, Paths } from "expo-file-system";
 
+import { translate } from "@/modules/localization/i18n";
 import db from "../core/database";
 import initializeDatabase from "../core/schema";
 
@@ -14,7 +15,7 @@ export default async function importAppBackup(backupUri: string) {
     const backupDirectory = backupFile.parentDirectory;
 
     if (!backupFile.exists || !backupDirectory) {
-        throw new Error("No pude acceder al archivo de respaldo seleccionado.");
+        throw new Error(translate("settings:backup.import.errorMissingFile"));
     }
 
     let importedDatabase: SQLite.SQLiteDatabase | null = null;
@@ -51,7 +52,7 @@ async function copyBackupToImportCache(backupUri: string) {
 
     const sourceFile = new File(backupUri);
     if (!sourceFile.exists) {
-        throw new Error("No pude acceder al archivo de respaldo seleccionado.");
+        throw new Error(translate("settings:backup.import.errorMissingFile"));
     }
 
     const cachedBackup = new File(importDirectory, `rea-import-${Date.now()}.rea`);
@@ -75,7 +76,7 @@ async function validateImportedDatabase(database: SQLite.SQLiteDatabase) {
     const integrityValue = integrity ? String(Object.values(integrity)[0]) : null;
 
     if (integrityValue !== "ok") {
-        throw new Error("El archivo no pasa la verificación de integridad de SQLite.");
+        throw new Error(translate("settings:backup.import.errorIntegrity"));
     }
 
     const schemaObjects = await database.getAllAsync<{ name: string; type: string }>(
@@ -84,13 +85,13 @@ async function validateImportedDatabase(database: SQLite.SQLiteDatabase) {
 
     const forbiddenObjects = schemaObjects.filter((item) => item.type !== "table");
     if (forbiddenObjects.length > 0) {
-        throw new Error("El respaldo incluye objetos no soportados para una importación segura.");
+        throw new Error(translate("settings:backup.import.errorForbiddenObjects"));
     }
 
     const tableNames = new Set(schemaObjects.filter((item) => item.type === "table").map((item) => item.name));
     const missingTables = REQUIRED_TABLES.filter((tableName) => !tableNames.has(tableName));
 
     if (missingTables.length > 0) {
-        throw new Error("El archivo no coincide con formato esperado de respaldo de Rea.");
+        throw new Error(translate("settings:backup.import.errorWrongFormat"));
     }
 }

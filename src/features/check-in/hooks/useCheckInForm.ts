@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Alert } from "react-native";
 
+import { translate } from "@/modules/localization/i18n";
 import { normalizeSymptomKeys } from "@/modules/cycle/utils/symptomCatalog";
 import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import {
@@ -87,10 +88,10 @@ export default function useCheckInForm({
             return;
         }
 
-        Alert.alert("Eliminar momento", "Se borrará solo esta anotación puntual. Día seguirá intacto.", [
-            { text: "Cancelar", style: "cancel" },
+        Alert.alert(translate("checkIn:alerts.deleteMoment.title"), translate("checkIn:alerts.deleteMoment.body"), [
+            { text: translate("common:actions.cancel"), style: "cancel" },
             {
-                text: "Eliminar",
+                text: translate("checkIn:alerts.deleteMoment.confirm"),
                 style: "destructive",
                 onPress: () => {
                     void destroyMoment();

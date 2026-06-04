@@ -1,4 +1,5 @@
 import { Image, ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import brandHorizontal from "@assets/branding/logo-horizontal.png";
@@ -22,6 +23,7 @@ interface OnboardingScreenProps {
 }
 
 export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }: OnboardingScreenProps) {
+    const { t } = useTranslation("onboarding");
     const insets = useSafeAreaInsets();
     const {
         step,
@@ -100,7 +102,7 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
                 {step === 0 ? (
                     <View style={styles.footerRow}>
                         <SoftButton
-                            label="Importar respaldo"
+                            label={t("actions.importBackup")}
                             loading={importingBackup}
                             onPress={() => {
                                 void onImportBackup();
@@ -109,23 +111,23 @@ export function OnboardingScreen({ importingBackup, onComplete, onImportBackup }
                             variant="secondary"
                         />
                         <SoftButton
-                            label="Continuar"
+                            label={t("actions.continue")}
                             onPress={() => setStep((current) => current + 1)}
                             style={styles.footerAction}
                         />
                     </View>
                 ) : null}
-                {step === 0 ? (
-                    <Text style={styles.footerNote}>
-                        Tus datos se quedan en este teléfono. No hace falta crear cuenta para empezar.
-                    </Text>
-                ) : null}
+                {step === 0 ? <Text style={styles.footerNote}>{t("footer.privacy")}</Text> : null}
                 {step > 0 ? (
-                    <SoftButton label="Atrás" onPress={() => setStep((current) => current - 1)} variant="ghost" />
+                    <SoftButton
+                        label={t("actions.back")}
+                        onPress={() => setStep((current) => current - 1)}
+                        variant="ghost"
+                    />
                 ) : null}
                 {step > 0 ? (
                     <SoftButton
-                        label={step === 5 ? "Empezar" : "Siguiente"}
+                        label={step === 5 ? t("actions.start") : t("actions.next")}
                         loading={saving}
                         onPress={step === 5 ? finish : () => setStep((current) => current + 1)}
                         style={styles.nextButton}

@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
 import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
@@ -44,6 +45,7 @@ export function DayDetailScreen({
     onBack,
     onOpenDiary,
 }: DayDetailScreenProps) {
+    const { t } = useTranslation("dayDetail");
     const snapshot = estimateCycle(settings, cycles, dailyLogs, selectedIso, moodCheckIns);
     const todayIso = toIsoDate(new Date());
     const isFuture = selectedIso > todayIso;
@@ -78,7 +80,7 @@ export function DayDetailScreen({
             />
 
             <SoftCard style={styles.summaryCard} tone={summaryTone} variant="accent">
-                <Text style={styles.cardTitle}>Lectura rápida</Text>
+                <Text style={styles.cardTitle}>{t("quickRead.title")}</Text>
                 <Text style={styles.summaryText}>{summary}</Text>
                 <View style={styles.badges}>
                     <Text style={styles.badge}>{snapshot.fertilityStatusLabel}</Text>
@@ -89,7 +91,7 @@ export function DayDetailScreen({
             </SoftCard>
 
             <SoftCard style={styles.card}>
-                <Text style={styles.cardTitle}>{isFuture ? "Vista del día" : "Qué mirar aquí"}</Text>
+                <Text style={styles.cardTitle}>{isFuture ? t("sections.futureView") : t("sections.whatToWatch")}</Text>
                 <Text style={styles.cardBody}>{snapshot.phaseMessage}</Text>
                 {careTips.map((tip) => (
                     <CareTipRow key={tip.text} tip={tip} />
@@ -98,7 +100,7 @@ export function DayDetailScreen({
 
             {dailyLog ? (
                 <SoftCard style={styles.card}>
-                    <Text style={styles.cardTitle}>Registro del día</Text>
+                    <Text style={styles.cardTitle}>{t("daily.title")}</Text>
                     <Text style={styles.metaLine}>
                         {sourceLabel(dailyLog.source)} · {bleedingLabel(dailyLog.bleedingLevel)}
                     </Text>
@@ -111,7 +113,7 @@ export function DayDetailScreen({
                             ))}
                         </View>
                     ) : (
-                        <Text style={styles.softText}>Sin síntomas anotados.</Text>
+                        <Text style={styles.softText}>{t("daily.noSymptoms")}</Text>
                     )}
                     {detailItems.length > 0 ? (
                         <View style={styles.chips}>
@@ -128,7 +130,7 @@ export function DayDetailScreen({
 
             {moments.length > 0 ? (
                 <SoftCard style={styles.card}>
-                    <Text style={styles.cardTitle}>Momentos anotados</Text>
+                    <Text style={styles.cardTitle}>{t("moments.title")}</Text>
                     {moments.map((entry) => (
                         <MomentEntryRow entry={entry} key={entry.id ?? entry.datetime} />
                     ))}
@@ -137,17 +139,14 @@ export function DayDetailScreen({
 
             {!hasRecords && !isFuture ? (
                 <SoftCard style={styles.card} variant="soft">
-                    <Text style={styles.cardTitle}>Sin anotaciones</Text>
-                    <Text style={styles.cardBody}>
-                        Ese día quedó vacío. Si hace falta corregirlo o completar algo, Diario sigue siendo punto de
-                        edición.
-                    </Text>
+                    <Text style={styles.cardTitle}>{t("empty.title")}</Text>
+                    <Text style={styles.cardBody}>{t("empty.body")}</Text>
                 </SoftCard>
             ) : null}
 
             {hasRecords || selectedIso <= todayIso ? (
                 <SoftButton
-                    label="Abrir diario"
+                    label={t("actions.openDiary")}
                     onPress={onOpenDiary}
                     style={styles.actionButton}
                     variant="secondary"

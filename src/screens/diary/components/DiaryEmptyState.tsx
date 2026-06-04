@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { colors } from "@/theme";
 import { SoftCard } from "@/ui/SoftCard";
@@ -11,13 +12,13 @@ interface DiaryEmptyStateProps {
 }
 
 /** Renderiza un vacío amable cuando aún no hay historial suficiente. */
-export default function DiaryEmptyState({
-    label = "Todavía no hay nada por aquí. En cuanto empieces a registrar, este espacio se va llenando.",
-}: DiaryEmptyStateProps) {
+export default function DiaryEmptyState({ label }: DiaryEmptyStateProps) {
+    const { t } = useTranslation("diary");
+
     return (
         <SoftCard style={styles.empty} tone="primary" variant="soft">
             <MaterialCommunityIcons color={colors.primaryDeep} name="notebook-outline" size={28} />
-            <Text style={styles.emptyText}>{label}</Text>
+            <Text style={styles.emptyText}>{label ?? t("empty.default")}</Text>
         </SoftCard>
     );
 }

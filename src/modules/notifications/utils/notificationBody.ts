@@ -1,4 +1,6 @@
+import { translate } from "@/modules/localization/i18n";
+
 /** Devuelve copy breve y privado para recordatorio local. */
 export default function notificationBody() {
-    return "¿Cómo te sientes ahora?";
+    return translate("notifications:body");
 }

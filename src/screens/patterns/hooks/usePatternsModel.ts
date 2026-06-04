@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
@@ -19,17 +20,18 @@ interface UsePatternsModelParams {
 
 const METRICS: {
     key: keyof Pick<MoodCheckIn, "mood" | "energy" | "pain" | "stress">;
-    label: string;
+    labelKey: string;
     color: string;
 }[] = [
-    { key: "mood", label: "Ánimo", color: colors.primary },
-    { key: "energy", label: "Energía", color: colors.fertile },
-    { key: "pain", label: "Dolor", color: colors.period },
-    { key: "stress", label: "Estrés", color: colors.luteal },
+    { key: "mood", labelKey: "metrics.mood", color: colors.primary },
+    { key: "energy", labelKey: "metrics.energy", color: colors.fertile },
+    { key: "pain", labelKey: "metrics.pain", color: colors.period },
+    { key: "stress", labelKey: "metrics.stress", color: colors.luteal },
 ];
 
 /** Junta derivados, métricas y copy de estado que alimentan la pantalla de patrones. */
 export default function usePatternsModel({ settings, cycles, moodCheckIns, dailyLogs }: UsePatternsModelParams) {
+    const { t } = useTranslation("patterns");
     const insights = useMemo(
         () => buildPatternInsights(settings, cycles, dailyLogs, moodCheckIns),
         [cycles, dailyLogs, moodCheckIns, settings],
@@ -55,47 +57,49 @@ export default function usePatternsModel({ settings, cycles, moodCheckIns, daily
     const enoughObservedCycles = cycleSummaries.length >= 3;
     const statusIconName = enoughObservedCycles || enoughData ? "chart-line" : "timer-sand";
     const statusTitle = enoughObservedCycles
-        ? "Base observada útil"
+        ? t("status.observedUseful")
         : enoughData || observedDayCount >= 10
-          ? "Base creciendo"
-          : "Base inicial";
+          ? t("status.growing")
+          : t("status.initial");
     const statusText = enoughObservedCycles
-        ? `Ya hay ${cycleSummaries.length} ciclos observados para comparar duración, dolor, energía y síntomas con bastante más contexto.`
+        ? t("status.observedUsefulText", { count: cycleSummaries.length })
         : enoughData || observedDayCount >= 10
-          ? `Ya hay ${moodCheckIns.length} momentos y ${observedDayCount} días observados. Aún falta más historia cerrada para confiar más en comparaciones por ciclo.`
-          : "Todavía manda muestra corta. Rea ya puede enseñar señales sueltas, pero no conviene leerlas como patrón firme.";
+          ? t("status.growingText", { days: observedDayCount, moments: moodCheckIns.length })
+          : t("status.initialText");
     const statusDetail =
         observationAdjustmentCount > 0
-            ? `${statusText} ${buildObservationAdjustmentCopy(observationAdjustmentCount)}`
+            ? `${statusText} ${t("status.observationAdjustment", { count: observationAdjustmentCount })}`
             : statusText;
     const basisMetrics = useMemo(() => {
         const metrics = [
-            `${moodCheckIns.length} ${moodCheckIns.length === 1 ? "momento" : "momentos"}`,
-            `${observedDayCount} ${observedDayCount === 1 ? "día observado" : "días observados"}`,
-            `${cycleSummaries.length} ${cycleSummaries.length === 1 ? "ciclo observado" : "ciclos observados"}`,
+            t("basis.moment", { count: moodCheckIns.length }),
+            t("basis.day", { count: observedDayCount }),
+            t("basis.cycle", { count: cycleSummaries.length }),
         ];
 
         if (observationAdjustmentCount > 0) {
-            metrics.push(
-                `${observationAdjustmentCount} ${observationAdjustmentCount === 1 ? "ajuste" : "ajustes"} por observación`,
-            );
+            metrics.push(t("basis.adjustment", { count: observationAdjustmentCount }));
         }
 
         return metrics;
-    }, [cycleSummaries.length, moodCheckIns.length, observationAdjustmentCount, observedDayCount]);
+    }, [cycleSummaries.length, moodCheckIns.length, observationAdjustmentCount, observedDayCount, t]);
     const metricVariabilityEmptyText = enoughData
         ? ""
         : moodCheckIns.length === 0
-          ? "Todavía no hay momentos suficientes para leer cuánto cambia ánimo, energía o dolor."
-          : `Faltan ${4 - moodCheckIns.length} ${4 - moodCheckIns.length === 1 ? "momento" : "momentos"} para empezar a leer variación real entre registros.`;
+          ? t("empty.metricNoMoments")
+          : t("empty.metricPending", { count: 4 - moodCheckIns.length });
     const metricVariability = useMemo(
         () =>
             METRICS.map((metric) => ({
-                ...metric,
+                color: metric.color,
+                key: metric.key,
+                label: t(metric.labelKey),
                 value: getMetricSpread(moodCheckIns.map((item) => item[metric.key])),
-                valueLabel: `${getMetricSpread(moodCheckIns.map((item) => item[metric.key])).toFixed(1)} pts`,
+                valueLabel: t("metrics.points", {
+                    value: getMetricSpread(moodCheckIns.map((item) => item[metric.key])).toFixed(1),
+                }),
             })),
-        [moodCheckIns],
+        [moodCheckIns, t],
     );
 
     return {
@@ -155,10 +159,4 @@ function countObservationAdjustments(
 
         return count + (adjustedByObservation ? 1 : 0);
     }, 0);
-}
-
-function buildObservationAdjustmentCopy(observationAdjustmentCount: number) {
-    return observationAdjustmentCount === 1
-        ? "Ya hubo 1 ajuste por observación frente al calendario."
-        : `Ya hubo ${observationAdjustmentCount} ajustes por observación frente al calendario.`;
 }

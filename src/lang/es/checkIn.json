@@ -1,0 +1,126 @@
+{
+    "actions": {
+        "deleteMoment": "Eliminar momento",
+        "saveEditing": "Actualizar",
+        "saveNew": "Guardar"
+    },
+    "alerts": {
+        "deleteMoment": {
+            "body": "Se borrará solo esta anotación puntual. Día seguirá intacto.",
+            "confirm": "Eliminar",
+            "title": "Eliminar momento"
+        }
+    },
+    "daily": {
+        "bleeding": {
+            "heavy": "Abundante",
+            "light": "Leve",
+            "medium": "Medio",
+            "none": "Nada",
+            "spotting": "Manchado"
+        },
+        "clot": {
+            "large": "Grandes",
+            "medium": "Medios",
+            "none": "No",
+            "small": "Pequeños"
+        },
+        "libido": {
+            "high": "Alta",
+            "low": "Baja",
+            "steady": "Normal",
+            "veryLow": "Muy baja"
+        },
+        "medicationRelief": {
+            "didNotHelp": "No ayudó",
+            "helped": "Sí ayudó",
+            "notApplicable": "No tomé",
+            "partlyHelped": "Ayudó poco"
+        },
+        "painImpact": {
+            "limitsDay": "Me limitó",
+            "none": "No frenó",
+            "noticeable": "Se notó",
+            "stopsDay": "Me tumbó"
+        },
+        "painLocation": {
+            "breasts": "Pecho",
+            "head": "Cabeza",
+            "lowerAbdomen": "Bajo vientre",
+            "lowerBack": "Espalda baja",
+            "pelvis": "Pelvis"
+        },
+        "period": {
+            "ended": "Terminó hoy",
+            "started": "Empezó hoy"
+        },
+        "pms": {
+            "none": "No",
+            "present": "Sí lo siento",
+            "starting": "Empezando"
+        }
+    },
+    "helper": {
+        "editDailyLog": "Para quitar algo de este día, desmárcalo o borra su nota. Día completo no se elimina.",
+        "privacy": "Se queda solo en este teléfono."
+    },
+    "header": {
+        "dailyKicker": "Tu día",
+        "editKicker": "Editar registro",
+        "quickKicker": "Un minuto para ti"
+    },
+    "metrics": {
+        "breastSensitivity": "Sensibilidad mamaria",
+        "energy": "Energía",
+        "mood": "Ánimo",
+        "pain": "Dolor",
+        "stress": "Estrés"
+    },
+    "note": {
+        "placeholder": "Algo que quieras recordar...",
+        "title": "Nota opcional"
+    },
+    "placeholders": {
+        "medicationName": "Ibuprofeno, naproxeno..."
+    },
+    "prompt": {
+        "dailySubtitle": "Añade las señales del día que sí valen la pena, aunque no completes todo.",
+        "defaultSubtitle": "Registra solo lo que este momento te está mostrando.",
+        "editDailySubtitle": "Puedes corregir o completar lo que observaste hoy sin rehacer todo el registro.",
+        "editQuickSubtitle": "Ajusta esta nota puntual sin tocar el resto del día.",
+        "morningSubtitle": "Si acabas de despertar, basta con dejar una foto rápida de este momento.",
+        "nightSubtitle": "Si estás cerrando el día, anota solo lo que todavía sigue presente.",
+        "notificationSubtitle": "Vienes de un recordatorio suave. Responde solo si este momento te aporta algo.",
+        "title": "¿Cómo te sientes ahora?"
+    },
+    "scale": {
+        "high": "Alto",
+        "low": "Bajo",
+        "nothing": "Nada",
+        "strong": "Fuerte",
+        "soft": "Leve",
+        "veryGood": "Muy bien",
+        "verySensitive": "Muy sensible"
+    },
+    "sections": {
+        "bleeding": "Sangrado",
+        "clots": "Coágulos",
+        "libido": "Libido",
+        "medication": "Si tomaste algo",
+        "painImpact": "¿Cuánto te frenó el dolor?",
+        "painLocation": "Dónde lo sientes",
+        "period": "Periodo",
+        "pms": "SPM",
+        "symptoms": "Síntomas"
+    },
+    "symptoms": {
+        "acne": "Acné",
+        "bloating": "Hinchazón",
+        "breastTenderness": "Sensibilidad mamaria",
+        "cramps": "Cólicos",
+        "cravings": "Antojos",
+        "insomnia": "Insomnio",
+        "migraine": "Migraña",
+        "nausea": "Náuseas"
+    }
+}

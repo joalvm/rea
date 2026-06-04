@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { colors } from "@/theme";
 import { StepShell } from "@/ui/StepShell";
@@ -13,12 +14,10 @@ interface OnboardingGoalStepProps {
 
 /** Define el objetivo principal de uso antes de entrar a la app. */
 export default function OnboardingGoalStep({ tryingToConceive, onToggleTryingToConceive }: OnboardingGoalStepProps) {
+    const { t } = useTranslation("onboarding");
+
     return (
-        <StepShell
-            icon="star-four-points-outline"
-            subtitle="Entender tu ciclo ya viene incluido. Activa esto solo si también quieres referencias probables de fertilidad."
-            title="¿Quieres sumar búsqueda de embarazo?"
-        >
+        <StepShell icon="star-four-points-outline" subtitle={t("goal.subtitle")} title={t("goal.title")}>
             <View style={styles.goals}>
                 <Pressable
                     onPress={onToggleTryingToConceive}

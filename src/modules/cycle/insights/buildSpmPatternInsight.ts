@@ -1,3 +1,4 @@
+import { translate } from "@/modules/localization/i18n";
 import { Cycle } from "@/types/cycle.types";
 import { PatternInsight } from "@/types/insights.types";
 import { DailyLog } from "@/types/records.types";
@@ -34,19 +35,19 @@ export default function buildSpmPatternInsight(
     const snapshot = estimateCycle(settings, cycles, dailyLogs, todayIso);
     const approxStart = addDays(todayIso, snapshot.nextPeriodInDays - averageLead);
     const daysUntilApprox = daysBetween(todayIso, approxStart);
-    const cycleLabel = `${leadDays.length} ciclos observados`;
+    const cycleLabel = translate("cycle:insights.spm.cycleLabel", { count: leadDays.length });
 
-    let timing = `Si próximo ciclo sigue parecido, podría asomar cerca del ${formatShortDate(approxStart)}.`;
+    let timing = translate("cycle:insights.spm.timingSpecific", { date: formatShortDate(approxStart) });
     if (daysUntilApprox < -1) {
-        timing = "Si próximo ciclo sigue parecido, este mes ya estarías dentro de esa ventana.";
+        timing = translate("cycle:insights.spm.timingAlready");
     } else if (daysUntilApprox <= 1) {
-        timing = "Si próximo ciclo sigue parecido, esa ventana cae por estos días.";
+        timing = translate("cycle:insights.spm.timingNear");
     }
 
     return {
         id: "spm-start",
-        title: `Tu SPM suele arrancar ${averageLead} ${averageLead === 1 ? "día" : "días"} antes`,
-        detail: `Lo marcaste así en ${cycleLabel}. ${timing}`,
+        title: translate("cycle:insights.spm.title", { count: averageLead }),
+        detail: translate("cycle:insights.spm.detail", { cycleLabel, timing }),
         tone: "supportive",
     };
 }

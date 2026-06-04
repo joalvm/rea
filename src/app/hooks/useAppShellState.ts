@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BackHandler } from "react-native";
 
+import { translate } from "@/modules/localization/i18n";
 import { TabKey } from "../../types/app.types";
 import { DailyLog, MomentType, MoodCheckIn } from "../../types/records.types";
 import { CheckInPromptContext, CheckInState } from "../app-shell.types";
@@ -11,8 +12,8 @@ const initialCheckInState: CheckInState = {
     mode: "daily",
     momentType: "now",
     promptContext: {
-        title: "¿Cómo te sientes ahora?",
-        subtitle: "Registra solo lo que este momento te está mostrando.",
+        title: translate("checkIn:prompt.title"),
+        subtitle: translate("checkIn:prompt.defaultSubtitle"),
     },
     dailyLogOnly: false,
     initialCheckIn: null,
@@ -236,44 +237,43 @@ interface BuildPromptContextParams {
 function buildPromptContext({ mode, momentType, source }: BuildPromptContextParams): CheckInPromptContext {
     if (source === "notification") {
         return {
-            title: "¿Cómo te sientes ahora?",
-            subtitle: "Vienes de un recordatorio suave. Responde solo si este momento te aporta algo.",
+            title: translate("checkIn:prompt.title"),
+            subtitle: translate("checkIn:prompt.notificationSubtitle"),
         };
     }
 
     if (source === "edit") {
         return {
-            title: "¿Cómo te sientes ahora?",
-            subtitle:
-                mode === "daily"
-                    ? "Puedes corregir o completar lo que observaste hoy sin rehacer todo el registro."
-                    : "Ajusta esta nota puntual sin tocar el resto del día.",
+            title: translate("checkIn:prompt.title"),
+            subtitle: translate(
+                mode === "daily" ? "checkIn:prompt.editDailySubtitle" : "checkIn:prompt.editQuickSubtitle",
+            ),
         };
     }
 
     if (mode === "daily") {
         return {
-            title: "¿Cómo te sientes ahora?",
-            subtitle: "Añade las señales del día que sí valen la pena, aunque no completes todo.",
+            title: translate("checkIn:prompt.title"),
+            subtitle: translate("checkIn:prompt.dailySubtitle"),
         };
     }
 
     if (momentType === "morning") {
         return {
-            title: "¿Cómo te sientes ahora?",
-            subtitle: "Si acabas de despertar, basta con dejar una foto rápida de este momento.",
+            title: translate("checkIn:prompt.title"),
+            subtitle: translate("checkIn:prompt.morningSubtitle"),
         };
     }
 
     if (momentType === "night") {
         return {
-            title: "¿Cómo te sientes ahora?",
-            subtitle: "Si estás cerrando el día, anota solo lo que todavía sigue presente.",
+            title: translate("checkIn:prompt.title"),
+            subtitle: translate("checkIn:prompt.nightSubtitle"),
         };
     }
 
     return {
-        title: "¿Cómo te sientes ahora?",
-        subtitle: "Registra solo lo que este momento te está mostrando.",
+        title: translate("checkIn:prompt.title"),
+        subtitle: translate("checkIn:prompt.defaultSubtitle"),
     };
 }

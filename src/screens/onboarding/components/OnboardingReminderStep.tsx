@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import notificationCadenceSummary from "@/modules/notifications/utils/notificationCadenceSummary";
 import { colors } from "@/theme";
@@ -14,12 +15,10 @@ interface OnboardingReminderStepProps {
 
 /** Permite activar o desactivar los recordatorios iniciales. */
 export default function OnboardingReminderStep({ cadence, onToggleEnabled }: OnboardingReminderStepProps) {
+    const { t } = useTranslation("onboarding");
+
     return (
-        <StepShell
-            icon="bell-outline"
-            subtitle="Puedes ajustar ritmo y ventana después. La notificación no muestra nada íntimo."
-            title="¿Quieres recordatorios?"
-        >
+        <StepShell icon="bell-outline" subtitle={t("reminders.subtitle")} title={t("reminders.title")}>
             <View style={styles.reminders}>
                 <Pressable
                     onPress={onToggleEnabled}
@@ -27,7 +26,7 @@ export default function OnboardingReminderStep({ cadence, onToggleEnabled }: Onb
                 >
                     <View>
                         <Text style={styles.reminderTitle}>
-                            {cadence.enabled ? "Recordatorios activos" : "Recordatorios pausados"}
+                            {cadence.enabled ? t("reminders.active") : t("reminders.paused")}
                         </Text>
                         <Text style={styles.reminderMeta}>{notificationCadenceSummary(cadence)}</Text>
                     </View>

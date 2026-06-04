@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { colors } from "@/theme";
 import { BrandLogo } from "@/ui/BrandLogo";
@@ -39,6 +40,7 @@ export function TodayScreen({
     onOpenDay,
     onOpenSettings,
 }: TodayScreenProps) {
+    const { t } = useTranslation("today");
     const { alerts, careTips, heroSecondaryStat, heroSupport, heroTheme, insights, showHeroDataSummary, weekPages } =
         useTodayModel({
             settings,
@@ -61,7 +63,7 @@ export function TodayScreen({
                             backgroundColor={heroTheme.iconButtonBackground}
                             color={heroTheme.iconButtonColor}
                             icon="cog-outline"
-                            label="Abrir ajustes"
+                            label={t("accessibility.openSettings")}
                             onPress={onOpenSettings}
                         />
                     </View>
@@ -95,7 +97,9 @@ export function TodayScreen({
                                     },
                                 ]}
                             >
-                                <Text style={[styles.dayBadgeText, { color: heroTheme.dayBadgeColor }]}>Día</Text>
+                                <Text style={[styles.dayBadgeText, { color: heroTheme.dayBadgeColor }]}>
+                                    {t("hero.cycleDay")}
+                                </Text>
                             </View>
                             <Text style={[styles.phaseDay, { color: heroTheme.titleColor }]}>{snapshot.cycleDay}</Text>
                         </View>
@@ -120,7 +124,7 @@ export function TodayScreen({
                             <MiniStat
                                 icon="calendar-clock"
                                 iconColor={heroTheme.statIconColor}
-                                label="Próxima regla"
+                                label={t("hero.nextPeriod")}
                                 labelColor={heroTheme.statLabelColor}
                                 value={snapshot.nextPeriodLabel}
                                 valueColor={heroTheme.statValueColor}
@@ -139,7 +143,7 @@ export function TodayScreen({
 
                     <SoftButton
                         icon={<MaterialCommunityIcons color={heroTheme.buttonTextColor} name="heart-pulse" size={18} />}
-                        label="Registrar ahora"
+                        label={t("primaryAction")}
                         labelStyle={{ color: heroTheme.buttonTextColor }}
                         loadingColor={heroTheme.buttonTextColor}
                         onPress={onOpenCheckIn}
@@ -156,7 +160,7 @@ export function TodayScreen({
 
             {alerts.length > 0 ? (
                 <View style={[styles.section, styles.firstSection]}>
-                    <Text style={styles.sectionTitle}>Señales para mirar</Text>
+                    <Text style={styles.sectionTitle}>{t("alerts.sectionTitle")}</Text>
                     <SoftCard style={styles.alertCard}>
                         {alerts.map((alert) => (
                             <View key={alert.id} style={styles.alertRow}>
@@ -181,7 +185,7 @@ export function TodayScreen({
             ) : null}
 
             <View style={[styles.section, alerts.length === 0 && styles.firstSection]}>
-                <Text style={styles.sectionTitle}>Para cuidarte hoy</Text>
+                <Text style={styles.sectionTitle}>{t("care.sectionTitle")}</Text>
                 <SoftCard style={styles.careCard}>
                     {careTips.map((tip) => (
                         <View key={tip.text} style={styles.careRow}>
@@ -195,12 +199,10 @@ export function TodayScreen({
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Lo que vamos notando</Text>
+                <Text style={styles.sectionTitle}>{t("insights.sectionTitle")}</Text>
                 <SoftCard style={styles.insightCard}>
                     {insights.length === 0 ? (
-                        <Text style={styles.emptyText}>
-                            Con un poco más de historia, aquí empezarán a verse repeticiones y cambios del ciclo.
-                        </Text>
+                        <Text style={styles.emptyText}>{t("insights.empty")}</Text>
                     ) : (
                         insights.map((insight) => (
                             <View key={insight.id} style={styles.insightRow}>

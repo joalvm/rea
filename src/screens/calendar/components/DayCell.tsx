@@ -1,6 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 
 import { CycleSnapshot, PhaseKey } from "@/types/cycle.types";
+import { translate } from "@/modules/localization/i18n";
 import styles, { phaseStyles } from "../CalendarScreen.styles";
 
 interface DayCellProps {
@@ -62,24 +63,28 @@ function buildAccessibilityLabel(
     isLogged: boolean,
     phaseSource: CycleSnapshot["source"],
 ) {
-    const labels = [`Día ${dayNumber}`];
+    const labels = [translate("calendar:dayCell.day", { day: dayNumber })];
 
     if (phase === "menstrual") {
-        labels.push(phaseSource === "observed" ? "periodo observado" : "periodo estimado");
+        labels.push(
+            phaseSource === "observed"
+                ? translate("calendar:dayCell.observedPeriod")
+                : translate("calendar:dayCell.estimatedPeriod"),
+        );
     } else if (phase === "fertile") {
-        labels.push("fase fértil");
+        labels.push(translate("calendar:dayCell.fertile"));
     } else if (phase === "luteal") {
-        labels.push("fase lútea");
+        labels.push(translate("calendar:dayCell.luteal"));
     } else {
-        labels.push("fase folicular");
+        labels.push(translate("calendar:dayCell.follicular"));
     }
 
     if (isToday) {
-        labels.push("hoy");
+        labels.push(translate("calendar:dayCell.today"));
     }
 
     if (isLogged) {
-        labels.push("con anotaciones");
+        labels.push(translate("calendar:dayCell.annotated"));
     }
 
     return labels.join(", ");

@@ -1,14 +1,15 @@
 import { SymptomKey } from "@/types/records.types";
+import { translate } from "@/modules/localization/i18n";
 
-const SYMPTOM_LABELS: Record<SymptomKey, string> = {
-    cramps: "Cólicos",
-    migraine: "Migraña",
-    acne: "Acné",
-    bloating: "Hinchazón",
-    cravings: "Antojos",
-    insomnia: "Insomnio",
-    nausea: "Náuseas",
-    breast_tenderness: "Sensibilidad mamaria",
+const SYMPTOM_LABEL_KEYS: Record<SymptomKey, string> = {
+    cramps: "checkIn:symptoms.cramps",
+    migraine: "checkIn:symptoms.migraine",
+    acne: "checkIn:symptoms.acne",
+    bloating: "checkIn:symptoms.bloating",
+    cravings: "checkIn:symptoms.cravings",
+    insomnia: "checkIn:symptoms.insomnia",
+    nausea: "checkIn:symptoms.nausea",
+    breast_tenderness: "checkIn:symptoms.breastTenderness",
 };
 
 const LEGACY_SYMPTOM_MAP: Record<string, SymptomKey> = {
@@ -23,9 +24,9 @@ const LEGACY_SYMPTOM_MAP: Record<string, SymptomKey> = {
 };
 
 /** Opciones visibles y estables del selector de síntomas. */
-export const SYMPTOM_OPTIONS = Object.entries(SYMPTOM_LABELS).map(([key, label]) => ({
+export const SYMPTOM_OPTIONS = Object.entries(SYMPTOM_LABEL_KEYS).map(([key, labelKey]) => ({
     key: key as SymptomKey,
-    label,
+    label: translate(labelKey),
 }));
 
 /** Devuelve etiqueta visible de un síntoma conocido o legado. */
@@ -35,7 +36,7 @@ export function labelSymptom(symptom: SymptomKey | string) {
         return symptom;
     }
 
-    return SYMPTOM_LABELS[normalized];
+    return translate(SYMPTOM_LABEL_KEYS[normalized]);
 }
 
 /** Normaliza claves viejas o modernas a catálogo estable. */
@@ -45,7 +46,7 @@ export function normalizeSymptomKey(value: string): SymptomKey | null {
         return null;
     }
 
-    if (raw in SYMPTOM_LABELS) {
+    if (raw in SYMPTOM_LABEL_KEYS) {
         return raw as SymptomKey;
     }
 

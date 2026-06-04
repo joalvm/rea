@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { accents, colors, radii, shadow, surfaces, type } from "@/theme";
 
@@ -11,13 +12,15 @@ interface ExportSavedBannerProps {
 
 /** Banner breve para confirmar guardado local y ofrecer compartir sin abrir otro modal. */
 export default function ExportSavedBanner({ message, onDismiss, onShare }: ExportSavedBannerProps) {
+    const { t } = useTranslation("settings");
+
     return (
         <View pointerEvents="box-none" style={styles.wrap}>
             <View style={styles.banner}>
                 <View style={styles.copy}>
                     <View style={styles.titleRow}>
                         <MaterialCommunityIcons color={colors.success} name="check-circle" size={16} />
-                        <Text style={styles.title}>Respaldo guardado</Text>
+                        <Text style={styles.title}>{t("backup.export.savedBannerTitle")}</Text>
                     </View>
                     <Text style={styles.message}>{message}</Text>
                 </View>
@@ -29,12 +32,12 @@ export default function ExportSavedBanner({ message, onDismiss, onShare }: Expor
                             onPress={onShare}
                             style={({ pressed }) => [styles.shareButton, pressed && styles.pressed]}
                         >
-                            <Text style={styles.shareText}>Compartir</Text>
+                            <Text style={styles.shareText}>{t("common:actions.share")}</Text>
                         </Pressable>
                     ) : null}
 
                     <Pressable
-                        accessibilityLabel="Cerrar aviso de respaldo"
+                        accessibilityLabel={t("common:actions.close")}
                         accessibilityRole="button"
                         onPress={onDismiss}
                         style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}

@@ -1,0 +1,34 @@
+{
+    "accessibility": {
+        "nextMonth": "Ver mes siguiente",
+        "previousMonth": "Ver mes anterior"
+    },
+    "dayCell": {
+        "annotated": "con anotaciones",
+        "day": "Día {{day}}",
+        "fertile": "fase fértil",
+        "follicular": "fase folicular",
+        "luteal": "fase lútea",
+        "observedPeriod": "periodo observado",
+        "estimatedPeriod": "periodo estimado",
+        "today": "hoy"
+    },
+    "header": {
+        "subtitle": "Mira el mes completo y abre cada día para ubicarte mejor dentro de tu ciclo.",
+        "title": "Calendario"
+    },
+    "legend": {
+        "estimatedPeriod": "Regla estimada",
+        "fertileWindow": "Ventana fértil",
+        "luteal": "Lútea",
+        "observedPeriod": "Regla observada"
+    },
+    "todayCard": {
+        "buttonLogged": "Actualizar hoy",
+        "buttonOpen": "Registrar hoy",
+        "logged": "Hoy ya tiene algo anotado. Si cambió algo, puedes ajustarlo sin salir del calendario.",
+        "open": "Hoy sigue libre. Si quieres, déjalo registrado ahora y sigues con tu mes.",
+        "tag": "Hoy",
+        "title": "¿Quieres añadir algo a este día?"
+    }
+}

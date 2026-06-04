@@ -6,6 +6,7 @@ import {
 import { scheduleNotificationAsync } from "expo-notifications/build/scheduleNotificationAsync";
 
 import { NotificationCadence } from "@/types/notifications.types";
+import { translate } from "@/modules/localization/i18n";
 import ensureNotificationPermission from "../permissions/ensureNotificationPermission";
 import notificationBody from "../utils/notificationBody";
 
@@ -32,7 +33,7 @@ export default async function rescheduleNotificationCadence(
     for (const triggerDate of triggerDates) {
         const id = await scheduleNotificationAsync({
             content: {
-                title: "Un momento para ti",
+                title: translate("notifications:title"),
                 body: notificationBody(),
                 data: { source: "cadence-reminder" },
                 priority: AndroidNotificationPriority.LOW,

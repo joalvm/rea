@@ -1,4 +1,5 @@
 import { Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { colors } from "@/theme";
 import { SoftButton } from "@/ui/SoftButton";
@@ -24,12 +25,14 @@ export default function CheckInActionsRow({
     onDelete,
     onSave,
 }: CheckInActionsRowProps) {
+    const { t } = useTranslation("checkIn");
+
     return (
         <>
             <View style={styles.actionsRow}>
                 {canDeleteMoment ? (
                     <SoftButton
-                        label="Eliminar momento"
+                        label={t("actions.deleteMoment")}
                         loading={deleting}
                         onPress={onDelete}
                         style={styles.deleteButton}
@@ -39,18 +42,14 @@ export default function CheckInActionsRow({
                     />
                 ) : null}
                 <SoftButton
-                    label={isEditing ? "Actualizar" : "Guardar"}
+                    label={isEditing ? t("actions.saveEditing") : t("actions.saveNew")}
                     loading={saving}
                     onPress={onSave}
                     style={[styles.saveButton, canDeleteMoment ? styles.saveButtonSplit : null]}
                 />
             </View>
-            {showDailyLogHelper ? (
-                <Text style={styles.helperText}>
-                    Para quitar algo de este día, desmárcalo o borra su nota. Día completo no se elimina.
-                </Text>
-            ) : null}
-            <Text style={styles.privacy}>Se queda solo en este teléfono.</Text>
+            {showDailyLogHelper ? <Text style={styles.helperText}>{t("helper.editDailyLog")}</Text> : null}
+            <Text style={styles.privacy}>{t("helper.privacy")}</Text>
         </>
     );
 }

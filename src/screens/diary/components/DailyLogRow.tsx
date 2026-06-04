@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { formatShortDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { colors } from "@/theme";
@@ -16,6 +17,7 @@ interface DiaryDailyLogRowProps {
 
 /** Renderiza un día con registro observacional completo y su edición. */
 export default function DailyLogRow({ log, onEdit }: DiaryDailyLogRowProps) {
+    const { t } = useTranslation("diary");
     const details = buildDailyLogDetails(log);
 
     return (
@@ -41,7 +43,7 @@ export default function DailyLogRow({ log, onEdit }: DiaryDailyLogRowProps) {
                     ))}
                 </View>
             ) : (
-                <Text style={styles.rowMeta}>Sin síntomas anotados.</Text>
+                <Text style={styles.rowMeta}>{t("empty.noSymptoms")}</Text>
             )}
             {details.length > 0 ? (
                 <View style={styles.symptoms}>

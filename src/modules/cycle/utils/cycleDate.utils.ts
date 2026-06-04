@@ -1,3 +1,5 @@
+import { formatMonthYear, formatShortDate as formatLocalizedShortDate } from "@/modules/localization/formatters";
+
 /** Normaliza fecha local a ISO YYYY-MM-DD. */
 export function toIsoDate(date: Date): string {
     const year = date.getFullYear();
@@ -28,12 +30,10 @@ export function daysBetween(startIso: string, endIso: string): number {
 
 /** Formatea fecha breve para copy de UI. */
 export function formatShortDate(iso: string): string {
-    const date = parseIsoDate(iso);
-    return date.toLocaleDateString("es-PE", { day: "numeric", month: "short" });
+    return formatLocalizedShortDate(iso);
 }
 
 /** Construye título de mes con capitalización local. */
 export function monthTitle(date: Date): string {
-    const title = date.toLocaleDateString("es-PE", { month: "long", year: "numeric" });
-    return title.charAt(0).toUpperCase() + title.slice(1);
+    return formatMonthYear(date);
 }

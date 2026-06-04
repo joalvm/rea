@@ -1,32 +1,33 @@
+import { translate } from "@/modules/localization/i18n";
 import { PhaseKey } from "@/types/cycle.types";
 
 /** Devuelve label legible para fase de ciclo. */
 export default function getPhaseLabel(phase: PhaseKey): string {
     switch (phase) {
         case "menstrual":
-            return "Periodo";
+            return translate("cycle:phase.menstrual");
         case "follicular":
-            return "Fase folicular";
+            return translate("cycle:phase.follicular");
         case "fertile":
-            return "Fase fértil";
+            return translate("cycle:phase.fertile");
         case "luteal":
-            return "Fase lútea";
+            return translate("cycle:phase.luteal");
     }
 }
 
 /** Devuelve label con artículo usado en copy explicativo. */
 export function phaseLabelWithArticle(phase: PhaseKey) {
     if (phase === "menstrual") {
-        return "tu fase menstrual";
+        return translate("cycle:phase.menstrualArticle");
     }
 
     if (phase === "follicular") {
-        return "tu fase folicular";
+        return translate("cycle:phase.follicularArticle");
     }
 
     if (phase === "fertile") {
-        return "tu ventana fértil";
+        return translate("cycle:phase.fertileArticle");
     }
 
-    return "tu fase lútea";
+    return translate("cycle:phase.lutealArticle");
 }

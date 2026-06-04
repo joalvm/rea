@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { MetricScale } from "@/ui/MetricScale";
 
 interface CheckInMetricsSectionProps {
@@ -26,27 +28,47 @@ export default function CheckInMetricsSection({
     onBreastSensitivityChange,
     onStressChange,
 }: CheckInMetricsSectionProps) {
+    const { t } = useTranslation("checkIn");
+
     return (
         <>
-            <MetricScale highLabel="Muy bien" label="Ánimo" lowLabel="Bajo" onChange={onMoodChange} value={mood} />
-            <MetricScale highLabel="Alta" label="Energía" lowLabel="Baja" onChange={onEnergyChange} value={energy} />
             <MetricScale
-                highLabel="Fuerte"
-                label="Dolor"
-                lowLabel="Nada"
+                highLabel={t("scale.veryGood")}
+                label={t("metrics.mood")}
+                lowLabel={t("scale.low")}
+                onChange={onMoodChange}
+                value={mood}
+            />
+            <MetricScale
+                highLabel={t("daily.libido.high")}
+                label={t("metrics.energy")}
+                lowLabel={t("daily.libido.low")}
+                onChange={onEnergyChange}
+                value={energy}
+            />
+            <MetricScale
+                highLabel={t("scale.strong")}
+                label={t("metrics.pain")}
+                lowLabel={t("scale.nothing")}
                 min={0}
                 onChange={onPainChange}
                 value={pain}
             />
             <MetricScale
-                highLabel="Muy sensible"
-                label="Sensibilidad mamaria"
-                lowLabel="Nada"
+                highLabel={t("scale.verySensitive")}
+                label={t("metrics.breastSensitivity")}
+                lowLabel={t("scale.nothing")}
                 min={0}
                 onChange={onBreastSensitivityChange}
                 value={breastSensitivity}
             />
-            <MetricScale highLabel="Alto" label="Estrés" lowLabel="Bajo" onChange={onStressChange} value={stress} />
+            <MetricScale
+                highLabel={t("scale.high")}
+                label={t("metrics.stress")}
+                lowLabel={t("scale.low")}
+                onChange={onStressChange}
+                value={stress}
+            />
         </>
     );
 }

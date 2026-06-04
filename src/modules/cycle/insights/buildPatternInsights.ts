@@ -1,3 +1,4 @@
+import { translate } from "@/modules/localization/i18n";
 import { Cycle, PhaseKey } from "@/types/cycle.types";
 import { PatternInsight } from "@/types/insights.types";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
@@ -52,8 +53,13 @@ export default function buildPatternInsights(
     if (highestPain && highestPain.average >= 2.8) {
         insights.push({
             id: "phase-pain",
-            title: `Dolor más alto en ${phaseLabelWithArticle(highestPain.phase)}`,
-            detail: `Promedio ${highestPain.average.toFixed(1)}/5 en ${highestPain.count} momentos. Sirve comparar qué lo acompaña en esa fase.`,
+            title: translate("cycle:insights.phasePain.title", {
+                phase: phaseLabelWithArticle(highestPain.phase),
+            }),
+            detail: translate("cycle:insights.phasePain.detail", {
+                average: highestPain.average.toFixed(1),
+                count: highestPain.count,
+            }),
             tone: "watch",
         });
     }
@@ -61,8 +67,13 @@ export default function buildPatternInsights(
     if (lowestEnergy && lowestEnergy.average <= 3) {
         insights.push({
             id: "phase-energy",
-            title: `Energía más baja en ${phaseLabelWithArticle(lowestEnergy.phase)}`,
-            detail: `Promedio ${lowestEnergy.average.toFixed(1)}/5 en ${lowestEnergy.count} momentos. Ahí vale mirar sueño, carga mental y dolor.`,
+            title: translate("cycle:insights.phaseEnergy.title", {
+                phase: phaseLabelWithArticle(lowestEnergy.phase),
+            }),
+            detail: translate("cycle:insights.phaseEnergy.detail", {
+                average: lowestEnergy.average.toFixed(1),
+                count: lowestEnergy.count,
+            }),
             tone: "supportive",
         });
     }
@@ -70,8 +81,13 @@ export default function buildPatternInsights(
     if (highestStress && highestStress.average >= 2.8) {
         insights.push({
             id: "phase-stress",
-            title: `Estrés más alto en ${phaseLabelWithArticle(highestStress.phase)}`,
-            detail: `Promedio ${highestStress.average.toFixed(1)}/5 en ${highestStress.count} momentos. Conviene ver si coincide con menos descanso o más dolor.`,
+            title: translate("cycle:insights.phaseStress.title", {
+                phase: phaseLabelWithArticle(highestStress.phase),
+            }),
+            detail: translate("cycle:insights.phaseStress.detail", {
+                average: highestStress.average.toFixed(1),
+                count: highestStress.count,
+            }),
             tone: "watch",
         });
     }
@@ -83,8 +99,8 @@ export default function buildPatternInsights(
     if (topSymptoms[0] && topSymptoms[0].count >= 2) {
         insights.push({
             id: "top-symptom",
-            title: `Síntoma que más se repite: ${topSymptoms[0].label}`,
-            detail: `Aparece en ${topSymptoms[0].count} días registrados. Si vuelve seguido, ya te da una pista más clara.`,
+            title: translate("cycle:insights.topSymptom.title", { symptom: topSymptoms[0].label }),
+            detail: translate("cycle:insights.topSymptom.detail", { count: topSymptoms[0].count }),
             tone: "supportive",
         });
     }
@@ -92,8 +108,8 @@ export default function buildPatternInsights(
     if (limitingPainDays > 0) {
         insights.push({
             id: "pain-impact",
-            title: `Dolor que sí frenó tu día: ${limitingPainDays}`,
-            detail: `Ya aparece como algo que te frena, no solo como molestia. Vale mirar en qué tramo del ciclo cae.`,
+            title: translate("cycle:insights.painImpact.title", { count: limitingPainDays }),
+            detail: translate("cycle:insights.painImpact.detail"),
             tone: "watch",
         });
     }
@@ -101,8 +117,8 @@ export default function buildPatternInsights(
     if (medicationRoughDays > 0) {
         insights.push({
             id: "medication-relief",
-            title: `Alivio parcial o nulo: ${medicationRoughDays} días`,
-            detail: `Puede ayudarte a comparar qué tan llevadero fue ese dolor de un ciclo a otro.`,
+            title: translate("cycle:insights.medicationRelief.title", { count: medicationRoughDays }),
+            detail: translate("cycle:insights.medicationRelief.detail"),
             tone: "watch",
         });
     }
@@ -122,8 +138,8 @@ function buildTryingToConceiveInsight(
     if (settings.hormonalContraception) {
         return {
             id: "ttc-paused",
-            title: "Búsqueda activa, ventana probable en pausa",
-            detail: "Marcaste anticonceptivos hormonales, así que Rea se queda con contexto general y no fuerza lectura fértil como si fuera precisa.",
+            title: translate("cycle:insights.tryingToConceive.pausedTitle"),
+            detail: translate("cycle:insights.tryingToConceive.pausedDetail"),
             tone: "supportive",
         };
     }
@@ -135,8 +151,8 @@ function buildTryingToConceiveInsight(
     if (cycleLengths.length < 3) {
         return {
             id: "ttc-low-basis",
-            title: "Aún falta base para ventana probable",
-            detail: "Con tres inicios observados o más, esta lectura empieza a servir mejor para ubicar días probables sin vender certeza falsa.",
+            title: translate("cycle:insights.tryingToConceive.lowBasisTitle"),
+            detail: translate("cycle:insights.tryingToConceive.lowBasisDetail"),
             tone: "supportive",
         };
     }
@@ -148,16 +164,23 @@ function buildTryingToConceiveInsight(
     if (variability <= 4) {
         return {
             id: "ttc-stable-window",
-            title: "Ventana probable con base más estable",
-            detail: `Tus últimos ${cycleLengths.length} ciclos observados se movieron entre ${minLength} y ${maxLength} días. Sigue siendo referencia, pero ya tiene mejor base para acompañarte.`,
+            title: translate("cycle:insights.tryingToConceive.stableTitle"),
+            detail: translate("cycle:insights.tryingToConceive.stableDetail", {
+                count: cycleLengths.length,
+                max: maxLength,
+                min: minLength,
+            }),
             tone: "supportive",
         };
     }
 
     return {
         id: "ttc-variable-window",
-        title: "Ventana probable más cambiante",
-        detail: `Tus últimos ${cycleLengths.length} ciclos observados variaron ${variability} días. Aquí conviene leer ventana fértil como rango abierto, no como fecha cerrada.`,
+        title: translate("cycle:insights.tryingToConceive.variableTitle"),
+        detail: translate("cycle:insights.tryingToConceive.variableDetail", {
+            count: cycleLengths.length,
+            variability,
+        }),
         tone: "watch",
     };
 }
