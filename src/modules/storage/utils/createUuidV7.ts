@@ -1,6 +1,4 @@
-type RandomSource = {
-    getRandomValues: (array: Uint8Array) => Uint8Array;
-};
+import * as Crypto from "expo-crypto";
 
 const byteToHex = Array.from({ length: 256 }, (_, value) => value.toString(16).padStart(2, "0"));
 
@@ -22,18 +20,8 @@ export default function createUuidV7(now = Date.now()) {
 
 function createRandomBytes() {
     const bytes = new Uint8Array(16);
-    const cryptoSource = (globalThis as { crypto?: RandomSource }).crypto;
 
-    if (cryptoSource?.getRandomValues) {
-        cryptoSource.getRandomValues(bytes);
-        return bytes;
-    }
-
-    for (let index = 0; index < bytes.length; index += 1) {
-        bytes[index] = Math.floor(Math.random() * 256);
-    }
-
-    return bytes;
+    return Crypto.getRandomValues(bytes);
 }
 
 function hex(bytes: Uint8Array, start: number, end: number) {
