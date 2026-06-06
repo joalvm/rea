@@ -1,6 +1,7 @@
 import { ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
+import useDiaryStore from "@/modules/state/useDiaryStore";
 import { colors } from "@/theme";
 import { DailyLog, MoodCheckIn } from "@/types/records.types";
 import { BrandMark } from "@/ui/BrandMark";
@@ -13,24 +14,15 @@ import DiaryEmptyState from "./components/DiaryEmptyState";
 
 /** Props del screen de diario y edición de registros. */
 interface DiaryScreenProps {
-    dailyLogs: DailyLog[];
-    moodCheckIns: MoodCheckIn[];
     onOpenCheckIn: () => void;
     onOpenQuickCheckIn: () => void;
     onEditCheckIn: (entry: MoodCheckIn, initialDailyLog?: DailyLog | null) => void;
     onEditDailyLog: (entry: DailyLog) => void;
 }
 
-export function DiaryScreen({
-    dailyLogs,
-    moodCheckIns,
-    onOpenCheckIn,
-    onOpenQuickCheckIn,
-    onEditCheckIn,
-    onEditDailyLog,
-}: DiaryScreenProps) {
+export function DiaryScreen({ onOpenCheckIn, onOpenQuickCheckIn, onEditCheckIn, onEditDailyLog }: DiaryScreenProps) {
     const { t } = useTranslation("diary");
-    const latest = moodCheckIns.slice(0, 12);
+    const { dailyRecords, latestCheckIns } = useDiaryStore();
 
     return (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -52,12 +44,12 @@ export function DiaryScreen({
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{t("sections.latestMoments")}</Text>
-                {latest.length === 0 ? (
+                {latestCheckIns.length === 0 ? (
                     <DiaryEmptyState />
                 ) : (
-                    latest.map((item) => {
+                    latestCheckIns.map((item) => {
                         const itemDate = item.datetime.slice(0, 10);
-                        const initialDailyLog = dailyLogs.find((log) => log.date === itemDate) ?? null;
+                        const initialDailyLog = dailyRecords.find((log) => log.date === itemDate) ?? null;
 
                         return (
                             <CheckInRow
@@ -72,10 +64,12 @@ export function DiaryScreen({
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{t("sections.dailyLogs")}</Text>
-                {dailyLogs.length === 0 ? (
+                {dailyRecords.length === 0 ? (
                     <DiaryEmptyState label={t("empty.dailyLogs")} />
                 ) : (
-                    dailyLogs.map((log) => <DailyLogRow key={log.date} log={log} onEdit={() => onEditDailyLog(log)} />)
+                    dailyRecords.map((log) => (
+                        <DailyLogRow key={log.date} log={log} onEdit={() => onEditDailyLog(log)} />
+                    ))
                 )}
             </View>
         </ScrollView>

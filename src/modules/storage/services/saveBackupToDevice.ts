@@ -1,7 +1,7 @@
 import { Directory, File, Paths } from "expo-file-system";
 
 import { translate } from "@/modules/localization/i18n";
-import { isLikelyBackupUri } from "./backupFile";
+import { isLikelyBackupUri } from "../backup/backupFile";
 
 const APP_BACKUP_DIRECTORY_NAME = "rea-backups";
 const APP_BACKUP_DIRECTORY_LABEL = translate("settings:backup.folderLabel");

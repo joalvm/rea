@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { accents, elevations, interactions, radii, surfaces, type } from "../theme";
+import { accents, elevations, interactions, radii, surfaces, type } from "@/theme";
 
 type Tone = "primary" | "period" | "fertile" | "luteal";
 

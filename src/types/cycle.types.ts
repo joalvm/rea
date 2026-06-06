@@ -12,7 +12,7 @@ export type PredictionConfidence = "low" | "medium" | "high";
 
 /** Representa ciclo persistido en historial local. */
 export interface Cycle {
-    id?: number;
+    id?: string | number;
     startDate: string;
     endDate?: string | null;
     predicted: boolean;

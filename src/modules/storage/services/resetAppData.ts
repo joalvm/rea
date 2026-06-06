@@ -1,12 +1,6 @@
-import db from "../core/database";
+import { recreateDatabase } from "../connection";
 
-/** Borra todos los datos locales persistidos por aplicación. */
+/** Borra archivo SQLite local y lo recrea con contrato vigente, sin conservar esquema anterior. */
 export default async function resetAppData() {
-    const database = db();
-    await database.withTransactionAsync(async () => {
-        await database.runAsync("DELETE FROM daily_logs");
-        await database.runAsync("DELETE FROM mood_checkins");
-        await database.runAsync("DELETE FROM cycles");
-        await database.runAsync("DELETE FROM app_settings");
-    });
+    await recreateDatabase();
 }

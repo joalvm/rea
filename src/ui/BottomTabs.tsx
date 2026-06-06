@@ -3,14 +3,14 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "../theme";
+import { accents, colors, elevations, interactions, radii, screen, surfaces, type } from "@/theme";
 import { TabKey } from "../types/app.types";
 
 const TABS: { key: TabKey; labelKey: string; icon: string }[] = [
     { key: "today", labelKey: "today", icon: "calendar-heart" },
     { key: "calendar", labelKey: "calendar", icon: "calendar-month-outline" },
     { key: "diary", labelKey: "diary", icon: "notebook-outline" },
-    { key: "patterns", labelKey: "patterns", icon: "chart-bell-curve-cumulative" },
+    { key: "statistics", labelKey: "statistics", icon: "chart-bell-curve-cumulative" },
 ];
 
 interface BottomTabsProps {

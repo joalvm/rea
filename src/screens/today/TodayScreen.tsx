@@ -2,11 +2,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
+import useTodayStore from "@/modules/state/useTodayStore";
 import { colors } from "@/theme";
 import { BrandLogo } from "@/ui/BrandLogo";
-import { Cycle, CycleSnapshot } from "@/types/cycle.types";
-import { DailyLog, MoodCheckIn } from "@/types/records.types";
-import { AppSettings } from "@/types/settings.types";
 import { FloatingBubbles } from "@/ui/FloatingBubbles";
 import { IconButton } from "@/ui/IconButton";
 import { SoftButton } from "@/ui/SoftButton";
@@ -20,34 +18,21 @@ import { getAlertTone } from "./utils/todayContent";
 
 /** Props del screen principal de hoy. */
 interface TodayScreenProps {
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    snapshot: CycleSnapshot;
-    moodCheckIns: MoodCheckIn[];
-    dailyLogs: DailyLog[];
     onOpenCheckIn: () => void;
     onOpenDay: (iso: string) => void;
     onOpenSettings: () => void;
 }
 
-export function TodayScreen({
-    settings,
-    cycles,
-    snapshot,
-    moodCheckIns,
-    dailyLogs,
-    onOpenCheckIn,
-    onOpenDay,
-    onOpenSettings,
-}: TodayScreenProps) {
+export function TodayScreen({ onOpenCheckIn, onOpenDay, onOpenSettings }: TodayScreenProps) {
     const { t } = useTranslation("today");
+    const { checkInMoments, dailyRecords, periodHistory, settings, snapshot } = useTodayStore();
     const { alerts, careTips, heroSecondaryStat, heroSupport, heroTheme, insights, showHeroDataSummary, weekPages } =
         useTodayModel({
+            checkInMoments,
+            dailyRecords,
+            periodHistory,
             settings,
-            cycles,
             snapshot,
-            moodCheckIns,
-            dailyLogs,
         });
 
     return (

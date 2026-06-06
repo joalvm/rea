@@ -2,6 +2,8 @@ import esApp from "@/lang/es/app.json";
 import esCalendar from "@/lang/es/calendar.json";
 import esCheckIn from "@/lang/es/checkIn.json";
 import esCommon from "@/lang/es/common.json";
+import esContent from "@/lang/es/content.json";
+import esContentSources from "@/lang/es/contentSources.json";
 import esCycle from "@/lang/es/cycle.json";
 import esDayDetail from "@/lang/es/dayDetail.json";
 import esDiary from "@/lang/es/diary.json";
@@ -9,10 +11,12 @@ import esFormats from "@/lang/es/formats.json";
 import esNavigation from "@/lang/es/navigation.json";
 import esNotifications from "@/lang/es/notifications.json";
 import esOnboarding from "@/lang/es/onboarding.json";
-import esPatterns from "@/lang/es/patterns.json";
 import esSettings from "@/lang/es/settings.json";
+import esStatistics from "@/lang/es/statistics.json";
 import esTerms from "@/lang/es/terms.json";
 import esToday from "@/lang/es/today.json";
+import esPEContent from "@/lang/es-PE/content.json";
+import esPEContentSources from "@/lang/es-PE/contentSources.json";
 import esPEFormats from "@/lang/es-PE/formats.json";
 import esPETerms from "@/lang/es-PE/terms.json";
 
@@ -26,8 +30,10 @@ export const namespaces = [
     "calendar",
     "diary",
     "dayDetail",
-    "patterns",
+    "statistics",
     "checkIn",
+    "content",
+    "contentSources",
     "settings",
     "onboarding",
     "notifications",
@@ -70,6 +76,8 @@ export const resources = {
         calendar: esCalendar,
         checkIn: esCheckIn,
         common: esCommon,
+        content: esContent,
+        contentSources: esContentSources,
         cycle: esCycle,
         dayDetail: esDayDetail,
         diary: esDiary,
@@ -77,12 +85,14 @@ export const resources = {
         navigation: esNavigation,
         notifications: esNotifications,
         onboarding: esOnboarding,
-        patterns: esPatterns,
         settings: esSettings,
+        statistics: esStatistics,
         terms: esTerms,
         today: esToday,
     },
     "es-PE": {
+        content: esPEContent,
+        contentSources: esPEContentSources,
         formats: esPEFormats,
         terms: esPETerms,
     },

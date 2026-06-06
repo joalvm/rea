@@ -1,21 +1,15 @@
-import { addNotificationResponseReceivedListener } from "expo-notifications/build/NotificationsEmitter";
 import { useEffect } from "react";
 
-import registerNotificationHandler from "../../modules/notifications/scheduler/registerNotificationHandler";
-import { MomentType } from "../../types/records.types";
-
-registerNotificationHandler();
+import useNotificationStore from "@/modules/state/useNotificationStore";
+import { MomentType } from "@/types/records.types";
 
 /** Abre check-in rápido cuando usuaria responde desde una notificación local. */
 export default function useAppQuickCheckInNotificationListener(
     openQuickCheckIn: (momentType?: MomentType, source?: "manual" | "notification" | "edit") => void,
 ) {
-    useEffect(() => {
-        const subscription = addNotificationResponseReceivedListener((response) => {
-            const type = response.notification.request.content.data?.momentType;
-            openQuickCheckIn(typeof type === "string" ? (type as MomentType) : "now", "notification");
-        });
+    const subscribeQuickCheckInResponses = useNotificationStore((state) => state.subscribeQuickCheckInResponses);
 
-        return () => subscription.remove();
-    }, [openQuickCheckIn]);
+    useEffect(() => {
+        return subscribeQuickCheckInResponses(openQuickCheckIn);
+    }, [openQuickCheckIn, subscribeQuickCheckInResponses]);
 }

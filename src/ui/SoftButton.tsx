@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ActivityIndicator, Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from "react-native";
 
-import { accents, colors, elevations, interactions, radii, screen, surfaces, type, weights } from "../theme";
+import { accents, colors, elevations, interactions, radii, screen, surfaces, type, weights } from "@/theme";
 
 interface SoftButtonProps {
     label: string;

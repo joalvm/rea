@@ -2,14 +2,29 @@ import * as SQLite from "expo-sqlite";
 import { Directory, File, Paths } from "expo-file-system";
 
 import { translate } from "@/modules/localization/i18n";
-import db from "../core/database";
-import initializeDatabase from "../core/schema";
+import getDatabase, { reopenDatabase } from "../connection";
+import { EXPECTED_SCHEMA_VERSION } from "../migrations/migrationRegistry";
 
 const IMPORT_DIRECTORY_NAME = "backup-imports";
 const MAIN_DATABASE_NAME = "main";
-const REQUIRED_TABLES = ["app_settings", "cycles", "mood_checkins", "daily_logs"];
+const REQUIRED_TABLES = [
+    "schema_migrations",
+    "user_profile",
+    "reproductive_intent_history",
+    "period_runs",
+    "symptom_catalog",
+    "medication_catalog",
+    "checkins",
+    "checkin_symptoms",
+    "checkin_medications",
+    "daily_summary",
+    "content_sources",
+    "content_items",
+    "content_rules",
+    "content_delivery_log",
+];
 
-/** Restaura un respaldo externo tras validar integridad y forma mínima esperada. */
+/** Restaura respaldo v1 de Rea tras validar integridad, version y tablas nuevas. */
 export default async function importAppBackup(backupUri: string) {
     const backupFile = await copyBackupToImportCache(backupUri);
     const backupDirectory = backupFile.parentDirectory;
@@ -33,7 +48,7 @@ export default async function importAppBackup(backupUri: string) {
         await SQLite.backupDatabaseAsync({
             sourceDatabase: importedDatabase,
             sourceDatabaseName: MAIN_DATABASE_NAME,
-            destDatabase: db(),
+            destDatabase: await getDatabase(),
             destDatabaseName: MAIN_DATABASE_NAME,
         });
     } finally {
@@ -43,7 +58,7 @@ export default async function importAppBackup(backupUri: string) {
         }
     }
 
-    await initializeDatabase();
+    await reopenDatabase();
 }
 
 async function copyBackupToImportCache(backupUri: string) {
@@ -61,7 +76,7 @@ async function copyBackupToImportCache(backupUri: string) {
     return cachedBackup;
 }
 
-/** Aplica pragmas defensivos recomendados antes de tocar un SQLite externo. */
+/** Aplica pragmas defensivos recomendados antes de tocar SQLite externo. */
 async function hardenImportedDatabase(database: SQLite.SQLiteDatabase) {
     await database.execAsync(`
         PRAGMA trusted_schema = OFF;
@@ -70,13 +85,18 @@ async function hardenImportedDatabase(database: SQLite.SQLiteDatabase) {
     `);
 }
 
-/** Rechaza archivos dañados o que no representan un respaldo válido de Rea. */
+/** Rechaza archivos dañados, viejos o ajenos al contrato v1 de Rea. */
 async function validateImportedDatabase(database: SQLite.SQLiteDatabase) {
     const integrity = await database.getFirstAsync<Record<string, string>>("PRAGMA integrity_check");
     const integrityValue = integrity ? String(Object.values(integrity)[0]) : null;
 
     if (integrityValue !== "ok") {
         throw new Error(translate("settings:backup.import.errorIntegrity"));
+    }
+
+    const versionRow = await database.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
+    if ((versionRow?.user_version ?? 0) !== EXPECTED_SCHEMA_VERSION) {
+        throw new Error(translate("settings:backup.import.errorIncompatibleVersion"));
     }
 
     const schemaObjects = await database.getAllAsync<{ name: string; type: string }>(

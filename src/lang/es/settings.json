@@ -17,6 +17,7 @@
             "chooseOther": "Buscar otro",
             "confirm": "Importar",
             "errorForbiddenObjects": "El respaldo incluye objetos no soportados para una importación segura.",
+            "errorIncompatibleVersion": "Ese respaldo pertenece a una versión anterior de Rea y no puede importarse en este corte.",
             "errorIntegrity": "El archivo no pasa la verificación de integridad de SQLite.",
             "errorMissingFile": "No pude acceder al archivo de respaldo seleccionado.",
             "errorWrongFormat": "El archivo no coincide con formato esperado de respaldo de Rea.",
@@ -35,7 +36,7 @@
         }
     },
     "developmentSeed": {
-        "body": "Reemplaza datos actuales por historial largo y coherente para probar Hoy, Patrones, Diario y Calendario.",
+        "body": "Reemplaza datos actuales por historial largo y coherente para probar Hoy, Estadísticas, Diario y Calendario.",
         "confirm": "Generar",
         "meta": "Solo dev",
         "metaLoading": "Generando",

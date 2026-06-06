@@ -1,20 +1,38 @@
 import type { UseAppBackupControllerResult } from "../hooks/useAppBackupController";
-import type { UseAppDataControllerResult } from "../hooks/useAppDataController";
-import type { UseAppPersistenceControllerResult } from "../hooks/useAppPersistenceController";
+import type { UseAppBootstrapControllerResult } from "../hooks/useAppBootstrapController";
 import type { UseAppShellStateResult } from "../hooks/useAppShellState";
-import { CheckInModal } from "../../features/check-in/CheckInModal";
-import { ScheduleModal } from "../../features/settings/ScheduleModal";
-import { SettingsModal } from "../../features/settings/SettingsModal";
+import { CheckInModal } from "@/features/check-in/CheckInModal";
+import { CheckInSubmission } from "@/features/check-in/check-in.types";
+import { ScheduleModal } from "@/features/settings/ScheduleModal";
+import { SettingsModal } from "@/features/settings/SettingsModal";
+import { NotificationCadence } from "@/types/notifications.types";
+import { MoodCheckIn } from "@/types/records.types";
+import { AppSettings } from "@/types/settings.types";
 
 interface AppShellModalsProps {
-    appData: UseAppDataControllerResult;
+    bootstrap: UseAppBootstrapControllerResult;
     backup: UseAppBackupControllerResult;
-    persistence: UseAppPersistenceControllerResult;
+    deleteCheckIn: (moodCheckIn?: MoodCheckIn | null) => Promise<void>;
+    onResetApplication: () => Promise<void>;
+    saveAppSettings: (settings: AppSettings) => Promise<void>;
+    saveCheckIn: (submission: CheckInSubmission) => Promise<void>;
+    saveNotificationCadence: (notificationCadence: NotificationCadence) => Promise<void>;
+    seedDevelopmentUserData: () => Promise<void>;
     shellState: UseAppShellStateResult;
 }
 
 /** Renderiza modales raíz del shell usando contratos reales de estado y acciones. */
-export default function AppShellModals({ appData, backup, persistence, shellState }: AppShellModalsProps) {
+export default function AppShellModals({
+    bootstrap,
+    backup,
+    deleteCheckIn,
+    onResetApplication,
+    saveAppSettings,
+    saveCheckIn,
+    saveNotificationCadence,
+    seedDevelopmentUserData,
+    shellState,
+}: AppShellModalsProps) {
     const closeSettings = () => {
         backup.dismissExportSavedNotice();
         shellState.closeSettings();
@@ -29,15 +47,15 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 mode={shellState.checkIn.mode}
                 momentType={shellState.checkIn.momentType}
                 onClose={shellState.closeCheckIn}
-                onDelete={persistence.deleteCheckIn}
-                onSave={persistence.saveCheckIn}
+                onDelete={deleteCheckIn}
+                onSave={saveCheckIn}
                 dailyLogOnly={shellState.checkIn.dailyLogOnly}
                 promptContext={shellState.checkIn.promptContext}
                 visible={shellState.checkIn.visible}
             />
             <ScheduleModal
-                cadence={appData.notificationCadence}
-                onChange={persistence.saveNotificationCadence}
+                cadence={bootstrap.notificationCadence}
+                onChange={saveNotificationCadence}
                 onClose={shellState.closeSchedule}
                 visible={shellState.scheduleVisible}
             />
@@ -45,17 +63,17 @@ export default function AppShellModals({ appData, backup, persistence, shellStat
                 exportSavedNotice={backup.exportSavedNotice}
                 exportingBackup={backup.exportingBackup}
                 importingBackup={backup.importingBackup}
-                notificationCadence={appData.notificationCadence}
+                notificationCadence={bootstrap.notificationCadence}
                 onClose={closeSettings}
                 onDismissExportSavedNotice={backup.dismissExportSavedNotice}
                 onExportBackup={backup.exportBackup}
-                onGenerateDevelopmentData={persistence.seedDevelopmentUserData}
+                onGenerateDevelopmentData={seedDevelopmentUserData}
                 onImportBackup={backup.importBackup}
                 onOpenSchedule={shellState.openScheduleFromSettings}
-                onReset={persistence.resetApplication}
-                onSaveSettings={persistence.saveAppSettings}
+                onReset={onResetApplication}
+                onSaveSettings={saveAppSettings}
                 onShareSavedBackup={backup.shareSavedBackup}
-                settings={appData.data.settings}
+                settings={bootstrap.settings}
                 visible={shellState.settingsVisible}
             />
         </>

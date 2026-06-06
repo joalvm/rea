@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { accents, colors, radii, surfaces, type } from "../theme";
+import { accents, colors, radii, surfaces, type } from "@/theme";
 
 interface MetricScaleProps {
     label: string;

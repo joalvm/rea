@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
-import { AccentToneName, accents, elevations, radii, surfaces } from "../theme";
+import { AccentToneName, accents, elevations, radii, surfaces } from "@/theme";
 
 interface SoftCardProps {
     children: ReactNode;

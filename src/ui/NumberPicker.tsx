@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { accents, colors, radii, surfaces, type } from "../theme";
+import { accents, colors, radii, surfaces, type } from "@/theme";
 
 interface NumberPickerProps {
     label: string;

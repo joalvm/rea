@@ -1,8 +1,8 @@
 import * as SQLite from "expo-sqlite";
 import { Directory, File, Paths } from "expo-file-system";
 
-import { buildBackupFileName } from "./backupFile";
-import db from "../core/database";
+import { buildBackupFileName } from "../backup/backupFile";
+import getDatabase from "../connection";
 
 const BACKUP_DIRECTORY_NAME = "backups";
 const MAIN_DATABASE_NAME = "main";
@@ -16,8 +16,9 @@ export default async function exportAppBackup() {
     const backupDatabase = await SQLite.openDatabaseAsync(fileName, { useNewConnection: true }, backupDirectory.uri);
 
     try {
+        const sourceDatabase = await getDatabase();
         await SQLite.backupDatabaseAsync({
-            sourceDatabase: db(),
+            sourceDatabase,
             sourceDatabaseName: MAIN_DATABASE_NAME,
             destDatabase: backupDatabase,
             destDatabaseName: MAIN_DATABASE_NAME,

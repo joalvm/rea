@@ -1,6 +1,6 @@
 import buildEducationalAlerts from "@/modules/cycle/alerts/buildEducationalAlerts";
 import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
-import buildPatternInsights from "@/modules/cycle/insights/buildPatternInsights";
+import buildObservedInsights from "@/modules/cycle/insights/buildObservedInsights";
 import { addDays } from "@/modules/cycle/utils/cycleDate.utils";
 import { translate } from "@/modules/localization/i18n";
 import { colors } from "@/theme";
@@ -198,7 +198,7 @@ export function buildTodaySummaries(
     moodCheckIns: MoodCheckIn[],
 ) {
     return {
-        insights: buildPatternInsights(settings, cycles, dailyLogs, moodCheckIns),
+        insights: buildObservedInsights(settings, cycles, dailyLogs, moodCheckIns),
         alerts: buildEducationalAlerts(settings, cycles, dailyLogs, moodCheckIns).slice(0, 2),
     };
 }

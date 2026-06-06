@@ -2,13 +2,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import estimateCycle from "@/modules/cycle/estimation/estimateCycle";
 import { toIsoDate } from "@/modules/cycle/utils/cycleDate.utils";
 import { labelSymptom } from "@/modules/cycle/utils/symptomCatalog";
+import useDayDetailStore from "@/modules/state/useDayDetailStore";
 import { AccentToneName, colors } from "@/theme";
-import { Cycle } from "@/types/cycle.types";
-import { DailyLog, MoodCheckIn } from "@/types/records.types";
-import { AppSettings } from "@/types/settings.types";
 import { BrandMark } from "@/ui/BrandMark";
 import { ScreenHeader } from "@/ui/ScreenHeader";
 import { SoftButton } from "@/ui/SoftButton";
@@ -28,35 +25,19 @@ import {
 /** Props del screen de detalle por día seleccionado. */
 interface DayDetailScreenProps {
     selectedIso: string;
-    settings: AppSettings | null;
-    cycles: Cycle[];
-    dailyLogs: DailyLog[];
-    moodCheckIns: MoodCheckIn[];
     onBack: () => void;
     onOpenDiary: () => void;
 }
 
-export function DayDetailScreen({
-    selectedIso,
-    settings,
-    cycles,
-    dailyLogs,
-    moodCheckIns,
-    onBack,
-    onOpenDiary,
-}: DayDetailScreenProps) {
+export function DayDetailScreen({ selectedIso, onBack, onOpenDiary }: DayDetailScreenProps) {
     const { t } = useTranslation("dayDetail");
-    const snapshot = estimateCycle(settings, cycles, dailyLogs, selectedIso, moodCheckIns);
+    const { dailyRecord, moments, snapshot } = useDayDetailStore(selectedIso);
     const todayIso = toIsoDate(new Date());
     const isFuture = selectedIso > todayIso;
-    const dailyLog = dailyLogs.find((entry) => entry.date === selectedIso) ?? null;
-    const moments = moodCheckIns
-        .filter((entry) => toIsoDate(new Date(entry.datetime)) === selectedIso)
-        .sort((left, right) => right.datetime.localeCompare(left.datetime));
-    const detailItems = dailyLog ? buildDailyLogDetails(dailyLog) : [];
+    const detailItems = dailyRecord ? buildDailyLogDetails(dailyRecord) : [];
     const careTips = getCareTips(snapshot.phase);
-    const summary = buildDaySummary(selectedIso, todayIso, snapshot.phaseMessage, dailyLog, moments);
-    const hasRecords = Boolean(dailyLog || moments.length > 0);
+    const summary = buildDaySummary(selectedIso, todayIso, snapshot.phaseMessage, dailyRecord, moments);
+    const hasRecords = Boolean(dailyRecord || moments.length > 0);
     const summaryTone: AccentToneName =
         snapshot.phase === "menstrual"
             ? "period"
@@ -84,8 +65,8 @@ export function DayDetailScreen({
                 <Text style={styles.summaryText}>{summary}</Text>
                 <View style={styles.badges}>
                     <Text style={styles.badge}>{snapshot.fertilityStatusLabel}</Text>
-                    {dailyLog?.bleedingLevel && dailyLog.bleedingLevel !== "none" ? (
-                        <Text style={styles.badge}>{bleedingLabel(dailyLog.bleedingLevel)}</Text>
+                    {dailyRecord?.bleedingLevel && dailyRecord.bleedingLevel !== "none" ? (
+                        <Text style={styles.badge}>{bleedingLabel(dailyRecord.bleedingLevel)}</Text>
                     ) : null}
                 </View>
             </SoftCard>
@@ -98,15 +79,15 @@ export function DayDetailScreen({
                 ))}
             </SoftCard>
 
-            {dailyLog ? (
+            {dailyRecord ? (
                 <SoftCard style={styles.card}>
                     <Text style={styles.cardTitle}>{t("daily.title")}</Text>
                     <Text style={styles.metaLine}>
-                        {sourceLabel(dailyLog.source)} · {bleedingLabel(dailyLog.bleedingLevel)}
+                        {sourceLabel(dailyRecord.source)} · {bleedingLabel(dailyRecord.bleedingLevel)}
                     </Text>
-                    {dailyLog.symptoms.length > 0 ? (
+                    {dailyRecord.symptoms.length > 0 ? (
                         <View style={styles.chips}>
-                            {dailyLog.symptoms.map((symptom) => (
+                            {dailyRecord.symptoms.map((symptom) => (
                                 <Text key={symptom} style={styles.chip}>
                                     {labelSymptom(symptom)}
                                 </Text>
@@ -124,7 +105,7 @@ export function DayDetailScreen({
                             ))}
                         </View>
                     ) : null}
-                    {dailyLog.notes ? <Text style={styles.note}>{dailyLog.notes}</Text> : null}
+                    {dailyRecord.notes ? <Text style={styles.note}>{dailyRecord.notes}</Text> : null}
                 </SoftCard>
             ) : null}
 

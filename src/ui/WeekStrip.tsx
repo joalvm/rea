@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { translate } from "@/modules/localization/i18n";
-import { colors, type } from "../theme";
+import { colors, type } from "@/theme";
 import { CycleSnapshot, PhaseKey } from "../types/cycle.types";
 
 export type WeekStripDay = CycleSnapshot["week"][number] & {

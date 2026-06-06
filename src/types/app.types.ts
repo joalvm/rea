@@ -4,13 +4,22 @@ import { DailyLog, MoodCheckIn } from "./records.types";
 import { AppSettings } from "./settings.types";
 
 /** Identifica pestaña principal activa de aplicacion. */
-export type TabKey = "today" | "calendar" | "diary" | "patterns";
+export type TabKey = "today" | "calendar" | "diary" | "statistics";
 
-/** Agrupa datos base cargados al iniciar shell de app. */
-export interface AppData {
+/** Snapshot de render cargado desde SQLite normalizado para stores de vista. */
+export interface AppStoreData {
     settings: AppSettings | null;
-    cycles: Cycle[];
-    moodCheckIns: MoodCheckIn[];
-    dailyLogs: DailyLog[];
+    periodHistory: Cycle[];
+    checkInMoments: MoodCheckIn[];
+    dailyRecords: DailyLog[];
     notificationCadence: NotificationCadence | null;
 }
+
+/** Estado inicial vacío antes de bootstrap local. */
+export const initialAppStoreData: AppStoreData = {
+    settings: null,
+    periodHistory: [],
+    checkInMoments: [],
+    dailyRecords: [],
+    notificationCadence: null,
+};

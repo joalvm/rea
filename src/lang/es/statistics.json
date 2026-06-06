@@ -1,0 +1,75 @@
+{
+    "basis": {
+        "adjustment_one": "{{count}} ajuste por observación",
+        "adjustment_other": "{{count}} ajustes por observación",
+        "cycle_one": "{{count}} ciclo observado",
+        "cycle_other": "{{count}} ciclos observados",
+        "day_one": "{{count}} día observado",
+        "day_other": "{{count}} días observados",
+        "moment_one": "{{count}} momento",
+        "moment_other": "{{count}} momentos"
+    },
+    "cycleSummaries": {
+        "bleedingDays_one": "{{count}} día de sangrado",
+        "bleedingDays_other": "{{count}} días de sangrado",
+        "cycleLength": "{{count}} días de ciclo",
+        "empty": "Cuando empieces a marcar inicios y finales del periodo, aquí vas a poder comparar un ciclo con otro.",
+        "heavyDays_one": "{{count}} día abundante",
+        "heavyDays_other": "{{count}} días abundantes",
+        "painImpactDays_one": "{{count}} día con dolor que frenó",
+        "painImpactDays_other": "{{count}} días con dolor que frenó",
+        "pendingNextStart": "Esperando siguiente inicio",
+        "range": "{{start}} al {{end}}",
+        "topSymptoms": "Síntomas que destacaron: {{symptoms}}.",
+        "topSymptomsEmpty": "En ese ciclo no se repitió un síntoma con tanta fuerza."
+    },
+    "empty": {
+        "alerts": "Por ahora no asoma una señal que destaque en tus registros.",
+        "insights": "Cuando haya un poco más de historia, aquí empezarán a verse repeticiones entre fases.",
+        "medications": "Cuando registres medicación y alivio, Rea podrá comparar qué aparece asociado a más alivio en tus propios registros.",
+        "metricNoMoments": "Todavía no hay momentos suficientes para leer cuánto cambia ánimo, energía o dolor.",
+        "metricPending_one": "Falta {{count}} momento para empezar a leer variación real entre registros.",
+        "metricPending_other": "Faltan {{count}} momentos para empezar a leer variación real entre registros.",
+        "recentTrend": "Cuando haya momentos registrados, aquí verás cómo se movió el dolor reciente.",
+        "symptoms": "Todavía no hay suficientes síntomas para ver qué se repite más."
+    },
+    "editorial": {
+        "source": "Fuente: {{label}}, {{reference}}"
+    },
+    "header": {
+        "subtitle": "Aquí se van armando repeticiones de dolor, energía y síntomas entre ciclos para darte más contexto.",
+        "title": "Estadísticas"
+    },
+    "medications": {
+        "reliefScore_one": "{{value}}/2 en {{count}} registro",
+        "reliefScore_other": "{{value}}/2 en {{count}} registros"
+    },
+    "metrics": {
+        "energy": "Energía",
+        "mood": "Ánimo",
+        "pain": "Dolor",
+        "stress": "Estrés",
+        "points": "{{value}} pts",
+        "score": "{{value}}/5"
+    },
+    "sections": {
+        "alerts": "Señales para tener presentes",
+        "cycleSummaries": "Tus últimos ciclos observados",
+        "editorial": "Contenido útil según tus registros",
+        "insights": "Lo que sí se repite",
+        "medications": "Alivio asociado a medicación",
+        "recentTrend": "Dolor reciente",
+        "symptoms": "Síntomas más registrados",
+        "variability": "Qué tanto cambia"
+    },
+    "status": {
+        "growing": "Base creciendo",
+        "growingText": "Ya hay {{moments}} momentos y {{days}} días observados. Aún falta más historia cerrada para confiar más en comparaciones por ciclo.",
+        "initial": "Base inicial",
+        "initialText": "Todavía manda muestra corta. Rea ya puede enseñar señales sueltas, pero no conviene leerlas como patrón firme.",
+        "observedUseful": "Base observada útil",
+        "observedUsefulText": "Ya hay {{count}} ciclos observados para comparar duración, dolor, energía y síntomas con bastante más contexto.",
+        "observationAdjustment_one": "Ya hubo {{count}} ajuste por observación frente al calendario.",
+        "observationAdjustment_other": "Ya hubo {{count}} ajustes por observación frente al calendario."
+    }
+}
