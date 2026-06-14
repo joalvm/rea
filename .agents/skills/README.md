@@ -18,8 +18,8 @@ Skills pequeñas, directas y reutilizables. Una skill por capacidad.
 
 - `grounded-plan-building`
     - Cómo estructurar trabajo por fases una vez que la idea ya merece avanzar
-- `grounded-critical-thinking`
-    - Cómo evaluar ideas y planes con criterio antes de comprometer estructura o trabajo
+- `grounded-professional-thinking`
+    - Cómo evaluar ideas y planes con criterio profesional
 
 ## Regla clave actual
 

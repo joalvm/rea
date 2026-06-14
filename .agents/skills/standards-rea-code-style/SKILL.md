@@ -1,93 +1,115 @@
 ---
 name: standards-rea-code-style
-description: "Use when writing or reviewing code in Rea, deciding exports, comments, typing, componentization, or React Native code style. Triggers: export default, comentarios descriptivos, props inline, types separados, componentizacion, hooks por ambito, estilo de codigo, claridad."
+description: "Use when writing or reviewing TypeScript/React 19 code for Expo / React Native: deciding exports, naming, typing, component patterns, hooks, state, or library usage (Drizzle/SQLite, Zustand, Unistyles, i18n). Hard rules and naming live in this SKILL.md; per-artifact and per-library patterns live in references/, loaded on demand. Triggers: export default, naming, props, types, tipado, satisfies, import type, componente, componentizacion, hooks, estado, store, zustand, selector, useShallow, efecto, memoizacion, pureza, inmutabilidad, drizzle, schema, entidad, query, mutacion, transaccion, sqlite, unistyles, theme, estilos, variants, i18n, traduccion, localizacion, comentarios, estilo de codigo, claridad, naming, styles."
 ---
 
-# Rea Code Style
+# Estilo de Código · TypeScript + React 19
 
-## Objetivo
-
-Definir como se escribe codigo en Rea para que se lea rapido, tenga dueño claro y mantenga coherencia entre agentes y programadores.
+Índice de convenciones. Las reglas duras y los nombres viven aquí; la anatomía y los patrones por artefacto y por librería viven en `references/`, agrupados por dominio (`typescript/`, `react/`, `react-native/`, `zustand/`, `drizzle/`, `unistyles/`, `i18n/`), y se cargan según la tarea. (Ubicación y nombres de archivos/carpetas: skill de estructura.)
 
 ## Mantra
 
-Orden y claridad en codigo.
+El código se lee de arriba hacia abajo sin saltos, cada archivo tiene un dueño claro y el tipo describe la intención. Escribe código simple y deja que el compilador y el chequeo de tipos hagan el trabajo pesado.
 
-## Exports
+## Stack y línea base (2026)
 
-- Priorizar `export default` cuando archivo tenga un unico elemento exportable principal.
-- Si helper, tipo o constante solo sirve a su dueño, no exportarlo.
-- Si archivo necesita elemento principal y complementos reutilizados, dejar principal con `export default` y complementos con `export` nombrado.
-- Si multiples exports nombrados empiezan a competir por protagonismo, separar archivo.
+- TypeScript estricto, ESM.
+- React 19 con React Compiler activado.
+- El formato (comillas, espacios, comas) se delega al formatter (Prettier/Biome). Esta skill gobierna semántica, no whitespace.
 
-## Tipos
+## Reglas duras
 
-- Props de cualquier componente React viven en mismo archivo que su dueño.
-- Orden obligatorio en archivo React: imports, requires excepcionales, definicion de `Props`, componente, helpers locales si hacen falta.
-- `*.types.ts` no se usa para guardar un `FooProps` suelto.
-- Si un componente importa solo sus props desde un `*.types.ts` hermano, al tocarlo hay que devolver esas props al archivo del componente.
-- Tipos e interfaces no triviales que no sean props y si se compartan entre varios archivos del ambito pueden vivir en `*.types.ts`.
-- Tipos compartidos van a `src/types/`.
-- Tipos locales se quedan junto a su dueño.
+### React
 
-## Componentizacion
+- No `useMemo` / `useCallback` / `React.memo` por defecto: el compilador memoiza. Manual solo ante un problema medido.
+- No `useEffect` para datos derivados: derivar en render.
+- No `React.FC`. Props tipadas en el argumento. No tipar el retorno de un componente.
+- Componentes y hooks puros → `references/react/render-rules.md`.
 
-- Screen grande debe leerse como composicion, no como archivo omnibus.
-- No declarar subcomponentes grandes dentro de screens grandes.
-- Subcomponentes visuales exclusivos van a `components/` del ambito.
-- Hooks van al ambito real del componente o pantalla que los usa.
-- Helpers puros salen del componente si no dependen de React.
-- Screen, feature, scene de `app/`, modal, card, row o bloque reutilizable define sus props justo arriba del componente.
-- No separar por moda. Separar cuando mejora lectura, mantenimiento o responsabilidad.
+### TypeScript
 
-## React y React Native
+- No `any`: usar `unknown` y estrechar → `references/typescript/narrowing.md`.
+- Sintaxis borrable: sin `enum`, `namespace` ni parameter properties; usa `as const` o uniones literales.
+- No `as` salvo `as const`. No el constructor `Array()`.
+- `===` siempre; `== null` / `!= null` solo para chequear null+undefined juntos.
+- `import type` / `export type` para imports solo-de-tipos.
+- `type` por defecto; `interface` solo para declaration merging → `references/typescript/types.md`.
 
-- Seguir imports directos y rutas estaticas.
-- Todos los `import` y `require` van arriba del archivo. Nunca dejar interfaces, tipos o constantes arriba de un asset importado.
-- Si existe alias `@/` o `@assets/`, preferirlo cuando la ruta salga varios niveles del ambito local.
-- Mantener rutas relativas para vecino inmediato del mismo ambito cuando eso lea mejor.
-- No usar barrels.
-- No mover derivaciones simples a effects.
-- Estado derivado en render cuando sea suficiente.
-- Hooks con dueño claro.
-- Evitar componentes inline grandes dentro de otros componentes.
-- Archivo React debe poder leerse de arriba hacia abajo sin saltar a `*.types.ts` para entender props basicas.
-- Assets estaticos deben importarse con `import` tipado. `require(...)` queda como excepcion, no como camino normal.
-- Priorizar nombres semanticos y responsabilidades cortas.
+### Imports y exports
 
-## Comentarios
+- **Named exports** por defecto. `export default` solo en archivos de ruta de Expo Router y los `Screen` que esas rutas reexportan.
+- No exportar helpers privados que solo sirven a su dueño.
+- `require` solo para assets dinámicos; el resto, `import` tipado.
 
-- Cada tipo exportado debe explicar que representa y donde aplica.
-- Cada funcion exportada debe explicar para que sirve y cuando se usa.
-- Cada componente exportado debe explicar que bloque de UI representa y su responsabilidad.
-- Cada helper no trivial debe explicar por que existe.
-- Cada hook debe explicar que estado o efectos encapsula.
-- Cada repositorio o servicio debe explicar que entidad o flujo maneja.
-- Comentarios deben ser descriptivos, utiles y breves.
-- No comentar lo obvio. No narrar sintaxis.
+### Legibilidad
+
+- No crear componentes inline grandes dentro de otros → `references/react/componentization.md`.
+- Sin números ni strings mágicos: constantes con nombre.
+- Sin strings de UI hardcodeados: van por i18n → `references/i18n/usage.md`.
+- Guard clauses / early returns para reducir anidamiento.
+- No comentar el **qué**; comentar el **porqué** (decisiones, workarounds, contratos).
+
+## Orden en el archivo
+
+1. Imports absolutos (`@/`, `@assets/`); `import type` agrupado.
+2. Imports relativos (solo vecino inmediato).
+3. `require` excepcional.
+4. `type Props` (en componentes), arriba del componente.
+5. Elemento principal del archivo.
+6. Helpers locales cortos que dependen del principal.
 
 ## Nombres
 
-- Componentes en PascalCase.
-- Hooks con prefijo `use`.
-- Helpers con nombre orientado a responsabilidad.
-- Evitar `helpers`, `common`, `misc`, `temp`, `new`.
+- Componentes: PascalCase (`ProfileCard`). Screen: PascalCase + `Screen`.
+- Hooks: `use` + camelCase (`useAuthRedirect`). Hook de store: `useXStore`.
+- Utilidades: camelCase con verbo o sustantivo (`formatDate`, `clamp`).
+- Booleanos: prefijo `is` / `has` / `should` (`isActive`, `hasError`).
+- Handlers internos: prefijo `handle` (`handleSubmit`). Callbacks en props: prefijo `on` (`onPress`).
+- Constantes de módulo: CONST_CASE solo si son globales del módulo; lo demás camelCase.
+- Estilos: nombres semánticos (`container`, `title`), no posicionales (`view1`).
+- Evitar: `data`, `info`, `helpers`, `common`, `misc`, `temp`, `new`.
 
-## Estilos
+## Referencias (según la tarea)
 
-- `*.styles.ts` para screens, modales y componentes grandes.
-- Componentes pequenos pueden mantener estilos en mismo archivo.
-- No extraer estilos si no mejora lectura real.
+**Lenguaje** — `references/typescript/`
+- `types.md` — `type` vs `interface`, derivar en vez de duplicar.
+- `narrowing.md` — `unknown`, type guards, uniones discriminadas + exhaustividad.
+- `values.md` — nulabilidad, `as const`, `readonly`, `satisfies`.
+- `functions.md` — declaración vs arrow, retorno de lo exportado, overloads.
 
-## Checklist rapido
+**React** — `references/react/`
+- `components.md` — anatomía de componente y screen, props.
+- `componentization.md` — cómo partir la UI: cuándo extraer, composición.
+- `hooks.md` — hooks y read-hooks de datos; cuándo va un efecto.
+- `state.md` — qué es estado y dónde vive.
+- `render-rules.md` — Rules of React: pureza, inmutabilidad, efectos.
 
-- principal export usa `export default` cuando corresponde
-- complementos innecesarios no se exportan
-- props React estan en mismo archivo y antes del componente
-- `*.types.ts` no se usa como deposito de props aisladas
-- tipos no-props compartidos estan separados cuando de verdad aportan claridad
-- imports arriba, `require` excepcional debajo de imports si de verdad hace falta
-- no hay `../../../` evitable cuando existe alias del repo
-- comentarios explican proposito
-- componente principal se entiende leyendo arriba hacia abajo
-- helpers y hooks tienen dueño claro
+**React Native** — `references/react-native/`
+- `components.md` — primitivas, listas, plataforma, accesibilidad.
+
+**Zustand** — `references/zustand/`
+- `store.md` — anatomía, persistencia (MMKV), slices.
+- `selectors.md` — selección, `useShallow`, actions estables.
+
+**Drizzle / SQLite** — `references/drizzle/`
+- `entities.md` — schema = entidades: tablas, relaciones, tipos inferidos.
+- `queries.md` — query builder, relacional, `sql` crudo, lectura reactiva.
+- `mutations.md` — insert/update/delete, soft delete, transacciones.
+- `services.md` — capa de servicio/repositorio por entidad.
+
+**Unistyles** — `references/unistyles/`
+- `config.md` — temas light/dark, breakpoints, runtime.
+- `stylesheets.md` — `*Style.ts`, variants, tokens dinámicos.
+
+**i18n** — `references/i18n/`
+- `setup.md` — init i18next + expo-localization, claves tipadas.
+- `usage.md` — `t()`, interpolación, plurales, formato con Intl.
+
+## Checklist
+
+- [ ] Named exports (default solo en rutas/screens). Sin helpers privados exportados.
+- [ ] `Props` en el argumento; sin `React.FC` ni retorno `JSX.Element`.
+- [ ] Sin memoización manual; estado derivado en render; efectos solo para sistemas externos.
+- [ ] `unknown` sobre `any`; sin `as` salvo `as const`; sin `enum` / `namespace`.
+- [ ] `===`; sin números/strings mágicos; sin texto de UI hardcodeado.
+- [ ] Nombres semánticos; comentarios explican el porqué.
