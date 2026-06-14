@@ -1,134 +1,51 @@
 {
-    "expo": {
-        "name": "Rea",
-        "slug": "rea",
-        "version": "0.2.0",
-        "orientation": "portrait",
-        "scheme": "rea",
-        "icon": "./assets/branding/icon.png",
-        "userInterfaceStyle": "light",
-        "splash": {
-            "image": "./assets/branding/splash-icon.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#E8F8FE"
-        },
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "app.rea.personal",
-            "buildNumber": "5",
-            "icon": "./assets/branding/icon.png",
-            "infoPlist": {
-                "CFBundleDocumentTypes": [
-                    {
-                        "CFBundleTypeName": "Respaldo de Rea",
-                        "LSHandlerRank": "Owner",
-                        "LSItemContentTypes": ["app.rea.backup"]
-                    }
-                ],
-                "UTExportedTypeDeclarations": [
-                    {
-                        "UTTypeIdentifier": "app.rea.backup",
-                        "UTTypeDescription": "Respaldo de Rea",
-                        "UTTypeConformsTo": ["public.data"],
-                        "UTTypeTagSpecification": {
-                            "public.filename-extension": ["rea"],
-                            "public.mime-type": "application/vnd.rea.backup"
-                        }
-                    }
-                ]
-            }
-        },
-        "android": {
-            "package": "app.rea.personal",
-            "versionCode": 5,
-            "intentFilters": [
-                {
-                    "action": "VIEW",
-                    "category": ["DEFAULT"],
-                    "data": [
-                        {
-                            "mimeType": "application/vnd.rea.backup"
-                        }
-                    ]
-                },
-                {
-                    "action": "VIEW",
-                    "category": ["DEFAULT"],
-                    "data": [
-                        {
-                            "mimeType": "application/octet-stream"
-                        }
-                    ]
-                },
-                {
-                    "action": "VIEW",
-                    "category": ["DEFAULT"],
-                    "data": [
-                        {
-                            "scheme": "content",
-                            "host": "*",
-                            "pathPattern": ".*\\\\.rea"
-                        },
-                        {
-                            "scheme": "content",
-                            "host": "*",
-                            "mimeType": "application/octet-stream",
-                            "pathPattern": ".*\\\\.rea"
-                        },
-                        {
-                            "scheme": "file",
-                            "host": "*",
-                            "pathPattern": ".*\\\\.rea"
-                        },
-                        {
-                            "scheme": "file",
-                            "host": "*",
-                            "mimeType": "application/octet-stream",
-                            "pathPattern": ".*\\\\.rea"
-                        }
-                    ]
-                }
-            ],
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/branding/adaptive-foreground.png",
-                "monochromeImage": "./assets/branding/adaptive-monochrome.png",
-                "backgroundColor": "#E8F8FE"
-            }
-        },
-        "plugins": [
-            "expo-sqlite",
-            [
-                "expo-file-system",
-                {
-                    "supportsOpeningDocumentsInPlace": true,
-                    "enableFileSharing": true
-                }
-            ],
-            [
-                "expo-notifications",
-                {
-                    "icon": "./assets/branding/notification-icon.png",
-                    "color": "#087C9B",
-                    "defaultChannel": "default"
-                }
-            ],
-            "expo-status-bar",
-            [
-                "expo-sharing",
-                {
-                    "android": {
-                        "enabled": true,
-                        "singleShareMimeTypes": ["application/vnd.rea.backup", "application/octet-stream"],
-                        "multipleShareMimeTypes": ["application/vnd.rea.backup", "application/octet-stream"]
-                    }
-                }
-            ]
-        ],
-        "extra": {
-            "eas": {
-                "projectId": "26cb52dd-a4ef-4b60-92be-42d4ca976332"
-            }
-        },
-        "owner": "joalvm"
-    }
+  "expo": {
+    "name": "Rea",
+    "slug": "rea",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "scheme": "rea",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#7CD9F9"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#7CD9F9"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#7CD9F9",
+        "foregroundImage": "./assets/images/adaptive-foreground.png",
+        "backgroundImage": "./assets/images/adaptive-foreground.png",
+        "monochromeImage": "./assets/images/adaptive-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "root": "src/app"
+        }
+      ],
+      "expo-sqlite"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "26cb52dd-a4ef-4b60-92be-42d4ca976332"
+      }
+    },
+    "owner": "joalvm"
+  }
 }

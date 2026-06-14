@@ -3,11 +3,25 @@
     "compilerOptions": {
         "strict": true,
         "noUncheckedIndexedAccess": true,
-        "baseUrl": ".",
-        "ignoreDeprecations": "6.0",
+        "rootDir": "./src",
         "paths": {
-            "@/*": ["src/*"],
-            "@assets/*": ["assets/*"]
+            "@/*": [
+                "./src/*"
+            ],
+            "@assets/*": [
+                "./assets/*"
+            ]
         }
-    }
+    },
+    "include": [
+        "assets/**/*",
+        "src/**/*",
+        ".expo/types/**/*.ts",
+        "expo-env.d.ts"
+    ],
+    "exclude": [
+        "__legacy__/**/*",
+        "node_modules/**/*",
+        "babel.config.js",
+    ]
 }
