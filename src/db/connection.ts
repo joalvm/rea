@@ -1,9 +1,5 @@
-import { openDatabaseSync, type SQLiteOpenOptions } from "expo-sqlite";
+import { openDatabaseSync } from "expo-sqlite";
 
-export const DATABASE_NAME = "rea.db";
-export const DATABASE_VERSION = 1;
-export const DATABASE_OPEN_OPTIONS = {
-    enableChangeListener: true,
-} satisfies SQLiteOpenOptions;
+import { DATABASE_NAME, DATABASE_OPEN_OPTIONS } from "./config";
 
 export const conn = openDatabaseSync(DATABASE_NAME, DATABASE_OPEN_OPTIONS);

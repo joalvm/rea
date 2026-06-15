@@ -4,28 +4,14 @@
         "strict": true,
         "noUncheckedIndexedAccess": true,
         "rootDir": ".",
+        "types": ["jest"],
         "paths": {
-            "@/*": [
-                "./src/*"
-            ],
-            "@test/*": [
-                "./test/*"
-            ],
-            "@assets/*": [
-                "./assets/*"
-            ]
+            "@test/db/*": ["./test/unit/db/*"],
+            "@/*": ["./src/*"],
+            "@test/*": ["./test/*"],
+            "@assets/*": ["./assets/*"]
         }
     },
-    "include": [
-        "assets/**/*",
-        "src/**/*",
-        ".expo/types/**/*.ts",
-        "expo-env.d.ts",
-        "./test/**/*"
-    ],
-    "exclude": [
-        "__legacy__/**/*",
-        "node_modules/**/*",
-        "babel.config.js"
-    ]
+    "include": ["assets/**/*", "src/**/*", ".expo/types/**/*.ts", "expo-env.d.ts", "./test/**/*"],
+    "exclude": ["__legacy__/**/*", "node_modules/**/*", "babel.config.js"]
 }

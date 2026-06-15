@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { SQLiteProvider } from "expo-sqlite";
 
-import { DATABASE_NAME, DATABASE_OPEN_OPTIONS } from "./connection";
+import { DATABASE_NAME, DATABASE_OPEN_OPTIONS } from "./config";
 import { initializeDatabase } from "./initializeDatabase";
 
 export function DatabaseProvider({ children }: PropsWithChildren) {
