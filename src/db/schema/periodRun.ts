@@ -1,0 +1,73 @@
+import { relations, sql } from "drizzle-orm";
+import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+
+import { profile } from "./profile";
+
+const periodRunStatusValues = ["open", "closed", "excluded"] as const;
+const periodRunSourceValues = ["user_confirmed", "bleeding_inferred", "mixed"] as const;
+
+/**
+ * Esquema de la tabla `period_runs`, que almacena tramos continuos de menstruación
+ * normalizados a partir de confirmaciones o inferencias.
+ * - `id`: Identificador único del tramo.
+ * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
+ * - `startDate`: Fecha local de inicio del tramo.
+ * - `endDate`: Fecha local de cierre, si el tramo ya terminó.
+ * - `status`: Estado operativo del tramo (`open`, `closed`, `excluded`).
+ * - `source`: Origen del tramo (`user_confirmed`, `bleeding_inferred`, `mixed`).
+ * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
+ * - `version`: Versión optimista del registro.
+ *
+ * La tabla evita duplicar tramos activos por fecha de inicio, mantiene búsqueda
+ * cronológica por perfil y valida forma `YYYY-MM-DD` y orden entre inicio y fin.
+ */
+export const periodRun = sqliteTable(
+    "period_runs",
+    {
+        id: text("id").primaryKey().notNull(),
+        profileId: text("user_id")
+            .notNull()
+            .references(() => profile.id, { onDelete: "cascade" }),
+        startDate: text("start_date").notNull(),
+        endDate: text("end_date"),
+        status: text("status", { enum: periodRunStatusValues }).notNull().default("open"),
+        source: text("source", { enum: periodRunSourceValues }).notNull().default("user_confirmed"),
+        createdAt: text("created_at").notNull(),
+        updatedAt: text("updated_at").notNull(),
+        deletedAt: text("deleted_at"),
+        version: integer("version").notNull().default(1),
+    },
+    (table) => [
+        uniqueIndex("uq_period_runs_start_active")
+            .on(table.profileId, table.startDate)
+            .where(sql`${table.deletedAt} IS NULL`),
+        index("ix_period_runs_chronological").on(table.profileId, sql`${table.startDate} DESC`, table.deletedAt),
+        check("period_run_status_check", sql`${table.status} IN ('open', 'closed', 'excluded')`),
+        check("period_run_source_check", sql`${table.source} IN ('user_confirmed', 'bleeding_inferred', 'mixed')`),
+        check(
+            "period_run_start_date_format_check",
+            sql`${table.startDate} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
+        ),
+        check(
+            "period_run_end_date_format_check",
+            sql`${table.endDate} IS NULL OR ${table.endDate} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
+        ),
+        check("period_run_date_range_check", sql`${table.endDate} IS NULL OR ${table.endDate} >= ${table.startDate}`),
+    ],
+);
+
+export const periodRunRelations = relations(periodRun, ({ one }) => ({
+    profile: one(profile, {
+        fields: [periodRun.profileId],
+        references: [profile.id],
+    }),
+}));
+
+/** Tipo que representa un tramo menstrual completo al leer desde la base de datos. */
+export type PeriodRun = typeof periodRun.$inferSelect;
+
+/** Tipo para insertar un tramo menstrual. */
+export type InsertPeriodRun = typeof periodRun.$inferInsert;
+
+/** Tipo para actualizar un tramo menstrual sin modificar identidad ni auditoría base. */
+export type UpdatePeriodRun = Partial<Omit<PeriodRun, "id" | "createdAt" | "updatedAt">>;

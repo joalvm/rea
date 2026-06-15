@@ -3,10 +3,13 @@
     "compilerOptions": {
         "strict": true,
         "noUncheckedIndexedAccess": true,
-        "rootDir": "./src",
+        "rootDir": ".",
         "paths": {
             "@/*": [
                 "./src/*"
+            ],
+            "@test/*": [
+                "./test/*"
             ],
             "@assets/*": [
                 "./assets/*"
@@ -17,11 +20,12 @@
         "assets/**/*",
         "src/**/*",
         ".expo/types/**/*.ts",
-        "expo-env.d.ts"
+        "expo-env.d.ts",
+        "./test/**/*"
     ],
     "exclude": [
         "__legacy__/**/*",
         "node_modules/**/*",
-        "babel.config.js",
+        "babel.config.js"
     ]
 }
