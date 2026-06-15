@@ -34,6 +34,8 @@ module.exports = defineConfig([
                     argsIgnorePattern: "^_",
                 },
             ],
+            // Regla de 120 caracteres
+            "max-len": ["warn", { code: 120, ignoreComments: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
         },
     },
     {

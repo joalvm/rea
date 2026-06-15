@@ -1,36 +1,35 @@
-# Servicios / repositorios (Drizzle)
+# Acceso a datos por entidad (Drizzle)
 
-Capa fina de acceso a datos: agrupa las queries y mutaciones de una entidad en funciones tipadas. Vive con el feature dueño de la entidad, o en `shared/` si es transversal (ver estructura).
+Funciones tipadas que envuelven las queries y mutaciones de una entidad. Su ubicación y el desglose por archivo los define la skill de estructura (típicamente un archivo por operación, `verbo + entidad`); aquí va el patrón.
 
-## Anatomía
+## Funciones exportadas (`verbo + entidad`)
 
 ```ts
-// userService.ts
 import { eq, isNull } from 'drizzle-orm';
 import { db } from '@/db/client';
 import { users, type NewUser, type User } from '@/db/schema';
 
-export const userService = {
-  getById: (id: string): Promise<User | undefined> =>
-    db.query.users.findFirst({ where: eq(users.id, id) }),
+export function getUserById(id: string): Promise<User | undefined> {
+  return db.query.users.findFirst({ where: eq(users.id, id) });
+}
 
-  listActive: (): Promise<User[]> =>
-    db.select().from(users).where(isNull(users.deletedAt)),
+export function listActiveUsers(): Promise<User[]> {
+  return db.select().from(users).where(isNull(users.deletedAt));
+}
 
-  async create(data: NewUser): Promise<User> {
-    const [row] = await db.insert(users).values(data).returning();
-    return row;
-  },
+export async function createUser(data: NewUser): Promise<User> {
+  const [row] = await db.insert(users).values(data).returning();
+  return row;
+}
 
-  softDelete: (id: string): Promise<void> => {
-    db.update(users).set({ deletedAt: new Date() }).where(eq(users.id, id));
-  },
-};
+export async function softDeleteUser(id: string): Promise<void> {
+  await db.update(users).set({ deletedAt: new Date() }).where(eq(users.id, id));
+}
 ```
 
 ## Reglas
 
-- Una agrupación por entidad (`userService`, `postService`); funciones tipadas con `$inferSelect` / `$inferInsert`.
-- El servicio es solo acceso a datos: nada de UI ni de estado.
-- La lógica de negocio (validar, transformar, orquestar) vive en el feature o el store que llama al servicio (ver estructura).
+- Funciones exportadas con nombre `verbo + entidad` (`createUser`, `getUserById`).
+- Solo acceso a datos: nada de UI ni de estado.
+- La lógica de negocio (validar, transformar, orquestar) vive en el feature o el store que las llama (ver estructura).
 - Las escrituras se invocan desde el store/feature; las lecturas reactivas usan read-hooks (`../react/hooks.md`).
