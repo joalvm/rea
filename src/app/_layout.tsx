@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import { DatabaseProvider } from "@/db/DatabaseProvider";
+
 export default function RootLayout() {
     return (
-        <>
+        <DatabaseProvider>
             <StatusBar style="auto" hidden={false} />
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="(onboarding)" />
@@ -17,6 +19,6 @@ export default function RootLayout() {
                 />
                 <Stack.Screen name="+not-found" />
             </Stack>
-        </>
+        </DatabaseProvider>
     );
 }

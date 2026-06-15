@@ -1,16 +1,9 @@
-import { openDatabaseSync } from "expo-sqlite";
+import { openDatabaseSync, type SQLiteOpenOptions } from "expo-sqlite";
 
 export const DATABASE_NAME = "rea.db";
+export const DATABASE_VERSION = 1;
+export const DATABASE_OPEN_OPTIONS = {
+    enableChangeListener: true,
+} satisfies SQLiteOpenOptions;
 
-function openConnection() {
-    try {
-        const connection = openDatabaseSync(DATABASE_NAME, { enableChangeListener: true });
-        console.log(`Database connection to ${DATABASE_NAME} established successfully.`);
-        return connection;
-    } catch (error) {
-        console.error(`Failed to connect to database ${DATABASE_NAME}:`, error);
-        throw error;
-    }
-}
-
-export const conn = openConnection();
+export const conn = openDatabaseSync(DATABASE_NAME, DATABASE_OPEN_OPTIONS);
