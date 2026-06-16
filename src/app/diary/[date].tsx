@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-import DiaryEntry from "@/features/diary/DiaryEntry";
+import DiaryEntry from "@/features/diary/entry/DiaryEntry";
 
 export default function DiaryEntryRoute() {
     const { date } = useLocalSearchParams<{ date: string }>();

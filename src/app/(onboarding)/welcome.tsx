@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 
-import Welcome from "@/features/onboarding/Welcome";
+import Welcome from "@/features/onboarding/wellcome/Welcome";
 
 export default function WelcomeRoute() {
     const router = useRouter();

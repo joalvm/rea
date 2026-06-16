@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 
-import Complete from "@/features/onboarding/Complete";
+import Complete from "@/features/onboarding/complete/Complete";
 
 export default function OnboardingCompleteRoute() {
     const router = useRouter();

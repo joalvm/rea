@@ -1,6 +1,6 @@
 import TabIcon from "@/components/tab-icon/TabIcon";
 import { Tabs } from "expo-router";
-import { CalendarDaysIcon, ChartSplineIcon, HouseIcon, NotebookTabsIcon } from "lucide-react-native";
+import { CalendarDaysIcon, ChartSplineIcon, HouseIcon, NotebookTabsIcon, Settings2Icon } from "lucide-react-native";
 
 export default function TabLayout() {
     return (
@@ -42,6 +42,15 @@ export default function TabLayout() {
                     title: "Estadísticas",
                     tabBarIcon: ({ color, focused }) => (
                         <TabIcon Icon={ChartSplineIcon} color={color} focused={focused} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="settings"
+                options={{
+                    title: "Configuración",
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon Icon={Settings2Icon} color={color} focused={focused} />
                     ),
                 }}
             />
