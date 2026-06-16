@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Check-in paso 7: nota libre (checkins.note). Ver README. */
 export default function Note({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Una nota para hoy"
             routePath="checkin/note.tsx"

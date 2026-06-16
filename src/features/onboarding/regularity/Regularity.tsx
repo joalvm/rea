@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Onboarding: regularidad percibida (regular | variable | irregular). Ver README. */
 export default function Regularity({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="¿Cómo de regular es?"
             routePath="(onboarding)/regularity.tsx"

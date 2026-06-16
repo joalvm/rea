@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     id: string;
@@ -7,7 +7,7 @@ type Props = {
 /** Detalle de una pieza de contenido + su fuente (content_items + content_sources). Ver README. */
 export default function ContentDetail({ id }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Contenido"
             routePath="content/[id].tsx"

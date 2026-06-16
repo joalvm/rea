@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Onboarding: ventana e intervalo de recordatorios (user_profile.reminder_*). Ver README. */
 export default function Notifications({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Recordatorios"
             routePath="(onboarding)/notifications.tsx"

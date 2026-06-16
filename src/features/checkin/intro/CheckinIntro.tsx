@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Check-in (entrada): elige modo rápido o completo. Ver README de la feature. */
 export default function CheckinIntro({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="¿Cómo te sientes ahora?"
             routePath="checkin/index.tsx"

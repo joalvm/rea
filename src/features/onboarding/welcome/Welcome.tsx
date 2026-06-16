@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onStart: () => void;
@@ -8,7 +8,7 @@ type Props = {
 /** Paso 1 del onboarding: bienvenida + promesa de privacidad. Ver README de la feature. */
 export default function Welcome({ onStart, onImport }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Bienvenida a Rea"
             routePath="(onboarding)/welcome.tsx"

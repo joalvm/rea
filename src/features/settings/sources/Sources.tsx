@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Configuración: fuentes revisadas del contenido (content_sources). Ver README. */
 export default function Sources() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Fuentes revisadas"
             routePath="settings/sources.tsx"

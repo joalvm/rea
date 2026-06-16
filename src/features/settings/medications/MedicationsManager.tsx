@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Configuración: catálogo personal de medicamentos (medication_catalog). Ver README. */
 export default function MedicationsManager() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Mis medicamentos"
             routePath="settings/medications.tsx"

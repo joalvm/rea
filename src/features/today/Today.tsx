@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onStartCheckin: () => void;
@@ -8,7 +8,7 @@ type Props = {
 /** Tab Inicio (Home). Hero de fase + predicción + CTA de check-in. Ver README de la feature. */
 export default function Today({ onStartCheckin, onOpenDiary }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Inicio"
             routePath="(tabs)/index.tsx"

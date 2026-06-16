@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Configuración: centro de privacidad (export/import/borrar/bloqueo). Ver README. */
 export default function Privacy() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P3"
             title="Privacidad"
             routePath="settings/privacy.tsx"

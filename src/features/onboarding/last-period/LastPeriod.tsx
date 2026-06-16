@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Onboarding: inicio (y fin opcional) del último periodo → crea el primer period_run. Ver README. */
 export default function LastPeriod({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Tu último periodo"
             routePath="(onboarding)/last-period.tsx"

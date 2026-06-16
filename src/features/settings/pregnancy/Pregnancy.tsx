@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Configuración: modo embarazo (pregnancy_episodes). Pausa predicciones. Ver README. */
 export default function Pregnancy() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Modo embarazo"
             routePath="settings/pregnancy.tsx"

@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Configuración: acerca de Rea + disclaimer. Ver README. */
 export default function About() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Acerca de Rea"
             routePath="settings/about.tsx"

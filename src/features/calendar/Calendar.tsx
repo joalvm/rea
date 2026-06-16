@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Tab Calendario: rejilla mensual desde daily_summary. Ver README de la feature. */
 export default function Calendar() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Calendario"
             routePath="(tabs)/calendar.tsx"

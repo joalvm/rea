@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Tab Diario: timeline de check-ins del día + resumen + mini-gráficos. Ver README. */
 export default function Diary() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Diario"
             routePath="(tabs)/diary.tsx"

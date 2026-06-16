@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Onboarding: duración del sangrado y del ciclo (declared_period_length / declared_cycle_length). Ver README. */
 export default function Cycle({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Duración de tu ciclo"
             routePath="(onboarding)/cycle.tsx"

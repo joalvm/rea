@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Tab Estadísticas (segmentada): resumen del ciclo, fases, síntomas, etc. Ver README. */
 export default function Statistics() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Estadísticas"
             routePath="(tabs)/stats.tsx"

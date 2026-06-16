@@ -1,4 +1,4 @@
-import ScreenPlaceholder, { type PlaceholderLink } from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder, { type PlaceholderLink } from "@/components/placeholder/Placeholder";
 
 type Props = {
     links: PlaceholderLink[];
@@ -7,7 +7,7 @@ type Props = {
 /** Tab Configuración: índice que abre cada pantalla de ajustes. Ver README de la feature. */
 export default function Settings({ links }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Configuración"
             routePath="(tabs)/settings.tsx"

@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Confirmación de periodo inferido por sangrado (source bleeding_inferred). Ver README. */
 export default function PeriodConfirm() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="¿Fue tu periodo?"
             routePath="period/confirm.tsx"

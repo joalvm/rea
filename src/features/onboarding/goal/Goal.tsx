@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -7,7 +7,7 @@ type Props = {
 /** Onboarding: ¿busca embarazo? (trying_to_conceive). Oculto si usa anticoncepción hormonal. Ver README. */
 export default function Goal({ onContinue }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="¿Qué buscas en Rea?"
             routePath="(onboarding)/goal.tsx"

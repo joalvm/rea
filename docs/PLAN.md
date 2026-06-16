@@ -96,38 +96,38 @@ src/app/
 ```
 
 Componentes en `src/features/<area>/<pantalla>/`. Placeholder neutral compartido:
-`src/components/screen-placeholder/ScreenPlaceholder.tsx` (sin diseño aún; cada pantalla
+`src/components/screen-placeholder/Placeholder.tsx` (sin diseño aún; cada pantalla
 queda navegable y autoexplicada). El "qué va en cada vista" se detalla en el README de la
 feature.
 
 ## 5. Inventario de vistas → esquema
 
-| Vista | Lee | Escribe |
-|---|---|---|
-| Inicio (Home) | `daily_summary`, `period_runs`, intención, contenido `surface='today'` | — (log de entrega) |
-| Diario | `checkins` (+síntomas/medicación del día), `daily_summary` | editar/excluir/borrar check-in |
-| Detalle de día `diary/[date]` | todo lo del día + contenido `surface='day_detail'` | — |
-| Calendario | `daily_summary` (mes) | — |
-| Estadísticas | `period_runs`, `daily_summary`, `checkin_*`, contenido `surface='statistics'` | log de entrega |
-| Check-in (wizard) | catálogos | `checkins`, `checkin_symptoms`, `checkin_medications`, `intercourse_log`, `period_runs` → recompute `daily_summary` |
-| Editar/confirmar periodo | `period_runs` | `period_runs` (status/source/fechas) |
-| Configuración › Mi contexto | `reproductive_intent_history` | nueva versión (cierra la vigente) |
-| Configuración › Recordatorios | `user_profile` | `user_profile.reminder_*` |
-| Configuración › Medicamentos | `medication_catalog` | CRUD catálogo |
-| Configuración › Modo embarazo | `pregnancy_episodes` | inicio/fin (pausa predicciones) |
-| Configuración › Privacidad | — | export/import/borrar; bloqueo PIN |
-| Contenido `content/[id]` | `content_items` + `content_sources` | — |
+| Vista                         | Lee                                                                           | Escribe                                                                                                             |
+| ----------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Inicio (Home)                 | `daily_summary`, `period_runs`, intención, contenido `surface='today'`        | — (log de entrega)                                                                                                  |
+| Diario                        | `checkins` (+síntomas/medicación del día), `daily_summary`                    | editar/excluir/borrar check-in                                                                                      |
+| Detalle de día `diary/[date]` | todo lo del día + contenido `surface='day_detail'`                            | —                                                                                                                   |
+| Calendario                    | `daily_summary` (mes)                                                         | —                                                                                                                   |
+| Estadísticas                  | `period_runs`, `daily_summary`, `checkin_*`, contenido `surface='statistics'` | log de entrega                                                                                                      |
+| Check-in (wizard)             | catálogos                                                                     | `checkins`, `checkin_symptoms`, `checkin_medications`, `intercourse_log`, `period_runs` → recompute `daily_summary` |
+| Editar/confirmar periodo      | `period_runs`                                                                 | `period_runs` (status/source/fechas)                                                                                |
+| Configuración › Mi contexto   | `reproductive_intent_history`                                                 | nueva versión (cierra la vigente)                                                                                   |
+| Configuración › Recordatorios | `user_profile`                                                                | `user_profile.reminder_*`                                                                                           |
+| Configuración › Medicamentos  | `medication_catalog`                                                          | CRUD catálogo                                                                                                       |
+| Configuración › Modo embarazo | `pregnancy_episodes`                                                          | inicio/fin (pausa predicciones)                                                                                     |
+| Configuración › Privacidad    | —                                                                             | export/import/borrar; bloqueo PIN                                                                                   |
+| Contenido `content/[id]`      | `content_items` + `content_sources`                                           | —                                                                                                                   |
 
 ## 6. Roadmap por fases
 
 **Alcance MVP decidido:** núcleo + **modo embarazo** + **TTC/fertilidad**.
 Centro de privacidad → P3. `prediction_snapshots` → V1.
 
-- **P0 — Cimientos (hecho)**: gate por DB, deltas de esquema, `ScreenPlaceholder`, rutas y
+- **P0 — Cimientos (hecho)**: gate por DB, deltas de esquema, `Placeholder`, rutas y
   features andamiadas, arreglo del typo `wellcome`.
 - **P1 — Núcleo (MVP)**: onboarding real (persiste `user_profile` + `reproductive_intent_history`
-  + primer `period_run`); **wizard de check-in** real (incl. paso de fertilidad condicional);
-  recálculo de `daily_summary` al guardar; Hero de Inicio + Diario.
+    - primer `period_run`); **wizard de check-in** real (incl. paso de fertilidad condicional);
+      recálculo de `daily_summary` al guardar; Hero de Inicio + Diario.
 - **P2 — Visualización**: Calendario mensual (fases + predicción, estilo honesto); Estadísticas
   segmentada; motores de predicción y de contenido (3 superficies); detalle de contenido;
   editar/confirmar periodo.
@@ -154,5 +154,5 @@ check-in (9 pasos) navegable, detalle de día, periodo (editar/confirmar), conte
 subpantallas de configuración, tabs cableadas (Inicio→check-in, Configuración→subrutas).
 Verificado: `jest` 85/85, `tsc --noEmit` limpio, `expo lint` limpio.
 
-Pendiente: toda la UI real (los placeholders usan `ScreenPlaceholder`), los motores del
+Pendiente: toda la UI real (los placeholders usan `Placeholder`), los motores del
 punto 7 y la persistencia real en cada flujo.

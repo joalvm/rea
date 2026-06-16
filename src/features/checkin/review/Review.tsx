@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onSave: () => void;
@@ -11,7 +11,7 @@ type Props = {
  */
 export default function Review({ onSave }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Revisa tu registro"
             routePath="checkin/review.tsx"

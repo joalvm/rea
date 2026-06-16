@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Configuración: recordatorios (user_profile.reminder_*). Ver README. */
 export default function SettingsNotifications() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Recordatorios"
             routePath="settings/notifications.tsx"

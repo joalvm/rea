@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Edición de un periodo (period_runs): fechas, excluir, marcar spotting. Ver README. */
 export default function PeriodEdit() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Editar periodo"
             routePath="period/edit.tsx"

@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Segmento de Estadísticas: biblioteca de contenido educativo. Ver README de la feature. */
 export default function Tips() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Tips"
             routePath="features/statistics/tips"

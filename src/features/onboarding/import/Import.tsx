@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onContinue: () => void;
@@ -8,7 +8,7 @@ type Props = {
 /** Onboarding (alternativo): importar copia de seguridad y validar datos. Ver README. */
 export default function Import({ onContinue, onBack }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Importar mis datos"
             routePath="(onboarding)/import.tsx"

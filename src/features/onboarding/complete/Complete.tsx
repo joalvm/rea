@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     onFinish: () => void;
@@ -11,7 +11,7 @@ type Props = {
  */
 export default function Complete({ onFinish }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Todo listo"
             routePath="(onboarding)/complete.tsx"

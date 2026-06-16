@@ -1,9 +1,9 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 /** Segmento de Estadísticas: predicciones con confianza. Ver README de la feature. */
 export default function Predictions() {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="P2"
             title="Predicciones"
             routePath="features/statistics/predictions"

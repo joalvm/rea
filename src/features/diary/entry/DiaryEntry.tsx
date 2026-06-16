@@ -1,4 +1,4 @@
-import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
+import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
     date: string;
@@ -8,7 +8,7 @@ type Props = {
 /** Detalle de día (diary/[date]): lectura del día + acceso a registrar. Ver README. */
 export default function DiaryEntry({ date, onStartCheckin }: Props) {
     return (
-        <ScreenPlaceholder
+        <Placeholder
             phase="MVP"
             title="Registro del día"
             routePath="diary/[date].tsx"
