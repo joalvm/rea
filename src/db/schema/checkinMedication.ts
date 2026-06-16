@@ -11,7 +11,8 @@ import { medicationCatalog } from "./medicationCatalog";
  * - `checkinId`: Check-in donde se registró la toma.
  * - `medicationId`: Medicamento del catálogo personal.
  * - `takenAt`: Timestamp declarado de la toma.
- * - `relief`: Nivel de alivio reportado, entre 0 y 2.
+ * - `relief`: Nivel de alivio reportado, entre 0 y 2. Opcional: la usuaria puede
+ *   registrar la toma sin saber aún si alivió y completarlo después.
  * - `doseNote`: Nota opcional de dosis o contexto.
  * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
  * - `version`: Versión optimista del registro.
@@ -30,7 +31,7 @@ export const checkinMedication = sqliteTable(
             .notNull()
             .references(() => medicationCatalog.id),
         takenAt: text("taken_at").notNull(),
-        relief: integer("relief").notNull(),
+        relief: integer("relief"),
         doseNote: text("dose_note"),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
@@ -39,7 +40,7 @@ export const checkinMedication = sqliteTable(
     },
     (table) => [
         index("ix_checkin_medications_lookup").on(table.medicationId, table.takenAt, table.deletedAt),
-        check("checkin_medication_relief_check", sql`${table.relief} BETWEEN 0 AND 2`),
+        check("checkin_medication_relief_check", sql`${table.relief} IS NULL OR (${table.relief} BETWEEN 0 AND 2)`),
     ],
 );
 

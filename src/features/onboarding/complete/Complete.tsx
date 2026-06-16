@@ -1,19 +1,23 @@
-import { Pressable, Text, View } from "react-native";
-
-import { styles } from "./CompleteStyle";
+import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
 
 type Props = {
     onFinish: () => void;
 };
 
+/**
+ * Último paso del onboarding: disclaimer + arranque.
+ * Persiste perfil + intención reproductiva + primer periodo y sella
+ * `user_profile.onboarding_completed_at`. Ver README de la feature.
+ */
 export default function Complete({ onFinish }: Props) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>¡Onboarding Completado!</Text>
-            <Text style={styles.subtitle}>(onboarding)/complete.tsx</Text>
-            <Pressable style={styles.button} onPress={onFinish}>
-                <Text style={styles.buttonText}>Ir al Inicio (Tabs) →</Text>
-            </Pressable>
-        </View>
+        <ScreenPlaceholder
+            phase="MVP"
+            title="Todo listo"
+            routePath="(onboarding)/complete.tsx"
+            description="Rea no diagnostica, no garantiza fechas exactas y no es método anticonceptivo. Sus estimaciones se basan en lo que registres."
+            primaryLabel="Empezar a usar Rea"
+            onPrimary={onFinish}
+        />
     );
 }

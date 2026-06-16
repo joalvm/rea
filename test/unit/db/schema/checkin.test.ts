@@ -23,6 +23,7 @@ describe("checkin schema", () => {
             "pms_intensity",
             "period_status_signal",
             "note",
+            "excluded_from_summary",
             "created_at",
             "updated_at",
             "deleted_at",
@@ -34,6 +35,7 @@ describe("checkin schema", () => {
         expect(indexNames(checkin)).toEqual(["ix_checkins_date_search", "ix_checkins_chronological"]);
         expect(checkNames(checkin)).toContain("checkin_cervical_mucus_check");
         expect(checkNames(checkin)).toContain("checkin_period_status_signal_check");
+        expect(checkNames(checkin)).toContain("checkin_excluded_from_summary_check");
         expect(checkNames(checkin)).toContain("checkin_local_date_format_check");
         expect(foreignKeys(checkin)).toEqual([
             { columns: ["user_id"], foreignColumns: ["id"], foreignTable: "user_profile", onDelete: "cascade" },

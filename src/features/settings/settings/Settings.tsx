@@ -1,13 +1,18 @@
-import { Text, View } from "react-native";
+import ScreenPlaceholder, { type PlaceholderLink } from "@/components/screen-placeholder/ScreenPlaceholder";
 
-import { styles } from "./SettingsStyle";
+type Props = {
+    links: PlaceholderLink[];
+};
 
-export default function Settings() {
+/** Tab Configuración: índice que abre cada pantalla de ajustes. Ver README de la feature. */
+export default function Settings({ links }: Props) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Vista de Configuración</Text>
-            <Text style={styles.subtitle}>settings/settings.tsx</Text>
-            <Text style={styles.description}>Ajustes de la aplicación, preferencias del usuario, etc.</Text>
-        </View>
+        <ScreenPlaceholder
+            phase="MVP"
+            title="Configuración"
+            routePath="(tabs)/settings.tsx"
+            description="Índice de ajustes. Cada opción abre su pantalla."
+            links={links}
+        />
     );
 }

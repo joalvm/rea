@@ -1,14 +1,13 @@
-import { Text, View } from "react-native";
+import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
 
-import { styles } from "./StatisticsStyle";
-
+/** Tab Estadísticas (segmentada): resumen del ciclo, fases, síntomas, etc. Ver README. */
 export default function Statistics() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Vista de Estadísticas</Text>
-            <Text style={styles.description}>
-                Resumen de análisis y pronósticos, aquí se mostrarán gráficos y estadísticas relevantes para el usuario.
-            </Text>
-        </View>
+        <ScreenPlaceholder
+            phase="P2"
+            title="Estadísticas"
+            routePath="(tabs)/stats.tsx"
+            description="Segmentada: Ciclo · Fases · Síntomas · Ánimo/energía/estrés · Medicación · Señales para consultar. Insights honestos, no gráficos por gráficos."
+        />
     );
 }

@@ -1,13 +1,13 @@
-import { Text, View } from "react-native";
+import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
 
-import { styles } from "./TipsStyle";
-
+/** Segmento de Estadísticas: biblioteca de contenido educativo. Ver README de la feature. */
 export default function Tips() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Vista de Tips</Text>
-            <Text style={styles.subtitle}>stats/tips.tsx</Text>
-            <Text style={styles.description}>Recomendaciones personalizadas según la fase del ciclo.</Text>
-        </View>
+        <ScreenPlaceholder
+            phase="P2"
+            title="Tips"
+            routePath="features/statistics/tips"
+            description="Biblioteca de contenido educativo por tema, cada pieza con su fuente revisada. Vive como segmento dentro de Estadísticas."
+        />
     );
 }

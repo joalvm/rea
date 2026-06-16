@@ -9,6 +9,15 @@ export default function OnboardingLayout() {
             }}
         >
             <Stack.Screen name="welcome" />
+            <Stack.Screen name="import" />
+            <Stack.Screen name="birth-year" />
+            <Stack.Screen name="last-period" />
+            <Stack.Screen name="cycle" />
+            <Stack.Screen name="regularity" />
+            <Stack.Screen name="contraception" />
+            <Stack.Screen name="goal" />
+            <Stack.Screen name="notifications" />
+            <Stack.Screen name="complete" />
         </Stack>
     );
 }

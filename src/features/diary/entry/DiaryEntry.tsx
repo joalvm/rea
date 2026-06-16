@@ -1,25 +1,20 @@
-import { Pressable, Text, View } from "react-native";
-
-import { styles } from "./DiaryEntryStyle";
+import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
 
 type Props = {
     date: string;
-    onBack: () => void;
+    onStartCheckin: () => void;
 };
 
-export default function DiaryEntry({ date, onBack }: Props) {
+/** Detalle de día (diary/[date]): lectura del día + acceso a registrar. Ver README. */
+export default function DiaryEntry({ date, onStartCheckin }: Props) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Registro del Día</Text>
-            <Text style={styles.subtitle}>diary/[date].tsx</Text>
-            <Text style={styles.date}>Fecha: {date}</Text>
-            <Text style={styles.description}>
-                Aquí irá el formulario para registrar ánimo, energía, síntomas, flujo, etc.
-            </Text>
-
-            <Pressable style={styles.button} onPress={onBack}>
-                <Text style={styles.buttonText}>← Volver</Text>
-            </Pressable>
-        </View>
+        <ScreenPlaceholder
+            phase="MVP"
+            title="Registro del día"
+            routePath="diary/[date].tsx"
+            description={`Detalle del ${date}: fase estimada del día, check-ins, síntomas, medicación, relaciones y consejo. Desde aquí se edita o se añade un registro.`}
+            primaryLabel="Hacer check-in"
+            onPrimary={onStartCheckin}
+        />
     );
 }

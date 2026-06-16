@@ -1,21 +1,22 @@
-import { Pressable, Text, View } from "react-native";
-
-import { styles } from "./TodayStyle";
+import ScreenPlaceholder from "@/components/screen-placeholder/ScreenPlaceholder";
 
 type Props = {
+    onStartCheckin: () => void;
     onOpenDiary: () => void;
 };
 
-export default function Today({ onOpenDiary }: Props) {
+/** Tab Inicio (Home). Hero de fase + predicción + CTA de check-in. Ver README de la feature. */
+export default function Today({ onStartCheckin, onOpenDiary }: Props) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Vista de Inicio (Home)</Text>
-            <Text style={styles.subtitle}>(tabs)/index.tsx</Text>
-            <Text style={styles.description}>Aquí irá el Hero con la fase del ciclo, próxima regla, etc.</Text>
-
-            <Pressable style={styles.button} onPress={onOpenDiary}>
-                <Text style={styles.buttonText}>Abrir registro del 6 de junio →</Text>
-            </Pressable>
-        </View>
+        <ScreenPlaceholder
+            phase="MVP"
+            title="Inicio"
+            routePath="(tabs)/index.tsx"
+            description="Hero con fase estimada y confianza (honestidad), día de ciclo y próxima regla. Tarjeta de predicción, '¿por qué Rea cree esto?', resumen del día y consejo contextual."
+            primaryLabel="Hacer check-in"
+            onPrimary={onStartCheckin}
+            secondaryLabel="Abrir diario de hoy"
+            onSecondary={onOpenDiary}
+        />
     );
 }

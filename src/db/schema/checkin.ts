@@ -16,6 +16,9 @@ const periodStatusSignalValues = ["started", "ended", "ongoing"] as const;
  * - Campos métricos: Escalas acotadas para sangrado, dolor, energía, estrés y PMS.
  * - `periodStatusSignal`: Señal explícita sobre inicio, fin o continuidad del periodo.
  * - `note`: Nota libre opcional.
+ * - `excludedFromSummary`: Excluye el check-in de las agregaciones del resumen
+ *   diario sin borrarlo (distinto de `deletedAt`). La usuaria puede ocultar un
+ *   registro de las estadísticas conservándolo en su diario.
  * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
  * - `version`: Versión optimista del registro.
  *
@@ -44,6 +47,7 @@ export const checkin = sqliteTable(
         pmsIntensity: integer("pms_intensity"),
         periodStatusSignal: text("period_status_signal", { enum: periodStatusSignalValues }),
         note: text("note"),
+        excludedFromSummary: integer("excluded_from_summary").notNull().default(0),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         deletedAt: text("deleted_at"),
@@ -70,6 +74,7 @@ export const checkin = sqliteTable(
             "checkin_period_status_signal_check",
             sql`${table.periodStatusSignal} IN ('started', 'ended', 'ongoing') OR ${table.periodStatusSignal} IS NULL`,
         ),
+        check("checkin_excluded_from_summary_check", sql`${table.excludedFromSummary} IN (0, 1)`),
         check("checkin_local_date_format_check", sql`${table.localDate} LIKE '____-__-__'`),
     ],
 );

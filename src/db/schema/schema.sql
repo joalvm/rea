@@ -1,5 +1,5 @@
 -- ============================================================================
--- REA - Esquema SQLite v1 (ARCHIVO MAESTRO)
+-- REA - Esquema SQLite v2 (ARCHIVO MAESTRO)
 -- Contrato local-first para datos normalizados de seguimiento menstrual.
 -- La copia visible (textos) vive en src/lang; este esquema solo guarda IDs,
 -- reglas, versiones, URLs y claves de traducción.
@@ -219,6 +219,7 @@ CREATE TABLE IF NOT EXISTS checkins (
                                 period_status_signal IS NULL
                             ),
     note                    TEXT,
+    excluded_from_summary   INTEGER NOT NULL DEFAULT 0 CHECK (excluded_from_summary IN (0, 1)), -- Oculta el check-in de las agregaciones sin borrarlo (distinto de deleted_at).
     created_at              TEXT NOT NULL,
     updated_at              TEXT NOT NULL,
     deleted_at              TEXT,
@@ -256,14 +257,14 @@ ON checkin_symptoms(symptom_key, intensity, deleted_at);
 
 -- ----------------------------------------------------------------------------
 -- Medicamentos por check-in (qué se tomó y cuánto alivió)
--- relief: 0 = nada, 1 = algo, 2 = mucho.
+-- relief: NULL = sin evaluar aún, 0 = nada, 1 = algo, 2 = mucho.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS checkin_medications (
     id             TEXT PRIMARY KEY NOT NULL, -- UUIDv7 generado en el cliente.
     checkin_id     TEXT NOT NULL,
     medication_id  TEXT NOT NULL,
     taken_at       TEXT NOT NULL,
-    relief         INTEGER NOT NULL CHECK (relief BETWEEN 0 AND 2),
+    relief         INTEGER CHECK (relief BETWEEN 0 AND 2),
     dose_note      TEXT,
     created_at     TEXT NOT NULL,
     updated_at     TEXT NOT NULL,
@@ -457,8 +458,8 @@ ON content_delivery_log(user_id, surface, shown_at DESC);
 -- Sello de versión
 -- ----------------------------------------------------------------------------
 INSERT OR IGNORE INTO schema_migrations(version, name, applied_at)
-VALUES (1, 'schema_v1', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
+VALUES (2, 'schema_v2', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
 
 COMMIT;
 
-PRAGMA user_version = 1;
+PRAGMA user_version = 2;

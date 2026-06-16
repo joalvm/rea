@@ -7,5 +7,5 @@ export default function DiaryEntryRoute() {
     const router = useRouter();
     const entryDate = Array.isArray(date) ? date[0] : date;
 
-    return <DiaryEntry date={entryDate ?? ""} onBack={() => router.back()} />;
+    return <DiaryEntry date={entryDate ?? ""} onStartCheckin={() => router.push("/checkin")} />;
 }
