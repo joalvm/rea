@@ -12,6 +12,7 @@ const periodStatusSignalValues = ["started", "ended", "ongoing"] as const;
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
  * - `recordedAt`: Timestamp en que se registró el check-in.
  * - `localDate`: Fecha local usada para calendario y resumen diario.
+ * - `cervicalMucus`: Señal autoobservable opcional de fertilidad, de 0 a 4.
  * - Campos métricos: Escalas acotadas para sangrado, dolor, energía, estrés y PMS.
  * - `periodStatusSignal`: Señal explícita sobre inicio, fin o continuidad del periodo.
  * - `note`: Nota libre opcional.
@@ -32,6 +33,7 @@ export const checkin = sqliteTable(
         localDate: text("local_date").notNull(),
         bleedingIntensity: integer("bleeding_intensity"),
         clots: integer("clots"),
+        cervicalMucus: integer("cervical_mucus"),
         mood: integer("mood"),
         energy: integer("energy"),
         stressLevel: integer("stress_level"),
@@ -52,6 +54,10 @@ export const checkin = sqliteTable(
         index("ix_checkins_chronological").on(table.profileId, sql`${table.recordedAt} DESC`, table.deletedAt),
         check("checkin_bleeding_intensity_check", sql`${table.bleedingIntensity} BETWEEN 0 AND 4`),
         check("checkin_clots_check", sql`${table.clots} BETWEEN 0 AND 3`),
+        check(
+            "checkin_cervical_mucus_check",
+            sql`${table.cervicalMucus} IS NULL OR (${table.cervicalMucus} BETWEEN 0 AND 4)`,
+        ),
         check("checkin_mood_check", sql`${table.mood} BETWEEN 1 AND 5`),
         check("checkin_energy_check", sql`${table.energy} BETWEEN 1 AND 5`),
         check("checkin_stress_level_check", sql`${table.stressLevel} BETWEEN 0 AND 5`),
@@ -64,10 +70,7 @@ export const checkin = sqliteTable(
             "checkin_period_status_signal_check",
             sql`${table.periodStatusSignal} IN ('started', 'ended', 'ongoing') OR ${table.periodStatusSignal} IS NULL`,
         ),
-        check(
-            "checkin_local_date_format_check",
-            sql`${table.localDate} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
-        ),
+        check("checkin_local_date_format_check", sql`${table.localDate} LIKE '____-__-__'`),
     ],
 );
 

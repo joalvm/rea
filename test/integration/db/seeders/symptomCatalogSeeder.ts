@@ -1,10 +1,20 @@
+import { symptomCatalogSeedRows } from "@/db/seeders/symptomCatalogSeeder";
 import { symptomCatalog, type InsertSymptomCatalog } from "@/db/schema/symptomCatalog";
 import type { RealDatabase } from "@test/utils/createRealDatabase";
 
+const [defaultRuntimeSymptom] = symptomCatalogSeedRows;
+
+if (defaultRuntimeSymptom == null) {
+    throw new Error("symptomCatalogSeedRows must define at least one symptom");
+}
+
 const defaultSymptomCatalog: InsertSymptomCatalog = {
-    symptomKey: "cramps",
-    groupKey: "pain",
-    labelKey: "symptom.cramps",
+    symptomKey: defaultRuntimeSymptom.symptomKey,
+    groupKey: defaultRuntimeSymptom.groupKey,
+    labelKey: defaultRuntimeSymptom.labelKey,
+    uiPriority: defaultRuntimeSymptom.uiPriority,
+    isQuickOption: defaultRuntimeSymptom.isQuickOption,
+    isActive: defaultRuntimeSymptom.isActive,
     createdAt: "2026-01-01T00:00:00Z",
     updatedAt: "2026-01-01T00:00:00Z",
 };

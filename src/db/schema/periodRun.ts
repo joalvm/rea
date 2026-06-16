@@ -19,7 +19,8 @@ const periodRunSourceValues = ["user_confirmed", "bleeding_inferred", "mixed"] a
  * - `version`: Versión optimista del registro.
  *
  * La tabla evita duplicar tramos activos por fecha de inicio, mantiene búsqueda
- * cronológica por perfil y valida forma `YYYY-MM-DD` y orden entre inicio y fin.
+ * cronológica por perfil, garantiza a lo sumo un tramo abierto por perfil y valida
+ * forma `YYYY-MM-DD` con orden entre inicio y fin.
  */
 export const periodRun = sqliteTable(
     "period_runs",
@@ -42,16 +43,13 @@ export const periodRun = sqliteTable(
             .on(table.profileId, table.startDate)
             .where(sql`${table.deletedAt} IS NULL`),
         index("ix_period_runs_chronological").on(table.profileId, sql`${table.startDate} DESC`, table.deletedAt),
+        uniqueIndex("uq_period_runs_single_open")
+            .on(table.profileId)
+            .where(sql`${table.status} = 'open' AND ${table.deletedAt} IS NULL`),
         check("period_run_status_check", sql`${table.status} IN ('open', 'closed', 'excluded')`),
         check("period_run_source_check", sql`${table.source} IN ('user_confirmed', 'bleeding_inferred', 'mixed')`),
-        check(
-            "period_run_start_date_format_check",
-            sql`${table.startDate} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
-        ),
-        check(
-            "period_run_end_date_format_check",
-            sql`${table.endDate} IS NULL OR ${table.endDate} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
-        ),
+        check("period_run_start_date_format_check", sql`${table.startDate} LIKE '____-__-__'`),
+        check("period_run_end_date_format_check", sql`${table.endDate} IS NULL OR ${table.endDate} LIKE '____-__-__'`),
         check("period_run_date_range_check", sql`${table.endDate} IS NULL OR ${table.endDate} >= ${table.startDate}`),
     ],
 );

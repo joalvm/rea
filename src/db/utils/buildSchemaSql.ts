@@ -10,10 +10,13 @@ import {
     contentRule,
     contentSource,
     dailySummary,
+    intercourseLog,
     medicationCatalog,
     periodRun,
+    pregnancyEpisode,
     profile,
     reproductiveIntentHistory,
+    schemaMigration,
     symptomCatalog,
 } from "@/db/schema/schema";
 
@@ -22,14 +25,17 @@ type AnySQLiteTable = Parameters<typeof getTableConfig>[0];
 const dialect = new SQLiteSyncDialect();
 
 const orderedTables: AnySQLiteTable[] = [
+    schemaMigration,
     profile,
     reproductiveIntentHistory,
     periodRun,
+    pregnancyEpisode,
     symptomCatalog,
     medicationCatalog,
     checkin,
     checkinSymptom,
     checkinMedication,
+    intercourseLog,
     dailySummary,
     contentSource,
     contentItem,
@@ -114,7 +120,7 @@ function buildCreateTableStatement(table: AnySQLiteTable) {
             parts.push("UNIQUE");
         }
 
-        if (column.hasDefault) {
+        if (column.hasDefault && column.default !== undefined) {
             parts.push(`DEFAULT ${renderDefaultValue(column.default)}`);
         }
 
@@ -154,7 +160,7 @@ function buildCreateTableStatement(table: AnySQLiteTable) {
 
     const definitions = [...columnDefinitions, ...constraints].join(",\n    ");
 
-    return `CREATE TABLE IF NOT EXISTS ${quoteIdentifier(config.name)} (\n    ${definitions}\n);`;
+    return `CREATE TABLE IF NOT EXISTS ${quoteIdentifier(config.name)} (\n    ${definitions}\n) STRICT;`;
 }
 
 function buildCreateIndexStatements(table: AnySQLiteTable) {

@@ -23,7 +23,10 @@ describe("reproductiveIntentHistory schema", () => {
     });
 
     it("declares checks, indexes and profile foreign key", () => {
-        expect(indexNames(reproductiveIntentHistory)).toEqual(["ix_reproductive_intent_active_date"]);
+        expect(indexNames(reproductiveIntentHistory)).toEqual([
+            "ix_reproductive_intent_active_date",
+            "uq_reproductive_intent_single_open",
+        ]);
         expect(checkNames(reproductiveIntentHistory)).toEqual([
             "regularity_check",
             "trying_to_conceive_check",

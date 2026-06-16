@@ -8,10 +8,13 @@ describe("profile schema", () => {
         expect(tableName(profile)).toBe("user_profile");
         expect(columnNames(profile)).toEqual([
             "id",
+            "name",
+            "birth_year",
             "reminders_enabled",
             "reminder_interval_hours",
             "reminder_window_start",
             "reminder_window_end",
+            "onboarding_completed_at",
             "created_at",
             "updated_at",
             "version",
@@ -28,11 +31,11 @@ describe("profile schema", () => {
 
     it("declares checks for reminder values", () => {
         expect(checkNames(profile)).toEqual([
+            "birth_year_check",
             "reminders_enabled_check",
-            "interval_hours_check",
-            "window_start_format",
-            "window_end_format",
-            "window_order_check",
+            "reminder_interval_hours_check",
+            "reminder_window_start_check",
+            "reminder_window_end_check",
         ]);
     });
 });

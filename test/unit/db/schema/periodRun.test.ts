@@ -23,7 +23,11 @@ describe("periodRun schema", () => {
         expect(periodRun.status.default).toBe("open");
         expect(periodRun.source.default).toBe("user_confirmed");
         expect(periodRun.status.enumValues).toEqual(["open", "closed", "excluded"]);
-        expect(indexNames(periodRun)).toEqual(["uq_period_runs_start_active", "ix_period_runs_chronological"]);
+        expect(indexNames(periodRun)).toEqual([
+            "uq_period_runs_start_active",
+            "ix_period_runs_chronological",
+            "uq_period_runs_single_open",
+        ]);
         expect(checkNames(periodRun)).toEqual([
             "period_run_status_check",
             "period_run_source_check",

@@ -49,7 +49,7 @@ describe("checkinSymptom schema integration", () => {
 
         await seedSymptomCatalog(context.database, {
             symptomKey: "headache",
-            labelKey: "symptom.headache",
+            labelKey: "checkIn:symptoms.headache",
         });
 
         await expect(

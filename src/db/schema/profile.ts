@@ -10,45 +10,45 @@ const defaults = {
 };
 
 /**
- * Esquema de la tabla `user_profile` que almacena la configuración del perfil del usuario,
- * incluyendo las preferencias de recordatorios y la ventana de tiempo para recibirlos.
+ * Esquema de la tabla `user_profile`, perfil único local de la usuaria.
  * - `id`: Identificador único del perfil (clave primaria).
+ * - `name`: Nombre mostrado localmente en la app.
+ * - `birthYear`: Año de nacimiento opcional, minimizado a banda de edad.
  * - `remindersEnabled`: Indica si los recordatorios están habilitados (booleano).
  * - `reminderIntervalHours`: Intervalo en horas para los recordatorios (entre 1 y 24).
  * - `reminderWindowStart`: Hora de inicio de la ventana para recibir recordatorios (formato HH:MM).
  * - `reminderWindowEnd`: Hora de fin de la ventana para recibir recordatorios (formato HH:MM).
+ * - `onboardingCompletedAt`: Timestamp opcional de cierre del onboarding.
  * - `createdAt`: Timestamp de creación del perfil.
  * - `updatedAt`: Timestamp de la última actualización del perfil.
  * - `version`: Versión del esquema del perfil, útil para futuras migraciones.
  *
- * La tabla incluye varias restricciones para garantizar la integridad de los datos, como verificar que
- * los valores booleanos sean 0 o 1, que el intervalo de horas esté dentro de un rango válido, y que las horas de inicio
- * y fin de la ventana estén en el formato correcto y que la hora de inicio sea anterior a la hora de fin.
+ * La tabla minimiza dato sensible, guarda solo un perfil local y valida rango de año,
+ * booleanos y formato base de la ventana horaria de recordatorios.
  */
 export const profile = sqliteTable(
     "user_profile",
     {
         id: text("id").primaryKey().notNull(),
+        name: text("name").notNull(),
+        birthYear: integer("birth_year"),
         remindersEnabled: integer("reminders_enabled", { mode: "boolean" })
             .notNull()
             .default(defaults.remindersEnabled),
         reminderIntervalHours: integer("reminder_interval_hours").notNull().default(defaults.reminderIntervalHours),
         reminderWindowStart: text("reminder_window_start").notNull().default(defaults.reminderWindowStart),
         reminderWindowEnd: text("reminder_window_end").notNull().default(defaults.reminderWindowEnd),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(CURRENT_TIMESTAMP)`),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(CURRENT_TIMESTAMP)`),
+        onboardingCompletedAt: text("onboarding_completed_at"),
+        createdAt: text("created_at").notNull(),
+        updatedAt: text("updated_at").notNull(),
         version: integer("version").notNull().default(defaults.version),
     },
     (table) => [
+        check("birth_year_check", sql`${table.birthYear} IS NULL OR (${table.birthYear} BETWEEN 1900 AND 2100)`),
         check("reminders_enabled_check", sql`${table.remindersEnabled} IN (0, 1)`),
-        check("interval_hours_check", sql`${table.reminderIntervalHours} BETWEEN 1 AND 24`),
-        check("window_start_format", sql`${table.reminderWindowStart} GLOB '[0-2][0-9]:[0-5][0-9]'`),
-        check("window_end_format", sql`${table.reminderWindowEnd} GLOB '[0-2][0-9]:[0-5][0-9]'`),
-        check("window_order_check", sql`${table.reminderWindowStart} < ${table.reminderWindowEnd}`),
+        check("reminder_interval_hours_check", sql`${table.reminderIntervalHours} BETWEEN 1 AND 24`),
+        check("reminder_window_start_check", sql`${table.reminderWindowStart} LIKE '__:__'`),
+        check("reminder_window_end_check", sql`${table.reminderWindowEnd} LIKE '__:__'`),
     ],
 );
 

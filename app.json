@@ -1,51 +1,51 @@
 {
-  "expo": {
-    "name": "Rea",
-    "slug": "rea",
-    "version": "0.2.0",
-    "orientation": "portrait",
-    "scheme": "rea",
-    "icon": "./assets/images/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#7CD9F9"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "androidStatusBar": {
-      "barStyle": "dark-content",
-      "backgroundColor": "#7CD9F9"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#7CD9F9",
-        "foregroundImage": "./assets/images/adaptive-foreground.png",
-        "backgroundImage": "./assets/images/adaptive-foreground.png",
-        "monochromeImage": "./assets/images/adaptive-monochrome.png"
-      },
-      "predictiveBackGestureEnabled": false
-    },
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "root": "src/app"
-        }
-      ],
-      "expo-sqlite"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "tsconfigPaths": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "26cb52dd-a4ef-4b60-92be-42d4ca976332"
-      }
-    },
-    "owner": "joalvm"
-  }
+    "expo": {
+        "name": "Rea",
+        "slug": "rea",
+        "version": "0.2.0",
+        "orientation": "portrait",
+        "scheme": "rea",
+        "icon": "./assets/images/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/images/splash-icon.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#7CD9F9"
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "androidStatusBar": {
+            "barStyle": "dark-content",
+            "backgroundColor": "#7CD9F9"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "backgroundColor": "#7CD9F9",
+                "foregroundImage": "./assets/images/adaptive-foreground.png",
+                "backgroundImage": "./assets/images/adaptive-foreground.png",
+                "monochromeImage": "./assets/images/adaptive-monochrome.png"
+            },
+            "predictiveBackGestureEnabled": false
+        },
+        "plugins": [
+            [
+                "expo-router",
+                {
+                    "root": "src/app"
+                }
+            ],
+            "expo-sqlite"
+        ],
+        "experiments": {
+            "typedRoutes": true,
+            "tsconfigPaths": true
+        },
+        "extra": {
+            "eas": {
+                "projectId": "26cb52dd-a4ef-4b60-92be-42d4ca976332"
+            }
+        },
+        "owner": "joalvm"
+    }
 }

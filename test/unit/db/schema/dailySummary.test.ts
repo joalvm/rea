@@ -12,6 +12,7 @@ describe("dailySummary schema", () => {
             "menstruation_basis",
             "is_spotting_day",
             "had_medication",
+            "had_intercourse",
             "avg_mood",
             "avg_energy",
             "avg_stress",
@@ -27,10 +28,12 @@ describe("dailySummary schema", () => {
     });
 
     it("keeps defaults, composite key, checks, index and foreign keys", () => {
+        expect(dailySummary.hadIntercourse.default).toBe(false);
         expect(dailySummary.estimatedPhase.default).toBe("unknown");
         expect(dailySummary.phaseConfidence.default).toBe("low");
         expect(primaryKeyColumns(dailySummary)).toEqual([["user_id", "local_date"]]);
         expect(indexNames(dailySummary)).toEqual(["ix_daily_summary_phase"]);
+        expect(checkNames(dailySummary)).toContain("daily_summary_had_intercourse_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_estimated_phase_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_phase_confidence_check");
         expect(foreignKeys(dailySummary)).toEqual([

@@ -6,6 +6,8 @@ describe("buildSchemaSql", () => {
     it("builds create statements with indexes and foreign keys", () => {
         const statements = buildCreateSchemaStatements();
 
+        expect(statements).toContainEqual(expect.stringContaining('CREATE TABLE IF NOT EXISTS "schema_migrations"'));
+        expect(statements).toContainEqual(expect.stringContaining(") STRICT;"));
         expect(statements).toContainEqual(expect.stringContaining('CREATE TABLE IF NOT EXISTS "content_rules"'));
         expect(statements).toContainEqual(
             expect.stringContaining(
@@ -27,6 +29,6 @@ describe("buildSchemaSql", () => {
         const statements = buildDropSchemaStatements();
 
         expect(statements[0]).toBe('DROP TABLE IF EXISTS "content_delivery_log";');
-        expect(statements.at(-1)).toBe('DROP TABLE IF EXISTS "user_profile";');
+        expect(statements.at(-1)).toBe('DROP TABLE IF EXISTS "schema_migrations";');
     });
 });

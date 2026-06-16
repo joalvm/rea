@@ -39,7 +39,7 @@ describe("periodRun schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("enforces the active partial unique index and allows reinsertion after soft delete", async () => {
+    it("enforces active uniqueness by start date and only allows one open run per user", async () => {
         await seedProfile(context.database);
         await seedPeriodRun(context.database, {
             id: "period-run-active-1",
@@ -55,9 +55,24 @@ describe("periodRun schema integration", () => {
             }),
         ).rejects.toThrow();
 
+        await expect(
+            seedPeriodRun(context.database, {
+                id: "period-run-second-open",
+                startDate: "2026-06-02",
+                createdAt: "2026-06-02T09:00:00Z",
+                updatedAt: "2026-06-02T09:00:00Z",
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("allows reinsertion after soft delete when no other open run blocks it", async () => {
+        await seedProfile(context.database);
+
         await seedPeriodRun(context.database, {
             id: "period-run-soft-deleted",
             startDate: "2026-06-03",
+            status: "closed",
+            endDate: "2026-06-04",
             deletedAt: "2026-06-04T00:00:00Z",
             createdAt: "2026-06-03T08:00:00Z",
             updatedAt: "2026-06-03T08:00:00Z",
@@ -66,6 +81,8 @@ describe("periodRun schema integration", () => {
         await seedPeriodRun(context.database, {
             id: "period-run-recreated",
             startDate: "2026-06-03",
+            status: "closed",
+            endDate: "2026-06-05",
             createdAt: "2026-06-03T09:00:00Z",
             updatedAt: "2026-06-03T09:00:00Z",
         });

@@ -12,6 +12,7 @@ describe("checkin schema", () => {
             "local_date",
             "bleeding_intensity",
             "clots",
+            "cervical_mucus",
             "mood",
             "energy",
             "stress_level",
@@ -31,6 +32,7 @@ describe("checkin schema", () => {
 
     it("declares checks, indexes and profile foreign key", () => {
         expect(indexNames(checkin)).toEqual(["ix_checkins_date_search", "ix_checkins_chronological"]);
+        expect(checkNames(checkin)).toContain("checkin_cervical_mucus_check");
         expect(checkNames(checkin)).toContain("checkin_period_status_signal_check");
         expect(checkNames(checkin)).toContain("checkin_local_date_format_check");
         expect(foreignKeys(checkin)).toEqual([

@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 import { profile } from "./profile";
 
@@ -21,7 +21,8 @@ const regularityValues = ["regular", "variable", "irregular"] as const;
  * - `version`: Versión optimista del registro.
  *
  * La tabla limita valores cerrados, valida rangos biológicos razonables y asegura
- * que las fechas declaradas tengan forma `YYYY-MM-DD` y orden cronológico válido.
+ * que las fechas declaradas tengan forma `YYYY-MM-DD`, orden cronológico válido y
+ * una sola fila vigente por perfil.
  */
 export const reproductiveIntentHistory = sqliteTable(
     "reproductive_intent_history",
@@ -48,19 +49,16 @@ export const reproductiveIntentHistory = sqliteTable(
             sql`${table.effectiveFrom} DESC`,
             table.effectiveTo,
         ),
+        uniqueIndex("uq_reproductive_intent_single_open")
+            .on(table.profileId)
+            .where(sql`${table.effectiveTo} IS NULL AND ${table.deletedAt} IS NULL`),
         check("regularity_check", sql`${table.regularity} IN ('regular', 'variable', 'irregular')`),
         check("trying_to_conceive_check", sql`${table.tryingToConceive} IN (0, 1)`),
         check("hormonal_contraception_check", sql`${table.hormonalContraception} IN (0, 1)`),
         check("declared_cycle_length_check", sql`${table.declaredCycleLength} BETWEEN 15 AND 90`),
         check("declared_period_length_check", sql`${table.declaredPeriodLength} BETWEEN 1 AND 15`),
-        check(
-            "effective_from_format_check",
-            sql`${table.effectiveFrom} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
-        ),
-        check(
-            "effective_to_format_check",
-            sql`${table.effectiveTo} IS NULL OR ${table.effectiveTo} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
-        ),
+        check("effective_from_format_check", sql`${table.effectiveFrom} LIKE '____-__-__'`),
+        check("effective_to_format_check", sql`${table.effectiveTo} IS NULL OR ${table.effectiveTo} LIKE '____-__-__'`),
         check(
             "effective_range_check",
             sql`${table.effectiveTo} IS NULL OR ${table.effectiveTo} >= ${table.effectiveFrom}`,

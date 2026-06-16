@@ -20,7 +20,7 @@ const phaseConfidenceValues = ["low", "medium", "high"] as const;
  * Esquema de la tabla `daily_summary`, modelo de lectura diario calculado por perfil.
  * - `localDate`: Fecha local resumida.
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
- * - Indicadores diarios: Menstruación, spotting y uso de medicamentos.
+ * - Indicadores diarios: Menstruación, spotting, medicación y relaciones sexuales.
  * - Promedios: Estado de ánimo, energía y estrés.
  * - Máximos: Dolor y máxima intensidad de síntomas.
  * - `topSymptomKey`: Síntoma principal del día, si existe.
@@ -41,6 +41,7 @@ export const dailySummary = sqliteTable(
         menstruationBasis: text("menstruation_basis", { enum: menstruationBasisValues }).notNull().default("none"),
         isSpottingDay: integer("is_spotting_day", { mode: "boolean" }).notNull().default(false),
         hadMedication: integer("had_medication", { mode: "boolean" }).notNull().default(false),
+        hadIntercourse: integer("had_intercourse", { mode: "boolean" }).notNull().default(false),
         avgMood: real("avg_mood"),
         avgEnergy: real("avg_energy"),
         avgStress: real("avg_stress"),
@@ -68,6 +69,7 @@ export const dailySummary = sqliteTable(
         ),
         check("daily_summary_spotting_day_check", sql`${table.isSpottingDay} IN (0, 1)`),
         check("daily_summary_had_medication_check", sql`${table.hadMedication} IN (0, 1)`),
+        check("daily_summary_had_intercourse_check", sql`${table.hadIntercourse} IN (0, 1)`),
         check("daily_summary_max_pain_check", sql`${table.maxPain} BETWEEN 0 AND 5 OR ${table.maxPain} IS NULL`),
         check("daily_summary_symptom_intensity_check", sql`${table.maxSymptomIntensity} BETWEEN 0 AND 5`),
         check(
@@ -76,10 +78,7 @@ export const dailySummary = sqliteTable(
         ),
         check("daily_summary_phase_source_check", sql`${table.phaseSource} IN ('observed', 'estimated', 'unknown')`),
         check("daily_summary_phase_confidence_check", sql`${table.phaseConfidence} IN ('low', 'medium', 'high')`),
-        check(
-            "daily_summary_local_date_format_check",
-            sql`${table.localDate} GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'`,
-        ),
+        check("daily_summary_local_date_format_check", sql`${table.localDate} LIKE '____-__-__'`),
     ],
 );
 

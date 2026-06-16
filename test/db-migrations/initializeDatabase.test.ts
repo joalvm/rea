@@ -22,7 +22,14 @@ describe("initializeDatabase", () => {
         await initializeDatabase(database);
 
         expect(database.getFirstAsync).toHaveBeenCalledWith("PRAGMA user_version");
-        expect(database.execAsync.mock.calls).toEqual([["PRAGMA journal_mode = WAL;"], ["PRAGMA foreign_keys = ON;"]]);
+
+        const executedStatements = database.execAsync.mock.calls.map(([statement]) => statement);
+
+        expect(executedStatements[0]).toBe("PRAGMA journal_mode = WAL;");
+        expect(executedStatements[1]).toBe("PRAGMA foreign_keys = ON;");
+        expect(executedStatements).not.toContain("PRAGMA foreign_keys = OFF;");
+        expect(executedStatements).toContainEqual(expect.stringContaining("INSERT INTO symptom_catalog"));
+        expect(executedStatements).toContainEqual(expect.stringContaining("UPDATE symptom_catalog"));
     });
 
     it("resets the schema when the stored version is outdated", async () => {

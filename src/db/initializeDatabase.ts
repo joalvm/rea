@@ -1,4 +1,5 @@
 import { DATABASE_VERSION } from "./config";
+import { runDatabaseSeeders } from "./seeders/runDatabaseSeeders";
 import { buildCreateSchemaStatements, buildDropSchemaStatements } from "./utils/buildSchemaSql";
 
 type ResetDatabaseConnection = {
@@ -11,6 +12,10 @@ type InitializeDatabaseConnection = ResetDatabaseConnection & {
 
 const createSchemaSql = buildCreateSchemaStatements().join("\n");
 const dropSchemaSql = buildDropSchemaStatements().join("\n");
+const markSchemaVersionSql = `
+    INSERT OR IGNORE INTO schema_migrations(version, name, applied_at)
+    VALUES (${DATABASE_VERSION}, 'schema_v${DATABASE_VERSION}', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
+`.trim();
 
 export async function resetDatabase(database: ResetDatabaseConnection) {
     await database.execAsync("PRAGMA foreign_keys = OFF;");
@@ -18,6 +23,8 @@ export async function resetDatabase(database: ResetDatabaseConnection) {
     try {
         await database.execAsync(dropSchemaSql);
         await database.execAsync(createSchemaSql);
+        await database.execAsync(markSchemaVersionSql);
+        await runDatabaseSeeders(database);
         await database.execAsync(`PRAGMA user_version = ${DATABASE_VERSION};`);
     } finally {
         await database.execAsync("PRAGMA foreign_keys = ON;");
@@ -34,5 +41,8 @@ export async function initializeDatabase(database: InitializeDatabaseConnection)
     // Proyecto nuevo: cambio de schema fuerza reset total hasta introducir migraciones.
     if (currentVersion !== DATABASE_VERSION) {
         await resetDatabase(database);
+        return;
     }
+
+    await runDatabaseSeeders(database);
 }
