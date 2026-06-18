@@ -1,11 +1,11 @@
 ---
 name: standards-rea-code-style
-description: "Use when writing or reviewing TypeScript/React 19 code for Expo / React Native: deciding exports, naming, typing, component patterns, hooks, state, or library usage (Drizzle/SQLite, Zustand, Unistyles, i18n). Hard rules and naming live in this SKILL.md; per-artifact and per-library patterns live in references/, loaded on demand. Triggers: export default, naming, props, types, tipado, satisfies, import type, componente, componentizacion, hooks, estado, store, zustand, selector, useShallow, efecto, memoizacion, pureza, inmutabilidad, drizzle, schema, entidad, query, mutacion, transaccion, sqlite, unistyles, theme, estilos, variants, i18n, traduccion, localizacion, comentarios, estilo de codigo, claridad, naming, styles."
+description: "Use when writing or reviewing TypeScript/React 19 code for Expo / React Native: deciding exports, naming, typing, component patterns, hooks, state, or library usage (Drizzle/SQLite, Zustand, i18n). Hard rules and naming live in this SKILL.md; per-artifact and per-library patterns live in references/, loaded on demand. Triggers: export default, naming, props, types, tipado, satisfies, import type, componente, componentizacion, hooks, estado, store, zustand, selector, useShallow, efecto, memoizacion, pureza, inmutabilidad, drizzle, schema, entidad, query, mutacion, transaccion, sqlite, theme, estilos, variants, i18n, traduccion, localizacion, comentarios, estilo de codigo, claridad, naming, styles."
 ---
 
 # Estilo de Código · TypeScript + React 19
 
-Índice de convenciones. Las reglas duras y los nombres viven aquí; la anatomía y los patrones por artefacto y por librería viven en `references/`, agrupados por dominio (`typescript/`, `react/`, `react-native/`, `zustand/`, `drizzle/`, `unistyles/`, `i18n/`), y se cargan según la tarea. (Ubicación y nombres de archivos/carpetas: skill de estructura.)
+Índice de convenciones. Las reglas duras y los nombres viven aquí; la anatomía y los patrones por artefacto y por librería viven en `references/`, agrupados por dominio (`typescript/`, `react/`, `react-native/`, `zustand/`, `drizzle/`, `i18n/`), y se cargan según la tarea. (Ubicación y nombres de archivos/carpetas: skill de estructura.)
 
 ## Mantra
 
@@ -96,10 +96,6 @@ El código se lee de arriba hacia abajo sin saltos, cada archivo tiene un dueño
 - `queries.md` — query builder, relacional, `sql` crudo, lectura reactiva.
 - `mutations.md` — insert/update/delete, soft delete, transacciones.
 - `services.md` — capa de servicio/repositorio por entidad.
-
-**Unistyles** — `references/unistyles/`
-- `config.md` — temas light/dark, breakpoints, runtime.
-- `stylesheets.md` — `*Style.ts`, variants, tokens dinámicos.
 
 **i18n** — `references/i18n/`
 - `setup.md` — init i18next + expo-localization, claves tipadas.

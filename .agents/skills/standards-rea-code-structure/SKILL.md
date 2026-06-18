@@ -3,7 +3,7 @@ name: standards-rea-code-structure
 description: "Convenciones de estructura para un proyecto Expo / React Native / TypeScript con Expo Router y SQLite. Úsala al decidir dónde va un archivo o carpeta, cómo nombrarlo, al crear un feature o subfeature, organizar rutas, stores, acceso a datos, theming o i18n, y al revisar imports o límites entre capas. Aplícala siempre que aparezca: estructura, carpetas, dónde poner, feature-based, ruta, route group, _layout, screen, store, schema, migración, query, mutación, useLiveQuery, lectura/escritura, theme, tokens, i18n, lang, imports, no barrels — aunque no se pida de forma explícita."
 ---
 
-# Estructura Feature-Based · Expo Router + Drizzle + Unistyles
+# Estructura Feature-Based · Expo Router + Drizzle
 
 ## Mantra
 
@@ -15,7 +15,6 @@ Un feature es un dominio de negocio autocontenido. Las capas fluyen en una sola 
 - **Router**: Expo Router (file-based). `app/` y `src/app/` son **solo rutas**.
 - **Datos**: Drizzle + `expo-sqlite`. Schema en TS, migraciones con drizzle-kit. Conexión con `enableChangeListener: true`.
 - **Estado**: Zustand para estado efímero/flujo; persistencia con MMKV.
-- **Estilos**: Unistyles 3.
 - **i18n**: i18next; recursos JSON en `lang/`.
 - **Alias**: `@/` → `src/`, `@assets/` → `assets/`.
 
@@ -28,7 +27,7 @@ src/
   components/     # UI genérica theme-aware, sin dominio
   shared/         # utils/hooks/types puros, sin UI
   db/             # client.ts, schema.ts, migrations/, DatabaseProvider.tsx
-  theme/          # unistyles.ts (config), light/dark, tokens
+  theme/          # 
   store/          # store(s) global(es) Zustand (sesión, prefs, flags)
   modules/        # i18n/, l10n/, config/
   lang/           # SOLO JSON: <idioma>/ y <idioma-REGIÓN>/
@@ -40,7 +39,7 @@ assets/
 ### `app/` — rutas
 
 - **Solo rutas de Expo Router.** Nada de stores, lógica ni componentes sueltos: Expo Router intenta tratar cualquier archivo aquí como ruta.
-- `app/_layout.tsx`: providers (DatabaseProvider, i18n, Unistyles) y guardas de navegación. Sustituye al antiguo `App.tsx`.
+- `app/_layout.tsx`: providers (DatabaseProvider, i18n, ThemeProvider) y guardas de navegación. Sustituye al antiguo `App.tsx`.
 - Cada ruta importa su screen desde el feature; no contiene lógica de dominio:
   `app/(group)/thing.tsx` → `export { default } from '@/features/thing/ThingScreen'`.
 - Los nombres de archivo de ruta siguen la URL; agruparlas se hace con route groups `(group)`.
@@ -79,11 +78,7 @@ assets/
 
 - utils/hooks/types puros, sin UI ni dominio.
 
-### `theme/` — Unistyles
-
-- `unistyles.ts`: `StyleSheet.configure` con themes **light/dark** y breakpoints.
-- Tokens que dependen de un estado de dominio (acentos dinámicos) viven como **mapa de tokens** en `theme/`, **no** como themes separados.
-- Estilos de componente en `*Style.ts` hermano, con el `StyleSheet.create` de Unistyles.
+### `theme/` — 
 
 ### `store/`
 
@@ -143,7 +138,6 @@ modules/config, lang/ → nadie
 - Lógica de dominio en el archivo de ruta en vez de importar el screen del feature.
 - UI o hook importando `db` directo: debe usar un read hook (`useLiveQuery`).
 - Store cacheando lecturas de la base de datos: usa live query.
-- Modelar un estado de dominio como theme de Unistyles: usa un mapa de tokens.
 - Feature importando de otro feature, o subfeature importando de otra subfeature.
 - `*.types.ts`, barrels, nombres comodín.
 - Lógica en `lang/`; recursos JSON dentro de `modules/i18n`.
@@ -153,8 +147,7 @@ modules/config, lang/ → nadie
 - [ ] El archivo tiene dueño claro: app (ruta) / feature / subfeature / components / shared / db / theme / store / modules.
 - [ ] `app/` solo contiene rutas; providers y guardas en `_layout`.
 - [ ] Lecturas vía read hook (`useLiveQuery`); escrituras vía mutación en transacción.
-- [ ] El store no cachea la base de datos; solo estado efímero/flujo.
-- [ ] Estilos en `*Style.ts`; theming vía Unistyles; estado de dominio = tokens, no theme.
+- [ ] El store no cachea la base de datos; solo estado efímero/flujo.no theme.
 - [ ] Sin barrels, sin `*.types.ts`, sin nombres comodín.
 - [ ] Ningún hermano importa de otro hermano; lo común está en `shared/`.
 - [ ] `lang/` solo JSON.
