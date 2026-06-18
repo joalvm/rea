@@ -18,6 +18,7 @@ test/
     db/
       schema/
       utils/
+    theme/
   integration/
     db/
       schema/
@@ -35,11 +36,13 @@ test/
 Pruebas puras y aisladas.
 
 - Helpers, funciones deterministas y lógica sin runtime nativo.
+- Contratos puros del sistema de tema.
 - Metadatos de schema Drizzle que pueden validarse en Node.
   Ejemplo actual:
 
 - `test/unit/db/schema/`: asegura columnas, índices, checks y claves del schema.
 - `test/unit/db/utils/uuid.test.ts`: valida el contrato del UUIDv7.
+- `test/unit/theme/theme.test.ts`: protege referencias estables, adaptación a navegación y contrato de paletas por fase.
 
 ### `test/integration/`
 

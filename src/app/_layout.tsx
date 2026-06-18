@@ -2,12 +2,27 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import { DatabaseProvider } from "@/db/DatabaseProvider";
+import { ThemeProvider } from "@/theme/ThemeProvider";
+import { useTheme } from "@/theme/useTheme";
 
-export default function RootLayout() {
+/**
+ * Navegador raíz. Vive bajo `ThemeProvider`, así que puede leer el tema para
+ * pintar la status bar y el fondo de las pantallas de forma coherente. Los
+ * colores de headers/tab bar los aplica automáticamente el tema de navegación
+ * que inyecta `ThemeProvider`.
+ */
+function RootNavigator() {
+    const theme = useTheme();
+
     return (
-        <DatabaseProvider>
-            <StatusBar style="auto" hidden={false} />
-            <Stack screenOptions={{ headerShown: false }}>
+        <>
+            <StatusBar style={theme.mode === "dark" ? "light" : "dark"} />
+            <Stack
+                screenOptions={{
+                    headerShown: false,
+                    contentStyle: { backgroundColor: theme.colors.background },
+                }}
+            >
                 <Stack.Screen name="(onboarding)" />
                 <Stack.Screen name="(tabs)" />
                 <Stack.Screen name="checkin" />
@@ -24,6 +39,16 @@ export default function RootLayout() {
                 <Stack.Screen name="settings/about" options={{ headerShown: true, title: "Acerca de Rea" }} />
                 <Stack.Screen name="+not-found" />
             </Stack>
-        </DatabaseProvider>
+        </>
+    );
+}
+
+export default function RootLayout() {
+    return (
+        <ThemeProvider>
+            <DatabaseProvider>
+                <RootNavigator />
+            </DatabaseProvider>
+        </ThemeProvider>
     );
 }

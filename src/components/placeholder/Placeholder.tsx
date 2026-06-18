@@ -1,6 +1,9 @@
 import { Fragment } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { styles } from "./PlaceholderStyle";
+import { ChevronRightIcon } from "lucide-react-native";
+
+import { useTheme } from "@/theme/useTheme";
+import { usePlaceholderStyles } from "./PlaceholderStyle";
 
 /** Fase del roadmap a la que pertenece la pantalla (ver docs/PLAN.md). */
 export type ScreenPhase = "MVP" | "P2" | "P3" | "V1";
@@ -30,11 +33,9 @@ type Props = {
 };
 
 /**
- * Placeholder neutral compartido por todas las pantallas aún sin diseño.
- *
- * No define identidad visual: solo deja la pantalla navegable y autoexplicada
- * mientras se aterriza el diseño definitivo de cada feature. Sustituir por la
- * UI real cuando exista. El "qué va aquí" se documenta en el README de la feature.
+ * Placeholder compartido por las pantallas aún sin diseño. Ya consume el tema
+ * (colores, tipografía, espaciado, sombras) para que las pantallas pendientes se
+ * vean cuidadas y respondan a claro/oscuro mientras se aterriza su UI real.
  */
 export default function Placeholder({
     title,
@@ -47,8 +48,11 @@ export default function Placeholder({
     secondaryLabel,
     onSecondary,
 }: Props) {
+    const theme = useTheme();
+    const styles = usePlaceholderStyles();
+
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
             {phase ? (
                 <View style={styles.badge}>
                     <Text style={styles.badgeText}>{phase}</Text>
@@ -63,9 +67,15 @@ export default function Placeholder({
                 <View style={styles.links}>
                     {links.map((link) => (
                         <Fragment key={link.label}>
-                            <Pressable style={styles.linkRow} onPress={link.onPress}>
-                                <Text style={styles.linkLabel}>{link.label}</Text>
-                                {link.hint ? <Text style={styles.linkHint}>{link.hint}</Text> : null}
+                            <Pressable
+                                style={({ pressed }) => [styles.linkRow, pressed && styles.pressed]}
+                                onPress={link.onPress}
+                            >
+                                <View style={styles.linkText}>
+                                    <Text style={styles.linkLabel}>{link.label}</Text>
+                                    {link.hint ? <Text style={styles.linkHint}>{link.hint}</Text> : null}
+                                </View>
+                                <ChevronRightIcon size={20} color={theme.colors.icon} strokeWidth={2} />
                             </Pressable>
                         </Fragment>
                     ))}
@@ -73,13 +83,19 @@ export default function Placeholder({
             ) : null}
 
             {primaryLabel && onPrimary ? (
-                <Pressable style={[styles.button, styles.primary]} onPress={onPrimary}>
+                <Pressable
+                    style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
+                    onPress={onPrimary}
+                >
                     <Text style={styles.primaryText}>{primaryLabel}</Text>
                 </Pressable>
             ) : null}
 
             {secondaryLabel && onSecondary ? (
-                <Pressable style={[styles.button, styles.secondary]} onPress={onSecondary}>
+                <Pressable
+                    style={({ pressed }) => [styles.button, styles.secondary, pressed && styles.pressed]}
+                    onPress={onSecondary}
+                >
                     <Text style={styles.secondaryText}>{secondaryLabel}</Text>
                 </Pressable>
             ) : null}
