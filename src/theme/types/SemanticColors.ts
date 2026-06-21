@@ -43,6 +43,7 @@ export type SemanticColors = {
     iconStrong: string;
 
     // — Marca / acción primaria —
+    /** Superficie sólida de acción primaria. En claro conserva la firma Rea `#7CD9F9`. */
     primary: string;
     /** Estado presionado de la acción primaria. */
     primaryPressed: string;

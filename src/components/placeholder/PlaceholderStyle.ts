@@ -26,11 +26,13 @@ export const usePlaceholderStyles = createStyles((theme) => {
             paddingHorizontal: spacing.md,
             paddingVertical: spacing.xs,
             borderRadius: radius.pill,
-            backgroundColor: colors.primarySubtle,
+            borderWidth: borderWidth.hairline,
+            borderColor: colors.focusRing,
+            backgroundColor: colors.primaryTint,
         },
         badgeText: {
             ...typography.variant.overline,
-            color: colors.primary,
+            color: colors.link,
         },
         title: {
             ...typography.variant.h1,
@@ -41,7 +43,9 @@ export const usePlaceholderStyles = createStyles((theme) => {
             ...typography.variant.caption,
             fontFamily: typography.families.mono,
             color: colors.textMuted,
-            backgroundColor: colors.surfaceAlt,
+            backgroundColor: colors.surfaceSunken,
+            borderWidth: borderWidth.hairline,
+            borderColor: colors.border,
             paddingHorizontal: spacing.sm,
             paddingVertical: spacing.xs,
             borderRadius: radius.sm,
@@ -99,6 +103,8 @@ export const usePlaceholderStyles = createStyles((theme) => {
         },
         primary: {
             backgroundColor: colors.primary,
+            borderWidth: borderWidth.hairline,
+            borderColor: colors.link,
             ...shadows[2],
         },
         primaryText: {

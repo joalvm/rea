@@ -20,7 +20,7 @@ function ios(color: string, opacity: number, radius: number, y: number): ViewSty
     };
 }
 
-/** Sombras para modo claro. Color base = azul-tinta para que no se vean "sucias". */
+/** Sombras para modo claro. Color base = tinta aqua profunda de Rea. */
 export const shadowsLight: ShadowSet = {
     0: {
         shadowColor: "transparent",
@@ -29,9 +29,9 @@ export const shadowsLight: ShadowSet = {
         shadowOffset: { width: 0, height: 0 },
         elevation: 0,
     },
-    1: { ...ios("#1B2A3A", 0.06, 8, 2), elevation: 1 },
-    2: { ...ios("#1B2A3A", 0.1, 16, 6), elevation: 3 },
-    3: { ...ios("#1B2A3A", 0.14, 28, 12), elevation: 8 },
+    1: { ...ios("#062633", 0.07, 8, 2), elevation: 1 },
+    2: { ...ios("#062633", 0.11, 16, 6), elevation: 3 },
+    3: { ...ios("#062633", 0.15, 28, 12), elevation: 8 },
 };
 
 /** Sombras para modo oscuro: más profundas pero muy sutiles. */

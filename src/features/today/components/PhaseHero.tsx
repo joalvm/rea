@@ -105,7 +105,7 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo 
                         accessibilityLabel={ctaLabel}
                         style={({ pressed }) => [
                             styles.cta,
-                            { backgroundColor: visual.solid },
+                            { backgroundColor: visual.solid, borderColor: visual.accent },
                             pressed && styles.pressed,
                         ]}
                     >
@@ -118,7 +118,7 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo 
 }
 
 const useHeroStyles = createStyles((theme) => {
-    const { spacing, radius, typography, sizing } = theme;
+    const { spacing, radius, typography, sizing, shadows, borderWidth } = theme;
 
     return {
         hero: {
@@ -187,8 +187,10 @@ const useHeroStyles = createStyles((theme) => {
             minHeight: sizing.controlMd,
             paddingHorizontal: spacing.xl,
             borderRadius: radius.pill,
+            borderWidth: borderWidth.hairline,
             alignItems: "center",
             justifyContent: "center",
+            ...shadows[2],
         },
         ctaText: {
             ...typography.variant.bodyStrong,

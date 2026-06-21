@@ -59,6 +59,7 @@ export default function Today({ onStartCheckin, onOpenDiary }: Props) {
                     <View style={styles.previewChips}>
                         {PHASE_KEYS.map((key) => {
                             const active = key === phase;
+                            const phaseColors = theme.phases[key];
                             return (
                                 <Pressable
                                     key={key}
@@ -69,17 +70,12 @@ export default function Today({ onStartCheckin, onOpenDiary }: Props) {
                                     style={[
                                         styles.previewChip,
                                         active && {
-                                            backgroundColor: theme.colors.primaryTint,
-                                            borderColor: theme.colors.primary,
+                                            backgroundColor: phaseColors.surface,
+                                            borderColor: phaseColors.accent,
                                         },
                                     ]}
                                 >
-                                    <Text
-                                        style={[
-                                            styles.previewChipText,
-                                            active && { color: theme.colors.primaryPressed },
-                                        ]}
-                                    >
+                                    <Text style={[styles.previewChipText, active && { color: phaseColors.onSurface }]}>
                                         {PHASE_PRESENTATION[key].label}
                                     </Text>
                                 </Pressable>

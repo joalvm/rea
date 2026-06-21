@@ -1,82 +1,162 @@
 import type { ColorScale } from "../types/colors";
 
 /**
- * Primitivas de color (tokens crudos).
+ * Primitivas de color de Rea.
  *
- * Aquí NO hay semántica: solo escalas de color con sus valores hex. Ninguna
- * pantalla debería importar este archivo directamente; consume siempre los
- * tokens semánticos (`theme.colors.*`) que mapean estas primitivas a un rol.
+ * Estos valores no son roles de UI; son la materia prima del tema. Las pantallas
+ * deben consumir `theme.colors.*` o `theme.phases.*`, no estas escalas directas.
  *
- * Escalas tonales 50→950 al estilo de sistemas profesionales (Radix / Tailwind):
- * 50–200 = fondos y tintes suaves · 300–400 = decorativos · 500–700 = acción y
- * texto sobre claro · 800–950 = texto y superficies profundas.
- *
- * Color de marca elegido por la usuaria: #7CD9F9 (celeste). Se conserva exacto
- * en `sky.300` como firma visual; la acción interactiva usa tonos más profundos
- * (`sky.600/700`) para cumplir contraste AA. Ver docs/DESIGN_SYSTEM.md.
+ * La identidad nace del celeste de marca `aqua.300 = #7CD9F9`. Ese valor es la
+ * superficie primaria de marca; cuando el color se usa como texto pequeno, la UI
+ * debe bajar a `aqua.700` para mantener contraste.
  */
 
-/** Marca "Sky" / celeste. Hue ~196°, anclada en 300 = #7CD9F9 (color de la usuaria). */
-export const sky = {
-    50: "#ECFAFE",
-    100: "#D2F2FC",
-    200: "#A9E6FA",
-    300: "#7CD9F9", // ← celeste de marca (exacto, elegido por la usuaria)
-    400: "#46C4EF",
-    500: "#1FA9DC",
-    600: "#0E89BB", // acción primaria (white-on = 3.95, AA para texto grande/UI)
-    700: "#126E95", // texto/enlace sobre claro (AA 5.69)
-    800: "#165978",
-    900: "#174A63",
-    950: "#0E2D3D",
+/** Celeste Rea. `300` conserva el color exacto de marca. */
+export const aqua = {
+    50: "#F0FCFF",
+    100: "#DDF7FE",
+    200: "#B9EEFC",
+    300: "#7CD9F9",
+    400: "#45C8F1",
+    500: "#18AEDD",
+    600: "#087FA6",
+    700: "#076583",
+    800: "#0A4F68",
+    900: "#083C50",
+    950: "#062633",
 } as const satisfies ColorScale;
 
-/** Neutros fríos (slate con leve tinte azul) para armonizar con el celeste. */
-export const neutral = {
+/** Neutros acuosos. Menos slate enterprise, mas Rea: aire, agua, intimidad. */
+export const mist = {
     0: "#FFFFFF",
-    50: "#F6F8FB",
-    100: "#EEF2F6",
-    200: "#DFE6EE",
-    300: "#CBD5E1",
-    400: "#94A2B2",
-    500: "#6B7B8C",
-    600: "#51606E",
-    700: "#3A4654",
-    800: "#28323D",
-    900: "#1B232C",
-    950: "#11171E",
+    50: "#F3FAFC",
+    100: "#E8F5F9",
+    200: "#CFE6EE",
+    300: "#A9D2DE",
+    400: "#79AABD",
+    500: "#4F7482",
+    600: "#416878",
+    700: "#2C4E5B",
+    800: "#1D3A45",
+    900: "#102631",
+    950: "#071A22",
 } as const;
 
-/** Texto claro para modo oscuro (cálido para reducir fatiga visual). */
-export const lightInk = {
-    base: "#E7EDF3",
-    muted: "#9DB0C2",
-    faint: "#7C8FA1",
+/** Tintas de lectura compartidas entre modo claro y oscuro. */
+export const ink = {
+    base: mist[900],
+    secondary: mist[600],
+    muted: mist[500],
+    onBrand: aqua[950],
+    inverse: mist[0],
+    darkBase: "#EAF8FC",
+    darkSecondary: "#A9D3DE",
+    darkMuted: "#78A7B6",
 } as const;
 
-/** Verde menta — éxito / confirmaciones. */
-export const mint = {
-    tint: "#D8F5E8",
-    400: "#5BD1A0",
-    500: "#2FC18A",
-    deep: "#16744F",
-    darkTint: "#123227",
+/** Estados semanticos globales: exito, aviso y peligro. */
+export const status = {
+    success: {
+        surface: "#E8FBF1",
+        accent: "#37C989",
+        text: "#0E6848",
+        darkSurface: "#0A2B20",
+        darkAccent: "#57DDA5",
+        darkText: "#B8F3D8",
+    },
+    warning: {
+        surface: "#FFF7D7",
+        accent: "#F8B633",
+        text: "#7A4B00",
+        darkSurface: "#342507",
+        darkAccent: "#FFD166",
+        darkText: "#FFE7A3",
+    },
+    danger: {
+        surface: "#FFF0F5",
+        accent: "#EF3F78",
+        text: "#8E1E43",
+        darkSurface: "#351221",
+        darkAccent: "#FF7AA2",
+        darkText: "#FFC2D5",
+    },
 } as const;
 
-/** Ámbar cálido — avisos suaves (nunca alarmista). */
-export const amber = {
-    tint: "#FFEFD2",
-    400: "#F6C56A",
-    500: "#F0A93C",
-    deep: "#8A5A0E",
-    darkTint: "#3A2A10",
-} as const;
-
-/** Rosa — error / destructivo, en tono suave. */
-export const rose = {
-    tint: "#FFE1E7",
-    400: "#F58399",
-    500: "#F2607A",
-    deep: "#B23250",
-    darkTint: "#3D1A24",
+/**
+ * Colores por fase del ciclo.
+ *
+ * Todas las fases se sienten de la misma familia que Rea: luminosas, utiles para
+ * identificar contexto, pero sin competir con el celeste de marca.
+ */
+export const phase = {
+    unknown: {
+        surface: "#EAF8FD",
+        accent: "#26BCEB",
+        text: "#075E7B",
+        muted: "#2D819A",
+        darkSurface: "#0A2F3E",
+        darkAccent: "#5AD8F8",
+        darkText: "#EAFBFF",
+        darkMuted: "#9ED4E2",
+    },
+    menstrual: {
+        surface: "#FFF0F5",
+        accent: "#EF3F78",
+        text: "#8E1E43",
+        muted: "#B54168",
+        darkSurface: "#351221",
+        darkAccent: "#FF7AA2",
+        darkText: "#FFEAF1",
+        darkMuted: "#F2AFC5",
+    },
+    follicular: {
+        surface: "#E8FBF1",
+        accent: "#37C989",
+        text: "#0E6848",
+        muted: "#338566",
+        darkSurface: "#0A2B20",
+        darkAccent: "#57DDA5",
+        darkText: "#E7FFF3",
+        darkMuted: "#A9DFC8",
+    },
+    fertileWindow: {
+        surface: "#FFF7D7",
+        accent: "#F8B633",
+        text: "#7A4B00",
+        muted: "#A16A0A",
+        darkSurface: "#342507",
+        darkAccent: "#FFD166",
+        darkText: "#FFF4CF",
+        darkMuted: "#E7CB82",
+    },
+    estimatedOvulation: {
+        surface: "#FFF0EA",
+        accent: "#FF765C",
+        text: "#A83224",
+        muted: "#C65546",
+        darkSurface: "#381610",
+        darkAccent: "#FF9A83",
+        darkText: "#FFEDE7",
+        darkMuted: "#E7B1A6",
+    },
+    luteal: {
+        surface: "#F2EEFF",
+        accent: "#8F78F2",
+        text: "#4C39A5",
+        muted: "#6F5BC5",
+        darkSurface: "#20183C",
+        darkAccent: "#B6A7FF",
+        darkText: "#F0ECFF",
+        darkMuted: "#C0B6E8",
+    },
+    pregnancy: {
+        surface: "#E6FAF7",
+        accent: "#43C8BC",
+        text: "#096C65",
+        muted: "#2B8880",
+        darkSurface: "#092E2B",
+        darkAccent: "#69DDD3",
+        darkText: "#E6FFFC",
+        darkMuted: "#A7DCD7",
+    },
 } as const;
