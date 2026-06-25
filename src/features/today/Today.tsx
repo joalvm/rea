@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
+import { useTranslation } from "react-i18next";
+
 import { createStyles } from "@/theme/createStyles";
 import { PHASE_KEYS, type PhaseKey } from "@/theme/types/PhaseColors";
 import { useTheme } from "@/theme/useTheme";
 import { PhaseHero } from "./components/PhaseHero";
-import { PHASE_PRESENTATION } from "./phasePresentation";
 
 type Props = {
     onStartCheckin: () => void;
@@ -21,19 +22,14 @@ type Props = {
  * `daily_summary.estimated_phase` cuando exista el motor de predicción.
  */
 export default function Today({ onStartCheckin, onOpenDiary }: Props) {
+    const { t } = useTranslation("today");
     const theme = useTheme();
     const styles = useTodayStyles();
     const [phase, setPhase] = useState<PhaseKey>("follicular");
 
     return (
         <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-            <PhaseHero
-                phase={phase}
-                dayOfCycle={12}
-                statusLabel="Confianza media"
-                ctaLabel="¿Cómo te sientes hoy?"
-                onPressCta={onStartCheckin}
-            />
+            <PhaseHero phase={phase} dayOfCycle={12} statusLabel={t("hero.statusMedium")} onPressCta={onStartCheckin} />
 
             <View style={styles.body}>
                 <View style={styles.card}>
@@ -66,7 +62,7 @@ export default function Today({ onStartCheckin, onOpenDiary }: Props) {
                                     onPress={() => setPhase(key)}
                                     accessibilityRole="button"
                                     accessibilityState={{ selected: active }}
-                                    accessibilityLabel={PHASE_PRESENTATION[key].label}
+                                    accessibilityLabel={t(`phases.${key}.label`)}
                                     style={[
                                         styles.previewChip,
                                         active && {
@@ -76,7 +72,7 @@ export default function Today({ onStartCheckin, onOpenDiary }: Props) {
                                     ]}
                                 >
                                     <Text style={[styles.previewChipText, active && { color: phaseColors.onSurface }]}>
-                                        {PHASE_PRESENTATION[key].label}
+                                        {t(`phases.${key}.label`)}
                                     </Text>
                                 </Pressable>
                             );

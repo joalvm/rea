@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
@@ -6,13 +8,14 @@ type Props = {
 
 /** Onboarding: anticoncepción hormonal (hormonal_contraception). Condiciona fertilidad/TTC. Ver README. */
 export default function Contraception({ onContinue }: Props) {
+    const { t } = useTranslation("onboarding");
     return (
         <Placeholder
             phase="MVP"
-            title="¿Usas anticoncepción hormonal?"
+            title={t("contraception.title")}
             routePath="(onboarding)/contraception.tsx"
-            description="Si la usas, Rea registra síntomas y sangrados pero no mostrará estimaciones fértiles como naturales."
-            primaryLabel="Continuar"
+            description={t("contraception.body")}
+            primaryLabel={t("actions.continue")}
             onPrimary={onContinue}
         />
     );

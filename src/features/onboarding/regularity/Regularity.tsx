@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
@@ -6,13 +8,14 @@ type Props = {
 
 /** Onboarding: regularidad percibida (regular | variable | irregular). Ver README. */
 export default function Regularity({ onContinue }: Props) {
+    const { t } = useTranslation("onboarding");
     return (
         <Placeholder
             phase="MVP"
-            title="¿Cómo de regular es?"
+            title={t("regularity.title")}
             routePath="(onboarding)/regularity.tsx"
-            description="Casi siempre parecido (regular) · A veces cambia (variable) · Cambia bastante (irregular)."
-            primaryLabel="Continuar"
+            description={t("regularity.body")}
+            primaryLabel={t("actions.continue")}
             onPrimary={onContinue}
         />
     );

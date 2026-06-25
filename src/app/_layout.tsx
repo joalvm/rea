@@ -1,9 +1,27 @@
+import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { Quicksand_600SemiBold, Quicksand_700Bold } from "@expo-google-fonts/quicksand";
+import {
+    NunitoSans_400Regular,
+    NunitoSans_500Medium,
+    NunitoSans_600SemiBold,
+    NunitoSans_700Bold,
+} from "@expo-google-fonts/nunito-sans";
 
 import { DatabaseProvider } from "@/db/DatabaseProvider";
 import { ThemeProvider } from "@/theme/ThemeProvider";
 import { useTheme } from "@/theme/useTheme";
+
+// Inicializa i18next (efecto de importación, una sola vez). Debe ir antes de que
+// cualquier pantalla use `useTranslation`.
+import "@/modules/i18n/i18n";
+
+// Mantiene el splash visible hasta que las fuentes de marca estén listas (evita el
+// "flash" de fuente de sistema antes de que cargue Quicksand / Nunito Sans).
+SplashScreen.preventAutoHideAsync();
 
 /**
  * Navegador raíz. Vive bajo `ThemeProvider`, así que puede leer el tema para
@@ -44,6 +62,27 @@ function RootNavigator() {
 }
 
 export default function RootLayout() {
+    const [fontsLoaded, fontError] = useFonts({
+        Quicksand_600SemiBold,
+        Quicksand_700Bold,
+        NunitoSans_400Regular,
+        NunitoSans_500Medium,
+        NunitoSans_600SemiBold,
+        NunitoSans_700Bold,
+    });
+
+    useEffect(() => {
+        if (fontsLoaded || fontError) {
+            SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded, fontError]);
+
+    // No renderizamos la app hasta resolver las fuentes (cargadas o con error). El
+    // splash sigue visible mientras tanto.
+    if (!fontsLoaded && !fontError) {
+        return null;
+    }
+
     return (
         <ThemeProvider>
             <DatabaseProvider>

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
@@ -6,13 +8,14 @@ type Props = {
 
 /** Onboarding: ventana e intervalo de recordatorios (user_profile.reminder_*). Ver README. */
 export default function Notifications({ onContinue }: Props) {
+    const { t } = useTranslation("onboarding");
     return (
         <Placeholder
             phase="MVP"
-            title="Recordatorios"
+            title={t("notifications.title")}
             routePath="(onboarding)/notifications.tsx"
-            description="¿De qué hora a qué hora y cada cuánto te preguntamos cómo vas? Por defecto 09:00–22:00 cada 6h. Puedes ignorarlos."
-            primaryLabel="Continuar"
+            description={t("notifications.body")}
+            primaryLabel={t("actions.continue")}
             onPrimary={onContinue}
         />
     );

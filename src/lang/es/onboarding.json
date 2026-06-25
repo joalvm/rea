@@ -1,0 +1,86 @@
+{
+    "actions": {
+        "continue": "Continuar",
+        "back": "Volver"
+    },
+    "welcome": {
+        "title": "Bienvenida a Rea",
+        "body": "Un espacio íntimo para conocer tu ciclo a tu ritmo. Lo que registres se queda en tu teléfono, solo para ti.",
+        "privacy": "Tus datos no salen de tu dispositivo. Puedes exportarlos o borrarlos cuando quieras.",
+        "start": "Empezar",
+        "restore": "Ya tengo una copia de seguridad"
+    },
+    "birthYear": {
+        "title": "¿En qué año naciste?",
+        "body": "Con el año nos basta para cuidar el contenido que verás. Nada más.",
+        "inputLabel": "Año de nacimiento",
+        "placeholder": "Por ejemplo, 1996",
+        "helper": "Solo guardamos el año."
+    },
+    "lastPeriod": {
+        "title": "Tu último periodo",
+        "body": "¿Cuándo empezó tu última regla? Es el punto de partida de tus predicciones.",
+        "startLabel": "¿Qué día empezó?",
+        "endLabel": "¿Qué día terminó?",
+        "ongoing": "Aún continúa",
+        "helper": "Si todavía no termina, déjalo en blanco."
+    },
+    "cycle": {
+        "title": "La duración de tu ciclo",
+        "body": "Es solo un punto de partida; Rea lo irá afinando con cada registro.",
+        "periodLengthLabel": "Días de sangrado",
+        "cycleLengthLabel": "Días entre una regla y la siguiente",
+        "daysUnit_one": "{{count}} día",
+        "daysUnit_other": "{{count}} días",
+        "helper": "¿No estás segura? Deja 5 y 28; lo ajustamos juntas."
+    },
+    "regularity": {
+        "title": "¿Cómo de regular es tu ciclo?",
+        "body": "Sin presión: elige lo que más se parezca a ti.",
+        "options": {
+            "regular": { "label": "Regular", "caption": "Casi siempre llega cuando lo espero" },
+            "variable": { "label": "Variable", "caption": "A veces se adelanta o se atrasa" },
+            "irregular": { "label": "Irregular", "caption": "Cambia bastante de un mes a otro" },
+            "unsure": { "label": "Aún no lo sé", "caption": "Lo descubriré con el tiempo" }
+        }
+    },
+    "contraception": {
+        "title": "¿Usas anticoncepción hormonal?",
+        "body": "Pastilla, DIU hormonal, implante, inyección… Cambia cómo Rea interpreta tu ciclo.",
+        "options": {
+            "yes": "Sí, uso un método hormonal",
+            "no": "No, ahora mismo no"
+        },
+        "note": "Si la usas, Rea registra tus síntomas y sangrados, pero no marcará días fértiles como naturales."
+    },
+    "goal": {
+        "title": "¿Qué buscas en Rea?",
+        "body": "Puedes cambiarlo cuando quieras.",
+        "options": {
+            "track": { "label": "Conocer mi ciclo", "caption": "Entender mi cuerpo y anticiparme" },
+            "conceive": { "label": "Buscar un embarazo", "caption": "Reconocer mis días más fértiles" }
+        }
+    },
+    "notifications": {
+        "title": "Recordatorios suaves",
+        "body": "Te preguntamos cómo vas, sin agobios. Tú decides cuándo.",
+        "fromLabel": "Desde",
+        "toLabel": "Hasta",
+        "intervalLabel": "Cada cuánto",
+        "helper": "Por defecto, de 09:00 a 22:00 cada 6 horas.",
+        "enable": "Activar recordatorios",
+        "skip": "Ahora no"
+    },
+    "import": {
+        "title": "Importar mis datos",
+        "body": "Restaura una copia de seguridad y sigue justo donde lo dejaste.",
+        "pick": "Elegir archivo",
+        "validating": "Revisando tu copia…"
+    },
+    "complete": {
+        "title": "Todo listo",
+        "body": "Gracias por dejarnos acompañarte. A partir de aquí, Rea aprende contigo.",
+        "disclaimer": "Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo que registres.",
+        "finish": "Empezar a usar Rea"
+    }
+}

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
@@ -7,15 +9,16 @@ type Props = {
 
 /** Paso 1 del onboarding: bienvenida + promesa de privacidad. Ver README de la feature. */
 export default function Welcome({ onStart, onImport }: Props) {
+    const { t } = useTranslation("onboarding");
     return (
         <Placeholder
             phase="MVP"
-            title="Bienvenida a Rea"
+            title={t("welcome.title")}
             routePath="(onboarding)/welcome.tsx"
-            description="Promesa de privacidad: tus datos viven en tu dispositivo, puedes exportarlos y borrarlos. Rea no diagnostica."
-            primaryLabel="Empezar"
+            description={t("welcome.body")}
+            primaryLabel={t("welcome.start")}
             onPrimary={onStart}
-            secondaryLabel="Ya tengo una copia de seguridad"
+            secondaryLabel={t("welcome.restore")}
             onSecondary={onImport}
         />
     );

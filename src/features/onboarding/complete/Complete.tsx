@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
@@ -10,13 +12,14 @@ type Props = {
  * `user_profile.onboarding_completed_at`. Ver README de la feature.
  */
 export default function Complete({ onFinish }: Props) {
+    const { t } = useTranslation("onboarding");
     return (
         <Placeholder
             phase="MVP"
-            title="Todo listo"
+            title={t("complete.title")}
             routePath="(onboarding)/complete.tsx"
-            description="Rea no diagnostica, no garantiza fechas exactas y no es método anticonceptivo. Sus estimaciones se basan en lo que registres."
-            primaryLabel="Empezar a usar Rea"
+            description={t("complete.disclaimer")}
+            primaryLabel={t("complete.finish")}
             onPrimary={onFinish}
         />
     );

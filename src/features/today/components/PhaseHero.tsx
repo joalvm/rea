@@ -9,10 +9,12 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useTranslation } from "react-i18next";
+
 import { createStyles } from "@/theme/createStyles";
 import type { PhaseKey } from "@/theme/types/PhaseColors";
 import { useTheme } from "@/theme/useTheme";
-import { PHASE_PRESENTATION } from "../phasePresentation";
+import { PHASE_ICONS } from "../phaseIcons";
 
 type Props = {
     /** Fase estimada actual. Vendrá de `daily_summary.estimated_phase`. */
@@ -34,12 +36,16 @@ type Props = {
  * Presentacional: recibe `phase` por props (el color lo da el tema y la copia el
  * feature). La fase real (motor de predicción) se conectará en `Today`.
  */
-export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo te sientes hoy?", onPressCta }: Props) {
+export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta }: Props) {
+    const { t } = useTranslation("today");
     const theme = useTheme();
     const styles = useHeroStyles();
     const insets = useSafeAreaInsets();
     const visual = theme.phases[phase];
-    const { label, caption, Icon } = PHASE_PRESENTATION[phase];
+    const Icon = PHASE_ICONS[phase];
+    const label = t(`phases.${phase}.label`);
+    const caption = t(`phases.${phase}.caption`);
+    const cta = ctaLabel ?? t("hero.cta");
 
     // Transición de color de fondo entre fases.
     const fromColor = useSharedValue(visual.surface);
@@ -77,7 +83,7 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo 
                     <View style={[styles.iconBubble, { backgroundColor: visual.elevatedSurface }]}>
                         <Icon size={22} color={visual.accent} strokeWidth={2} />
                     </View>
-                    <Text style={[styles.overline, { color: visual.onSurfaceMuted }]}>TU FASE DE HOY</Text>
+                    <Text style={[styles.overline, { color: visual.onSurfaceMuted }]}>{t("hero.overline")}</Text>
                 </View>
 
                 <Text style={[styles.label, { color: visual.onSurface }]}>{label}</Text>
@@ -87,7 +93,7 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo 
                     {typeof dayOfCycle === "number" ? (
                         <View style={[styles.chip, { backgroundColor: visual.elevatedSurface }]}>
                             <Text style={[styles.chipText, { color: visual.onElevatedSurface }]}>
-                                Día {dayOfCycle} del ciclo
+                                {t("hero.cycleDay", { day: dayOfCycle })}
                             </Text>
                         </View>
                     ) : null}
@@ -102,14 +108,14 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo 
                     <Pressable
                         onPress={onPressCta}
                         accessibilityRole="button"
-                        accessibilityLabel={ctaLabel}
+                        accessibilityLabel={cta}
                         style={({ pressed }) => [
                             styles.cta,
-                            { backgroundColor: visual.solid, borderColor: visual.accent },
+                            { backgroundColor: visual.solid },
                             pressed && styles.pressed,
                         ]}
                     >
-                        <Text style={[styles.ctaText, { color: visual.onSolid }]}>{ctaLabel}</Text>
+                        <Text style={[styles.ctaText, { color: visual.onSolid }]}>{cta}</Text>
                     </Pressable>
                 ) : null}
             </Animated.View>
@@ -118,7 +124,7 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel = "¿Cómo 
 }
 
 const useHeroStyles = createStyles((theme) => {
-    const { spacing, radius, typography, sizing, shadows, borderWidth } = theme;
+    const { spacing, radius, typography, sizing, shadows } = theme;
 
     return {
         hero: {
@@ -187,7 +193,6 @@ const useHeroStyles = createStyles((theme) => {
             minHeight: sizing.controlMd,
             paddingHorizontal: spacing.xl,
             borderRadius: radius.pill,
-            borderWidth: borderWidth.hairline,
             alignItems: "center",
             justifyContent: "center",
             ...shadows[2],

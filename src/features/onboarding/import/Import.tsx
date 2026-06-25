@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Placeholder from "@/components/placeholder/Placeholder";
 
 type Props = {
@@ -7,15 +9,16 @@ type Props = {
 
 /** Onboarding (alternativo): importar copia de seguridad y validar datos. Ver README. */
 export default function Import({ onContinue, onBack }: Props) {
+    const { t } = useTranslation("onboarding");
     return (
         <Placeholder
             phase="MVP"
-            title="Importar mis datos"
+            title={t("import.title")}
             routePath="(onboarding)/import.tsx"
-            description="Restaura una copia de seguridad previa y valida hasta qué fecha hay datos antes de continuar."
-            primaryLabel="Continuar"
+            description={t("import.body")}
+            primaryLabel={t("actions.continue")}
             onPrimary={onContinue}
-            secondaryLabel="Volver"
+            secondaryLabel={t("actions.back")}
             onSecondary={onBack}
         />
     );
