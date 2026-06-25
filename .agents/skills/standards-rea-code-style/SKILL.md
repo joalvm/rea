@@ -97,9 +97,10 @@ El código se lee de arriba hacia abajo sin saltos, cada archivo tiene un dueño
 - `mutations.md` — insert/update/delete, soft delete, transacciones.
 - `services.md` — capa de servicio/repositorio por entidad.
 
-**i18n** — `references/i18n/`
-- `setup.md` — init i18next + expo-localization, claves tipadas.
-- `usage.md` — `t()`, interpolación, plurales, formato con Intl.
+**i18n / l10n** — `references/i18n/`
+- `setup.md` — init i18next (instancia por defecto) + idioma del sistema, namespaces por feature, claves tipadas.
+- `usage.md` — `t()` con namespace explícito, interpolación, plurales.
+- `l10n.md` — formato (fechas/números/moneda) con Intl + ajustes del sistema; sin tablas por país.
 
 ## Checklist
 
