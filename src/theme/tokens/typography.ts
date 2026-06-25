@@ -2,31 +2,42 @@ import { Platform } from "react-native";
 import type { Typography } from "../types/typography";
 
 /**
- * Tokens de tipografía (tokens crudos).
+ * Tokens de tipografía (tokens crudos) — sistema "Rea Soft".
  *
- * No se empaquetan fuentes propias: usamos la fuente de sistema (San Francisco
- * en iOS, Roboto en Android) por rendimiento, legibilidad nativa y porque
- * mantiene la app 100% compatible con Expo Go sin assets extra.
+ * Dos fuentes redondeadas de marca, cargadas vía `@expo-google-fonts` (compatibles
+ * con Expo Go) en el layout raíz (`src/app/_layout.tsx`):
+ *  - Quicksand   → display y títulos (redondeada geométrica, calma, firma wellness).
+ *  - Nunito Sans → cuerpo y UI (redondeada humanista, muy legible a tamaño pequeño).
  *
- * La estética "suave/juvenil" se logra con pesos medios, interlineado generoso
- * y un leve `letterSpacing` negativo en titulares. Si en el futuro se quiere una
- * tipografía redondeada de marca (Nunito / Quicksand vía @expo-google-fonts),
- * basta con cambiar `families` aquí. Ver docs/DESIGN_SYSTEM.md → Tipografía.
+ * IMPORTANTE (RN): las fuentes estáticas NO responden a `fontWeight`; cada peso es
+ * su propia familia. Por eso cada variante fija `fontFamily` al peso concreto y no
+ * usa `fontWeight`. El mapa `weights` se conserva para texto en fuente de sistema
+ * (p. ej. labels de la tab bar). Ver docs/design/typography.html → Tipografía.
  */
 
-/** Familia de sistema. `undefined` deja que RN use la fuente nativa por defecto. */
-const systemFamily = Platform.select({ ios: undefined, android: undefined, default: undefined });
+/** Familias por peso. Nombres exactos exportados por `@expo-google-fonts`. */
+const heading = {
+    semibold: "Quicksand_600SemiBold",
+    bold: "Quicksand_700Bold",
+} as const;
+
+const body = {
+    regular: "NunitoSans_400Regular",
+    medium: "NunitoSans_500Medium",
+    semibold: "NunitoSans_600SemiBold",
+    bold: "NunitoSans_700Bold",
+} as const;
 
 export const fontFamilies: Typography["families"] = {
     /** Cuerpo y UI. */
-    sans: systemFamily,
-    /** Titulares (mismo sistema; separado para poder cambiarlo sin tocar variantes). */
-    heading: systemFamily,
+    sans: body.regular,
+    /** Titulares. */
+    heading: heading.bold,
     /** Números tabulares / datos (monoespaciada del sistema). */
     mono: Platform.select({ ios: "Menlo", android: "monospace", default: "monospace" }),
 };
 
-/** Pesos como literales válidos para `fontWeight` de React Native. */
+/** Pesos para texto en fuente de sistema (la marca usa familias por peso). */
 export const fontWeights: Typography["weights"] = {
     regular: "400",
     medium: "500",
@@ -55,80 +66,68 @@ export const typography: Typography = {
     sizes: fontSizes,
     variant: {
         display: {
-            fontFamily: fontFamilies.heading,
+            fontFamily: heading.bold,
             fontSize: fontSizes.display,
             lineHeight: 40,
-            fontWeight: fontWeights.bold,
             letterSpacing: -0.5,
         },
         h1: {
-            fontFamily: fontFamilies.heading,
+            fontFamily: heading.bold,
             fontSize: fontSizes.h1,
             lineHeight: 34,
-            fontWeight: fontWeights.bold,
             letterSpacing: -0.4,
         },
         h2: {
-            fontFamily: fontFamilies.heading,
+            fontFamily: heading.bold,
             fontSize: fontSizes.h2,
             lineHeight: 28,
-            fontWeight: fontWeights.bold,
             letterSpacing: -0.2,
         },
         h3: {
-            fontFamily: fontFamilies.heading,
+            fontFamily: heading.semibold,
             fontSize: fontSizes.h3,
             lineHeight: 24,
-            fontWeight: fontWeights.semibold,
             letterSpacing: -0.1,
         },
         title: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.semibold,
             fontSize: fontSizes.title,
             lineHeight: 22,
-            fontWeight: fontWeights.semibold,
         },
         body: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.regular,
             fontSize: fontSizes.body,
             lineHeight: 24,
-            fontWeight: fontWeights.regular,
         },
         bodyStrong: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.semibold,
             fontSize: fontSizes.body,
             lineHeight: 24,
-            fontWeight: fontWeights.semibold,
         },
         callout: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.regular,
             fontSize: fontSizes.callout,
             lineHeight: 21,
-            fontWeight: fontWeights.regular,
         },
         subhead: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.medium,
             fontSize: fontSizes.subhead,
             lineHeight: 20,
-            fontWeight: fontWeights.medium,
         },
         footnote: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.regular,
             fontSize: fontSizes.footnote,
             lineHeight: 18,
-            fontWeight: fontWeights.regular,
         },
         caption: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.medium,
             fontSize: fontSizes.caption,
             lineHeight: 16,
-            fontWeight: fontWeights.medium,
         },
         overline: {
-            fontFamily: fontFamilies.sans,
+            fontFamily: body.bold,
             fontSize: fontSizes.overline,
             lineHeight: 14,
-            fontWeight: fontWeights.bold,
             letterSpacing: 1.2,
             textTransform: "uppercase",
         },

@@ -3,6 +3,7 @@ import { shadowsLight } from "../tokens/elevation";
 import { duration, easing } from "../tokens/motion";
 import { borderWidth, radius } from "../tokens/radii";
 import { sizing, space } from "../tokens/spacing";
+import { state } from "../tokens/state";
 import { typography } from "../tokens/typography";
 import type { Theme } from "../types/Theme";
 
@@ -141,4 +142,5 @@ export const lightTheme: Theme = {
     typography,
     shadows: shadowsLight,
     motion: { duration, easing },
+    state,
 };

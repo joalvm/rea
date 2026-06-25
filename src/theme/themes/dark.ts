@@ -1,6 +1,7 @@
 import { aqua, ink, mist, phase, status } from "../tokens/colors";
 import { shadowsDark } from "../tokens/elevation";
 import { space, sizing } from "../tokens/spacing";
+import { state } from "../tokens/state";
 import type { Theme } from "../types/Theme";
 import { lightTheme } from "./light";
 import { duration, easing } from "../tokens/motion";
@@ -32,14 +33,14 @@ export const darkTheme: Theme = {
         ...lightTheme.colors,
 
         background: mist[950],
-        surface: "#0E2833",
-        surfaceAlt: "#143744",
-        surfaceSunken: "#06151B",
-        surfaceGlass: "rgba(14,40,51,0.72)",
-        overlay: "rgba(0,0,0,0.6)",
+        surface: "#0E2740",
+        surfaceAlt: "#16314F",
+        surfaceSunken: "#051324",
+        surfaceGlass: "rgba(14,39,64,0.72)",
+        overlay: "rgba(4,12,24,0.6)",
 
-        border: "#246071",
-        borderStrong: "#347A8D",
+        border: "#28567A",
+        borderStrong: "#3A6E99",
         divider: "rgba(255,255,255,0.08)",
 
         text: ink.darkBase,
@@ -71,10 +72,10 @@ export const darkTheme: Theme = {
 
         tabBarActive: aqua[300],
         tabBarInactive: ink.darkMuted,
-        tabBarBackground: "rgba(7,26,34,0.94)",
-        tabBarBorder: "#246071",
+        tabBarBackground: "rgba(7,24,42,0.94)",
+        tabBarBorder: "#28567A",
 
-        skeleton: "#143744",
+        skeleton: "#1A3553",
     },
     phases: {
         unknown: {
@@ -169,4 +170,5 @@ export const darkTheme: Theme = {
     typography,
     shadows: shadowsDark,
     motion: { duration, easing },
+    state,
 };

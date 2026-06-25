@@ -5,6 +5,7 @@ import type { Sizing, Space } from "./spacing";
 import type { Typography } from "./typography";
 import type { PhaseColors, PhaseKey } from "./PhaseColors";
 import type { SemanticColors } from "./SemanticColors";
+import type { State } from "./state";
 
 /** Modo de color resuelto (lo que realmente se pinta). Lo decide el sistema. */
 export type ColorSchemeMode = "light" | "dark";
@@ -27,4 +28,6 @@ export type Theme = {
     typography: Typography;
     shadows: ShadowSet;
     motion: { duration: Duration; easing: Easings };
+    /** Opacidades y escala de feedback para estados de interacción. */
+    state: State;
 };

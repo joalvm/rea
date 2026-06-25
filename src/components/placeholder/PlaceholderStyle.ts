@@ -103,8 +103,6 @@ export const usePlaceholderStyles = createStyles((theme) => {
         },
         primary: {
             backgroundColor: colors.primary,
-            borderWidth: borderWidth.hairline,
-            borderColor: colors.link,
             ...shadows[2],
         },
         primaryText: {

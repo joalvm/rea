@@ -4,7 +4,7 @@
  * El Hero del Home cambia de color según la fase para que la usuaria sepa "de un
  * vistazo, por el color" en qué fase está. Aquí va SOLO color: la copia (nombre,
  * microcopy) y el icono de cada fase son presentación del feature, no del tema
- * (ver `src/features/today/phasePresentation.ts`).
+ * (ver `src/features/today/phaseIcons.ts`).
  *
  * Las claves reflejan `daily_summary.estimated_phase` y añaden `pregnancy` para
  * el modo embarazo (predicciones en pausa).

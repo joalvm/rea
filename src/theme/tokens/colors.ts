@@ -39,7 +39,7 @@ export const mist = {
     700: "#2C4E5B",
     800: "#1D3A45",
     900: "#102631",
-    950: "#071A22",
+    950: "#07182A",
 } as const;
 
 /** Tintas de lectura compartidas entre modo claro y oscuro. */
@@ -49,9 +49,9 @@ export const ink = {
     muted: mist[500],
     onBrand: aqua[950],
     inverse: mist[0],
-    darkBase: "#EAF8FC",
-    darkSecondary: "#A9D3DE",
-    darkMuted: "#78A7B6",
+    darkBase: "#E9F4FF",
+    darkSecondary: "#A6CCE6",
+    darkMuted: "#7AA0C2",
 } as const;
 
 /** Estados semanticos globales: exito, aviso y peligro. */
