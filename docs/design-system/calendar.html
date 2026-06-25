@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Calendario mobile</title>
+        <meta
+            name="description"
+            content="Calendario mobile de Rea: anatomia, estados de dia, leyenda, interaccion y reglas de uso."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body data-page="calendar" data-title="Calendario">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
+
+                <section class="section" id="calendario-rea">
+                    <div class="eyebrow">Calendario · Base</div>
+                    <h2>Calendario Rea</h2>
+                    <p class="lead">
+                        El calendario traduce el ciclo a una lectura mensual amable. Los estados se distinguen por
+                        forma, color y leyenda: observado, estimado, fertil, ovulacion, hoy y registro existente.
+                    </p>
+                    <div class="grid cols-2 mt-18">
+                        <figure class="mobile-artifact calendar-artifact">
+                            <figcaption class="artifact-label">Calendario mobile</figcaption>
+                            <div class="cycle-calendar">
+                                <div class="cal-head">
+                                    <button class="iconbtn" type="button" aria-label="Mes anterior">
+                                        <i class="icon sm" data-lucide="arrow-left" aria-hidden="true"></i>
+                                    </button>
+                                    <div class="cal-title">
+                                        <span class="cal-brand">
+                                            <span class="logo-asset logo-mark" role="img" aria-label="Rea"></span>
+                                            Rea
+                                        </span>
+                                        <strong>Junio 2026</strong>
+                                        <span>Ciclo dia 12</span>
+                                    </div>
+                                    <button class="iconbtn" type="button" aria-label="Mes siguiente">
+                                        <i class="icon sm rotate-180" data-lucide="arrow-left" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="cal-grid ph-ovulation">
+                                    <div class="dow">L</div>
+                                    <div class="dow">M</div>
+                                    <div class="dow">M</div>
+                                    <div class="dow">J</div>
+                                    <div class="dow">V</div>
+                                    <div class="dow">S</div>
+                                    <div class="dow">D</div>
+                                    <div class="day muted">1</div>
+                                    <div class="day period">2</div>
+                                    <div class="day period">3</div>
+                                    <div class="day period">4</div>
+                                    <div class="day predicted">5</div>
+                                    <div class="day">6</div>
+                                    <div class="day">7</div>
+                                    <div class="day">8</div>
+                                    <div class="day">9</div>
+                                    <div class="day">10</div>
+                                    <div class="day">11</div>
+                                    <div class="day fertile">12</div>
+                                    <div class="day fertile">13<span class="dot"></span></div>
+                                    <div class="day fertile ovulation">14</div>
+                                    <div class="day fertile">15</div>
+                                    <div class="day fertile">16</div>
+                                    <div class="day">17</div>
+                                    <div class="day">18<span class="dot"></span></div>
+                                    <div class="day">19</div>
+                                    <div class="day today">20</div>
+                                    <div class="day">21</div>
+                                    <div class="day">22</div>
+                                    <div class="day">23</div>
+                                    <div class="day">24</div>
+                                    <div class="day">25</div>
+                                    <div class="day">26</div>
+                                    <div class="day">27</div>
+                                    <div class="day">28</div>
+                                    <div class="day">29</div>
+                                    <div class="day predicted">30</div>
+                                    <div class="day muted">1</div>
+                                    <div class="day muted">2</div>
+                                    <div class="day muted">3</div>
+                                    <div class="day muted">4</div>
+                                    <div class="day muted">5</div>
+                                </div>
+                                <div class="cal-legend">
+                                    <span><i class="period"></i>Periodo</span>
+                                    <span><i class="predicted"></i>Prediccion</span>
+                                    <span><i class="fertile"></i>Fertil</span>
+                                    <span><i class="today"></i>Hoy</span>
+                                </div>
+                            </div>
+                        </figure>
+                        <div class="panel">
+                            <h3 class="flush-top">Anatomia</h3>
+                            <ul class="rule-list">
+                                <li>Header con marca Rea, mes visible y contexto del ciclo.</li>
+                                <li>Navegacion mensual con botones de 40px y labels accesibles.</li>
+                                <li>Dias circulares para evitar una lectura cuadriculada.</li>
+                                <li>Periodo observado y prediccion se diferencian por relleno y borde.</li>
+                                <li>Leyenda visible cuando conviven mas de dos estados.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="estados-calendario">
+                    <div class="eyebrow">01 · Estados de dia</div>
+                    <h2>Lectura por forma y significado</h2>
+                    <div class="table-wrap">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>Estado</th>
+                                    <th>Forma</th>
+                                    <th>Color</th>
+                                    <th>Significado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Normal</td>
+                                    <td>Numero circular sin relleno</td>
+                                    <td>Texto principal</td>
+                                    <td>Dia sin dato especial.</td>
+                                </tr>
+                                <tr>
+                                    <td>Periodo observado</td>
+                                    <td>Circulo relleno suave</td>
+                                    <td>Danger surface/text</td>
+                                    <td>Registro real de flujo.</td>
+                                </tr>
+                                <tr>
+                                    <td>Prediccion</td>
+                                    <td>Borde dashed</td>
+                                    <td>Danger accent</td>
+                                    <td>Periodo esperado, no observado.</td>
+                                </tr>
+                                <tr>
+                                    <td>Fertil</td>
+                                    <td>Circulo relleno suave</td>
+                                    <td>Warning surface/text</td>
+                                    <td>Ventana fertil estimada.</td>
+                                </tr>
+                                <tr>
+                                    <td>Ovulacion</td>
+                                    <td>Anillo interno</td>
+                                    <td>Fase ovulacion accent</td>
+                                    <td>Pico estimado dentro de ventana fertil.</td>
+                                </tr>
+                                <tr>
+                                    <td>Hoy</td>
+                                    <td>Outline externo</td>
+                                    <td>Primary pressed/link</td>
+                                    <td>Dia actual del sistema.</td>
+                                </tr>
+                                <tr>
+                                    <td>Con registro</td>
+                                    <td>Punto inferior</td>
+                                    <td>Primary pressed</td>
+                                    <td>Hay nota o check-in en el dia.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="section" id="uso-calendario">
+                    <div class="eyebrow">02 · Uso</div>
+                    <h2>Interaccion mobile</h2>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Tap en dia</h3>
+                            <p>Abre un bottom sheet con registros, detalle y acciones disponibles para esa fecha.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Cambio de mes</h3>
+                            <p>Usar botones laterales; gesto horizontal solo si no compite con el scroll vertical.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Sin datos</h3>
+                            <p>Mostrar calendario neutral y una accion clara para registrar el inicio del ciclo.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest" defer></script>
+        <script src="./main.js" defer></script>
+    </body>
+</html>

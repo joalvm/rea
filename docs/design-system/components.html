@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Componentes mobile</title>
+        <meta
+            name="description"
+            content="Catalogo profesional de componentes mobile Rea: navegacion, acciones, formularios, check-in, feedback y datos."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body data-page="components" data-title="Componentes">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
+
+                <section class="section" id="principios-componentes">
+                    <div class="eyebrow">Componentes · Base</div>
+                    <h2>Biblioteca UI mobile de Rea</h2>
+                    <p class="lead">
+                        La biblioteca cubre los bloques necesarios para registrar el ciclo, revisar calendario, leer
+                        patrones, ajustar privacidad y resolver estados del producto. Cada componente se piensa para
+                        tacto, pantallas pequenas, modo claro/oscuro y datos sensibles.
+                    </p>
+                    <nav class="local-nav" aria-label="Submenu de componentes">
+                        <a href="#navegacion-mobile">Navegacion</a>
+                        <a href="#acciones">Acciones</a>
+                        <a href="#formularios">Formularios</a>
+                        <a href="#seleccion">Seleccion</a>
+                        <a href="#checkin">Check-in</a>
+                        <a href="#opciones-checkin">Opciones</a>
+                        <a href="#calendario-componentes">Calendario</a>
+                        <a href="#datos">Datos</a>
+                        <a href="#feedback">Feedback</a>
+                        <a href="#sheets">Sheets</a>
+                        <a href="#privacidad">Privacidad</a>
+                    </nav>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Contrato visual</h3>
+                            <p>Superficies suaves, bordes visibles, radios consistentes y cero elevacion por sombra.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Contrato tactil</h3>
+                            <p>Target minimo 44pt, pressed perceptible, disabled claro y foco accesible.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Contrato semantico</h3>
+                            <p>Estado = texto + icono o forma + color. Ningun estado depende solo del color.</p>
+                        </div>
+                    </div>
+                    <ul class="component-matrix mt-18" aria-label="Alcance de biblioteca UI">
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="calendar-days" aria-hidden="true"></i><strong>CalendarDay</strong>
+                            <p>Dia normal, observado, estimado, fertil, hoy y con registro.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="heart" aria-hidden="true"></i><strong>PhaseBadge</strong>
+                            <p>Etiqueta compacta de fase con icono, color y texto accesible.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="signal-medium" aria-hidden="true"></i
+                            ><strong>ConfidenceBadge</strong>
+                            <p>Confiabilidad de una prediccion con barras, color semantico y texto breve.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="bell" aria-hidden="true"></i><strong>ReminderRow</strong>
+                            <p>Recordatorio con hora, estado, frecuencia y accion secundaria.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="shield" aria-hidden="true"></i><strong>PrivacyNotice</strong>
+                            <p>Mensajes sobre datos locales, exportacion, restauracion y borrado.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="info" aria-hidden="true"></i><strong>PermissionPrompt</strong>
+                            <p>Solicitud contextual de notificaciones, archivos o restauracion.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="chart-line" aria-hidden="true"></i><strong>InsightCard</strong>
+                            <p>Patrones y estadisticas con confianza explicita.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="file-text" aria-hidden="true"></i><strong>NotePreview</strong>
+                            <p>Notas privadas resumidas con fecha, categoria y acceso a edicion.</p>
+                        </li>
+                        <li class="matrix-item">
+                            <i class="icon" data-lucide="triangle-alert" aria-hidden="true"></i><strong>ConfirmDialog</strong>
+                            <p>Confirmacion para borrar datos, restaurar backup o descartar cambios.</p>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="section component-section" id="navegacion-mobile">
+                    <div class="eyebrow">01 · Navegacion</div>
+                    <h2>App bar y tab bar</h2>
+                    <p class="lead">
+                        La navegacion mobile de Rea se apoya en una tab bar fija con cinco destinos. El app bar
+                        identifica la vista actual y no duplica Settings, porque configuracion ya tiene su propio tab.
+                    </p>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-spec">
+                            <div class="caption">AppBar</div>
+                            <div class="appbar">
+                                <button class="iconbtn" type="button" aria-label="Volver">
+                                    <i class="icon sm" data-lucide="arrow-left" aria-hidden="true"></i>
+                                </button>
+                                <span class="ttl">Calendario</span>
+                                <span class="view-icon" aria-hidden="true">
+                                    <i class="icon sm" data-lucide="calendar-days" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <ul class="rule-list">
+                                <li>Altura 56 sin safe area; sumar safe area superior en runtime.</li>
+                                <li>El icono derecho representa la vista, no es boton.</li>
+                                <li>Sin sombra sticky; separar con hairline o cambio de superficie.</li>
+                                <li>Titulo maximo una linea; detalles extensos viven en contenido.</li>
+                            </ul>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">TabBar</div>
+                            <div class="tabbar">
+                                <button class="tabitem on">
+                                    <i class="icon" data-lucide="home" aria-hidden="true"></i>Home
+                                </button>
+                                <button class="tabitem">
+                                    <i class="icon" data-lucide="heart" aria-hidden="true"></i>Hoy
+                                </button>
+                                <button class="tabitem">
+                                    <i class="icon" data-lucide="calendar-days" aria-hidden="true"></i>Calendario
+                                </button>
+                                <button class="tabitem">
+                                    <i class="icon" data-lucide="chart-line" aria-hidden="true"></i>Estadisticas
+                                </button>
+                                <button class="tabitem">
+                                    <i class="icon" data-lucide="settings" aria-hidden="true"></i>Settings
+                                </button>
+                            </div>
+                            <ul class="rule-list">
+                                <li>Activo por color, peso de trazo y label; no usar capsula flotante.</li>
+                                <li>Label estable de una palabra. No reordenar tabs por vista.</li>
+                                <li>Altura nominal 60; sumar safe area inferior en runtime.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="acciones">
+                    <div class="eyebrow">02 · Acciones</div>
+                    <h2>Button e IconButton</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo">
+                            <div class="caption">Variantes</div>
+                            <div class="row">
+                                <button class="btn primary">
+                                    <i class="icon sm" data-lucide="heart" aria-hidden="true"></i>Registrar hoy
+                                </button>
+                                <button class="btn secondary">Ver calendario</button>
+                                <button class="btn outline">Editar</button>
+                                <button class="btn ghost">Omitir</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn danger">
+                                    <i class="icon sm" data-lucide="x" aria-hidden="true"></i>Borrar datos
+                                </button>
+                                <button class="btn outline" disabled>Deshabilitado</button>
+                            </div>
+                            <div class="row">
+                                <button class="iconbtn" type="button" aria-label="Buscar">
+                                    <i class="icon sm" data-lucide="search" aria-hidden="true"></i>
+                                </button>
+                                <button class="iconbtn" type="button" aria-label="Recordatorio">
+                                    <i class="icon sm" data-lucide="bell" aria-hidden="true"></i>
+                                </button>
+                                <button class="iconbtn" type="button" aria-label="Privacidad">
+                                    <i class="icon sm" data-lucide="shield" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Contrato</div>
+                            <ul class="rule-list">
+                                <li><code>primary</code>: una vez por vista, accion principal.</li>
+                                <li><code>secondary</code>: accion recomendada sin dominar la pantalla.</li>
+                                <li><code>outline</code>: editar, cambiar o cancelar algo reversible.</li>
+                                <li><code>ghost</code>: accion ligera dentro de un contexto cercano.</li>
+                                <li><code>danger</code>: siempre con copy especifico y confirmacion si borra datos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="formularios">
+                    <div class="eyebrow">03 · Formularios</div>
+                    <h2>Field, Input y TextArea</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo stack">
+                            <label>
+                                <span class="field-label">Buscar sintoma</span>
+                                <span class="field"
+                                    ><i class="icon sm" data-lucide="search" aria-hidden="true"></i
+                                    ><input placeholder="Dolor, flujo, animo"
+                                /></span>
+                            </label>
+                            <label>
+                                <span class="field-label">Estado foco</span>
+                                <span class="field focus"><input value="Ciclo regular" /></span>
+                            </label>
+                            <label>
+                                <span class="field-label">Estado error</span>
+                                <span class="field error"><input value="Fecha invalida" /></span>
+                                <span class="help err">Usa una fecha valida.</span>
+                            </label>
+                            <label>
+                                <span class="field-label">Nota privada</span>
+                                <span class="field area">
+                                    <textarea placeholder="Algo que quieras recordar"></textarea>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Estados</div>
+                            <ul class="rule-list">
+                                <li>Default, focus, filled, error, disabled y read-only.</li>
+                                <li>Label siempre visible. Placeholder solo orienta formato.</li>
+                                <li>Error aparece debajo del campo con texto breve y rol accesible.</li>
+                                <li>Teclado debe corresponder al dato: fecha, numero, texto o busqueda.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="seleccion">
+                    <div class="eyebrow">04 · Seleccion</div>
+                    <h2>Chip, Segmented, Switch y Checkbox</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo stack">
+                            <div class="row">
+                                <span class="chip on"
+                                    ><i class="icon sm" data-lucide="check" aria-hidden="true"></i>Ligero</span
+                                >
+                                <span class="chip">Moderado</span>
+                                <span class="chip">Abundante</span>
+                            </div>
+                            <span class="segmented">
+                                <button class="on">Ciclo</button><button>Fases</button><button>Sintomas</button>
+                            </span>
+                            <div class="row">
+                                <span class="switch on"><i></i></span><span class="switch"><i></i></span>
+                            </div>
+                            <div class="stack">
+                                <div class="check-row on">
+                                    <span class="check-box"
+                                        ><i class="icon xs" data-lucide="check" aria-hidden="true"></i></span
+                                    >Recordatorio diario
+                                </div>
+                                <div class="check-row">
+                                    <span class="check-box"
+                                        ><i class="icon xs" data-lucide="check" aria-hidden="true"></i></span
+                                    >Incluir nota privada
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Uso</div>
+                            <ul class="rule-list">
+                                <li>Chip: seleccion breve, filtro horizontal o categoria de sintoma.</li>
+                                <li>Segmented: alternar vista dentro del mismo contexto.</li>
+                                <li>Switch: activar o desactivar una preferencia persistente.</li>
+                                <li>Checkbox: aceptar varias opciones dentro de un formulario.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="checkin">
+                    <div class="eyebrow">05 · Check-in</div>
+                    <h2>Pasos del registro diario</h2>
+                    <p class="lead">
+                        El check-in se organiza por pasos reconocibles. La identidad principal de cada paso es icono,
+                        etiqueta y estado visual; la posicion numerica solo pertenece al progreso interno.
+                    </p>
+                    <ul class="step-grid mt-18" aria-label="Pasos del registro diario">
+                        <li class="step-card on">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="droplet" aria-hidden="true"></i></span
+                            >Flujo
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="activity" aria-hidden="true"></i></span
+                            >Dolor
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="smile" aria-hidden="true"></i></span
+                            >Animo
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="zap" aria-hidden="true"></i></span
+                            >Energia
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="sparkles" aria-hidden="true"></i></span
+                            >Sintomas
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="moon" aria-hidden="true"></i></span
+                            >Sueno
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="heart" aria-hidden="true"></i></span
+                            >Intimidad
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="pill" aria-hidden="true"></i></span
+                            >Medicacion
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="thermometer" aria-hidden="true"></i></span
+                            >Temperatura
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="file-text" aria-hidden="true"></i></span
+                            >Nota
+                        </li>
+                    </ul>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Estados</h3>
+                            <p>Disponible, activo, completado, omitido, error y disabled.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Progreso</h3>
+                            <p>Barra o contador secundario. No reemplaza iconos.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Contenido</h3>
+                            <p>Pregunta breve, opciones tactiles, nota opcional y guardado claro.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="opciones-checkin">
+                    <div class="eyebrow">06 · Opciones de check-in</div>
+                    <h2>Escalas con iconos y lenguaje humano</h2>
+                    <p class="lead">
+                        Para estados graduables, Rea muestra opciones tactiles con icono, nombre y descripcion. El valor
+                        numerico puede persistirse internamente, pero no debe ser la marca visual de la opcion.
+                    </p>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo">
+                            <div class="caption">StressChoiceScale</div>
+                            <ul class="choice-grid" aria-label="Escala de estres">
+                                <li class="choice-card">
+                                    <span class="choice-icon"
+                                        ><i class="icon" data-lucide="leaf" aria-hidden="true"></i
+                                    ></span>
+                                    <strong>Calma</strong><small>Respiracion estable, sin tension perceptible.</small>
+                                </li>
+                                <li class="choice-card">
+                                    <span class="choice-icon"
+                                        ><i class="icon" data-lucide="cloud" aria-hidden="true"></i
+                                    ></span>
+                                    <strong>Leve</strong><small>Incomodidad baja, manejable.</small>
+                                </li>
+                                <li class="choice-card on">
+                                    <span class="choice-icon"
+                                        ><i class="icon" data-lucide="waves" aria-hidden="true"></i
+                                    ></span>
+                                    <strong>Tension</strong><small>Se nota en el cuerpo o el animo.</small>
+                                </li>
+                                <li class="choice-card">
+                                    <span class="choice-icon"
+                                        ><i class="icon" data-lucide="activity" aria-hidden="true"></i
+                                    ></span>
+                                    <strong>Alta</strong><small>Cuesta concentrarse o descansar.</small>
+                                </li>
+                                <li class="choice-card">
+                                    <span class="choice-icon"
+                                        ><i class="icon" data-lucide="flame" aria-hidden="true"></i
+                                    ></span>
+                                    <strong>Muy alta</strong><small>Estado intenso durante buena parte del dia.</small>
+                                </li>
+                                <li class="choice-card">
+                                    <span class="choice-icon"
+                                        ><i class="icon" data-lucide="triangle-alert" aria-hidden="true"></i
+                                    ></span>
+                                    <strong>Limite</strong><small>Necesita pausa, apoyo o cuidado inmediato.</small>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Contrato</div>
+                            <ul class="rule-list">
+                                <li>La interfaz muestra etiqueta e icono; el valor numerico vive solo en datos.</li>
+                                <li>Una opcion activa por pregunta cuando el dato es escalar.</li>
+                                <li>Icono + texto + estado selected; no depender de color o numero.</li>
+                                <li>Descripcion corta para reducir duda sin convertirlo en test clinico.</li>
+                                <li>Opciones equivalentes deben existir para dolor, energia, animo y sueno.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">PainChoiceScale</h3>
+                            <p>
+                                Usar cuerpo/actividad: sin dolor, molestia, dolor moderado, fuerte, muy fuerte,
+                                incapacitante.
+                            </p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">MoodChoiceScale</h3>
+                            <p>Usar rostro/estado: tranquila, sensible, irritable, triste, ansiosa, estable u otro.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">SymptomPicker</h3>
+                            <p>
+                                Seleccion multiple con chips iconograficos: colicos, acne, hinchazon, dolor de cabeza.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="calendario-componentes">
+                    <div class="eyebrow">07 · Calendario</div>
+                    <h2>Piezas reutilizables del calendario</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo stack">
+                            <div class="caption">CalendarDay</div>
+                            <div class="row ph-ovulation">
+                                <span class="day">10</span>
+                                <span class="day period">11</span>
+                                <span class="day predicted">12</span>
+                                <span class="day fertile">13</span>
+                                <span class="day fertile ovulation">14</span>
+                                <span class="day today">15</span>
+                                <span class="day">16<span class="dot"></span></span>
+                            </div>
+                            <div class="caption">PhaseBadge</div>
+                            <div class="row">
+                                <span class="badge primary"
+                                    ><i class="icon xs" data-lucide="heart" aria-hidden="true"></i>Folicular</span
+                                >
+                                <span class="badge warning"
+                                    ><i class="icon xs" data-lucide="sparkles" aria-hidden="true"></i>Estimada</span
+                                >
+                                <span class="badge danger"
+                                    ><i class="icon xs" data-lucide="droplet" aria-hidden="true"></i>Periodo</span
+                                >
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Reglas</div>
+                            <ul class="rule-list">
+                                <li><code>CalendarDay</code> mantiene 34-40px segun densidad.</li>
+                                <li><code>PhaseBadge</code> no reemplaza texto cuando hay baja confianza.</li>
+                                <li>Prediccion y dato observado siempre tienen forma distinta.</li>
+                                <li>La leyenda se muestra cuando hay mas de dos estados simultaneos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="datos">
+                    <div class="eyebrow">08 · Datos</div>
+                    <h2>Badge, ConfidenceBadge, Metric y ListItem</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo stack">
+                            <div class="row">
+                                <span class="badge primary">Dia 12</span><span class="badge success">Guardado</span>
+                                <span class="badge warning">Estimado</span><span class="badge danger">Revisar</span>
+                            </div>
+                            <div class="row" aria-label="Niveles de confiabilidad">
+                                <span class="confidence-badge confidence-low" aria-label="Confianza baja">
+                                    <span class="confidence-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+                                    <span>Baja</span>
+                                </span>
+                                <span class="confidence-badge confidence-medium" aria-label="Confianza media">
+                                    <span class="confidence-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+                                    <span>Media</span>
+                                </span>
+                                <span class="confidence-badge confidence-high" aria-label="Confianza alta">
+                                    <span class="confidence-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+                                    <span>Alta</span>
+                                </span>
+                            </div>
+                            <div class="data-strip">
+                                <div class="data-pill"><b>28</b><small>Ciclo</small></div>
+                                <div class="data-pill"><b>5</b><small>Periodo</small></div>
+                                <div class="data-pill"><b>12</b><small>Dia</small></div>
+                                <div class="data-pill"><b>Media</b><small>Conf.</small></div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="between">
+                                    <span class="small">Energia</span><b class="metric-value">Media</b>
+                                </div>
+                                <div class="bar-track"><i class="bar-fill progress-60"></i></div>
+                            </div>
+                            <div class="list">
+                                <div class="lrow">
+                                    <span class="lead-icon"
+                                        ><i class="icon sm" data-lucide="bell" aria-hidden="true"></i
+                                    ></span>
+                                    <div class="tx"><b>Recordatorio diario</b><small>21:00 · activo</small></div>
+                                    <i class="icon sm" data-lucide="chevron-right" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Reglas</div>
+                            <ul class="rule-list">
+                                <li>Badge no usa solo color: texto siempre visible.</li>
+                                <li>ConfidenceBadge usa tres barras: baja, media o alta; no porcentajes crudos.</li>
+                                <li>Metric muestra valor primero, label despues.</li>
+                                <li>Progress necesita label de valor o estado.</li>
+                                <li>ListItem no anida acciones multiples si toda la fila navega.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="feedback">
+                    <div class="eyebrow">09 · Feedback</div>
+                    <h2>Alert, Toast, Empty y Skeleton</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo stack">
+                            <div class="alert success">
+                                <i class="icon" data-lucide="check" aria-hidden="true"></i>
+                                <div>
+                                    <b>Registro guardado</b>
+                                    <p>Hoy quedo anotado. La prediccion se afinara con tus proximos registros.</p>
+                                </div>
+                            </div>
+                            <div class="alert warning">
+                                <i class="icon" data-lucide="info" aria-hidden="true"></i>
+                                <div>
+                                    <b>Prediccion estimada</b>
+                                    <p>Usar una señal compacta de confiabilidad y un texto breve de contexto.</p>
+                                </div>
+                            </div>
+                            <div class="toast">
+                                <i class="icon sm" data-lucide="check" aria-hidden="true"></i>Guardado local completado
+                            </div>
+                            <div class="skeleton-card">
+                                <span class="skeleton-line skeleton-70"></span
+                                ><span class="skeleton-line skeleton-92"></span
+                                ><span class="skeleton-line skeleton-48"></span>
+                            </div>
+                            <div class="empty-state">
+                                <span class="step-icon"
+                                    ><i class="icon" data-lucide="calendar-days" aria-hidden="true"></i
+                                ></span>
+                                <b>Sin registros para este dia</b>
+                                <span class="small">Mostrar accion clara, no pantalla vacia.</span>
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Contrato</div>
+                            <ul class="rule-list">
+                                <li>Alert: persistente e inline para informacion importante.</li>
+                                <li>Toast: confirmacion breve, 3-5 segundos, sin robar foco.</li>
+                                <li>Empty: explica estado y propone siguiente accion.</li>
+                                <li>Skeleton: refleja estructura real, no barras aleatorias.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="sheets">
+                    <div class="eyebrow">10 · Sheets y overlays</div>
+                    <h2>Detalle sin perder contexto</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo">
+                            <div class="sheet">
+                                <i class="sheet-handle"></i>
+                                <strong>Detalle del dia</strong>
+                                <p class="note">Bottom sheet para editar registro o ver datos del calendario.</p>
+                                <div class="row mt-18">
+                                    <button class="btn primary">Guardar</button
+                                    ><button class="btn outline">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Reglas</div>
+                            <ul class="rule-list">
+                                <li>Se abre desde abajo y mantiene relacion con la vista anterior.</li>
+                                <li>Handle visible; cierre por gesto, boton o fondo si no hay perdida de datos.</li>
+                                <li>Acciones destructivas no viven solas dentro de sheet sin confirmacion.</li>
+                                <li>Altura adaptable: compacta, media o completa segun contenido.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section component-section" id="privacidad">
+                    <div class="eyebrow">11 · Privacidad</div>
+                    <h2>Permisos, backup y datos locales</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel component-demo stack">
+                            <div class="alert success">
+                                <i class="icon" data-lucide="shield" aria-hidden="true"></i>
+                                <div>
+                                    <b>Datos en este dispositivo</b>
+                                    <p>Rea guarda tu informacion localmente y te permite exportarla cuando quieras.</p>
+                                </div>
+                            </div>
+                            <div class="list">
+                                <div class="lrow">
+                                    <span class="lead-icon"
+                                        ><i class="icon sm" data-lucide="lock" aria-hidden="true"></i
+                                    ></span>
+                                    <div class="tx"><b>Exportar backup</b><small>Archivo privado de Rea</small></div>
+                                    <i class="icon sm" data-lucide="chevron-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="lrow">
+                                    <span class="lead-icon"
+                                        ><i class="icon sm" data-lucide="bell" aria-hidden="true"></i
+                                    ></span>
+                                    <div class="tx"><b>Permiso de recordatorios</b><small>Pendiente</small></div>
+                                    <span class="badge warning">Accion</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel component-spec">
+                            <div class="caption">Reglas</div>
+                            <ul class="rule-list">
+                                <li>Explicar permisos en el momento de uso, no como bloqueo inicial.</li>
+                                <li>Backup, restauracion y borrado requieren copy concreto y confirmacion.</li>
+                                <li>Evitar prometer nube o sincronizacion si la app opera local-first.</li>
+                                <li>Usar iconos de privacidad y archivo para orientar sin tono alarmista.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="contratos-componentes">
+                    <div class="eyebrow">12 · Contratos</div>
+                    <h2>Implementacion esperada</h2>
+                    <div class="table-wrap">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>Componente</th>
+                                    <th>Estados minimos</th>
+                                    <th>A11y</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>Button</code></td>
+                                    <td>default, pressed, disabled, loading, focus</td>
+                                    <td>Role button, label para icon-only.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TextField</code></td>
+                                    <td>default, focus, filled, error, disabled</td>
+                                    <td>Error anunciado y label persistente.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>ChoiceScale</code></td>
+                                    <td>unselected, selected, disabled, error</td>
+                                    <td>Nombre visible + valor anunciado sin depender del numero.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>StepTile</code></td>
+                                    <td>available, active, complete, skipped, error</td>
+                                    <td>Nombre del paso + estado.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>CalendarDay</code></td>
+                                    <td>normal, observed, predicted, fertile, today, selected</td>
+                                    <td>Fecha completa + estado del dia.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TabBar</code></td>
+                                    <td>inactive, active, pressed</td>
+                                    <td>Role tab, selected, label estable.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>Alert</code></td>
+                                    <td>info, success, warning, danger</td>
+                                    <td>Live region segun severidad.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>BottomSheet</code></td>
+                                    <td>closed, partial, full, dragging</td>
+                                    <td>Focus management y dismissal claro.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest" defer></script>
+        <script src="./main.js" defer></script>
+    </body>
+</html>

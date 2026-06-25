@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Fundamentos del sistema mobile</title>
+        <meta name="description" content="Fundamentos, marca y contenido del sistema de diseno mobile de Rea." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body data-page="index" data-title="Fundamentos">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
+
+                <header class="doc-hero">
+                    <div>
+                        <div class="eyebrow">Sistema de diseno mobile</div>
+                        <h1>Rea debe sentirse privada, suave y clara en una pantalla pequena.</h1>
+                        <p>
+                            Esta documentacion define la interfaz de Rea como app mobile exclusiva. Todo se piensa para
+                            tacto, lectura rapida, navegacion inferior, safe areas, modo claro/oscuro dinamico y estados
+                            reales del ciclo.
+                        </p>
+                        <div class="page-kicker" aria-label="Accesos principales">
+                            <a class="page-chip" href="./color.html">Color</a>
+                            <a class="page-chip" href="./components.html">Componentes</a>
+                            <a class="page-chip" href="./hero.html">Hero</a>
+                            <a class="page-chip" href="./calendar.html">Calendario</a>
+                        </div>
+                    </div>
+                    <div class="hero-logo-panel" aria-label="Logo oficial Rea">
+                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                    </div>
+                </header>
+
+                <section class="section" id="mapa">
+                    <div class="eyebrow">00 · Mapa</div>
+                    <h2>Documento modular</h2>
+                    <p class="lead">
+                        Cada pagina cubre un contrato distinto. No hay duplicado light/dark: el switch superior cambia
+                        todo el documento y tambien los valores hexadecimales donde corresponde.
+                    </p>
+                    <div class="doc-grid doc-grid-wide">
+                        <a class="panel doc-card" href="./color.html">
+                            <i class="icon" data-lucide="sparkles" aria-hidden="true"></i><strong>Color</strong>
+                            <p>Primitivas, roles, estados, fases y contraste con hexadecimal dinamico por tema.</p>
+                        </a>
+                        <a class="panel doc-card" href="./typography.html">
+                            <i class="icon" data-lucide="file-text" aria-hidden="true"></i><strong>Tipografia</strong>
+                            <p>Escala mobile, usos, line-height, datos, truncamiento y Dynamic Type.</p>
+                        </a>
+                        <a class="panel doc-card" href="./icons.html">
+                            <i class="icon" data-lucide="heart" aria-hidden="true"></i><strong>Iconos</strong>
+                            <p>Iconos Lucide para navegacion, estados, acciones y check-in mobile.</p>
+                        </a>
+                        <a class="panel doc-card" href="./space.html">
+                            <i class="icon" data-lucide="shield" aria-hidden="true"></i><strong>Forma y espacio</strong>
+                            <p>Escala 4pt, radios, bordes, safe area, tacto y profundidad sin sombras.</p>
+                        </a>
+                        <a class="panel doc-card" href="./components.html">
+                            <i class="icon" data-lucide="layers" aria-hidden="true"></i><strong>Componentes</strong>
+                            <p>Catalogo mobile por familia: navegacion, acciones, formularios, feedback y datos.</p>
+                        </a>
+                        <a class="panel doc-card" href="./hero.html">
+                            <i class="icon" data-lucide="home" aria-hidden="true"></i><strong>Hero</strong>
+                            <p>Anatomia y variantes del hero de Home segun la fase activa.</p>
+                        </a>
+                        <a class="panel doc-card" href="./calendar.html">
+                            <i class="icon" data-lucide="calendar-days" aria-hidden="true"></i><strong>Calendario</strong>
+                            <p>Calendario REA, segmentos, estados de dia, leyenda, lectura y reglas de uso.</p>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="section" id="fundamentos">
+                    <div class="eyebrow">01 · Fundamentos</div>
+                    <h2>Principios de producto visual</h2>
+                    <p class="lead">
+                        Rea no es dashboard, web corporativa ni herramienta clinica. Es una app personal para revisar
+                        ciclo, registrar datos y entender patrones sin ansiedad.
+                    </p>
+                    <div class="grid cols-3 foundation-grid">
+                        <article class="panel foundation-card">
+                            <strong>Mobile primero</strong>
+                            <p>
+                                Base de diseno en 375px. Los controles se ubican para pulgar, con minimo 44pt y lectura
+                                corta en vertical.
+                            </p>
+                        </article>
+                        <article class="panel foundation-card">
+                            <strong>Privacidad visible</strong>
+                            <p>
+                                La calma comunica local-first: superficies limpias, avisos sin ruido y decisiones de
+                                borrado/exportacion muy claras.
+                            </p>
+                        </article>
+                        <article class="panel foundation-card">
+                            <strong>Prediccion honesta</strong>
+                            <p>
+                                Rea distingue observado, estimado y baja confianza. Nunca presenta predicciones como
+                                diagnostico.
+                            </p>
+                        </article>
+                        <article class="panel foundation-card">
+                            <strong>Cero elevacion</strong>
+                            <p>
+                                No hay sombras. La jerarquia se resuelve con color, borde, forma, escala, ritmo y
+                                agrupacion.
+                            </p>
+                        </article>
+                        <article class="panel foundation-card">
+                            <strong>Color con tarea</strong>
+                            <p>
+                                Aqua identifica marca. Fases explican contexto. Estados comunican feedback. Ningun color
+                                trabaja solo.
+                            </p>
+                        </article>
+                        <article class="panel foundation-card">
+                            <strong>Un siguiente paso</strong>
+                            <p>
+                                Cada vista mobile prioriza una accion: registrar, revisar, ajustar o entender. No dos
+                                CTAs primarios.
+                            </p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="section" id="marca">
+                    <div class="eyebrow">02 · Marca</div>
+                    <h2>Activos oficiales</h2>
+                    <p class="lead">
+                        La marca se toma de <code>assets/images/logo-mark.svg</code>,
+                        <code>assets/images/logo-horizontal.svg</code> y <code>assets/images/logo-vertical.svg</code>.
+                        En modo claro se pinta con <code>#7CD9F9</code>; en oscuro con <code>#FFFFFF</code>. En
+                        contextos por fase, como el hero, el logo adopta el color de la fase activa.
+                    </p>
+                    <div class="asset-row">
+                        <div class="panel brand-tile">
+                            <div class="brand-sample">
+                                <span class="logo-asset logo-horizontal" role="img" aria-label="Logo horizontal Rea"></span>
+                                <span>Horizontal · hero / onboarding</span>
+                            </div>
+                        </div>
+                        <div class="panel brand-tile">
+                            <div class="brand-sample">
+                                <span class="logo-asset logo-vertical" role="img" aria-label="Logo vertical Rea"></span>
+                                <span>Vertical · espacios altos</span>
+                            </div>
+                        </div>
+                        <div class="panel brand-tile">
+                            <div class="brand-sample">
+                                <span class="logo-asset logo-mark" role="img" aria-label="Isotipo Rea"></span>
+                                <span>Isotipo · app bar / icono</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel">
+                            <div class="caption">Usar</div>
+                            <ul class="rule-list">
+                                <li>SVG oficial con <code>currentColor</code>.</li>
+                                <li>Isotipo en app bar compacta y calendario.</li>
+                                <li>Logo horizontal en hero, bienvenida o pantallas de marca.</li>
+                                <li>Margen libre minimo equivalente al ancho de la gota del isotipo.</li>
+                            </ul>
+                        </div>
+                        <div class="panel">
+                            <div class="caption">Evitar</div>
+                            <ul class="rule-list">
+                                <li>Logos negros en light mode.</li>
+                                <li>Filtros CSS para corregir color.</li>
+                                <li>Iconos medicos genericos como marca.</li>
+                                <li>Recrear el logo con texto o paths no oficiales.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="contenido-producto">
+                    <div class="eyebrow">03 · Contenido</div>
+                    <h2>Voz, pasos y reglas de texto</h2>
+                    <p class="lead">
+                        Rea habla de tu, con frases breves y utiles. Debe acompanar sin alarmar, explicar incertidumbre
+                        y cerrar cada accion con feedback claro.
+                    </p>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel">
+                            <div class="caption tone-success">Usar</div>
+                            <ul class="rule-list">
+                                <li>Tu energia suele subir estos dias.</li>
+                                <li>Registra tu flujo para afinar tus predicciones.</li>
+                                <li>Estimacion con confiabilidad media.</li>
+                                <li>Registro guardado en este dispositivo.</li>
+                            </ul>
+                        </div>
+                        <div class="panel">
+                            <div class="caption tone-danger">Evitar</div>
+                            <ul class="rule-list">
+                                <li>Anomalia detectada en tu ciclo.</li>
+                                <li>Debes registrar ahora.</li>
+                                <li>Estas en riesgo.</li>
+                                <li>Datos sincronizados en la nube.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="content-flow mt-18">
+                        <article class="panel flow-step">
+                            <span>1</span>
+                            <strong>Nombrar contexto</strong>
+                            <p>
+                                Fase, dia de ciclo, confiabilidad o estado observado. Primero orienta, luego pide
+                                accion.
+                            </p>
+                        </article>
+                        <article class="panel flow-step">
+                            <span>2</span>
+                            <strong>Explicar significado</strong>
+                            <p>Una frase humana: que puede notar la usuaria y por que Rea lo muestra.</p>
+                        </article>
+                        <article class="panel flow-step">
+                            <span>3</span>
+                            <strong>Mostrar siguiente paso</strong>
+                            <p>Registrar hoy, revisar calendario, editar fecha o ajustar recordatorio. Una accion.</p>
+                        </article>
+                        <article class="panel flow-step">
+                            <span>4</span>
+                            <strong>Cerrar con feedback</strong>
+                            <p>Guardado, estimado, sin datos, error o permiso pendiente. Texto breve y accionable.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="section" id="checklist">
+                    <div class="eyebrow">04 · Checklist</div>
+                    <h2>Reglas antes de disenar una vista</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel">
+                            <div class="caption">Debe tener</div>
+                            <ul class="rule-list">
+                                <li>Comportamiento claro en light y dark con el mismo componente.</li>
+                                <li>Touch target minimo <code>44pt</code>.</li>
+                                <li>Estado vacio, cargando, error, exito y deshabilitado si aplica.</li>
+                                <li>Icono o forma junto al color para estados importantes.</li>
+                                <li>Copy que indique si un dato es observado o estimado.</li>
+                            </ul>
+                        </div>
+                        <div class="panel">
+                            <div class="caption">No debe tener</div>
+                            <ul class="rule-list">
+                                <li>Sombras o cards flotantes.</li>
+                                <li>Padding global que altere el componente documentado.</li>
+                                <li>Componentes web adaptados sin criterio mobile.</li>
+                                <li>Numeracion visible como identidad principal del check-in.</li>
+                                <li>Pantallas inventadas con contenido no definido.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="note">
+                        Fuentes de verdad: <code>src/theme/*</code>, <code>assets/images/logo-*.svg</code>,
+                        <code>src/app/(tabs)/_layout.tsx</code> y referencia visual legacy en <code>__legacy__</code>.
+                    </p>
+                </section>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest" defer></script>
+        <script src="./main.js" defer></script>
+    </body>
+</html>
