@@ -4,6 +4,7 @@ jest.mock("expo-localization", () => ({
     getLocales: () => [{ languageTag: "es-PE", languageCode: "es", regionCode: "PE" }],
 }));
 
+// eslint-disable-next-line import/first
 import i18n from "@/modules/i18n/i18n";
 
 describe("i18n", () => {

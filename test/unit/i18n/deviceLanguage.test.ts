@@ -6,6 +6,7 @@ jest.mock("expo-localization", () => ({
     getLocales: () => mockGetLocales(),
 }));
 
+// eslint-disable-next-line import/first
 import { detectDeviceLanguage } from "@/modules/i18n/deviceLanguage";
 
 describe("detectDeviceLanguage", () => {
