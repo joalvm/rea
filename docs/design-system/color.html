@@ -1,352 +1,433 @@
 <!doctype html>
 <html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Color mobile</title>
+        <meta
+            name="description"
+            content="Sistema cromatico mobile de Rea: primitivas, roles, fases, estados y contraste."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rea · Color mobile</title>
-    <meta name="description"
-        content="Sistema cromatico mobile de Rea: primitivas, roles, fases, estados y contraste." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-</head>
+    <body data-page="color" data-title="Color">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
 
-<body data-page="color" data-title="Color">
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <div class="layout">
-        <aside class="sidebar" id="siteSidebar"></aside>
-        <main class="main" id="contenido">
-            <div class="topbar" id="siteTopbar"></div>
-
-            <section class="section" id="proposito-color">
-                <div class="eyebrow">Color · Proposito</div>
-                <h2>Firma celeste, no decoracion</h2>
-                <p class="lead">
-                    Aqua Rea es la firma emocional de la app: cercana, luminosa y confiable. En mobile debe guiar
-                    accion y contexto sin saturar pantallas pequenas.
-                </p>
-                <div class="grid cols-2 mt-18">
-                    <div class="statement">
-                        <strong>Decision principal</strong>
-                        <p>
-                            <code>aqua.300 = #7CD9F9</code> es marca. En light funciona mejor como superficie o CTA,
-                            no como texto pequeno.
-                        </p>
-                    </div>
-                    <div class="statement">
-                        <strong>Regla de contraste</strong>
-                        <p>
-                            Texto sobre primary usa <code>onPrimary = #062633</code>. Blanco sobre
-                            <code>#7CD9F9</code> no se usa para texto pequeno.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section" id="primitivas">
-                <div class="eyebrow">01 · Primitivas</div>
-                <h2>Paleta base</h2>
-                <p class="lead">
-                    Las primitivas no se aplican directo en componentes salvo en documentacion visual. Producto debe
-                    consumir roles de tema o tokens de fase.
-                </p>
-                <h3>Aqua Rea</h3>
-                <div class="palette-grid">
-                    <div class="swatch swatch-aqua-50"><i></i><b>50</b><small>#F0FCFF</small></div>
-                    <div class="swatch swatch-aqua-100"><i></i><b>100</b><small>#DDF7FE</small></div>
-                    <div class="swatch swatch-aqua-200"><i></i><b>200</b><small>#B9EEFC</small></div>
-                    <div class="swatch swatch-aqua-300"><i></i><b>300 · marca</b><small>#7CD9F9</small></div>
-                    <div class="swatch swatch-aqua-400"><i></i><b>400</b><small>#45C8F1</small></div>
-                    <div class="swatch swatch-aqua-500"><i></i><b>500</b><small>#18AEDD</small></div>
-                    <div class="swatch swatch-aqua-600"><i></i><b>600</b><small>#087FA6</small></div>
-                    <div class="swatch swatch-aqua-700"><i></i><b>700 · texto</b><small>#076583</small></div>
-                    <div class="swatch swatch-aqua-800"><i></i><b>800</b><small>#0A4F68</small></div>
-                    <div class="swatch swatch-aqua-950"><i></i><b>950</b><small>#062633</small></div>
-                </div>
-
-                <h3>Neutros Mist</h3>
-                <div class="palette-grid mist-grid">
-                    <div class="swatch swatch-mist-0"><i></i><b>0</b><small>#FFFFFF</small></div>
-                    <div class="swatch swatch-mist-50"><i></i><b>50</b><small>#F3FAFC</small></div>
-                    <div class="swatch swatch-mist-100"><i></i><b>100</b><small>#E8F5F9</small></div>
-                    <div class="swatch swatch-mist-200"><i></i><b>200</b><small>#CFE6EE</small></div>
-                    <div class="swatch swatch-mist-300"><i></i><b>300</b><small>#A9D2DE</small></div>
-                    <div class="swatch swatch-mist-400"><i></i><b>400</b><small>#79AABD</small></div>
-                    <div class="swatch swatch-mist-500"><i></i><b>500</b><small>#4F7482</small></div>
-                    <div class="swatch swatch-mist-700"><i></i><b>700</b><small>#2C4E5B</small></div>
-                    <div class="swatch swatch-mist-900"><i></i><b>900</b><small>#102631</small></div>
-                    <div class="swatch swatch-mist-950"><i></i><b>950</b><small>#07182A</small></div>
-                </div>
-            </section>
-
-            <section class="section" id="roles-interfaz">
-                <div class="eyebrow">02 · Roles de interfaz</div>
-                <h2>Valores activos por tema</h2>
-                <p class="lead">
-                    Cambia el modo con el boton superior. Cada rol muestra solo el hexadecimal vigente para evitar
-                    leer dos sistemas a la vez.
-                </p>
-                <div class="role-table">
-                    <div class="role-row role-bg">
-                        <span class="role-dot"></span>
-                        <div><b>Background</b><small>Fondo general de pantalla mobile.</small></div>
-                        <span class="role-meta"><code>--bg</code><small class="theme-value"><span
-                                    class="light-only">#F3FAFC</span><span
-                                    class="dark-only">#07182A</span></small></span>
-                    </div>
-                    <div class="role-row role-surface">
-                        <span class="role-dot"></span>
-                        <div><b>Surface</b><small>App bar, panels y controles.</small></div>
-                        <span class="role-meta"><code>--surface</code><small class="theme-value"><span
-                                    class="light-only">#FFFFFF</span><span
-                                    class="dark-only">#0E2740</span></small></span>
-                    </div>
-                    <div class="role-row role-surface-alt">
-                        <span class="role-dot"></span>
-                        <div><b>Surface alt</b><small>Bandas suaves y agrupaciones.</small></div>
-                        <span class="role-meta"><code>--surface-alt</code><small class="theme-value"><span
-                                    class="light-only">#E8F5F9</span><span
-                                    class="dark-only">#16314F</span></small></span>
-                    </div>
-                    <div class="role-row role-surface-sunken">
-                        <span class="role-dot"></span>
-                        <div><b>Surface sunken</b><small>Tracks, fondos internos y skeleton.</small></div>
-                        <span class="role-meta"><code>--surface-sunken</code><small class="theme-value"><span
-                                    class="light-only">#DDEEF4</span><span
-                                    class="dark-only">#051324</span></small></span>
-                    </div>
-                    <div class="role-row role-border">
-                        <span class="role-dot"></span>
-                        <div><b>Border</b><small>Separacion sin sombra.</small></div>
-                        <span class="role-meta"><code>--border</code><small class="theme-value"><span
-                                    class="light-only">#CFE6EE</span><span
-                                    class="dark-only">#28567A</span></small></span>
-                    </div>
-                    <div class="role-row role-text">
-                        <span class="role-dot"></span>
-                        <div><b>Text</b><small>Lectura principal.</small></div>
-                        <span class="role-meta"><code>--text</code><small class="theme-value"><span
-                                    class="light-only">#102631</span><span
-                                    class="dark-only">#E9F4FF</span></small></span>
-                    </div>
-                    <div class="role-row role-text-secondary">
-                        <span class="role-dot"></span>
-                        <div><b>Text secondary</b><small>Descripcion y apoyo.</small></div>
-                        <span class="role-meta"><code>--text-secondary</code><small class="theme-value"><span
-                                    class="light-only">#416878</span><span
-                                    class="dark-only">#A6CCE6</span></small></span>
-                    </div>
-                    <div class="role-row role-primary">
-                        <span class="role-dot"></span>
-                        <div><b>Primary</b><small>CTA y superficies de marca.</small></div>
-                        <span class="role-meta"><code>--primary</code><small class="theme-value"><span
-                                    class="light-only">#7CD9F9</span><span
-                                    class="dark-only">#45C8F1</span></small></span>
-                    </div>
-                    <div class="role-row role-primary-tint">
-                        <span class="role-dot"></span>
-                        <div><b>Primary tint</b><small>Seleccion suave.</small></div>
-                        <span class="role-meta"><code>--primary-tint</code><small class="theme-value"><span
-                                    class="light-only">#DDF7FE</span><span
-                                    class="dark-only">#7CD9F938</span></small></span>
-                    </div>
-                    <div class="role-row role-link">
-                        <span class="role-dot"></span>
-                        <div><b>Link</b><small>Texto accionable.</small></div>
-                        <span class="role-meta"><code>--link</code><small class="theme-value"><span
-                                    class="light-only">#076583</span><span
-                                    class="dark-only">#7CD9F9</span></small></span>
-                    </div>
-                    <div class="role-row role-logo">
-                        <span class="role-dot"></span>
-                        <div><b>Logo</b><small>Marca oficial Rea fuera de contextos por fase.</small></div>
-                        <span class="role-meta"><code>--logo-color</code><small class="theme-value"><span
-                                    class="light-only">#7CD9F9</span><span
-                                    class="dark-only">#FFFFFF</span></small></span>
-                    </div>
-                    <div class="role-row role-danger">
-                        <span class="role-dot"></span>
-                        <div><b>Danger</b><small>Errores y acciones destructivas.</small></div>
-                        <span class="role-meta"><code>--danger</code><small class="theme-value"><span
-                                    class="light-only">#EF3F78</span><span
-                                    class="dark-only">#FF7AA2</span></small></span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section" id="fases-y-estados">
-                <div class="eyebrow">03 · Fases del ciclo</div>
-                <h2>Tokens de fase</h2>
-                <p class="lead">
-                    Cada fase tiene una superficie suave, un acento y un color de lectura. Estos tokens se aplican
-                    en hero, calendario, indicadores y estados asociados al ciclo.
-                </p>
-                <div class="phase-grid">
-                    <div class="phase-card ph-unknown">
-                        <div class="phase-card-head">
-                            <span class="phase-dot"></span><strong>Sin estimar</strong>
+                <section class="section" id="proposito-color">
+                    <div class="eyebrow">Color · Proposito</div>
+                    <h2>Firma celeste, no decoracion</h2>
+                    <p class="lead">
+                        Aqua Rea es la firma emocional de la app: cercana, luminosa y confiable. En mobile debe guiar
+                        accion y contexto sin saturar pantallas pequenas.
+                    </p>
+                    <div class="grid cols-2 mt-18">
+                        <div class="statement">
+                            <strong>Decision principal</strong>
+                            <p>
+                                <code>aqua.300 = #7CD9F9</code> es marca. En light funciona mejor como superficie o CTA,
+                                no como texto pequeno.
+                            </p>
                         </div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#EAF8FD</span><span
-                                class="dark-only">#0A2F3E</span> · Acento <span class="light-only">#26BCEB</span><span
-                                class="dark-only">#5AD8F8</span></span>
-                        <p>Estado inicial cuando Rea aun no tiene suficientes registros para estimar el ciclo.</p>
-                        <code>unknown</code>
+                        <div class="statement">
+                            <strong>Regla de contraste</strong>
+                            <p>
+                                Texto sobre primary usa <code>onPrimary = #062633</code>. Blanco sobre
+                                <code>#7CD9F9</code> no se usa para texto pequeno.
+                            </p>
+                        </div>
                     </div>
-                    <div class="phase-card ph-menstrual">
-                        <div class="phase-card-head"><span class="phase-dot"></span><strong>Menstrual</strong></div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#FFF0F5</span><span
-                                class="dark-only">#351221</span> · Acento <span class="light-only">#EF3F78</span><span
-                                class="dark-only">#FF7AA2</span></span>
-                        <p>Usar para flujo observado y dias de periodo registrados o confirmados.</p>
-                        <code>menstrual</code>
-                    </div>
-                    <div class="phase-card ph-follicular">
-                        <div class="phase-card-head"><span class="phase-dot"></span><strong>Folicular</strong></div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#E8FBF1</span><span
-                                class="dark-only">#0A2B20</span> · Acento <span class="light-only">#37C989</span><span
-                                class="dark-only">#57DDA5</span></span>
-                        <p>Fase posterior al periodo, asociada a recuperacion y lectura ligera del estado.</p>
-                        <code>follicular</code>
-                    </div>
-                    <div class="phase-card ph-fertile">
-                        <div class="phase-card-head"><span class="phase-dot"></span><strong>Fertil</strong></div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#FFF7D7</span><span
-                                class="dark-only">#342507</span> · Acento <span class="light-only">#F8B633</span><span
-                                class="dark-only">#FFD166</span></span>
-                        <p>
-                            Ventana estimada. Requiere lenguaje de incertidumbre y nunca se presenta como certeza.
-                        </p>
-                        <code>fertile_window</code>
-                    </div>
-                    <div class="phase-card ph-ovulation">
-                        <div class="phase-card-head"><span class="phase-dot"></span><strong>Ovulacion</strong></div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#FFF0EA</span><span
-                                class="dark-only">#381610</span> · Acento <span class="light-only">#FF765C</span><span
-                                class="dark-only">#FF9A83</span></span>
-                        <p>Pico estimado dentro de la ventana fertil. Debe distinguirse sin generar alarma.</p>
-                        <code>estimated_ovulation</code>
-                    </div>
-                    <div class="phase-card ph-luteal">
-                        <div class="phase-card-head"><span class="phase-dot"></span><strong>Lutea</strong></div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#F2EEFF</span><span
-                                class="dark-only">#20183C</span> · Acento <span class="light-only">#8F78F2</span><span
-                                class="dark-only">#B6A7FF</span></span>
-                        <p>Fase previa al periodo. El tono visual debe sentirse sereno y de cuidado.</p>
-                        <code>luteal</code>
-                    </div>
-                    <div class="phase-card ph-pregnancy">
-                        <div class="phase-card-head"><span class="phase-dot"></span><strong>Embarazo</strong></div>
-                        <span class="phase-token theme-value">Superficie <span class="light-only">#E6FAF7</span><span
-                                class="dark-only">#092E2B</span> · Acento <span class="light-only">#43C8BC</span><span
-                                class="dark-only">#69DDD3</span></span>
-                        <p>
-                            Modo especial separado del ciclo activo. No debe mezclarse con predicciones menstruales.
-                        </p>
-                        <code>pregnancy</code>
-                    </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="section" id="estados-semanticos">
-                <div class="eyebrow">04 · Estados semanticos</div>
-                <h2>Feedback sin competir con marca</h2>
-                <div class="table-wrap">
-                    <table class="spec-table">
-                        <thead>
-                            <tr>
-                                <th>Estado</th>
-                                <th>Surface</th>
-                                <th>Accent</th>
-                                <th>Text</th>
-                                <th>Uso mobile</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Success</td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#E8FBF1</span
-                                            ><span class="dark-only">#0A2B20</span></code>
-                                </td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#37C989</span
-                                            ><span class="dark-only">#57DDA5</span></code>
-                                </td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#0E6848</span
-                                            ><span class="dark-only">#B8F3D8</span></code>
-                                </td>
-                                <td>Guardado, completado, permiso concedido.</td>
-                            </tr>
-                            <tr>
-                                <td>Warning</td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#FFF7D7</span
-                                            ><span class="dark-only">#342507</span></code>
-                                </td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#F8B633</span
-                                            ><span class="dark-only">#FFD166</span></code>
-                                </td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#7A4B00</span
-                                            ><span class="dark-only">#FFE7A3</span></code>
-                                </td>
-                                <td>Estimacion, baja confianza, accion reversible.</td>
-                            </tr>
-                            <tr>
-                                <td>Danger</td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#FFF0F5</span
-                                            ><span class="dark-only">#351221</span></code>
-                                </td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#EF3F78</span
-                                            ><span class="dark-only">#FF7AA2</span></code>
-                                </td>
-                                <td class="theme-value">
-                                    <code><span class="light-only">#8E1E43</span
-                                            ><span class="dark-only">#FFC2D5</span></code>
-                                </td>
-                                <td>Error, borrado, dato invalido.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                <section class="section" id="primitivas">
+                    <div class="eyebrow">01 · Primitivas</div>
+                    <h2>Paleta base</h2>
+                    <p class="lead">
+                        Las primitivas no se aplican directo en componentes salvo en documentacion visual. Producto debe
+                        consumir roles de tema o tokens de fase.
+                    </p>
+                    <h3>Aqua Rea</h3>
+                    <div class="palette-grid">
+                        <div class="swatch swatch-aqua-50"><i></i><b>50</b><small>#F0FCFF</small></div>
+                        <div class="swatch swatch-aqua-100"><i></i><b>100</b><small>#DDF7FE</small></div>
+                        <div class="swatch swatch-aqua-200"><i></i><b>200</b><small>#B9EEFC</small></div>
+                        <div class="swatch swatch-aqua-300"><i></i><b>300 · marca</b><small>#7CD9F9</small></div>
+                        <div class="swatch swatch-aqua-400"><i></i><b>400</b><small>#45C8F1</small></div>
+                        <div class="swatch swatch-aqua-500"><i></i><b>500</b><small>#18AEDD</small></div>
+                        <div class="swatch swatch-aqua-600"><i></i><b>600</b><small>#087FA6</small></div>
+                        <div class="swatch swatch-aqua-700"><i></i><b>700 · texto</b><small>#076583</small></div>
+                        <div class="swatch swatch-aqua-800"><i></i><b>800</b><small>#0A4F68</small></div>
+                        <div class="swatch swatch-aqua-950"><i></i><b>950</b><small>#062633</small></div>
+                    </div>
 
-            <section class="section" id="reglas-color">
-                <div class="eyebrow">05 · Reglas</div>
-                <h2>Uso correcto en app mobile</h2>
-                <div class="grid cols-2 mt-18">
-                    <div class="panel">
-                        <div class="caption">Hacer</div>
-                        <ul class="rule-list">
-                            <li>Usar roles <code>theme.colors.*</code> y <code>theme.phases.*</code>.</li>
-                            <li>Diferenciar observado/estimado por forma, patron y texto.</li>
-                            <li>Reservar colores intensos para feedback o fase activa.</li>
-                            <li>Usar logo <code>#7CD9F9</code> en light y blanco en dark.</li>
-                        </ul>
+                    <h3>Neutros Mist</h3>
+                    <div class="palette-grid mist-grid">
+                        <div class="swatch swatch-mist-0"><i></i><b>0</b><small>#FFFFFF</small></div>
+                        <div class="swatch swatch-mist-50"><i></i><b>50</b><small>#F3FAFC</small></div>
+                        <div class="swatch swatch-mist-100"><i></i><b>100</b><small>#E8F5F9</small></div>
+                        <div class="swatch swatch-mist-200"><i></i><b>200</b><small>#CFE6EE</small></div>
+                        <div class="swatch swatch-mist-300"><i></i><b>300</b><small>#A9D2DE</small></div>
+                        <div class="swatch swatch-mist-400"><i></i><b>400</b><small>#79AABD</small></div>
+                        <div class="swatch swatch-mist-500"><i></i><b>500</b><small>#4F7482</small></div>
+                        <div class="swatch swatch-mist-700"><i></i><b>700</b><small>#2C4E5B</small></div>
+                        <div class="swatch swatch-mist-900"><i></i><b>900</b><small>#102631</small></div>
+                        <div class="swatch swatch-mist-950"><i></i><b>950</b><small>#07182A</small></div>
                     </div>
-                    <div class="panel">
-                        <div class="caption">Evitar</div>
-                        <ul class="rule-list">
-                            <li>Usar fases como decoracion sin significado.</li>
-                            <li>Combinar rojo/rosa con lenguaje alarmista.</li>
-                            <li>Usar grises slate genericos fuera de Mist.</li>
-                            <li>Crear componentes con hexadecimales sueltos fuera del theme.</li>
-                        </ul>
+                </section>
+
+                <section class="section" id="roles-interfaz">
+                    <div class="eyebrow">02 · Roles de interfaz</div>
+                    <h2>Valores activos por tema</h2>
+                    <p class="lead">
+                        Cambia el modo con el boton superior. Cada rol muestra solo el hexadecimal vigente para evitar
+                        leer dos sistemas a la vez.
+                    </p>
+                    <div class="role-table">
+                        <div class="role-row role-bg">
+                            <span class="role-dot"></span>
+                            <div><b>Background</b><small>Fondo general de pantalla mobile.</small></div>
+                            <span class="role-meta"
+                                ><code>--bg</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#F3FAFC</span
+                                    ><span class="dark-only">#07182A</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-surface">
+                            <span class="role-dot"></span>
+                            <div><b>Surface</b><small>App bar, panels y controles.</small></div>
+                            <span class="role-meta"
+                                ><code>--surface</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#FFFFFF</span
+                                    ><span class="dark-only">#0E2740</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-surface-alt">
+                            <span class="role-dot"></span>
+                            <div><b>Surface alt</b><small>Bandas suaves y agrupaciones.</small></div>
+                            <span class="role-meta"
+                                ><code>--surface-alt</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#E8F5F9</span
+                                    ><span class="dark-only">#16314F</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-surface-sunken">
+                            <span class="role-dot"></span>
+                            <div><b>Surface sunken</b><small>Tracks, fondos internos y skeleton.</small></div>
+                            <span class="role-meta"
+                                ><code>--surface-sunken</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#DDEEF4</span
+                                    ><span class="dark-only">#051324</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-border">
+                            <span class="role-dot"></span>
+                            <div><b>Border</b><small>Separacion sin sombra.</small></div>
+                            <span class="role-meta"
+                                ><code>--border</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#CFE6EE</span
+                                    ><span class="dark-only">#28567A</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-text">
+                            <span class="role-dot"></span>
+                            <div><b>Text</b><small>Lectura principal.</small></div>
+                            <span class="role-meta"
+                                ><code>--text</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#102631</span
+                                    ><span class="dark-only">#E9F4FF</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-text-secondary">
+                            <span class="role-dot"></span>
+                            <div><b>Text secondary</b><small>Descripcion y apoyo.</small></div>
+                            <span class="role-meta"
+                                ><code>--text-secondary</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#416878</span
+                                    ><span class="dark-only">#A6CCE6</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-primary">
+                            <span class="role-dot"></span>
+                            <div><b>Primary</b><small>CTA y superficies de marca.</small></div>
+                            <span class="role-meta"
+                                ><code>--primary</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#7CD9F9</span
+                                    ><span class="dark-only">#45C8F1</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-primary-tint">
+                            <span class="role-dot"></span>
+                            <div><b>Primary tint</b><small>Seleccion suave.</small></div>
+                            <span class="role-meta"
+                                ><code>--primary-tint</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#DDF7FE</span
+                                    ><span class="dark-only">#7CD9F938</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-link">
+                            <span class="role-dot"></span>
+                            <div><b>Link</b><small>Texto accionable.</small></div>
+                            <span class="role-meta"
+                                ><code>--link</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#076583</span
+                                    ><span class="dark-only">#7CD9F9</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-logo">
+                            <span class="role-dot"></span>
+                            <div><b>Logo</b><small>Marca oficial Rea fuera de contextos por fase.</small></div>
+                            <span class="role-meta"
+                                ><code>--logo-color</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#7CD9F9</span
+                                    ><span class="dark-only">#FFFFFF</span></small
+                                ></span
+                            >
+                        </div>
+                        <div class="role-row role-danger">
+                            <span class="role-dot"></span>
+                            <div><b>Danger</b><small>Errores y acciones destructivas.</small></div>
+                            <span class="role-meta"
+                                ><code>--danger</code
+                                ><small class="theme-value"
+                                    ><span class="light-only">#EF3F78</span
+                                    ><span class="dark-only">#FF7AA2</span></small
+                                ></span
+                            >
+                        </div>
                     </div>
-                </div>
-            </section>
-        </main>
-    </div>
+                </section>
+
+                <section class="section" id="fases-y-estados">
+                    <div class="eyebrow">03 · Fases del ciclo</div>
+                    <h2>Tokens de fase</h2>
+                    <p class="lead">
+                        Cada fase tiene una superficie suave, un acento y un color de lectura. Estos tokens se aplican
+                        en hero, calendario, indicadores y estados asociados al ciclo.
+                    </p>
+                    <div class="phase-grid">
+                        <div class="phase-card ph-unknown">
+                            <div class="phase-card-head">
+                                <span class="phase-dot"></span><strong>Sin estimar</strong>
+                            </div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#EAF8FD</span
+                                ><span class="dark-only">#0A2F3E</span> · Acento <span class="light-only">#26BCEB</span
+                                ><span class="dark-only">#5AD8F8</span></span
+                            >
+                            <p>Estado inicial cuando Rea aun no tiene suficientes registros para estimar el ciclo.</p>
+                            <code>unknown</code>
+                        </div>
+                        <div class="phase-card ph-menstrual">
+                            <div class="phase-card-head"><span class="phase-dot"></span><strong>Menstrual</strong></div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#FFF0F5</span
+                                ><span class="dark-only">#351221</span> · Acento <span class="light-only">#EF3F78</span
+                                ><span class="dark-only">#FF7AA2</span></span
+                            >
+                            <p>Usar para flujo observado y dias de periodo registrados o confirmados.</p>
+                            <code>menstrual</code>
+                        </div>
+                        <div class="phase-card ph-follicular">
+                            <div class="phase-card-head"><span class="phase-dot"></span><strong>Folicular</strong></div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#E8FBF1</span
+                                ><span class="dark-only">#0A2B20</span> · Acento <span class="light-only">#37C989</span
+                                ><span class="dark-only">#57DDA5</span></span
+                            >
+                            <p>Fase posterior al periodo, asociada a recuperacion y lectura ligera del estado.</p>
+                            <code>follicular</code>
+                        </div>
+                        <div class="phase-card ph-fertile">
+                            <div class="phase-card-head"><span class="phase-dot"></span><strong>Fertil</strong></div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#FFF7D7</span
+                                ><span class="dark-only">#342507</span> · Acento <span class="light-only">#F8B633</span
+                                ><span class="dark-only">#FFD166</span></span
+                            >
+                            <p>
+                                Ventana estimada. Requiere lenguaje de incertidumbre y nunca se presenta como certeza.
+                            </p>
+                            <code>fertile_window</code>
+                        </div>
+                        <div class="phase-card ph-ovulation">
+                            <div class="phase-card-head"><span class="phase-dot"></span><strong>Ovulacion</strong></div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#FFF0EA</span
+                                ><span class="dark-only">#381610</span> · Acento <span class="light-only">#FF765C</span
+                                ><span class="dark-only">#FF9A83</span></span
+                            >
+                            <p>Pico estimado dentro de la ventana fertil. Debe distinguirse sin generar alarma.</p>
+                            <code>estimated_ovulation</code>
+                        </div>
+                        <div class="phase-card ph-luteal">
+                            <div class="phase-card-head"><span class="phase-dot"></span><strong>Lutea</strong></div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#F2EEFF</span
+                                ><span class="dark-only">#20183C</span> · Acento <span class="light-only">#8F78F2</span
+                                ><span class="dark-only">#B6A7FF</span></span
+                            >
+                            <p>Fase previa al periodo. El tono visual debe sentirse sereno y de cuidado.</p>
+                            <code>luteal</code>
+                        </div>
+                        <div class="phase-card ph-pregnancy">
+                            <div class="phase-card-head"><span class="phase-dot"></span><strong>Embarazo</strong></div>
+                            <span class="phase-token theme-value"
+                                >Superficie <span class="light-only">#E6FAF7</span
+                                ><span class="dark-only">#092E2B</span> · Acento <span class="light-only">#43C8BC</span
+                                ><span class="dark-only">#69DDD3</span></span
+                            >
+                            <p>
+                                Modo especial separado del ciclo activo. No debe mezclarse con predicciones menstruales.
+                            </p>
+                            <code>pregnancy</code>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="estados-semanticos">
+                    <div class="eyebrow">04 · Estados semanticos</div>
+                    <h2>Feedback sin competir con marca</h2>
+                    <div class="table-wrap">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>Estado</th>
+                                    <th>Surface</th>
+                                    <th>Accent</th>
+                                    <th>Text</th>
+                                    <th>Uso mobile</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Success</td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#E8FBF1</span
+                                            ><span class="dark-only">#0A2B20</span></code
+                                        >
+                                    </td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#37C989</span
+                                            ><span class="dark-only">#57DDA5</span></code
+                                        >
+                                    </td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#0E6848</span
+                                            ><span class="dark-only">#B8F3D8</span></code
+                                        >
+                                    </td>
+                                    <td>Guardado, completado, permiso concedido.</td>
+                                </tr>
+                                <tr>
+                                    <td>Warning</td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#FFF7D7</span
+                                            ><span class="dark-only">#342507</span></code
+                                        >
+                                    </td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#F8B633</span
+                                            ><span class="dark-only">#FFD166</span></code
+                                        >
+                                    </td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#7A4B00</span
+                                            ><span class="dark-only">#FFE7A3</span></code
+                                        >
+                                    </td>
+                                    <td>Estimacion, baja confianza, accion reversible.</td>
+                                </tr>
+                                <tr>
+                                    <td>Danger</td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#FFF0F5</span
+                                            ><span class="dark-only">#351221</span></code
+                                        >
+                                    </td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#EF3F78</span
+                                            ><span class="dark-only">#FF7AA2</span></code
+                                        >
+                                    </td>
+                                    <td class="theme-value">
+                                        <code
+                                            ><span class="light-only">#8E1E43</span
+                                            ><span class="dark-only">#FFC2D5</span></code
+                                        >
+                                    </td>
+                                    <td>Error, borrado, dato invalido.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="section" id="reglas-color">
+                    <div class="eyebrow">05 · Reglas</div>
+                    <h2>Uso correcto en app mobile</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel">
+                            <div class="caption">Hacer</div>
+                            <ul class="rule-list">
+                                <li>Usar roles <code>theme.colors.*</code> y <code>theme.phases.*</code>.</li>
+                                <li>Diferenciar observado/estimado por forma, patron y texto.</li>
+                                <li>Reservar colores intensos para feedback o fase activa.</li>
+                                <li>Usar logo <code>#7CD9F9</code> en light y blanco en dark.</li>
+                            </ul>
+                        </div>
+                        <div class="panel">
+                            <div class="caption">Evitar</div>
+                            <ul class="rule-list">
+                                <li>Usar fases como decoracion sin significado.</li>
+                                <li>Combinar rojo/rosa con lenguaje alarmista.</li>
+                                <li>Usar grises slate genericos fuera de Mist.</li>
+                                <li>Crear componentes con hexadecimales sueltos fuera del theme.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
         <script src="https://unpkg.com/lucide@latest" defer></script>
         <script src="./main.js" defer></script>
-</body>
-
+    </body>
 </html>

@@ -1,13 +1,19 @@
-import Placeholder from "@/components/placeholder/Placeholder";
+import { ScrollView, Text } from "react-native";
+
+import { useSourcesStyles } from "./SourcesStyle";
 
 /** Configuración: fuentes revisadas del contenido (content_sources). Ver README. */
 export default function SourcesScreen() {
+    const styles = useSourcesStyles();
+
     return (
-        <Placeholder
-            phase="P2"
-            title="Fuentes revisadas"
-            routePath="settings/sources.tsx"
-            description="Listado de fuentes del contenido educativo: tipo (guía médica, salud pública, revisado por pares…), referencia y fecha de revisión."
-        />
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{"Fuentes revisadas"}</Text>
+            <Text style={styles.description}>
+                {
+                    "Listado de fuentes del contenido educativo: tipo (guía médica, salud pública, revisado por pares…), referencia y fecha de revisión."
+                }
+            </Text>
+        </ScrollView>
     );
 }

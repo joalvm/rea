@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import Placeholder from "@/components/placeholder/Placeholder";
+import { Pressable, ScrollView, Text } from "react-native";
+
+import { useCompleteStyles } from "./CompleteStyle";
 
 type Props = {
     onFinish: () => void;
@@ -13,14 +15,19 @@ type Props = {
  */
 export default function CompleteScreen({ onFinish }: Props) {
     const { t } = useTranslation("onboarding");
+    const styles = useCompleteStyles();
+
     return (
-        <Placeholder
-            phase="MVP"
-            title={t("complete.title")}
-            routePath="(onboarding)/complete.tsx"
-            description={t("complete.disclaimer")}
-            primaryLabel={t("complete.finish")}
-            onPrimary={onFinish}
-        />
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{t("complete.title")}</Text>
+            <Text style={styles.description}>{t("complete.disclaimer")}</Text>
+
+            <Pressable
+                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
+                onPress={onFinish}
+            >
+                <Text style={styles.primaryText}>{t("complete.finish")}</Text>
+            </Pressable>
+        </ScrollView>
     );
 }

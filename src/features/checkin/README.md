@@ -13,17 +13,17 @@ Rutas: `src/app/checkin/*` (Stack sobre las tabs) · Componentes:
 
 ## Pasos → esquema
 
-| Paso | Pantalla | Campos → tabla |
-|---|---|---|
-| 0 | intro | Elegir modo rápido/completo. |
-| 1 | bleeding | `bleeding_intensity` (0-4), `clots` (0-3), `period_status_signal` (started/ongoing/ended). Puede crear/actualizar `period_runs`. |
-| 2 | feelings | `mood` (1-5), `energy` (1-5), `stress_level` (0-5). |
-| 3 | body | `pain_intensity` (0-5), `pain_interference` (0-3), `breast_sensitivity` (0-5), `pms_intensity` (0-5). |
-| 4 | symptoms | `symptom_catalog` (quick options primero, agrupado por `group_key`) + intensidad (1-5) → `checkin_symptoms`. |
-| 5 | fertility | **Condicional** (`trying_to_conceive` && !`hormonal_contraception`): `cervical_mucus` (0-4), `libido` (0-4), registrar relación → `intercourse_log`. |
-| 6 | medications | `medication_catalog` + `dose_note` + `relief` (0-2, **opcional/nullable**) → `checkin_medications`. |
-| 7 | note | `checkins.note`. |
-| 8 | review | Resumen + guardar. |
+| Paso | Pantalla    | Campos → tabla                                                                                                                                       |
+| ---- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0    | intro       | Elegir modo rápido/completo.                                                                                                                         |
+| 1    | bleeding    | `bleeding_intensity` (0-4), `clots` (0-3), `period_status_signal` (started/ongoing/ended). Puede crear/actualizar `period_runs`.                     |
+| 2    | feelings    | `mood` (1-5), `energy` (1-5), `stress_level` (0-5).                                                                                                  |
+| 3    | body        | `pain_intensity` (0-5), `pain_interference` (0-3), `breast_sensitivity` (0-5), `pms_intensity` (0-5).                                                |
+| 4    | symptoms    | `symptom_catalog` (quick options primero, agrupado por `group_key`) + intensidad (1-5) → `checkin_symptoms`.                                         |
+| 5    | fertility   | **Condicional** (`trying_to_conceive` && !`hormonal_contraception`): `cervical_mucus` (0-4), `libido` (0-4), registrar relación → `intercourse_log`. |
+| 6    | medications | `medication_catalog` + `dose_note` + `relief` (0-2, **opcional/nullable**) → `checkin_medications`.                                                  |
+| 7    | note        | `checkins.note`.                                                                                                                                     |
+| 8    | review      | Resumen + guardar.                                                                                                                                   |
 
 ## Comportamiento esperado (al guardar en `review`)
 

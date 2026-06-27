@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import Placeholder from "@/components/placeholder/Placeholder";
+import { Pressable, ScrollView, Text } from "react-native";
+
+import { useRegularityStyles } from "./RegularityStyle";
 
 type Props = {
     onContinue: () => void;
@@ -9,14 +11,19 @@ type Props = {
 /** Onboarding: regularidad percibida (regular | variable | irregular). Ver README. */
 export default function RegularityScreen({ onContinue }: Props) {
     const { t } = useTranslation("onboarding");
+    const styles = useRegularityStyles();
+
     return (
-        <Placeholder
-            phase="MVP"
-            title={t("regularity.title")}
-            routePath="(onboarding)/regularity.tsx"
-            description={t("regularity.body")}
-            primaryLabel={t("actions.continue")}
-            onPrimary={onContinue}
-        />
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{t("regularity.title")}</Text>
+            <Text style={styles.description}>{t("regularity.body")}</Text>
+
+            <Pressable
+                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
+                onPress={onContinue}
+            >
+                <Text style={styles.primaryText}>{t("actions.continue")}</Text>
+            </Pressable>
+        </ScrollView>
     );
 }

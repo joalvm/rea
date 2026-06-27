@@ -1,13 +1,19 @@
-import Placeholder from "@/components/placeholder/Placeholder";
+import { ScrollView, Text } from "react-native";
+
+import { usePeriodConfirmStyles } from "./PeriodConfirmStyle";
 
 /** Confirmación de periodo inferido por sangrado (source bleeding_inferred). Ver README. */
 export default function PeriodConfirmScreen() {
+    const styles = usePeriodConfirmStyles();
+
     return (
-        <Placeholder
-            phase="P2"
-            title="¿Fue tu periodo?"
-            routePath="period/confirm.tsx"
-            description="Rea detectó sangrado varios días. Confirmar como periodo (source → user_confirmed), marcar como manchado o no contar."
-        />
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{"¿Fue tu periodo?"}</Text>
+            <Text style={styles.description}>
+                {
+                    "Rea detectó sangrado varios días. Confirmar como periodo (source → user_confirmed), marcar como manchado o no contar."
+                }
+            </Text>
+        </ScrollView>
     );
 }

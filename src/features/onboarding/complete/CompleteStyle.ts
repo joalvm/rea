@@ -1,12 +1,6 @@
 import { createStyles } from "@/theme/createStyles";
 
-/**
- * Estilos del Placeholder (que se usa para pantallas en desarrollo o rutas no implementadas).
- * Es un componente de diseño relativamente complejo, con varios elementos (badge de fase, título, descripción, enlaces, botones)
- * que deben responder al tema (colores, tipografía, espaciado, sombras) para que las pantallas pendientes
- * se vean cuidadas y coherentes con el resto de la app mientras se aterriza su UI real.
- */
-export const usePlaceholderStyles = createStyles((theme) => {
+export const useCompleteStyles = createStyles((theme) => {
     const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
 
     return {
@@ -22,34 +16,10 @@ export const usePlaceholderStyles = createStyles((theme) => {
             paddingHorizontal: spacing["2xl"],
             paddingVertical: spacing["4xl"],
         },
-        badge: {
-            paddingHorizontal: spacing.md,
-            paddingVertical: spacing.xs,
-            borderRadius: radius.pill,
-            borderWidth: borderWidth.hairline,
-            borderColor: colors.focusRing,
-            backgroundColor: colors.primaryTint,
-        },
-        badgeText: {
-            ...typography.variant.overline,
-            color: colors.link,
-        },
         title: {
             ...typography.variant.h1,
             color: colors.text,
             textAlign: "center",
-        },
-        path: {
-            ...typography.variant.caption,
-            fontFamily: typography.families.mono,
-            color: colors.textMuted,
-            backgroundColor: colors.surfaceSunken,
-            borderWidth: borderWidth.hairline,
-            borderColor: colors.border,
-            paddingHorizontal: spacing.sm,
-            paddingVertical: spacing.xs,
-            borderRadius: radius.sm,
-            overflow: "hidden",
         },
         description: {
             ...typography.variant.body,
@@ -63,10 +33,7 @@ export const usePlaceholderStyles = createStyles((theme) => {
             marginTop: spacing.sm,
         },
         linkRow: {
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: spacing.md,
+            gap: spacing.xs,
             paddingVertical: spacing.lg,
             paddingHorizontal: spacing.lg,
             borderRadius: radius.lg,
@@ -74,10 +41,6 @@ export const usePlaceholderStyles = createStyles((theme) => {
             borderWidth: borderWidth.thin,
             borderColor: colors.border,
             ...shadows[1],
-        },
-        linkText: {
-            flex: 1,
-            gap: 2,
         },
         linkLabel: {
             ...typography.variant.title,

@@ -13,9 +13,9 @@ Se llega desde el Calendario, el detalle de día o una alerta de Inicio.
 - **edit** — editar un `period_runs`: cambiar inicio/fin, marcar como **manchado** (no periodo),
   **excluir** el episodio. Usa `status` (`open`/`closed`/`excluded`).
 - **confirm** — confirmar un periodo **inferido** por sangrado (`source = bleeding_inferred`):
-  - "Sí, fue mi periodo" → `source = user_confirmed`.
-  - "No, fue manchado" → reclasificar.
-  - "No contar" → `status = excluded`.
+    - "Sí, fue mi periodo" → `source = user_confirmed`.
+    - "No, fue manchado" → reclasificar.
+    - "No contar" → `status = excluded`.
 
 ## Comportamiento
 

@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import Placeholder from "@/components/placeholder/Placeholder";
+import { Pressable, ScrollView, Text } from "react-native";
+
+import { useContraceptionStyles } from "./ContraceptionStyle";
 
 type Props = {
     onContinue: () => void;
@@ -9,14 +11,19 @@ type Props = {
 /** Onboarding: anticoncepción hormonal (hormonal_contraception). Condiciona fertilidad/TTC. Ver README. */
 export default function ContraceptionScreen({ onContinue }: Props) {
     const { t } = useTranslation("onboarding");
+    const styles = useContraceptionStyles();
+
     return (
-        <Placeholder
-            phase="MVP"
-            title={t("contraception.title")}
-            routePath="(onboarding)/contraception.tsx"
-            description={t("contraception.body")}
-            primaryLabel={t("actions.continue")}
-            onPrimary={onContinue}
-        />
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{t("contraception.title")}</Text>
+            <Text style={styles.description}>{t("contraception.body")}</Text>
+
+            <Pressable
+                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
+                onPress={onContinue}
+            >
+                <Text style={styles.primaryText}>{t("actions.continue")}</Text>
+            </Pressable>
+        </ScrollView>
     );
 }

@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import Placeholder from "@/components/placeholder/Placeholder";
+import { Pressable, ScrollView, Text } from "react-native";
+
+import { useLastPeriodStyles } from "./LastPeriodStyle";
 
 type Props = {
     onContinue: () => void;
@@ -9,14 +11,19 @@ type Props = {
 /** Onboarding: inicio (y fin opcional) del último periodo → crea el primer period_run. Ver README. */
 export default function LastPeriodScreen({ onContinue }: Props) {
     const { t } = useTranslation("onboarding");
+    const styles = useLastPeriodStyles();
+
     return (
-        <Placeholder
-            phase="MVP"
-            title={t("lastPeriod.title")}
-            routePath="(onboarding)/last-period.tsx"
-            description={t("lastPeriod.body")}
-            primaryLabel={t("actions.continue")}
-            onPrimary={onContinue}
-        />
+        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{t("lastPeriod.title")}</Text>
+            <Text style={styles.description}>{t("lastPeriod.body")}</Text>
+
+            <Pressable
+                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
+                onPress={onContinue}
+            >
+                <Text style={styles.primaryText}>{t("actions.continue")}</Text>
+            </Pressable>
+        </ScrollView>
     );
 }

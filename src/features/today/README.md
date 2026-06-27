@@ -12,10 +12,10 @@ Fase: **MVP** (el diseño del Hero legacy es la única referencia visual reutili
    Honestidad: usar `daily_summary.estimated_phase`, `phase_confidence`, `phase_source`;
    nunca presentar la estimación como certeza. Si está en periodo, mostrar "día N de sangrado".
 2. **Card de predicción contextual** según intención:
-   - Seguimiento: "tu próximo periodo podría llegar en N días".
-   - TTC: "podrías estar cerca de tu ventana fértil".
-   - Anticoncepción hormonal: "las fases pueden no representar ovulación natural".
-   - Embarazo activo (`pregnancy_episodes`): "predicciones de ciclo pausadas".
+    - Seguimiento: "tu próximo periodo podría llegar en N días".
+    - TTC: "podrías estar cerca de tu ventana fértil".
+    - Anticoncepción hormonal: "las fases pueden no representar ovulación natural".
+    - Embarazo activo (`pregnancy_episodes`): "predicciones de ciclo pausadas".
 3. **"¿Por qué Rea cree esto?"** — último periodo, ciclo declarado, regularidad, datos
    recientes, nivel de confianza, observado vs estimado.
 4. **CTA de check-in** — emocional ("¿cómo te sientes ahora?", "menos de 1 minuto") →

@@ -1,325 +1,302 @@
 <!doctype html>
 <html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Iconografia mobile</title>
+        <meta
+            name="description"
+            content="Iconografia mobile de Rea: set base, tamanos, navegacion, estados y check-in."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rea · Iconografia mobile</title>
-    <meta name="description" content="Iconografia mobile de Rea: set base, tamanos, navegacion, estados y check-in." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-</head>
+    <body data-page="icons" data-title="Iconos">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
 
-<body data-page="icons" data-title="Iconos">
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <div class="layout">
-        <aside class="sidebar" id="siteSidebar"></aside>
-        <main class="main" id="contenido">
-            <div class="topbar" id="siteTopbar"></div>
-
-            <section class="section" id="base-iconos">
-                <div class="eyebrow">Iconos · Base</div>
-                <h2>Iconografia de trazo Lucide</h2>
-                <p class="lead">
-                    Rea usa Lucide Icons como set base para navegacion, acciones y estados. Esta documentacion HTML los
-                    renderiza desde CDN Lucide con <code>data-lucide</code>. En check-in, el icono es la identidad del
-                    paso; los numeros solo pueden quedar como progreso secundario o valor interno.
-                </p>
-                <div class="grid cols-3 mt-18">
-                    <div class="panel spec-card">
-                        <h3 class="flush-top">Estilo</h3>
-                        <p>24px viewBox, trazo 2, extremos redondeados, sin
-                            rellenos complejos.</p>
+                <section class="section" id="base-iconos">
+                    <div class="eyebrow">Iconos · Base</div>
+                    <h2>Iconografia de trazo Lucide</h2>
+                    <p class="lead">
+                        Rea usa Lucide Icons como set base para navegacion, acciones y estados. Esta documentacion HTML
+                        los renderiza desde CDN Lucide con <code>data-lucide</code>. En check-in, el icono es la
+                        identidad del paso; los numeros solo pueden quedar como progreso secundario o valor interno.
+                    </p>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Estilo</h3>
+                            <p>24px viewBox, trazo 2, extremos redondeados, sin rellenos complejos.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Color</h3>
+                            <p>Hereda <code>currentColor</code>. Nunca fijar un hexadecimal dentro del SVG.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Accesibilidad</h3>
+                            <p>Decorativo: oculto. Accionable: label accesible y area tactil minima 44pt.</p>
+                        </div>
                     </div>
-                    <div class="panel spec-card">
-                        <h3 class="flush-top">Color</h3>
-                        <p>Hereda <code>currentColor</code>. Nunca fijar un
-                            hexadecimal dentro del SVG.</p>
+                </section>
+
+                <section class="section" id="biblioteca-iconos">
+                    <div class="eyebrow">01 · Biblioteca</div>
+                    <h2>Set base Lucide para Rea</h2>
+                    <ul class="icon-grid" aria-label="Iconos base Lucide">
+                        <li class="icon-cell"><i class="icon" data-lucide="home" aria-hidden="true"></i>Home</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="heart" aria-hidden="true"></i>Hoy</li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="calendar-days" aria-hidden="true"></i>Calendario
+                        </li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="chart-line" aria-hidden="true"></i>Estadisticas
+                        </li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="signal-medium" aria-hidden="true"></i>Confianza
+                        </li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="settings" aria-hidden="true"></i>Settings
+                        </li>
+                        <li class="icon-cell"><i class="icon" data-lucide="droplet" aria-hidden="true"></i>Flujo</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="activity" aria-hidden="true"></i>Dolor</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="smile" aria-hidden="true"></i>Animo</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="zap" aria-hidden="true"></i>Energia</li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="sparkles" aria-hidden="true"></i>Sintomas
+                        </li>
+                        <li class="icon-cell"><i class="icon" data-lucide="moon" aria-hidden="true"></i>Sueno</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="heart" aria-hidden="true"></i>Intimidad</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="pill" aria-hidden="true"></i>Medicacion</li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="thermometer" aria-hidden="true"></i>Temperatura
+                        </li>
+                        <li class="icon-cell"><i class="icon" data-lucide="file-text" aria-hidden="true"></i>Nota</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="lock" aria-hidden="true"></i>Privacidad</li>
+                        <li class="icon-cell">
+                            <i class="icon" data-lucide="bell" aria-hidden="true"></i>Recordatorio
+                        </li>
+                        <li class="icon-cell"><i class="icon" data-lucide="check" aria-hidden="true"></i>Guardado</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="info" aria-hidden="true"></i>Informacion</li>
+                        <li class="icon-cell"><i class="icon" data-lucide="x" aria-hidden="true"></i>Cerrar</li>
+                    </ul>
+                </section>
+
+                <section class="section" id="iconos-navegacion">
+                    <div class="eyebrow">02 · Navegacion</div>
+                    <h2>Mapeo fijo de tab bar</h2>
+                    <p class="lead">
+                        La tab bar mobile tiene cinco destinos. No se reordena por vista y no usa FAB central.
+                    </p>
+                    <div class="table-wrap">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>Destino</th>
+                                    <th>Icono</th>
+                                    <th>Etiqueta</th>
+                                    <th>Uso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Home</td>
+                                    <td>
+                                        <i class="icon sm" data-lucide="home" aria-hidden="true"></i>
+                                    </td>
+                                    <td><code>Home</code></td>
+                                    <td>Resumen general, hero de fase y accesos principales.</td>
+                                </tr>
+                                <tr>
+                                    <td>Hoy</td>
+                                    <td>
+                                        <i class="icon sm" data-lucide="heart" aria-hidden="true"></i>
+                                    </td>
+                                    <td><code>Hoy</code></td>
+                                    <td>Registro diario, edicion del check-in y seguimiento del dia.</td>
+                                </tr>
+                                <tr>
+                                    <td>Calendario</td>
+                                    <td>
+                                        <i class="icon sm" data-lucide="calendar-days" aria-hidden="true"></i>
+                                    </td>
+                                    <td><code>Calendario</code></td>
+                                    <td>Lectura mensual de ciclo.</td>
+                                </tr>
+                                <tr>
+                                    <td>Estadisticas</td>
+                                    <td>
+                                        <i class="icon sm" data-lucide="chart-line" aria-hidden="true"></i>
+                                    </td>
+                                    <td><code>Estadisticas</code></td>
+                                    <td>Patrones, tendencias y confianza.</td>
+                                </tr>
+                                <tr>
+                                    <td>Settings</td>
+                                    <td>
+                                        <i class="icon sm" data-lucide="settings" aria-hidden="true"></i>
+                                    </td>
+                                    <td><code>Settings</code></td>
+                                    <td>Privacidad, recordatorios, datos y tema.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="panel spec-card">
-                        <h3 class="flush-top">Accesibilidad</h3>
-                        <p>Decorativo: oculto. Accionable: label accesible y
-                            area tactil minima 44pt.</p>
+                </section>
+
+                <section class="section" id="iconos-checkin">
+                    <div class="eyebrow">03 · Check-in</div>
+                    <h2>Pasos por icono</h2>
+                    <p class="lead">
+                        Cada paso debe reconocerse por simbolo, texto y estado. La secuencia puede tener progreso, pero
+                        la usuaria no deberia depender de numeros para saber que esta marcando.
+                    </p>
+                    <ul class="step-grid mt-18" aria-label="Pasos del check-in">
+                        <li class="step-card on">
+                            <span class="step-icon"><i class="icon" data-lucide="droplet" aria-hidden="true"></i></span
+                            >Flujo
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="activity" aria-hidden="true"></i></span
+                            >Dolor
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="smile" aria-hidden="true"></i></span
+                            >Animo
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="zap" aria-hidden="true"></i></span
+                            >Energia
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="sparkles" aria-hidden="true"></i></span
+                            >Sintomas
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="moon" aria-hidden="true"></i></span
+                            >Sueno
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="heart" aria-hidden="true"></i></span
+                            >Intimidad
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"><i class="icon" data-lucide="pill" aria-hidden="true"></i></span
+                            >Medicacion
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="thermometer" aria-hidden="true"></i></span
+                            >Temperatura
+                        </li>
+                        <li class="step-card">
+                            <span class="step-icon"
+                                ><i class="icon" data-lucide="file-text" aria-hidden="true"></i></span
+                            >Nota
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="section" id="iconos-opciones-checkin">
+                    <div class="eyebrow">04 · Opciones marcables</div>
+                    <h2>Escalas con lenguaje humano</h2>
+                    <p class="lead">
+                        Las preguntas graduables del check-in usan iconos y etiquetas humanas. Registrar estres, dolor,
+                        animo o energia debe sentirse como elegir un estado reconocible, no como completar una escala
+                        abstracta.
+                    </p>
+                    <ul class="choice-grid mt-18" aria-label="Escala de estado para check-in">
+                        <li class="choice-card">
+                            <span class="choice-icon"><i class="icon" data-lucide="leaf" aria-hidden="true"></i></span>
+                            <strong>Calma</strong><small>Estado bajo o sin tension.</small>
+                        </li>
+                        <li class="choice-card">
+                            <span class="choice-icon"><i class="icon" data-lucide="cloud" aria-hidden="true"></i></span>
+                            <strong>Leve</strong><small>Molestia presente pero manejable.</small>
+                        </li>
+                        <li class="choice-card on">
+                            <span class="choice-icon">
+                                <i class="icon" data-lucide="waves" aria-hidden="true"></i
+                            ></span>
+                            <strong>Tension</strong><small>Se nota en cuerpo o animo.</small>
+                        </li>
+                        <li class="choice-card">
+                            <span class="choice-icon"
+                                ><i class="icon" data-lucide="activity" aria-hidden="true"></i
+                            ></span>
+                            <strong>Alta</strong><small>Interfiere con el dia.</small>
+                        </li>
+                        <li class="choice-card">
+                            <span class="choice-icon"><i class="icon" data-lucide="flame" aria-hidden="true"></i></span>
+                            <strong>Muy alta</strong><small>Intensa y sostenida.</small>
+                        </li>
+                        <li class="choice-card">
+                            <span class="choice-icon"
+                                ><i class="icon" data-lucide="triangle-alert" aria-hidden="true"></i
+                            ></span>
+                            <strong>Limite</strong><small>Requiere pausa o apoyo.</small>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="section" id="reglas-iconos">
+                    <div class="eyebrow">05 · Reglas</div>
+                    <h2>Tamanos y estados</h2>
+                    <div class="table-wrap">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Valor</th>
+                                    <th>Uso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>iconXs</code></td>
+                                    <td>16px</td>
+                                    <td>Badges, helpers, checks internos.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>iconSm</code></td>
+                                    <td>18px</td>
+                                    <td>Botones con texto, inputs, listas compactas.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>iconMd</code></td>
+                                    <td>22px</td>
+                                    <td>Tab bar, listas principales, cards.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>iconLg</code></td>
+                                    <td>28px</td>
+                                    <td>Empty states, headers de modulo, ilustracion funcional.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>iconXl</code></td>
+                                    <td>36px</td>
+                                    <td>Solo momentos de onboarding o estado vacio importante.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </section>
-
-            <section class="section" id="biblioteca-iconos">
-                <div class="eyebrow">01 · Biblioteca</div>
-                <h2>Set base Lucide para Rea</h2>
-                <ul class="icon-grid" aria-label="Iconos base Lucide">
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="home" aria-hidden="true"></i>Home
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="heart" aria-hidden="true"></i>Hoy
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="calendar-days" aria-hidden="true"></i>Calendario
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="chart-line" aria-hidden="true"></i>Estadisticas
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="signal-medium" aria-hidden="true"></i>Confianza
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="settings" aria-hidden="true"></i>Settings
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="droplet" aria-hidden="true"></i>Flujo
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="activity" aria-hidden="true"></i>Dolor
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="smile" aria-hidden="true"></i>Animo
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="zap" aria-hidden="true"></i>Energia
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="sparkles" aria-hidden="true"></i>Sintomas
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="moon" aria-hidden="true"></i>Sueno
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="heart" aria-hidden="true"></i>Intimidad
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="pill" aria-hidden="true"></i>Medicacion
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="thermometer" aria-hidden="true"></i>Temperatura
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="file-text" aria-hidden="true"></i>Nota
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="lock" aria-hidden="true"></i>Privacidad
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="bell" aria-hidden="true"></i>Recordatorio
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="check" aria-hidden="true"></i>Guardado
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="info" aria-hidden="true"></i>Informacion
-                    </li>
-                    <li class="icon-cell">
-                        <i class="icon" data-lucide="x" aria-hidden="true"></i>Cerrar
-                    </li>
-                </ul>
-            </section>
-
-            <section class="section" id="iconos-navegacion">
-                <div class="eyebrow">02 · Navegacion</div>
-                <h2>Mapeo fijo de tab bar</h2>
-                <p class="lead">
-                    La tab bar mobile tiene cinco destinos. No se reordena
-                    por vista y no usa FAB central.
-                </p>
-                <div class="table-wrap">
-                    <table class="spec-table">
-                        <thead>
-                            <tr>
-                                <th>Destino</th>
-                                <th>Icono</th>
-                                <th>Etiqueta</th>
-                                <th>Uso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Home</td>
-                                <td>
-                                    <i class="icon sm" data-lucide="home" aria-hidden="true"></i>
-                                </td>
-                                <td><code>Home</code></td>
-                                <td>Resumen general, hero de fase y accesos principales.</td>
-                            </tr>
-                            <tr>
-                                <td>Hoy</td>
-                                <td>
-                                    <i class="icon sm" data-lucide="heart" aria-hidden="true"></i>
-                                </td>
-                                <td><code>Hoy</code></td>
-                                <td>Registro diario, edicion del check-in y seguimiento del dia.</td>
-                            </tr>
-                            <tr>
-                                <td>Calendario</td>
-                                <td>
-                                    <i class="icon sm" data-lucide="calendar-days" aria-hidden="true"></i>
-                                </td>
-                                <td><code>Calendario</code></td>
-                                <td>Lectura mensual de ciclo.</td>
-                            </tr>
-                            <tr>
-                                <td>Estadisticas</td>
-                                <td>
-                                    <i class="icon sm" data-lucide="chart-line" aria-hidden="true"></i>
-                                </td>
-                                <td><code>Estadisticas</code></td>
-                                <td>Patrones, tendencias y confianza.</td>
-                            </tr>
-                            <tr>
-                                <td>Settings</td>
-                                <td>
-                                    <i class="icon sm" data-lucide="settings" aria-hidden="true"></i>
-                                </td>
-                                <td><code>Settings</code></td>
-                                <td>Privacidad, recordatorios, datos y
-                                    tema.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="section" id="iconos-checkin">
-                <div class="eyebrow">03 · Check-in</div>
-                <h2>Pasos por icono</h2>
-                <p class="lead">
-                    Cada paso debe reconocerse por simbolo, texto y estado. La secuencia puede tener progreso, pero la
-                    usuaria no deberia depender de numeros para saber que esta marcando.
-                </p>
-                <ul class="step-grid mt-18" aria-label="Pasos del check-in">
-                    <li class="step-card on">
-                        <span class="step-icon"><i class="icon" data-lucide="droplet" aria-hidden="true"></i></span>Flujo
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="activity" aria-hidden="true"></i></span>Dolor
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="smile" aria-hidden="true"></i></span>Animo
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="zap" aria-hidden="true"></i></span>Energia
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="sparkles" aria-hidden="true"></i></span>Sintomas
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="moon" aria-hidden="true"></i></span>Sueno
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="heart" aria-hidden="true"></i></span>Intimidad
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="pill" aria-hidden="true"></i></span>Medicacion
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="thermometer" aria-hidden="true"></i></span>Temperatura
-                    </li>
-                    <li class="step-card">
-                        <span class="step-icon"><i class="icon" data-lucide="file-text" aria-hidden="true"></i></span>Nota
-                    </li>
-                </ul>
-            </section>
-
-            <section class="section" id="iconos-opciones-checkin">
-                <div class="eyebrow">04 · Opciones marcables</div>
-                <h2>Escalas con lenguaje humano</h2>
-                <p class="lead">
-                    Las preguntas graduables del check-in usan iconos y etiquetas humanas. Registrar estres, dolor,
-                    animo o energia debe sentirse como elegir un estado reconocible, no como completar una escala
-                    abstracta.
-                </p>
-                <ul class="choice-grid mt-18" aria-label="Escala de estado para check-in">
-                    <li class="choice-card">
-                        <span class="choice-icon"><i class="icon" data-lucide="leaf" aria-hidden="true"></i></span>
-                        <strong>Calma</strong><small>Estado bajo o sin
-                            tension.</small>
-                    </li>
-                    <li class="choice-card">
-                        <span class="choice-icon"><i class="icon" data-lucide="cloud" aria-hidden="true"></i></span>
-                        <strong>Leve</strong><small>Molestia presente pero
-                            manejable.</small>
-                    </li>
-                    <li class="choice-card on">
-                        <span class="choice-icon">
-                            <i class="icon" data-lucide="waves" aria-hidden="true"></i></span>
-                        <strong>Tension</strong><small>Se nota en cuerpo o
-                            animo.</small>
-                    </li>
-                    <li class="choice-card">
-                        <span class="choice-icon"><i class="icon" data-lucide="activity" aria-hidden="true"></i></span>
-                        <strong>Alta</strong><small>Interfiere con el
-                            dia.</small>
-                    </li>
-                    <li class="choice-card">
-                        <span class="choice-icon"><i class="icon" data-lucide="flame" aria-hidden="true"></i></span>
-                        <strong>Muy alta</strong><small>Intensa y
-                            sostenida.</small>
-                    </li>
-                    <li class="choice-card">
-                        <span class="choice-icon"><i class="icon" data-lucide="triangle-alert" aria-hidden="true"></i></span>
-                        <strong>Limite</strong><small>Requiere pausa o
-                            apoyo.</small>
-                    </li>
-                </ul>
-            </section>
-
-            <section class="section" id="reglas-iconos">
-                <div class="eyebrow">05 · Reglas</div>
-                <h2>Tamanos y estados</h2>
-                <div class="table-wrap">
-                    <table class="spec-table">
-                        <thead>
-                            <tr>
-                                <th>Token</th>
-                                <th>Valor</th>
-                                <th>Uso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>iconXs</code></td>
-                                <td>16px</td>
-                                <td>Badges, helpers, checks internos.</td>
-                            </tr>
-                            <tr>
-                                <td><code>iconSm</code></td>
-                                <td>18px</td>
-                                <td>Botones con texto, inputs, listas
-                                    compactas.</td>
-                            </tr>
-                            <tr>
-                                <td><code>iconMd</code></td>
-                                <td>22px</td>
-                                <td>Tab bar, listas principales, cards.</td>
-                            </tr>
-                            <tr>
-                                <td><code>iconLg</code></td>
-                                <td>28px</td>
-                                <td>Empty states, headers de modulo,
-                                    ilustracion funcional.</td>
-                            </tr>
-                            <tr>
-                                <td><code>iconXl</code></td>
-                                <td>36px</td>
-                                <td>Solo momentos de onboarding o estado
-                                    vacio importante.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="note">
-                    En app nativa se usa <code>lucide-react-native</code>. Si Lucide no cubre un sintoma, crear icono
-                    propio con la misma geometria: viewBox 24, stroke 2, extremos redondeados, sin relleno y exportado
-                    para <code>currentColor</code>.
-                </p>
-            </section>
-        </main>
-    </div>
+                    <p class="note">
+                        En app nativa se usa <code>lucide-react-native</code>. Si Lucide no cubre un sintoma, crear
+                        icono propio con la misma geometria: viewBox 24, stroke 2, extremos redondeados, sin relleno y
+                        exportado para <code>currentColor</code>.
+                    </p>
+                </section>
+            </main>
+        </div>
         <script src="https://unpkg.com/lucide@latest" defer></script>
         <script src="./main.js" defer></script>
-</body>
-
+    </body>
 </html>

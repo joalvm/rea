@@ -12,9 +12,9 @@ Componentes: `src/features/diary/diary/`, `src/features/diary/entry/` · Fase: *
 - **Resumen emocional**: desde `daily_summary` (ánimo/energía/estrés/dolor máx/síntoma top).
 - **Timeline de check-ins**: cada `checkins` como card (hora, ánimo, dolor, síntomas, nota).
   Acciones por card:
-  - Editar.
-  - Eliminar (`deleted_at`).
-  - **No contar en estadísticas** (`excluded_from_summary = 1`) — distinto de eliminar.
+    - Editar.
+    - Eliminar (`deleted_at`).
+    - **No contar en estadísticas** (`excluded_from_summary = 1`) — distinto de eliminar.
 - **Mini-gráficos intradía** (aprovecha varios check-ins/día): ánimo, dolor, energía/estrés.
 
 ## Detalle de día `diary/[date]`
