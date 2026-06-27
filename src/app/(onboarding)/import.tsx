@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Import from "@/features/onboarding/import/Import";
+import ImportScreen from "@/features/onboarding/import/ImportScreen";
 
 export default function ImportRoute() {
     const router = useRouter();
 
-    return <Import onContinue={() => router.replace("/(tabs)")} onBack={() => router.back()} />;
+    return <ImportScreen onContinue={() => router.replace("/(tabs)")} onBack={() => router.back()} />;
 }

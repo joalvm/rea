@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Cycle from "@/features/onboarding/cycle/Cycle";
+import CycleScreen from "@/features/onboarding/cycle/CycleScreen";
 
 export default function CycleRoute() {
     const router = useRouter();
 
-    return <Cycle onContinue={() => router.push("/(onboarding)/regularity")} />;
+    return <CycleScreen onContinue={() => router.push("/(onboarding)/regularity")} />;
 }

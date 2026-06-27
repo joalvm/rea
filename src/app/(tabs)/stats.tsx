@@ -1,5 +1,5 @@
-import Statistics from "@/features/statistics/statistics/Statistics";
+import StatisticsScreen from "@/features/statistics/statistics/StatisticsScreen";
 
 export default function StatisticsRoute() {
-    return <Statistics />;
+    return <StatisticsScreen />;
 }

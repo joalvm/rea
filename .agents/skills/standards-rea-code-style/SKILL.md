@@ -61,6 +61,8 @@ El código se lee de arriba hacia abajo sin saltos, cada archivo tiene un dueño
 ## Nombres
 
 - Componentes: PascalCase (`ProfileCard`). Screen: PascalCase + `Screen`.
+- En features y subfeatures, el archivo dueño de la vista usa el nombre del concepto + `Screen` (`ProfileScreen`, `CycleProfileScreen`).
+- Si ese screen tiene un archivo de estilos hermano, usa exactamente el mismo concepto + `Style` (`ProfileStyle`, `CycleProfileStyle`).
 - Hooks: `use` + camelCase (`useAuthRedirect`). Hook de store: `useXStore`.
 - Utilidades: camelCase con verbo o sustantivo (`formatDate`, `clamp`).
 - Booleanos: prefijo `is` / `has` / `should` (`isActive`, `hasError`).
@@ -68,6 +70,12 @@ El código se lee de arriba hacia abajo sin saltos, cada archivo tiene un dueño
 - Constantes de módulo: CONST_CASE solo si son globales del módulo; lo demás camelCase.
 - Estilos: nombres semánticos (`container`, `title`), no posicionales (`view1`).
 - Evitar: `data`, `info`, `helpers`, `common`, `misc`, `temp`, `new`.
+
+## Artefactos de feature
+
+- La raíz de un feature o subfeature solo puede contener el screen dueño (`XScreen.tsx`) y su estilo hermano (`XStyle.ts`) si existe.
+- Todo artefacto secundario vive en su carpeta propia por tipo: `components/`, `hooks/`, `types/`, `utils/`, `services/`, `stores/`, `mutations/`.
+- Evitar archivos secundarios sueltos en la raíz del feature, aunque hoy solo exista uno.
 
 ## Referencias (según la tarea)
 

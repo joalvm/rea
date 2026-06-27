@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import CheckinIntro from "@/features/checkin/intro/CheckinIntro";
+import CheckinIntroScreen from "@/features/checkin/intro/CheckinIntroScreen";
 
 export default function CheckinIndexRoute() {
     const router = useRouter();
 
-    return <CheckinIntro onContinue={() => router.push("/checkin/bleeding")} />;
+    return <CheckinIntroScreen onContinue={() => router.push("/checkin/bleeding")} />;
 }

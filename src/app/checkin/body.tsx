@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Body from "@/features/checkin/body/Body";
+import BodyScreen from "@/features/checkin/body/BodyScreen";
 
 export default function BodyRoute() {
     const router = useRouter();
 
-    return <Body onContinue={() => router.push("/checkin/symptoms")} />;
+    return <BodyScreen onContinue={() => router.push("/checkin/symptoms")} />;
 }

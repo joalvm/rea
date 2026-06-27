@@ -17,7 +17,7 @@ export type WithTimestamps<T> = T & { createdAt: string; updatedAt: string };
 ## `interface` solo para declaration merging
 
 ```ts
-// augmentar el tipo de una librería
+// aumentar el tipo de una librería
 declare module 'some-lib' {
   interface Config {
     featureFlag: boolean;

@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Bleeding from "@/features/checkin/bleeding/Bleeding";
+import BleedingScreen from "@/features/checkin/bleeding/BleedingScreen";
 
 export default function BleedingRoute() {
     const router = useRouter();
 
-    return <Bleeding onContinue={() => router.push("/checkin/feelings")} />;
+    return <BleedingScreen onContinue={() => router.push("/checkin/feelings")} />;
 }

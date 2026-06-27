@@ -1,5 +1,5 @@
-import Diary from "@/features/diary/diary/Diary";
+import DiaryScreen from "@/features/diary/diary/DiaryScreen";
 
 export default function DiaryRoute() {
-    return <Diary />;
+    return <DiaryScreen />;
 }

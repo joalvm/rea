@@ -1,5 +1,5 @@
-import Sources from "@/features/settings/sources/Sources";
+import SourcesScreen from "@/features/settings/sources/SourcesScreen";
 
 export default function SourcesRoute() {
-    return <Sources />;
+    return <SourcesScreen />;
 }

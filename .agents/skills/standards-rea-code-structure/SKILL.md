@@ -47,13 +47,15 @@ assets/
 ### `features/`
 
 - Cada carpeta es un dominio autocontenido: `auth/`, `profile/`, `settings/`.
-- Contiene: `XScreen.tsx`, `components/`, `hooks/` (incluye read hooks de live query), `XStore.ts`, mutaciones (`createUser.ts`), `types/`.
+- La raíz del feature se reserva para el dueño visual del feature: `XScreen.tsx` y, si existe estilo propio del screen, `XStyle.ts` hermano.
+- Todo lo demás vive en su carpeta de responsabilidad: `components/`, `hooks/` (incluye read hooks de live query), `types/`, `utils/`, `stores/`, `mutations/`, `services/`.
+- No dejar componentes, hooks, tipos, utilidades o helpers sueltos en la raíz del feature.
 - **No importa de otro feature.** Lo compartido sube a `shared/` o `components/`.
 
 #### Subfeatures
 
 - Un feature con varias rutas relacionadas se divide en subfeatures: una subcarpeta por conjunto de rutas.
-- Cada subfeature replica la estructura de un feature (`XScreen.tsx`, `components/`, `hooks/`, `types/`).
+- Cada subfeature replica la misma regla: raíz reservada para `XScreen.tsx` y su `XStyle.ts` hermano cuando aplique; el resto en carpetas por tipo (`components/`, `hooks/`, `types/`, `utils/`, etc.).
 - **Un solo nivel de anidamiento.** Si una subfeature pediría sub-subfeatures, es un feature propio.
 - **Regla fractal**: un hermano nunca importa a otro hermano. Lo común entre subfeatures sube al `shared/` del feature (`features/<name>/shared/`), que solo se crea si es estrictamente necesario.
 - El estado compartido entre subfeatures vive en el store del feature, no en una subfeature.
@@ -110,9 +112,9 @@ modules/config, lang/ → nadie
 | Tipo | Convención | Ejemplo |
 |------|-----------|---------|
 | Componente React | PascalCase | `Button.tsx` |
-| Screen de feature | PascalCase + `Screen` | `ProfileScreen.tsx` |
+| Screen de feature o subfeature | Nombre del concepto + `Screen` | `ProfileScreen.tsx`, `CycleProfileScreen.tsx` |
 | Ruta Expo Router | lowercase/kebab por URL | `reset-password.tsx`, `_layout.tsx`, `(group)/` |
-| Archivo de estilos | PascalCase + `Style` | `ButtonStyle.ts` |
+| Archivo de estilos del screen | Mismo concepto del screen + `Style` | `ProfileStyle.ts`, `CycleProfileStyle.ts` |
 | Store Zustand | PascalCase + `Store` | `AuthStore.ts` |
 | Hook | camelCase, prefijo `use` | `useAuth.ts` |
 | Read hook (live query) | camelCase, prefijo `use` | `useUserProfile.ts` |
@@ -126,10 +128,12 @@ modules/config, lang/ → nadie
 - No barrels (`index.ts` que re-exporta). Rompe Fast Refresh.
 - Un tipo por archivo con nombre de responsabilidad. No `*.types.ts`.
 - Props en el mismo archivo del componente.
-- Estilos en `*Style.ts` hermano (salvo componentes triviales).
+- En la raíz de un feature o subfeature solo viven `XScreen.tsx` y su `XStyle.ts` hermano cuando exista.
+- Componentes, hooks, tipos, utilidades, stores, mutaciones y servicios van en carpetas propias por tipo; no en archivos sueltos de la raíz.
+- Estilos en `*Style.ts` hermano del dueño visual correspondiente (salvo componentes triviales dentro de `components/`).
 - Sin nombres comodín (`utils.ts`, `helpers.ts`, `common.ts`): cada archivo lleva su responsabilidad (`formatDate.ts`).
 - Un hermano no importa de otro hermano (features y subfeatures): lo común sube.
-- No crear carpetas de capa vacías: una subfeature de un solo screen es solo `XScreen.tsx`.
+- No crear carpetas de capa vacías: si aún no existe más de una pieza de un tipo, igual respeta la carpeta del tipo cuando esa pieza no sea el screen dueño.
 - `app/` solo rutas. `lang/` solo JSON.
 
 ## Antipatrones
@@ -139,6 +143,7 @@ modules/config, lang/ → nadie
 - UI o hook importando `db` directo: debe usar un read hook (`useLiveQuery`).
 - Store cacheando lecturas de la base de datos: usa live query.
 - Feature importando de otro feature, o subfeature importando de otra subfeature.
+- Dejar `components`, `hooks`, `types`, `utils` o `services` como archivos sueltos en la raíz del feature o subfeature.
 - `*.types.ts`, barrels, nombres comodín.
 - Lógica en `lang/`; recursos JSON dentro de `modules/i18n`.
 
@@ -148,6 +153,8 @@ modules/config, lang/ → nadie
 - [ ] `app/` solo contiene rutas; providers y guardas en `_layout`.
 - [ ] Lecturas vía read hook (`useLiveQuery`); escrituras vía mutación en transacción.
 - [ ] El store no cachea la base de datos; solo estado efímero/flujo.no theme.
+- [ ] La raíz del feature o subfeature solo contiene `XScreen.tsx` y, si aplica, `XStyle.ts`.
+- [ ] Componentes, hooks, tipos, utilidades, servicios y stores viven en carpetas propias por tipo.
 - [ ] Sin barrels, sin `*.types.ts`, sin nombres comodín.
 - [ ] Ningún hermano importa de otro hermano; lo común está en `shared/`.
 - [ ] `lang/` solo JSON.

@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Regularity from "@/features/onboarding/regularity/Regularity";
+import RegularityScreen from "@/features/onboarding/regularity/RegularityScreen";
 
 export default function RegularityRoute() {
     const router = useRouter();
 
-    return <Regularity onContinue={() => router.push("/(onboarding)/contraception")} />;
+    return <RegularityScreen onContinue={() => router.push("/(onboarding)/contraception")} />;
 }

@@ -1,5 +1,5 @@
-import CycleProfile from "@/features/settings/cycle-profile/CycleProfile";
+import CycleProfileScreen from "@/features/settings/cycle-profile/CycleProfileScreen";
 
 export default function CycleProfileRoute() {
-    return <CycleProfile />;
+    return <CycleProfileScreen />;
 }

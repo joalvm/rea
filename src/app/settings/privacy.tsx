@@ -1,5 +1,5 @@
-import Privacy from "@/features/settings/privacy/Privacy";
+import PrivacyScreen from "@/features/settings/privacy/PrivacyScreen";
 
 export default function PrivacyRoute() {
-    return <Privacy />;
+    return <PrivacyScreen />;
 }

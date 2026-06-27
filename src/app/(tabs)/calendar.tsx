@@ -1,3 +1,3 @@
-import Calendar from "@/features/calendar/Calendar";
+import CalendarScreen from "@/features/calendar/CalendarScreen";
 
-export default Calendar;
+export default CalendarScreen;

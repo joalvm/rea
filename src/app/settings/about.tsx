@@ -1,5 +1,5 @@
-import About from "@/features/settings/about/About";
+import AboutScreen from "@/features/settings/about/AboutScreen";
 
 export default function AboutRoute() {
-    return <About />;
+    return <AboutScreen />;
 }

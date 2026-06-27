@@ -1,9 +1,9 @@
 import { useLocalSearchParams } from "expo-router";
 
-import ContentDetail from "@/features/content/detail/ContentDetail";
+import ContentDetailScreen from "@/features/content/detail/ContentDetailScreen";
 
 export default function ContentDetailRoute() {
     const { id } = useLocalSearchParams<{ id: string }>();
 
-    return <ContentDetail id={id ?? ""} />;
+    return <ContentDetailScreen id={id ?? ""} />;
 }

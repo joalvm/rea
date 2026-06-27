@@ -1,5 +1,5 @@
-import Pregnancy from "@/features/settings/pregnancy/Pregnancy";
+import PregnancyScreen from "@/features/settings/pregnancy/PregnancyScreen";
 
 export default function PregnancyRoute() {
-    return <Pregnancy />;
+    return <PregnancyScreen />;
 }

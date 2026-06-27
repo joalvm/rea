@@ -1,12 +1,12 @@
 import { useRouter } from "expo-router";
 
-import Settings from "@/features/settings/settings/Settings";
+import SettingsScreen from "@/features/settings/settings/SettingsScreen";
 
 export default function SettingsRoute() {
     const router = useRouter();
 
     return (
-        <Settings
+        <SettingsScreen
             links={[
                 {
                     label: "Mi contexto",

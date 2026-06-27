@@ -1,5 +1,5 @@
-import PeriodConfirm from "@/features/period/confirm/PeriodConfirm";
+import PeriodConfirmScreen from "@/features/period/confirm/PeriodConfirmScreen";
 
 export default function PeriodConfirmRoute() {
-    return <PeriodConfirm />;
+    return <PeriodConfirmScreen />;
 }

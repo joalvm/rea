@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 
-import Today from "@/features/today/Today";
+import TodayScreen from "@/features/today/TodayScreen";
 
 function todayLocalDate() {
     const now = new Date();
@@ -14,7 +14,7 @@ export default function TodayRoute() {
     const router = useRouter();
 
     return (
-        <Today
+        <TodayScreen
             onStartCheckin={() => router.push("/checkin")}
             onOpenDiary={() => router.push(`/diary/${todayLocalDate()}`)}
         />

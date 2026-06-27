@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Contraception from "@/features/onboarding/contraception/Contraception";
+import ContraceptionScreen from "@/features/onboarding/contraception/ContraceptionScreen";
 
 export default function ContraceptionRoute() {
     const router = useRouter();
 
-    return <Contraception onContinue={() => router.push("/(onboarding)/goal")} />;
+    return <ContraceptionScreen onContinue={() => router.push("/(onboarding)/goal")} />;
 }

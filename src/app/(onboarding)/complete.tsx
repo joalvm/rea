@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Complete from "@/features/onboarding/complete/Complete";
+import CompleteScreen from "@/features/onboarding/complete/CompleteScreen";
 
 export default function OnboardingCompleteRoute() {
     const router = useRouter();
 
-    return <Complete onFinish={() => router.replace("/(tabs)")} />;
+    return <CompleteScreen onFinish={() => router.replace("/(tabs)")} />;
 }

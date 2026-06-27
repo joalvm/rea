@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Notifications from "@/features/onboarding/notifications/Notifications";
+import NotificationsScreen from "@/features/onboarding/notifications/NotificationsScreen";
 
 export default function NotificationsRoute() {
     const router = useRouter();
 
-    return <Notifications onContinue={() => router.push("/(onboarding)/complete")} />;
+    return <NotificationsScreen onContinue={() => router.push("/(onboarding)/complete")} />;
 }

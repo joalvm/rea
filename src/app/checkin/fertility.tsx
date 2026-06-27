@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Fertility from "@/features/checkin/fertility/Fertility";
+import FertilityScreen from "@/features/checkin/fertility/FertilityScreen";
 
 export default function FertilityRoute() {
     const router = useRouter();
 
-    return <Fertility onContinue={() => router.push("/checkin/medications")} />;
+    return <FertilityScreen onContinue={() => router.push("/checkin/medications")} />;
 }

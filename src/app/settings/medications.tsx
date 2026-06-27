@@ -1,5 +1,5 @@
-import MedicationsManager from "@/features/settings/medications/MedicationsManager";
+import MedicationsManagerScreen from "@/features/settings/medications/MedicationsManagerScreen";
 
 export default function MedicationsManagerRoute() {
-    return <MedicationsManager />;
+    return <MedicationsManagerScreen />;
 }

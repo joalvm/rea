@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 
-import Goal from "@/features/onboarding/goal/Goal";
+import GoalScreen from "@/features/onboarding/goal/GoalScreen";
 
 export default function GoalRoute() {
     const router = useRouter();
 
-    return <Goal onContinue={() => router.push("/(onboarding)/notifications")} />;
+    return <GoalScreen onContinue={() => router.push("/(onboarding)/notifications")} />;
 }

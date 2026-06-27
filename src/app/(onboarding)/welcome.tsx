@@ -1,12 +1,12 @@
 import { useRouter } from "expo-router";
 
-import Welcome from "@/features/onboarding/welcome/Welcome";
+import WelcomeScreen from "@/features/onboarding/welcome/WelcomeScreen";
 
 export default function WelcomeRoute() {
     const router = useRouter();
 
     return (
-        <Welcome
+        <WelcomeScreen
             onStart={() => router.push("/(onboarding)/birth-year")}
             onImport={() => router.push("/(onboarding)/import")}
         />

@@ -1,5 +1,5 @@
-import SettingsNotifications from "@/features/settings/notifications/SettingsNotifications";
+import SettingsNotificationsScreen from "@/features/settings/notifications/SettingsNotificationsScreen";
 
 export default function SettingsNotificationsRoute() {
-    return <SettingsNotifications />;
+    return <SettingsNotificationsScreen />;
 }
