@@ -14,7 +14,7 @@ type Props = {
  * `user_profile.onboarding_completed_at`. Ver README de la feature.
  */
 export default function CompleteScreen({ onFinish }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useCompleteStyles();
 
     return (

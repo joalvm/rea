@@ -10,7 +10,7 @@ type Props = {
 
 /** Onboarding: inicio (y fin opcional) del último periodo → crea el primer period_run. Ver README. */
 export default function LastPeriodScreen({ onContinue }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useLastPeriodStyles();
 
     return (

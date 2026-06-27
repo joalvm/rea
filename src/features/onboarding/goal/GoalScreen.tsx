@@ -10,7 +10,7 @@ type Props = {
 
 /** Onboarding: ¿busca embarazo? (trying_to_conceive). Oculto si usa anticoncepción hormonal. Ver README. */
 export default function GoalScreen({ onContinue }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useGoalStyles();
 
     return (

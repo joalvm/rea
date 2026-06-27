@@ -37,7 +37,7 @@ type Props = {
  * feature). La fase real (motor de predicción) se conectará en `Today`.
  */
 export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta }: Props) {
-    const { t } = useTranslation("today");
+    const { t } = useTranslation("preview");
     const theme = useTheme();
     const styles = useHeroStyles();
     const insets = useSafeAreaInsets();

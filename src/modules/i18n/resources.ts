@@ -1,5 +1,5 @@
-import onboarding from "@/lang/es/onboarding.json";
-import today from "@/lang/es/today.json";
+import previewEn from "@/lang/en/preview.json";
+import previewEs from "@/lang/es/preview.json";
 
 /**
  * Recursos para i18next: idioma → namespace → claves. Los JSON viven solo en
@@ -7,7 +7,9 @@ import today from "@/lang/es/today.json";
  */
 export const resources = {
     es: {
-        today,
-        onboarding,
+        preview: previewEs,
+    },
+    en: {
+        preview: previewEn,
     },
 } as const;

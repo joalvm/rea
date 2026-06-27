@@ -11,7 +11,7 @@ type Props = {
 
 /** Paso 1 del onboarding: bienvenida + promesa de privacidad. Ver README de la feature. */
 export default function WelcomeScreen({ onStart, onImport }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useWelcomeStyles();
 
     return (

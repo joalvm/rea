@@ -11,15 +11,23 @@ describe("i18n", () => {
         expect(i18n.isInitialized).toBe(true);
     });
 
-    it("resolves a key from the today namespace", () => {
-        expect(i18n.t("hero.overline", { ns: "today" })).toBe("Tu fase de hoy");
+    it("resolves a key from the preview namespace", () => {
+        expect(i18n.t("hero.overline", { ns: "preview" })).toBe("Tu fase de hoy");
     });
 
     it("interpolates variables into a string", () => {
-        expect(i18n.t("hero.cycleDay", { ns: "today", day: 12 })).toBe("Día 12 del ciclo");
+        expect(i18n.t("hero.cycleDay", { ns: "preview", day: 12 })).toBe("Día 12 del ciclo");
     });
 
-    it("resolves a key from the onboarding namespace", () => {
-        expect(i18n.t("welcome.title", { ns: "onboarding" })).toBe("Bienvenida a Rea");
+    it("resolves onboarding copy from the preview namespace", () => {
+        expect(i18n.t("welcome.title", { ns: "preview" })).toBe("Bienvenida a Rea");
+    });
+
+    it("resolves preview copy in english", async () => {
+        await i18n.changeLanguage("en");
+
+        expect(i18n.t("welcome.title", { ns: "preview" })).toBe("Welcome to Rea");
+
+        await i18n.changeLanguage("es");
     });
 });

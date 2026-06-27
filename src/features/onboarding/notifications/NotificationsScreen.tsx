@@ -10,7 +10,7 @@ type Props = {
 
 /** Onboarding: ventana e intervalo de recordatorios (user_profile.reminder_*). Ver README. */
 export default function NotificationsScreen({ onContinue }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useNotificationsStyles();
 
     return (

@@ -10,7 +10,7 @@ type Props = {
 
 /** Onboarding: duración del sangrado y del ciclo (declared_period_length / declared_cycle_length). Ver README. */
 export default function CycleScreen({ onContinue }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useCycleStyles();
 
     return (

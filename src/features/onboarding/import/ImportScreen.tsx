@@ -11,7 +11,7 @@ type Props = {
 
 /** Onboarding (alternativo): importar copia de seguridad y validar datos. Ver README. */
 export default function ImportScreen({ onContinue, onBack }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useImportStyles();
 
     return (

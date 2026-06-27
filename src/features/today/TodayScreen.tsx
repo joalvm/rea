@@ -22,7 +22,7 @@ type Props = {
  * `daily_summary.estimated_phase` cuando exista el motor de predicción.
  */
 export default function TodayScreen({ onStartCheckin, onOpenDiary }: Props) {
-    const { t } = useTranslation("today");
+    const { t } = useTranslation("preview");
     const theme = useTheme();
     const styles = useTodayStyles();
     const [phase, setPhase] = useState<PhaseKey>("follicular");
@@ -33,25 +33,22 @@ export default function TodayScreen({ onStartCheckin, onOpenDiary }: Props) {
 
             <View style={styles.body}>
                 <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Resumen del día</Text>
-                    <Text style={styles.cardText}>
-                        Aquí verás tus chips de ánimo, energía, estrés, dolor y síntoma principal a partir de tu
-                        check-in. (Pendiente de conectar con datos.)
-                    </Text>
+                    <Text style={styles.cardTitle}>{t("summary.title")}</Text>
+                    <Text style={styles.cardText}>{t("summary.body")}</Text>
                 </View>
 
                 <Pressable
                     onPress={onOpenDiary}
                     accessibilityRole="button"
-                    accessibilityLabel="Abrir diario de hoy"
+                    accessibilityLabel={t("summary.openDiary")}
                     style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
                 >
-                    <Text style={styles.secondaryBtnText}>Abrir diario de hoy</Text>
+                    <Text style={styles.secondaryBtnText}>{t("summary.openDiary")}</Text>
                 </Pressable>
 
                 {/* ── Vista previa temporal del theming por fase (quitar al integrar predicción) ── */}
                 <View style={styles.previewBlock}>
-                    <Text style={styles.previewLabel}>Vista previa de fases (temporal)</Text>
+                    <Text style={styles.previewLabel}>{t("summary.phasePreview")}</Text>
                     <View style={styles.previewChips}>
                         {PHASE_KEYS.map((key) => {
                             const active = key === phase;

@@ -10,7 +10,7 @@ type Props = {
 
 /** Onboarding: regularidad percibida (regular | variable | irregular). Ver README. */
 export default function RegularityScreen({ onContinue }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useRegularityStyles();
 
     return (

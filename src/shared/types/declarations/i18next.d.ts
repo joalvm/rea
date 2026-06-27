@@ -1,7 +1,6 @@
 import "i18next";
 
-import type onboarding from "@/lang/es/onboarding.json";
-import type today from "@/lang/es/today.json";
+import type preview from "@/lang/es/preview.json";
 
 /**
  * Tipado fuerte de claves para `t(...)` y `useTranslation`, derivado de los JSON
@@ -11,8 +10,7 @@ import type today from "@/lang/es/today.json";
 declare module "i18next" {
     interface CustomTypeOptions {
         resources: {
-            today: typeof today;
-            onboarding: typeof onboarding;
+            preview: typeof preview;
         };
         returnNull: false;
     }

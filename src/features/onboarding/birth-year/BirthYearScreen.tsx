@@ -10,7 +10,7 @@ type Props = {
 
 /** Onboarding: año de nacimiento (user_profile.birth_year). Solo el año. Ver README. */
 export default function BirthYearScreen({ onContinue }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("preview");
     const styles = useBirthYearStyles();
 
     return (

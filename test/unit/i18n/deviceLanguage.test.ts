@@ -19,7 +19,7 @@ describe("detectDeviceLanguage", () => {
     });
 
     it("falls back when the device language is not supported", () => {
-        mockGetLocales.mockReturnValue([{ languageTag: "en-US", languageCode: "en", regionCode: "US" }]);
+        mockGetLocales.mockReturnValue([{ languageTag: "fr-FR", languageCode: "fr", regionCode: "FR" }]);
         expect(detectDeviceLanguage()).toBe("es");
     });
 
