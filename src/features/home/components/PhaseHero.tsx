@@ -11,10 +11,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTranslation } from "react-i18next";
 
-import { createStyles } from "@/theme/createStyles";
 import type { PhaseKey } from "@/theme/types/PhaseColors";
 import { useTheme } from "@/theme/useTheme";
-import { PHASE_ICONS } from "../phaseIcons";
+import { PHASE_ICONS } from "../utils/phaseIcons";
+import { useHeroStyles } from "./PhaseHeroStyle";
 
 type Props = {
     /** Fase estimada actual. Vendrá de `daily_summary.estimated_phase`. */
@@ -34,7 +34,7 @@ type Props = {
  * un fade, para que la usuaria identifique su fase "por el color" apenas entra.
  *
  * Presentacional: recibe `phase` por props (el color lo da el tema y la copia el
- * feature). La fase real (motor de predicción) se conectará en `Today`.
+ * feature). La fase real (motor de predicción) se conectará en `Home`.
  */
 export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta }: Props) {
     const { t } = useTranslation("preview");
@@ -122,86 +122,3 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta
         </Animated.View>
     );
 }
-
-const useHeroStyles = createStyles((theme) => {
-    const { spacing, radius, typography, sizing, shadows } = theme;
-
-    return {
-        hero: {
-            overflow: "hidden",
-            borderBottomLeftRadius: radius["3xl"],
-            borderBottomRightRadius: radius["3xl"],
-            paddingHorizontal: spacing["2xl"],
-            paddingBottom: spacing["3xl"],
-        },
-        blob: {
-            position: "absolute",
-            borderRadius: radius.full,
-        },
-        blobTop: {
-            width: 230,
-            height: 230,
-            top: -70,
-            right: -50,
-        },
-        blobBottom: {
-            width: 170,
-            height: 170,
-            bottom: -60,
-            left: -40,
-        },
-        headerRow: {
-            flexDirection: "row",
-            alignItems: "center",
-            gap: spacing.md,
-            marginBottom: spacing.lg,
-        },
-        iconBubble: {
-            width: 44,
-            height: 44,
-            borderRadius: radius.full,
-            alignItems: "center",
-            justifyContent: "center",
-        },
-        overline: {
-            ...typography.variant.overline,
-        },
-        label: {
-            ...typography.variant.display,
-            marginBottom: spacing.xs,
-        },
-        caption: {
-            ...typography.variant.body,
-        },
-        chipsRow: {
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: spacing.sm,
-            marginTop: spacing.lg,
-        },
-        chip: {
-            paddingHorizontal: spacing.md,
-            paddingVertical: spacing.xs,
-            borderRadius: radius.pill,
-        },
-        chipText: {
-            ...typography.variant.subhead,
-        },
-        cta: {
-            alignSelf: "flex-start",
-            marginTop: spacing.xl,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            alignItems: "center",
-            justifyContent: "center",
-            ...shadows[2],
-        },
-        ctaText: {
-            ...typography.variant.bodyStrong,
-        },
-        pressed: {
-            opacity: 0.85,
-        },
-    };
-});

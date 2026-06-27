@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 
-import TodayScreen from "@/features/today/TodayScreen";
+import HomeScreen from "@/features/home/HomeScreen";
 
-function todayLocalDate() {
+function currentLocalDate() {
     const now = new Date();
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const day = String(now.getDate()).padStart(2, "0");
@@ -10,13 +10,13 @@ function todayLocalDate() {
     return `${now.getFullYear()}-${month}-${day}`;
 }
 
-export default function TodayRoute() {
+export default function HomeRoute() {
     const router = useRouter();
 
     return (
-        <TodayScreen
+        <HomeScreen
             onStartCheckin={() => router.push("/checkin")}
-            onOpenDiary={() => router.push(`/diary/${todayLocalDate()}`)}
+            onOpenDiary={() => router.push(`/diary/${currentLocalDate()}`)}
         />
     );
 }
