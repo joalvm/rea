@@ -11,6 +11,7 @@ describe("reproductiveIntentHistory schema", () => {
             "effective_from",
             "effective_to",
             "current_mode",
+            "cycle_intent",
             "regularity",
             "hormonal_contraception",
             "declared_cycle_length",
@@ -26,8 +27,11 @@ describe("reproductiveIntentHistory schema", () => {
         expect(indexNames(reproductiveIntentHistory)).toEqual(["uq_reproductive_intent_single_open"]);
         expect(checkNames(reproductiveIntentHistory)).toEqual([
             "reproductive_intent_current_mode_check",
+            "cycle_intent_check",
+            "cycle_intent_mode_consistency_check",
             "regularity_check",
             "hormonal_contraception_check",
+            "ttc_hormonal_contraception_exclusion_check",
             "declared_cycle_length_check",
             "declared_period_length_check",
             "effective_from_format_check",

@@ -54,6 +54,39 @@ describe("reproductiveIntentHistory schema integration", () => {
         ).rejects.toThrow();
     });
 
+    it("enforces cycle_intent consistency with current_mode", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-cycle-without-intent",
+                cycleIntent: null,
+            }),
+        ).rejects.toThrow();
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-ttc-with-intent",
+                effectiveFrom: "2026-02-01",
+                currentMode: "ttc",
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("rejects ttc together with hormonal contraception", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-ttc-hormonal",
+                effectiveFrom: "2026-02-01",
+                currentMode: "ttc",
+                cycleIntent: null,
+                hormonalContraception: true,
+            }),
+        ).rejects.toThrow();
+    });
+
     it("cascades when the owning profile is deleted", async () => {
         await seedProfile(context.database);
         await seedReproductiveIntentHistory(context.database);

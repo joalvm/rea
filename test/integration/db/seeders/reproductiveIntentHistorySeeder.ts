@@ -8,6 +8,7 @@ const defaultReproductiveIntentHistory: InsertReproductiveIntentHistory = {
     profileId: profileSeed.id,
     effectiveFrom: "2026-01-01",
     currentMode: "cycle_tracking",
+    cycleIntent: "track_only",
     regularity: "regular",
     hormonalContraception: false,
     declaredCycleLength: 28,

@@ -1,7 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
-import { regularityValues, reproductiveModeValues } from "@/db/enums/reproductiveMode";
+import { cycleIntentValues, regularityValues, reproductiveModeValues } from "@/db/enums/reproductiveMode";
 
 import { profile } from "./profile";
 
@@ -34,6 +34,7 @@ export const reproductiveIntentHistory = sqliteTable(
         effectiveFrom: text("effective_from").notNull(),
         effectiveTo: text("effective_to"),
         currentMode: text("current_mode", { enum: reproductiveModeValues }).notNull(),
+        cycleIntent: text("cycle_intent", { enum: cycleIntentValues }),
         regularity: text("regularity", { enum: regularityValues }).notNull(),
         hormonalContraception: integer("hormonal_contraception", { mode: "boolean" }).notNull(),
         declaredCycleLength: integer("declared_cycle_length").notNull(),
@@ -51,8 +52,20 @@ export const reproductiveIntentHistory = sqliteTable(
             "reproductive_intent_current_mode_check",
             sql`${table.currentMode} IN ('cycle_tracking', 'ttc', 'pregnancy')`,
         ),
+        check(
+            "cycle_intent_check",
+            sql`${table.cycleIntent} IS NULL OR ${table.cycleIntent} IN ('track_only', 'avoid_pregnancy')`,
+        ),
+        check(
+            "cycle_intent_mode_consistency_check",
+            sql`(${table.currentMode} = 'cycle_tracking') = (${table.cycleIntent} IS NOT NULL)`,
+        ),
         check("regularity_check", sql`${table.regularity} IN ('regular', 'variable', 'irregular')`),
         check("hormonal_contraception_check", sql`${table.hormonalContraception} IN (0, 1)`),
+        check(
+            "ttc_hormonal_contraception_exclusion_check",
+            sql`NOT (${table.currentMode} = 'ttc' AND ${table.hormonalContraception} = 1)`,
+        ),
         check("declared_cycle_length_check", sql`${table.declaredCycleLength} BETWEEN 15 AND 90`),
         check("declared_period_length_check", sql`${table.declaredPeriodLength} BETWEEN 1 AND 15`),
         check("effective_from_format_check", sql`${table.effectiveFrom} LIKE '____-__-__'`),

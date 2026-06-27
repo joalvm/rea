@@ -11,6 +11,14 @@ export const reproductiveModeValues = ["cycle_tracking", "ttc", "pregnancy"] as 
 export const reproductiveModeFilterValues = [...reproductiveModeValues, "all"] as const;
 
 /**
+ * Intenciones dentro del modo `cycle_tracking`.
+ * Distinguen entre seguimiento neutral (`track_only`) y uso como anticonceptivo natural
+ * mediante metodo del ritmo o sintotermico (`avoid_pregnancy`).
+ * Solo aplica cuando `current_mode = 'cycle_tracking'`; es NULL en `ttc` y `pregnancy`.
+ */
+export const cycleIntentValues = ["track_only", "avoid_pregnancy"] as const;
+
+/**
  * Regularidades declaradas para describir el patron del ciclo.
  * Se usan en onboarding y configuracion de prediccion para capturar la estabilidad percibida del ciclo.
  */
@@ -21,6 +29,12 @@ export const regularityValues = ["regular", "variable", "irregular"] as const;
  * Importar este tipo cuando un contrato necesite aceptar uno de los valores de `reproductiveModeValues`.
  */
 export type ReproductiveMode = (typeof reproductiveModeValues)[number];
+
+/**
+ * Union literal de intenciones admitidas dentro del modo ciclo.
+ * Importar este tipo cuando un contrato deba tipar valores de `cycleIntentValues`.
+ */
+export type CycleIntent = (typeof cycleIntentValues)[number];
 
 /**
  * Union literal de los modos validos para filtros o alcance de contenido.

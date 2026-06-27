@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS app_settings (
 -- ----------------------------------------------------------------------------
 -- INTENCIÓN REPRODUCTIVA (Master Switch del Hero de la App)
 -- Cambiar el `current_mode` transforma la interfaz y las predicciones.
+-- `cycle_intent` refina el modo ciclo: `track_only` (neutral) o
+-- `avoid_pregnancy` (método del ritmo/sintotérmico). NULL en ttc/pregnancy.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS reproductive_intent_history (
     id                         TEXT PRIMARY KEY NOT NULL, -- UUIDv7.
@@ -64,6 +66,10 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
                                    'ttc',                -- Pilar 2: Buscando embarazo.
                                    'pregnancy'           -- Pilar 3: Embarazo en curso.
                                )),
+    cycle_intent               TEXT CHECK (cycle_intent IS NULL OR cycle_intent IN (
+                                   'track_only',         -- Seguimiento neutral.
+                                   'avoid_pregnancy'     -- Anticonceptivo natural (ritmo/sintotérmico).
+                               )),                       -- NOT NULL solo cuando current_mode = 'cycle_tracking'.
     regularity                 TEXT NOT NULL CHECK (regularity IN ('regular', 'variable', 'irregular')),
     hormonal_contraception     INTEGER NOT NULL CHECK (hormonal_contraception IN (0, 1)),
     declared_cycle_length      INTEGER NOT NULL CHECK (declared_cycle_length BETWEEN 15 AND 90),
@@ -76,6 +82,10 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
     CHECK (effective_from LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to >= effective_from),
+    -- cycle_intent obligatorio en modo ciclo, prohibido en ttc/pregnancy.
+    CHECK ((current_mode = 'cycle_tracking') = (cycle_intent IS NOT NULL)),
+    -- TTC y anticoncepción hormonal son excluyentes.
+    CHECK (NOT (current_mode = 'ttc' AND hormonal_contraception = 1)),
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
 ) STRICT;
 
@@ -469,7 +479,7 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 ) STRICT;
 
 INSERT OR IGNORE INTO schema_migrations(version, name, applied_at)
-VALUES (1, 'schema_v1_final_pillars', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
+VALUES (1, 'schema_v1_cycle_intent', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
 
 COMMIT;
 
