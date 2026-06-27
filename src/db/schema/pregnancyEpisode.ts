@@ -1,19 +1,20 @@
 import { relations, sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { check, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+
+import { pregnancyOutcomeValues } from "@/db/enums/pregnancyEpisode";
 
 import { profile } from "./profile";
-
-const pregnancyOutcomeValues = ["birth", "loss", "other"] as const;
 
 /**
  * Esquema de la tabla `pregnancy_episodes`, episodios de embarazo que pausan
  * las estimaciones de ciclo mientras permanecen vigentes.
  * - `id`: Identificador único del episodio.
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
- * - `startDate`: Fecha local de inicio declarada o confirmada.
+ * - `lmpDate`: Fecha de última menstruación usada como base del embarazo.
+ * - `dueDate`: Fecha probable de parto, si se conoce.
  * - `endDate`: Fecha local de fin, si el episodio ya cerró.
  * - `outcome`: Desenlace del episodio (`birth`, `loss`, `other`), solo al cerrar.
- * - `note`: Nota opcional de contexto.
+ * - `outcomeDetails`: Nota opcional de contexto del desenlace.
  * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
  * - `version`: Versión optimista del registro.
  *
@@ -27,17 +28,17 @@ export const pregnancyEpisode = sqliteTable(
         profileId: text("user_id")
             .notNull()
             .references(() => profile.id, { onDelete: "cascade" }),
-        startDate: text("start_date").notNull(),
+        lmpDate: text("lmp_date").notNull(),
+        dueDate: text("due_date"),
         endDate: text("end_date"),
         outcome: text("outcome", { enum: pregnancyOutcomeValues }),
-        note: text("note"),
+        outcomeDetails: text("outcome_details"),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         deletedAt: text("deleted_at"),
         version: integer("version").notNull().default(1),
     },
     (table) => [
-        index("ix_pregnancy_chronological").on(table.profileId, sql`${table.startDate} DESC`),
         uniqueIndex("uq_pregnancy_single_ongoing")
             .on(table.profileId)
             .where(sql`${table.endDate} IS NULL AND ${table.deletedAt} IS NULL`),
@@ -45,9 +46,9 @@ export const pregnancyEpisode = sqliteTable(
             "pregnancy_outcome_check",
             sql`${table.outcome} IN ('birth', 'loss', 'other') OR ${table.outcome} IS NULL`,
         ),
-        check("pregnancy_start_date_check", sql`${table.startDate} LIKE '____-__-__'`),
+        check("pregnancy_lmp_date_check", sql`${table.lmpDate} LIKE '____-__-__'`),
         check("pregnancy_end_date_check", sql`${table.endDate} IS NULL OR ${table.endDate} LIKE '____-__-__'`),
-        check("pregnancy_date_range_check", sql`${table.endDate} IS NULL OR ${table.endDate} >= ${table.startDate}`),
+        check("pregnancy_date_range_check", sql`${table.endDate} IS NULL OR ${table.endDate} >= ${table.lmpDate}`),
         check("pregnancy_open_outcome_check", sql`${table.endDate} IS NOT NULL OR ${table.outcome} IS NULL`),
     ],
 );

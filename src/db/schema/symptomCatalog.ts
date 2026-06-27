@@ -1,24 +1,15 @@
 import { sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-const symptomGroupValues = [
-    "pain",
-    "digestive",
-    "skin",
-    "sleep",
-    "mood",
-    "energy",
-    "bleeding",
-    "body",
-    "sexual_health",
-    "other",
-] as const;
+import { reproductiveModeFilterValues } from "@/db/enums/reproductiveMode";
+import { symptomGroupValues } from "@/db/enums/symptomCatalog";
 
 /**
  * Esquema de la tabla `symptom_catalog`, catálogo local de síntomas disponibles.
  * - `symptomKey`: Clave estable del síntoma, usada también por traducciones.
  * - `groupKey`: Grupo funcional del síntoma.
  * - `labelKey`: Clave i18n para mostrar el nombre del síntoma.
+ * - `applicableMode`: Filtra si el síntoma aplica por modo reproductivo.
  * - `uiPriority`: Prioridad de ordenamiento para UI.
  * - `isQuickOption`: Indica si el síntoma aparece como opción rápida.
  * - `isActive`: Permite retirar síntomas sin romper histórico.
@@ -32,6 +23,7 @@ export const symptomCatalog = sqliteTable(
         symptomKey: text("symptom_key").primaryKey().notNull(),
         groupKey: text("group_key", { enum: symptomGroupValues }).notNull(),
         labelKey: text("label_key").notNull(),
+        applicableMode: text("applicable_mode", { enum: reproductiveModeFilterValues }).notNull().default("all"),
         uiPriority: integer("ui_priority").notNull().default(100),
         isQuickOption: integer("is_quick_option", { mode: "boolean" }).notNull().default(false),
         isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
@@ -42,6 +34,10 @@ export const symptomCatalog = sqliteTable(
         check(
             "symptom_group_key_check",
             sql`${table.groupKey} IN ('pain', 'digestive', 'skin', 'sleep', 'mood', 'energy', 'bleeding', 'body', 'sexual_health', 'other')`,
+        ),
+        check(
+            "symptom_applicable_mode_check",
+            sql`${table.applicableMode} IN ('cycle_tracking', 'ttc', 'pregnancy', 'all')`,
         ),
         check("symptom_quick_option_check", sql`${table.isQuickOption} IN (0, 1)`),
         check("symptom_active_check", sql`${table.isActive} IN (0, 1)`),

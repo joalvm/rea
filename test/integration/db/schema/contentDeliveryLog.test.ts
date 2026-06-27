@@ -51,13 +51,14 @@ describe("contentDeliveryLog schema integration", () => {
         await expect(
             context.database.client.execute({
                 sql: `
-                    INSERT INTO content_delivery_log (id, user_id, content_item_id, surface, shown_at)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO content_delivery_log (id, user_id, content_item_id, content_version, surface, shown_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
                 `,
                 args: [
                     "content-delivery-invalid-surface",
                     profileSeed.id,
                     contentItemSeed.id,
+                    "v1",
                     "feed",
                     "2026-06-02T08:00:00Z",
                 ],

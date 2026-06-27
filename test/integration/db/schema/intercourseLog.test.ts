@@ -44,8 +44,8 @@ describe("intercourseLog schema integration", () => {
             context.database.client.execute({
                 sql: `
                     INSERT INTO intercourse_log (
-                        id, user_id, occurred_at, local_date, protected, created_at, updated_at, version
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        id, user_id, occurred_at, local_date, protected, in_fertile_window, created_at, updated_at, version
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `,
                 args: [
                     "intercourse-invalid-protected",
@@ -53,8 +53,30 @@ describe("intercourseLog schema integration", () => {
                     "2026-04-03T21:15:00Z",
                     "2026-04-03",
                     3,
+                    1,
                     "2026-04-03T21:15:00Z",
                     "2026-04-03T21:15:00Z",
+                    1,
+                ],
+            }),
+        ).rejects.toThrow();
+
+        await expect(
+            context.database.client.execute({
+                sql: `
+                    INSERT INTO intercourse_log (
+                        id, user_id, occurred_at, local_date, protected, in_fertile_window, created_at, updated_at, version
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `,
+                args: [
+                    "intercourse-invalid-fertile-window",
+                    profileSeed.id,
+                    "2026-04-04T21:15:00Z",
+                    "2026-04-04",
+                    1,
+                    3,
+                    "2026-04-04T21:15:00Z",
+                    "2026-04-04T21:15:00Z",
                     1,
                 ],
             }),

@@ -39,6 +39,7 @@ export const checkinMedication = sqliteTable(
         version: integer("version").notNull().default(1),
     },
     (table) => [
+        index("ix_checkin_medications_by_checkin").on(table.checkinId, table.deletedAt),
         index("ix_checkin_medications_lookup").on(table.medicationId, table.takenAt, table.deletedAt),
         check("checkin_medication_relief_check", sql`${table.relief} IS NULL OR (${table.relief} BETWEEN 0 AND 2)`),
     ],

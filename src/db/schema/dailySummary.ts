@@ -1,26 +1,16 @@
 import { relations, sql } from "drizzle-orm";
 import { check, index, integer, primaryKey, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+import { confidenceLevelValues } from "@/db/enums/confidenceLevel";
+import { estimatedPhaseValues, menstruationBasisValues, phaseSourceValues } from "@/db/enums/dailySummary";
+
 import { profile } from "./profile";
 import { symptomCatalog } from "./symptomCatalog";
-
-const menstruationBasisValues = ["none", "confirmed_period", "inferred_bleeding"] as const;
-const estimatedPhaseValues = [
-    "unknown",
-    "menstrual",
-    "follicular",
-    "fertile_window",
-    "estimated_ovulation",
-    "luteal",
-] as const;
-const phaseSourceValues = ["observed", "estimated", "unknown"] as const;
-const phaseConfidenceValues = ["low", "medium", "high"] as const;
-
 /**
  * Esquema de la tabla `daily_summary`, modelo de lectura diario calculado por perfil.
  * - `localDate`: Fecha local resumida.
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
- * - Indicadores diarios: Menstruación, spotting, medicación y relaciones sexuales.
+ * - Indicadores diarios: Menstruación, spotting, fertilidad, embarazo, medicación y relaciones sexuales.
  * - Promedios: Estado de ánimo, energía y estrés.
  * - Máximos: Dolor y máxima intensidad de síntomas.
  * - `topSymptomKey`: Síntoma principal del día, si existe.
@@ -40,6 +30,11 @@ export const dailySummary = sqliteTable(
         isMenstruationDay: integer("is_menstruation_day", { mode: "boolean" }).notNull().default(false),
         menstruationBasis: text("menstruation_basis", { enum: menstruationBasisValues }).notNull().default("none"),
         isSpottingDay: integer("is_spotting_day", { mode: "boolean" }).notNull().default(false),
+        isFertileDay: integer("is_fertile_day", { mode: "boolean" }).notNull().default(false),
+        ovulationConfirmed: integer("ovulation_confirmed", { mode: "boolean" }).notNull().default(false),
+        isPregnancyDay: integer("is_pregnancy_day", { mode: "boolean" }).notNull().default(false),
+        pregnancyWeek: integer("pregnancy_week"),
+        pregnancyTrimester: integer("pregnancy_trimester"),
         hadMedication: integer("had_medication", { mode: "boolean" }).notNull().default(false),
         hadIntercourse: integer("had_intercourse", { mode: "boolean" }).notNull().default(false),
         avgMood: real("avg_mood"),
@@ -51,7 +46,7 @@ export const dailySummary = sqliteTable(
         medicationReliefScore: real("medication_relief_score"),
         estimatedPhase: text("estimated_phase", { enum: estimatedPhaseValues }).notNull().default("unknown"),
         phaseSource: text("phase_source", { enum: phaseSourceValues }).notNull().default("unknown"),
-        phaseConfidence: text("phase_confidence", { enum: phaseConfidenceValues }).notNull().default("low"),
+        phaseConfidence: text("phase_confidence", { enum: confidenceLevelValues }).notNull().default("low"),
         updatedAt: text("updated_at").notNull(),
     },
     (table) => [
@@ -68,13 +63,20 @@ export const dailySummary = sqliteTable(
             sql`${table.menstruationBasis} IN ('none', 'confirmed_period', 'inferred_bleeding')`,
         ),
         check("daily_summary_spotting_day_check", sql`${table.isSpottingDay} IN (0, 1)`),
+        check("daily_summary_fertile_day_check", sql`${table.isFertileDay} IN (0, 1)`),
+        check("daily_summary_ovulation_confirmed_check", sql`${table.ovulationConfirmed} IN (0, 1)`),
+        check("daily_summary_pregnancy_day_check", sql`${table.isPregnancyDay} IN (0, 1)`),
+        check(
+            "daily_summary_pregnancy_trimester_check",
+            sql`${table.pregnancyTrimester} IS NULL OR (${table.pregnancyTrimester} BETWEEN 1 AND 3)`,
+        ),
         check("daily_summary_had_medication_check", sql`${table.hadMedication} IN (0, 1)`),
         check("daily_summary_had_intercourse_check", sql`${table.hadIntercourse} IN (0, 1)`),
         check("daily_summary_max_pain_check", sql`${table.maxPain} BETWEEN 0 AND 5 OR ${table.maxPain} IS NULL`),
         check("daily_summary_symptom_intensity_check", sql`${table.maxSymptomIntensity} BETWEEN 0 AND 5`),
         check(
             "daily_summary_estimated_phase_check",
-            sql`${table.estimatedPhase} IN ('unknown', 'menstrual', 'follicular', 'fertile_window', 'estimated_ovulation', 'luteal')`,
+            sql`${table.estimatedPhase} IN ('unknown', 'menstrual', 'follicular', 'fertile_window', 'estimated_ovulation', 'luteal', 'pregnancy_first_trimester', 'pregnancy_second_trimester', 'pregnancy_third_trimester')`,
         ),
         check("daily_summary_phase_source_check", sql`${table.phaseSource} IN ('observed', 'estimated', 'unknown')`),
         check("daily_summary_phase_confidence_check", sql`${table.phaseConfidence} IN ('low', 'medium', 'high')`),

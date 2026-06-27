@@ -20,7 +20,10 @@ describe("checkinMedication schema", () => {
     });
 
     it("declares checks, indexes and foreign keys", () => {
-        expect(indexNames(checkinMedication)).toEqual(["ix_checkin_medications_lookup"]);
+        expect(indexNames(checkinMedication)).toEqual([
+            "ix_checkin_medications_by_checkin",
+            "ix_checkin_medications_lookup",
+        ]);
         expect(checkNames(checkinMedication)).toEqual(["checkin_medication_relief_check"]);
         expect(foreignKeys(checkinMedication)).toEqual([
             { columns: ["checkin_id"], foreignColumns: ["id"], foreignTable: "checkins", onDelete: "cascade" },

@@ -11,6 +11,11 @@ describe("dailySummary schema", () => {
             "is_menstruation_day",
             "menstruation_basis",
             "is_spotting_day",
+            "is_fertile_day",
+            "ovulation_confirmed",
+            "is_pregnancy_day",
+            "pregnancy_week",
+            "pregnancy_trimester",
             "had_medication",
             "had_intercourse",
             "avg_mood",
@@ -33,6 +38,10 @@ describe("dailySummary schema", () => {
         expect(dailySummary.phaseConfidence.default).toBe("low");
         expect(primaryKeyColumns(dailySummary)).toEqual([["user_id", "local_date"]]);
         expect(indexNames(dailySummary)).toEqual(["ix_daily_summary_phase"]);
+        expect(checkNames(dailySummary)).toContain("daily_summary_fertile_day_check");
+        expect(checkNames(dailySummary)).toContain("daily_summary_ovulation_confirmed_check");
+        expect(checkNames(dailySummary)).toContain("daily_summary_pregnancy_day_check");
+        expect(checkNames(dailySummary)).toContain("daily_summary_pregnancy_trimester_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_had_intercourse_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_estimated_phase_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_phase_confidence_check");

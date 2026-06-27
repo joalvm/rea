@@ -11,6 +11,7 @@ import { profile } from "./profile";
  * - `occurredAt`: Timestamp exacto del evento.
  * - `localDate`: Día local materializado para búsquedas y agregados.
  * - `isProtected`: Si hubo protección (`true`, `false`) o no se especificó (`null`).
+ * - `inFertileWindow`: Marcador analítico calculado por la app, si aplica.
  * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
  * - `version`: Versión optimista del registro.
  *
@@ -27,6 +28,7 @@ export const intercourseLog = sqliteTable(
         occurredAt: text("occurred_at").notNull(),
         localDate: text("local_date").notNull(),
         isProtected: integer("protected", { mode: "boolean" }),
+        inFertileWindow: integer("in_fertile_window", { mode: "boolean" }),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         deletedAt: text("deleted_at"),
@@ -36,6 +38,10 @@ export const intercourseLog = sqliteTable(
         index("ix_intercourse_log_date").on(table.profileId, table.localDate, table.deletedAt),
         check("intercourse_local_date_check", sql`${table.localDate} LIKE '____-__-__'`),
         check("intercourse_protected_check", sql`${table.isProtected} IN (0, 1) OR ${table.isProtected} IS NULL`),
+        check(
+            "intercourse_in_fertile_window_check",
+            sql`${table.inFertileWindow} IN (0, 1) OR ${table.inFertileWindow} IS NULL`,
+        ),
     ],
 );
 

@@ -1,9 +1,9 @@
 import { relations, sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { check, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+
+import { regularityValues, reproductiveModeValues } from "@/db/enums/reproductiveMode";
 
 import { profile } from "./profile";
-
-const regularityValues = ["regular", "variable", "irregular"] as const;
 
 /**
  * Esquema de la tabla `reproductive_intent_history`, que guarda el historial
@@ -12,8 +12,8 @@ const regularityValues = ["regular", "variable", "irregular"] as const;
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
  * - `effectiveFrom`: Fecha local desde la que aplica este estado.
  * - `effectiveTo`: Fecha local hasta la que aplica este estado, si ya fue cerrado.
+ * - `currentMode`: Modo reproductivo vigente del perfil.
  * - `regularity`: Regularidad declarada del ciclo.
- * - `tryingToConceive`: Indica si la persona está intentando concebir.
  * - `hormonalContraception`: Indica uso declarado de anticoncepción hormonal.
  * - `declaredCycleLength`: Longitud declarada del ciclo, entre 15 y 90 días.
  * - `declaredPeriodLength`: Duración declarada del periodo, entre 1 y 15 días.
@@ -33,8 +33,8 @@ export const reproductiveIntentHistory = sqliteTable(
             .references(() => profile.id, { onDelete: "cascade" }),
         effectiveFrom: text("effective_from").notNull(),
         effectiveTo: text("effective_to"),
+        currentMode: text("current_mode", { enum: reproductiveModeValues }).notNull(),
         regularity: text("regularity", { enum: regularityValues }).notNull(),
-        tryingToConceive: integer("trying_to_conceive", { mode: "boolean" }).notNull(),
         hormonalContraception: integer("hormonal_contraception", { mode: "boolean" }).notNull(),
         declaredCycleLength: integer("declared_cycle_length").notNull(),
         declaredPeriodLength: integer("declared_period_length").notNull(),
@@ -44,16 +44,14 @@ export const reproductiveIntentHistory = sqliteTable(
         version: integer("version").notNull().default(1),
     },
     (table) => [
-        index("ix_reproductive_intent_active_date").on(
-            table.profileId,
-            sql`${table.effectiveFrom} DESC`,
-            table.effectiveTo,
-        ),
         uniqueIndex("uq_reproductive_intent_single_open")
             .on(table.profileId)
             .where(sql`${table.effectiveTo} IS NULL AND ${table.deletedAt} IS NULL`),
+        check(
+            "reproductive_intent_current_mode_check",
+            sql`${table.currentMode} IN ('cycle_tracking', 'ttc', 'pregnancy')`,
+        ),
         check("regularity_check", sql`${table.regularity} IN ('regular', 'variable', 'irregular')`),
-        check("trying_to_conceive_check", sql`${table.tryingToConceive} IN (0, 1)`),
         check("hormonal_contraception_check", sql`${table.hormonalContraception} IN (0, 1)`),
         check("declared_cycle_length_check", sql`${table.declaredCycleLength} BETWEEN 15 AND 90`),
         check("declared_period_length_check", sql`${table.declaredPeriodLength} BETWEEN 1 AND 15`),

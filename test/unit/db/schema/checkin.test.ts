@@ -16,12 +16,16 @@ describe("checkin schema", () => {
             "mood",
             "energy",
             "stress_level",
-            "breast_sensitivity",
-            "libido",
             "pain_intensity",
             "pain_interference",
             "pms_intensity",
             "period_status_signal",
+            "cervical_position",
+            "basal_body_temp_c",
+            "opk_result",
+            "pregnancy_test_result",
+            "morning_sickness",
+            "fetal_movement",
             "note",
             "excluded_from_summary",
             "created_at",
@@ -35,6 +39,12 @@ describe("checkin schema", () => {
         expect(indexNames(checkin)).toEqual(["ix_checkins_date_search", "ix_checkins_chronological"]);
         expect(checkNames(checkin)).toContain("checkin_cervical_mucus_check");
         expect(checkNames(checkin)).toContain("checkin_period_status_signal_check");
+        expect(checkNames(checkin)).toContain("checkin_cervical_position_check");
+        expect(checkNames(checkin)).toContain("checkin_basal_body_temp_c_check");
+        expect(checkNames(checkin)).toContain("checkin_opk_result_check");
+        expect(checkNames(checkin)).toContain("checkin_pregnancy_test_result_check");
+        expect(checkNames(checkin)).toContain("checkin_morning_sickness_check");
+        expect(checkNames(checkin)).toContain("checkin_fetal_movement_check");
         expect(checkNames(checkin)).toContain("checkin_excluded_from_summary_check");
         expect(checkNames(checkin)).toContain("checkin_local_date_format_check");
         expect(foreignKeys(checkin)).toEqual([

@@ -17,32 +17,12 @@ describe("profile schema integration", () => {
         expect(rows[0]?.id).toBe(profileSeed.id);
     });
 
-    it("rejects invalid reminder constraints on real SQLite", async () => {
-        await expect(
-            context.database.db.insert(profile).values({
-                id: "profile-invalid-interval",
-                name: "Profile invalid interval",
-                reminderIntervalHours: 25,
-                createdAt: "2026-01-01T00:00:00Z",
-                updatedAt: "2026-01-01T00:00:00Z",
-            }),
-        ).rejects.toThrow();
-
+    it("rejects invalid birth year constraints on real SQLite", async () => {
         await expect(
             context.database.db.insert(profile).values({
                 id: "profile-invalid-birth-year",
                 name: "Profile invalid birth year",
                 birthYear: 1800,
-                createdAt: "2026-01-01T00:00:00Z",
-                updatedAt: "2026-01-01T00:00:00Z",
-            }),
-        ).rejects.toThrow();
-
-        await expect(
-            context.database.db.insert(profile).values({
-                id: "profile-invalid-format",
-                name: "Profile invalid format",
-                reminderWindowStart: "9:00",
                 createdAt: "2026-01-01T00:00:00Z",
                 updatedAt: "2026-01-01T00:00:00Z",
             }),

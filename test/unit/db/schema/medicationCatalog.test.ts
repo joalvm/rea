@@ -10,6 +10,7 @@ describe("medicationCatalog schema", () => {
             "user_id",
             "name",
             "normalized_name",
+            "is_pregnancy_safe",
             "created_at",
             "updated_at",
             "deleted_at",
@@ -22,7 +23,7 @@ describe("medicationCatalog schema", () => {
         expect(indexNames(medicationCatalog)).toEqual(["uq_medication_catalog_active_name"]);
         expect(checkNames(medicationCatalog)).toEqual([
             "medication_name_not_empty_check",
-            "medication_normalized_name_not_empty_check",
+            "medication_is_pregnancy_safe_check",
         ]);
         expect(foreignKeys(medicationCatalog)).toEqual([
             { columns: ["user_id"], foreignColumns: ["id"], foreignTable: "user_profile", onDelete: "cascade" },

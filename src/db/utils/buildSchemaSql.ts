@@ -2,6 +2,7 @@ import type { SQL } from "drizzle-orm";
 import { SQLiteSyncDialect, getTableConfig } from "drizzle-orm/sqlite-core";
 
 import {
+    appSettings,
     checkin,
     checkinMedication,
     checkinSymptom,
@@ -9,6 +10,7 @@ import {
     contentItem,
     contentRule,
     contentSource,
+    cyclePrediction,
     dailySummary,
     intercourseLog,
     medicationCatalog,
@@ -27,6 +29,7 @@ const dialect = new SQLiteSyncDialect();
 const orderedTables: AnySQLiteTable[] = [
     schemaMigration,
     profile,
+    appSettings,
     reproductiveIntentHistory,
     periodRun,
     pregnancyEpisode,
@@ -37,6 +40,7 @@ const orderedTables: AnySQLiteTable[] = [
     checkinMedication,
     intercourseLog,
     dailySummary,
+    cyclePrediction,
     contentSource,
     contentItem,
     contentRule,

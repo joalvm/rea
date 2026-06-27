@@ -1,16 +1,9 @@
 import { relations, sql } from "drizzle-orm";
 import { check, index, integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-import { contentItem } from "./contentItem";
+import { contentRuleTriggerTypeValues } from "@/db/enums/content";
 
-const triggerTypeValues = [
-    "phase",
-    "symptom",
-    "metric_threshold",
-    "reproductive_intent",
-    "contraception",
-    "general",
-] as const;
+import { contentItem } from "./contentItem";
 
 /**
  * Esquema de la tabla `content_rules`, reglas declarativas que conectan contenido
@@ -34,7 +27,7 @@ export const contentRule = sqliteTable(
         contentItemId: text("content_item_id")
             .notNull()
             .references(() => contentItem.id, { onDelete: "cascade" }),
-        triggerType: text("trigger_type", { enum: triggerTypeValues }).notNull(),
+        triggerType: text("trigger_type", { enum: contentRuleTriggerTypeValues }).notNull(),
         triggerKey: text("trigger_key"),
         minValue: real("min_value"),
         maxValue: real("max_value"),
@@ -47,7 +40,7 @@ export const contentRule = sqliteTable(
         index("ix_content_rules_lookup").on(table.triggerType, table.triggerKey, table.priority),
         check(
             "content_rule_trigger_type_check",
-            sql`${table.triggerType} IN ('phase', 'symptom', 'metric_threshold', 'reproductive_intent', 'contraception', 'general')`,
+            sql`${table.triggerType} IN ('phase', 'symptom', 'metric_threshold', 'reproductive_intent', 'contraception', 'pregnancy_week', 'general')`,
         ),
     ],
 );

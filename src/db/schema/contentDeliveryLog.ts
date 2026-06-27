@@ -1,16 +1,17 @@
 import { relations, sql } from "drizzle-orm";
 import { check, index, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+import { contentSurfaceValues } from "@/db/enums/content";
+
 import { contentItem } from "./contentItem";
 import { profile } from "./profile";
-
-const contentSurfaceValues = ["today", "day_detail", "statistics"] as const;
 
 /**
  * Esquema de la tabla `content_delivery_log`, bitácora local de contenido mostrado.
  * - `id`: Identificador único del evento de entrega.
  * - `profileId`: Perfil receptor. En SQLite conserva la columna legacy `user_id`.
  * - `contentItemId`: Contenido mostrado.
+ * - `contentVersion`: Versión editorial mostrada, para reentregar cambios futuros.
  * - `surface`: Superficie donde se mostró el contenido.
  * - `shownAt`: Timestamp de visualización.
  * - `dismissedAt`: Timestamp opcional de descarte.
@@ -28,6 +29,7 @@ export const contentDeliveryLog = sqliteTable(
         contentItemId: text("content_item_id")
             .notNull()
             .references(() => contentItem.id, { onDelete: "cascade" }),
+        contentVersion: text("content_version").notNull(),
         surface: text("surface", { enum: contentSurfaceValues }).notNull(),
         shownAt: text("shown_at").notNull(),
         dismissedAt: text("dismissed_at"),

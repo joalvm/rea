@@ -6,7 +6,7 @@ import { profileSeed } from "./profileSeeder";
 const defaultPregnancyEpisode: InsertPregnancyEpisode = {
     id: "pregnancy-1",
     profileId: profileSeed.id,
-    startDate: "2026-03-01",
+    lmpDate: "2026-03-01",
     createdAt: "2026-03-01T00:00:00Z",
     updatedAt: "2026-03-01T00:00:00Z",
 };

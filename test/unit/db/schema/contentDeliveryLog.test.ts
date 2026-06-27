@@ -9,6 +9,7 @@ describe("contentDeliveryLog schema", () => {
             "id",
             "user_id",
             "content_item_id",
+            "content_version",
             "surface",
             "shown_at",
             "dismissed_at",

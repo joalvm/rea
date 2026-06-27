@@ -36,7 +36,7 @@ describe("pregnancyEpisode schema integration", () => {
         await expect(
             seedPregnancyEpisode(context.database, {
                 id: "pregnancy-invalid-range",
-                startDate: "2026-03-10",
+                lmpDate: "2026-03-10",
                 endDate: "2026-03-01",
             }),
         ).rejects.toThrow();

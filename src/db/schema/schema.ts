@@ -1,3 +1,4 @@
+export { appSettings, appSettingsRelations } from "./appSettings";
 export { checkin, checkinRelations } from "./checkin";
 export { checkinMedication, checkinMedicationRelations } from "./checkinMedication";
 export { checkinSymptom, checkinSymptomRelations } from "./checkinSymptom";
@@ -5,6 +6,7 @@ export { contentDeliveryLog, contentDeliveryLogRelations } from "./contentDelive
 export { contentItem, contentItemRelations } from "./contentItem";
 export { contentRule, contentRuleRelations } from "./contentRule";
 export { contentSource } from "./contentSource";
+export { cyclePrediction, cyclePredictionRelations } from "./cyclePrediction";
 export { dailySummary, dailySummaryRelations } from "./dailySummary";
 export { intercourseLog, intercourseLogRelations } from "./intercourseLog";
 export { medicationCatalog, medicationCatalogRelations } from "./medicationCatalog";

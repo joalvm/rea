@@ -8,10 +8,11 @@ describe("pregnancyEpisode schema", () => {
         expect(columnNames(pregnancyEpisode)).toEqual([
             "id",
             "user_id",
-            "start_date",
+            "lmp_date",
+            "due_date",
             "end_date",
             "outcome",
-            "note",
+            "outcome_details",
             "created_at",
             "updated_at",
             "deleted_at",
@@ -21,10 +22,10 @@ describe("pregnancyEpisode schema", () => {
 
     it("keeps defaults, checks, indexes and profile foreign key", () => {
         expect(pregnancyEpisode.version.default).toBe(1);
-        expect(indexNames(pregnancyEpisode)).toEqual(["ix_pregnancy_chronological", "uq_pregnancy_single_ongoing"]);
+        expect(indexNames(pregnancyEpisode)).toEqual(["uq_pregnancy_single_ongoing"]);
         expect(checkNames(pregnancyEpisode)).toEqual([
             "pregnancy_outcome_check",
-            "pregnancy_start_date_check",
+            "pregnancy_lmp_date_check",
             "pregnancy_end_date_check",
             "pregnancy_date_range_check",
             "pregnancy_open_outcome_check",

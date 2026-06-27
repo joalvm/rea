@@ -21,6 +21,15 @@ describe("contentRule schema", () => {
 
     it("keeps defaults, checks, index and content item foreign key", () => {
         expect(contentRule.priority.default).toBe(100);
+        expect(contentRule.triggerType.enumValues).toEqual([
+            "phase",
+            "symptom",
+            "metric_threshold",
+            "reproductive_intent",
+            "contraception",
+            "pregnancy_week",
+            "general",
+        ]);
         expect(indexNames(contentRule)).toEqual(["ix_content_rules_lookup"]);
         expect(checkNames(contentRule)).toEqual(["content_rule_trigger_type_check"]);
         expect(foreignKeys(contentRule)).toEqual([

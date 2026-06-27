@@ -1,14 +1,7 @@
 import { sql } from "drizzle-orm";
 import { check, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-const contentSourceTypeValues = [
-    "medical_guideline",
-    "government_health",
-    "peer_reviewed",
-    "clinical_education",
-    "book",
-    "other",
-] as const;
+import { contentSourceTypeValues } from "@/db/enums/content";
 
 /**
  * Esquema de la tabla `content_sources`, catálogo de fuentes para contenido educativo.

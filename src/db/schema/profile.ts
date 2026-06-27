@@ -2,10 +2,6 @@ import { sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 const defaults = {
-    remindersEnabled: true,
-    reminderIntervalHours: 6,
-    reminderWindowStart: "09:00",
-    reminderWindowEnd: "22:00",
     version: 1,
 };
 
@@ -14,17 +10,11 @@ const defaults = {
  * - `id`: Identificador único del perfil (clave primaria).
  * - `name`: Nombre mostrado localmente en la app.
  * - `birthYear`: Año de nacimiento opcional, minimizado a banda de edad.
- * - `remindersEnabled`: Indica si los recordatorios están habilitados (booleano).
- * - `reminderIntervalHours`: Intervalo en horas para los recordatorios (entre 1 y 24).
- * - `reminderWindowStart`: Hora de inicio de la ventana para recibir recordatorios (formato HH:MM).
- * - `reminderWindowEnd`: Hora de fin de la ventana para recibir recordatorios (formato HH:MM).
- * - `onboardingCompletedAt`: Timestamp opcional de cierre del onboarding.
  * - `createdAt`: Timestamp de creación del perfil.
  * - `updatedAt`: Timestamp de la última actualización del perfil.
  * - `version`: Versión del esquema del perfil, útil para futuras migraciones.
  *
- * La tabla minimiza dato sensible, guarda solo un perfil local y valida rango de año,
- * booleanos y formato base de la ventana horaria de recordatorios.
+ * La tabla minimiza dato sensible, guarda solo un perfil local y valida rango de año.
  */
 export const profile = sqliteTable(
     "user_profile",
@@ -32,23 +22,12 @@ export const profile = sqliteTable(
         id: text("id").primaryKey().notNull(),
         name: text("name").notNull(),
         birthYear: integer("birth_year"),
-        remindersEnabled: integer("reminders_enabled", { mode: "boolean" })
-            .notNull()
-            .default(defaults.remindersEnabled),
-        reminderIntervalHours: integer("reminder_interval_hours").notNull().default(defaults.reminderIntervalHours),
-        reminderWindowStart: text("reminder_window_start").notNull().default(defaults.reminderWindowStart),
-        reminderWindowEnd: text("reminder_window_end").notNull().default(defaults.reminderWindowEnd),
-        onboardingCompletedAt: text("onboarding_completed_at"),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         version: integer("version").notNull().default(defaults.version),
     },
     (table) => [
         check("birth_year_check", sql`${table.birthYear} IS NULL OR (${table.birthYear} BETWEEN 1900 AND 2100)`),
-        check("reminders_enabled_check", sql`${table.remindersEnabled} IN (0, 1)`),
-        check("reminder_interval_hours_check", sql`${table.reminderIntervalHours} BETWEEN 1 AND 24`),
-        check("reminder_window_start_check", sql`${table.reminderWindowStart} LIKE '__:__'`),
-        check("reminder_window_end_check", sql`${table.reminderWindowEnd} LIKE '__:__'`),
     ],
 );
 

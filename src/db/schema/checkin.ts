@@ -1,9 +1,9 @@
 import { relations, sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, index, integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+
+import { periodStatusSignalValues, qualitativeTestResultValues } from "@/db/enums/checkin";
 
 import { profile } from "./profile";
-
-const periodStatusSignalValues = ["started", "ended", "ongoing"] as const;
 
 /**
  * Esquema de la tabla `checkins`, registro diario o puntual de síntomas,
@@ -12,7 +12,7 @@ const periodStatusSignalValues = ["started", "ended", "ongoing"] as const;
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
  * - `recordedAt`: Timestamp en que se registró el check-in.
  * - `localDate`: Fecha local usada para calendario y resumen diario.
- * - `cervicalMucus`: Señal autoobservable opcional de fertilidad, de 0 a 4.
+ * - Señales TTC y embarazo: fertilidad, tests, BBT y síntomas gestacionales.
  * - Campos métricos: Escalas acotadas para sangrado, dolor, energía, estrés y PMS.
  * - `periodStatusSignal`: Señal explícita sobre inicio, fin o continuidad del periodo.
  * - `note`: Nota libre opcional.
@@ -40,12 +40,16 @@ export const checkin = sqliteTable(
         mood: integer("mood"),
         energy: integer("energy"),
         stressLevel: integer("stress_level"),
-        breastSensitivity: integer("breast_sensitivity"),
-        libido: integer("libido"),
         painIntensity: integer("pain_intensity"),
         painInterference: integer("pain_interference"),
         pmsIntensity: integer("pms_intensity"),
         periodStatusSignal: text("period_status_signal", { enum: periodStatusSignalValues }),
+        cervicalPosition: integer("cervical_position"),
+        basalBodyTempC: real("basal_body_temp_c"),
+        opkResult: text("opk_result", { enum: qualitativeTestResultValues }),
+        pregnancyTestResult: text("pregnancy_test_result", { enum: qualitativeTestResultValues }),
+        morningSickness: integer("morning_sickness"),
+        fetalMovement: integer("fetal_movement"),
         note: text("note"),
         excludedFromSummary: integer("excluded_from_summary").notNull().default(0),
         createdAt: text("created_at").notNull(),
@@ -65,14 +69,36 @@ export const checkin = sqliteTable(
         check("checkin_mood_check", sql`${table.mood} BETWEEN 1 AND 5`),
         check("checkin_energy_check", sql`${table.energy} BETWEEN 1 AND 5`),
         check("checkin_stress_level_check", sql`${table.stressLevel} BETWEEN 0 AND 5`),
-        check("checkin_breast_sensitivity_check", sql`${table.breastSensitivity} BETWEEN 0 AND 5`),
-        check("checkin_libido_check", sql`${table.libido} BETWEEN 0 AND 4`),
         check("checkin_pain_intensity_check", sql`${table.painIntensity} BETWEEN 0 AND 5`),
         check("checkin_pain_interference_check", sql`${table.painInterference} BETWEEN 0 AND 3`),
         check("checkin_pms_intensity_check", sql`${table.pmsIntensity} BETWEEN 0 AND 5`),
         check(
             "checkin_period_status_signal_check",
             sql`${table.periodStatusSignal} IN ('started', 'ended', 'ongoing') OR ${table.periodStatusSignal} IS NULL`,
+        ),
+        check(
+            "checkin_cervical_position_check",
+            sql`${table.cervicalPosition} IS NULL OR (${table.cervicalPosition} BETWEEN 0 AND 2)`,
+        ),
+        check(
+            "checkin_basal_body_temp_c_check",
+            sql`${table.basalBodyTempC} IS NULL OR (${table.basalBodyTempC} BETWEEN 35.0 AND 38.0)`,
+        ),
+        check(
+            "checkin_opk_result_check",
+            sql`${table.opkResult} IN ('negative', 'positive', 'invalid') OR ${table.opkResult} IS NULL`,
+        ),
+        check(
+            "checkin_pregnancy_test_result_check",
+            sql`${table.pregnancyTestResult} IN ('negative', 'positive', 'invalid') OR ${table.pregnancyTestResult} IS NULL`,
+        ),
+        check(
+            "checkin_morning_sickness_check",
+            sql`${table.morningSickness} IS NULL OR (${table.morningSickness} BETWEEN 0 AND 3)`,
+        ),
+        check(
+            "checkin_fetal_movement_check",
+            sql`${table.fetalMovement} IS NULL OR (${table.fetalMovement} BETWEEN 0 AND 3)`,
         ),
         check("checkin_excluded_from_summary_check", sql`${table.excludedFromSummary} IN (0, 1)`),
         check("checkin_local_date_format_check", sql`${table.localDate} LIKE '____-__-__'`),

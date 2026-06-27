@@ -10,6 +10,7 @@ import { profile } from "./profile";
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
  * - `name`: Nombre escrito por la persona.
  * - `normalizedName`: Nombre normalizado para búsquedas y unicidad.
+ * - `isPregnancySafe`: Marca si el medicamento se considera seguro en embarazo.
  * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
  * - `version`: Versión optimista del registro.
  *
@@ -25,6 +26,7 @@ export const medicationCatalog = sqliteTable(
             .references(() => profile.id, { onDelete: "cascade" }),
         name: text("name").notNull(),
         normalizedName: text("normalized_name").notNull(),
+        isPregnancySafe: integer("is_pregnancy_safe", { mode: "boolean" }).notNull().default(false),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         deletedAt: text("deleted_at"),
@@ -35,7 +37,7 @@ export const medicationCatalog = sqliteTable(
             .on(table.profileId, table.normalizedName)
             .where(sql`${table.deletedAt} IS NULL`),
         check("medication_name_not_empty_check", sql`length(trim(${table.name})) > 0`),
-        check("medication_normalized_name_not_empty_check", sql`length(trim(${table.normalizedName})) > 0`),
+        check("medication_is_pregnancy_safe_check", sql`${table.isPregnancySafe} IN (0, 1)`),
     ],
 );
 

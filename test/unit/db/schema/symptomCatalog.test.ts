@@ -9,6 +9,7 @@ describe("symptomCatalog schema", () => {
             "symptom_key",
             "group_key",
             "label_key",
+            "applicable_mode",
             "ui_priority",
             "is_quick_option",
             "is_active",
@@ -35,6 +36,7 @@ describe("symptomCatalog schema", () => {
         ]);
         expect(checkNames(symptomCatalog)).toEqual([
             "symptom_group_key_check",
+            "symptom_applicable_mode_check",
             "symptom_quick_option_check",
             "symptom_active_check",
         ]);

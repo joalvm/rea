@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
 import {
+    appSettings,
     checkin,
     checkinMedication,
     checkinSymptom,
@@ -8,6 +9,7 @@ import {
     contentItem,
     contentRule,
     contentSource,
+    cyclePrediction,
     dailySummary,
     intercourseLog,
     medicationCatalog,
@@ -26,6 +28,7 @@ describe("database schema root", () => {
             [
                 schemaMigration,
                 profile,
+                appSettings,
                 reproductiveIntentHistory,
                 periodRun,
                 pregnancyEpisode,
@@ -36,6 +39,7 @@ describe("database schema root", () => {
                 checkinMedication,
                 intercourseLog,
                 dailySummary,
+                cyclePrediction,
                 contentSource,
                 contentItem,
                 contentRule,
@@ -44,6 +48,7 @@ describe("database schema root", () => {
         ).toEqual([
             "schema_migrations",
             "user_profile",
+            "app_settings",
             "reproductive_intent_history",
             "period_runs",
             "pregnancy_episodes",
@@ -54,6 +59,7 @@ describe("database schema root", () => {
             "checkin_medications",
             "intercourse_log",
             "daily_summary",
+            "cycle_predictions",
             "content_sources",
             "content_items",
             "content_rules",

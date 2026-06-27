@@ -1,10 +1,9 @@
 import { relations, sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { check, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+
+import { periodRunSourceValues, periodRunStatusValues } from "@/db/enums/periodRun";
 
 import { profile } from "./profile";
-
-const periodRunStatusValues = ["open", "closed", "excluded"] as const;
-const periodRunSourceValues = ["user_confirmed", "bleeding_inferred", "mixed"] as const;
 
 /**
  * Esquema de la tabla `period_runs`, que almacena tramos continuos de menstruación
@@ -42,7 +41,6 @@ export const periodRun = sqliteTable(
         uniqueIndex("uq_period_runs_start_active")
             .on(table.profileId, table.startDate)
             .where(sql`${table.deletedAt} IS NULL`),
-        index("ix_period_runs_chronological").on(table.profileId, sql`${table.startDate} DESC`, table.deletedAt),
         uniqueIndex("uq_period_runs_single_open")
             .on(table.profileId)
             .where(sql`${table.status} = 'open' AND ${table.deletedAt} IS NULL`),

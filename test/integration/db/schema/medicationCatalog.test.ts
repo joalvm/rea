@@ -41,9 +41,22 @@ describe("medicationCatalog schema integration", () => {
         ).rejects.toThrow();
 
         await expect(
-            seedMedicationCatalog(context.database, {
-                id: "medication-empty-normalized",
-                normalizedName: "   ",
+            context.database.client.execute({
+                sql: `
+                    INSERT INTO medication_catalog (
+                        id, user_id, name, normalized_name, is_pregnancy_safe, created_at, updated_at, version
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                `,
+                args: [
+                    "medication-invalid-pregnancy-safe",
+                    profileSeed.id,
+                    "Paracetamol",
+                    "paracetamol",
+                    4,
+                    "2026-01-01T00:00:00Z",
+                    "2026-01-01T00:00:00Z",
+                    1,
+                ],
             }),
         ).rejects.toThrow();
     });

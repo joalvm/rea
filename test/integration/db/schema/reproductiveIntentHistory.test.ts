@@ -24,6 +24,7 @@ describe("reproductiveIntentHistory schema integration", () => {
 
         expect(rows).toHaveLength(1);
         expect(rows[0]?.profileId).toBe(profileSeed.id);
+        expect(rows[0]?.currentMode).toBe("cycle_tracking");
     });
 
     it("rejects orphan rows and invalid lifecycle constraints", async () => {

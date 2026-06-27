@@ -1,10 +1,11 @@
 import { relations, sql } from "drizzle-orm";
 import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-import { contentSource } from "./contentSource";
+import { confidenceLevelValues } from "@/db/enums/confidenceLevel";
+import { contentTypeValues } from "@/db/enums/content";
+import { reproductiveModeFilterValues } from "@/db/enums/reproductiveMode";
 
-const contentTypeValues = ["tip", "trivia", "recommendation", "educational", "alert"] as const;
-const confidenceValues = ["low", "medium", "high"] as const;
+import { contentSource } from "./contentSource";
 
 /**
  * Esquema de la tabla `content_items`, catálogo local de piezas educativas,
@@ -14,6 +15,7 @@ const confidenceValues = ["low", "medium", "high"] as const;
  * - `topic`: Tema interno usado para reglas y agrupación.
  * - `titleKey`, `bodyKey`: Claves i18n del texto visible.
  * - `minConfidence`: Confianza mínima requerida para mostrar el contenido, si aplica.
+ * - `targetMode`: Segmenta si el contenido aplica a ciclo, TTC, embarazo o a todos.
  * - `priority`: Prioridad de selección y orden.
  * - `locale`: Locale del recurso.
  * - `sourceId`: Fuente asociada, si existe.
@@ -33,7 +35,8 @@ export const contentItem = sqliteTable(
         topic: text("topic").notNull(),
         titleKey: text("title_key").notNull(),
         bodyKey: text("body_key").notNull(),
-        minConfidence: text("min_confidence", { enum: confidenceValues }),
+        minConfidence: text("min_confidence", { enum: confidenceLevelValues }),
+        targetMode: text("target_mode", { enum: reproductiveModeFilterValues }).notNull().default("all"),
         priority: integer("priority").notNull().default(100),
         locale: text("locale").notNull().default("es"),
         sourceId: text("source_id").references(() => contentSource.id),
@@ -54,6 +57,10 @@ export const contentItem = sqliteTable(
         check(
             "content_item_min_confidence_check",
             sql`${table.minConfidence} IN ('low', 'medium', 'high') OR ${table.minConfidence} IS NULL`,
+        ),
+        check(
+            "content_item_target_mode_check",
+            sql`${table.targetMode} IN ('cycle_tracking', 'ttc', 'pregnancy', 'all')`,
         ),
         check("content_item_active_check", sql`${table.isActive} IN (0, 1)`),
         check(

@@ -12,6 +12,7 @@ describe("contentItem schema", () => {
             "title_key",
             "body_key",
             "min_confidence",
+            "target_mode",
             "priority",
             "locale",
             "source_id",
@@ -33,6 +34,7 @@ describe("contentItem schema", () => {
         expect(checkNames(contentItem)).toEqual([
             "content_item_type_check",
             "content_item_min_confidence_check",
+            "content_item_target_mode_check",
             "content_item_active_check",
             "content_item_valid_range_check",
         ]);
