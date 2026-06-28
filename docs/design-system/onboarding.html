@@ -14,9 +14,9 @@
         <style>
             /* ----- Solo onboarding: controles custom (sin sombras, outlined, no ring) ----- */
             .ob-page {
-                max-width: 1210px;
+                max-width: 1280px;
                 margin: 0 auto;
-                padding: 40px 38px 120px;
+                padding: 44px 38px 120px;
             }
             .ob-head {
                 display: flex;
@@ -36,19 +36,19 @@
             .ob-head p {
                 color: var(--text-secondary);
                 margin-top: 8px;
-                max-width: 620px;
+                max-width: 640px;
             }
             .ob-gallery {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-                gap: 40px;
-                margin-top: 36px;
+                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+                gap: 44px;
+                margin-top: 40px;
             }
             .ob-shot {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 12px;
+                gap: 14px;
             }
             .ob-shot .label {
                 font-size: 12px;
@@ -61,65 +61,168 @@
                 color: var(--link);
                 font-weight: 800;
             }
-            /* phone frame */
+            .ob-shot .label small {
+                color: var(--text-muted);
+                font-weight: 700;
+                text-transform: none;
+                letter-spacing: 0;
+            }
+
+            /* ---------- device + screen (bezel model) ---------- */
             .ob-phone {
-                width: 360px;
-                background: var(--bg);
+                width: 380px;
                 border: 2px solid var(--border-strong);
+                border-radius: 50px;
+                padding: 12px;
+                background: #0e1014;
+                position: relative;
+            }
+            .ob-phone.tint-pregnancy {
+                border-color: color-mix(in srgb, var(--p-accent) 55%, var(--border-strong));
+            }
+            .ob-screen {
                 border-radius: 38px;
+                background: var(--bg);
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
                 min-height: 740px;
                 position: relative;
             }
-            .ob-phone.tint-pregnancy {
-                border-color: color-mix(in srgb, var(--p-accent) 55%, var(--border));
-            }
+
+            /* status bar (top safe area) */
             .ob-statusbar {
-                height: 40px;
+                position: relative;
+                height: 52px;
+                padding: 0 26px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 0 22px;
-                font-size: 12px;
-                font-weight: 800;
-                color: var(--text-secondary);
+                color: var(--text);
+                flex: none;
             }
-            .ob-statusbar .dots {
+            .ob-time {
+                font-size: 15px;
+                font-weight: 700;
+                letter-spacing: 0.2px;
+            }
+            .ob-island {
+                position: absolute;
+                top: 11px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 98px;
+                height: 30px;
+                border-radius: 999px;
+                background: #050608;
+            }
+            .ob-sb-right {
                 display: flex;
-                gap: 4px;
                 align-items: center;
+                gap: 7px;
+                color: var(--text);
             }
+            .ob-sig {
+                display: flex;
+                align-items: flex-end;
+                gap: 2px;
+                height: 11px;
+            }
+            .ob-sig i {
+                width: 3px;
+                background: currentColor;
+                border-radius: 1px;
+                display: block;
+            }
+            .ob-sig i:nth-child(1) {
+                height: 4px;
+            }
+            .ob-sig i:nth-child(2) {
+                height: 6px;
+            }
+            .ob-sig i:nth-child(3) {
+                height: 8px;
+            }
+            .ob-sig i:nth-child(4) {
+                height: 11px;
+            }
+            .ob-bat {
+                width: 25px;
+                height: 12px;
+                border: 1.5px solid currentColor;
+                border-radius: 3.5px;
+                padding: 1.5px;
+                box-sizing: border-box;
+                position: relative;
+            }
+            .ob-bat::after {
+                content: "";
+                position: absolute;
+                right: -4px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 2px;
+                height: 5px;
+                background: currentColor;
+                border-radius: 0 2px 2px 0;
+            }
+            .ob-bat i {
+                display: block;
+                width: 72%;
+                height: 100%;
+                background: currentColor;
+                border-radius: 1px;
+            }
+
+            /* progress (INSET, never touches screen corners) */
             .ob-progress {
                 height: 6px;
+                margin: 2px 22px 0;
                 background: var(--surface-sunken);
+                border-radius: 999px;
+                overflow: hidden;
+                flex: none;
             }
             .ob-progress i {
                 display: block;
                 height: 100%;
                 width: var(--p);
                 background: var(--primary-pressed);
-                border-radius: 0 999px 999px 0;
+                border-radius: 999px;
             }
-            .ob-phone.tint-pregnancy .ob-progress i {
+            .tint-pregnancy .ob-progress i {
                 background: var(--p-accent);
             }
+
+            /* top nav: back (outlined circle) + step */
             .ob-top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 14px 18px 0;
+                padding: 14px 22px 0;
                 color: var(--text-muted);
+                flex: none;
+            }
+            .ob-back {
+                width: 38px;
+                height: 38px;
+                border-radius: 999px;
+                border: 2px solid var(--border-strong);
+                background: var(--surface);
+                color: var(--text-secondary);
+                display: grid;
+                place-items: center;
             }
             .ob-top .step {
-                font-size: 12px;
+                font-size: 12.5px;
                 font-weight: 800;
                 color: var(--text-muted);
             }
+
+            /* body */
             .ob-body {
                 flex: 1;
-                padding: 16px 24px 8px;
+                padding: 16px 22px 10px;
                 display: flex;
                 flex-direction: column;
                 gap: 16px;
@@ -127,7 +230,7 @@
             }
             .ob-body h2 {
                 font-family: "Quicksand";
-                font-size: 25px;
+                font-size: 26px;
                 line-height: 1.15;
                 letter-spacing: -0.2px;
             }
@@ -137,14 +240,31 @@
                 line-height: 1.5;
                 margin: -6px 0 0;
             }
-            .ob-cta-wrap {
-                padding: 12px 24px 26px;
+
+            /* bottom: inset divider + cta + home indicator */
+            .ob-ctadiv {
+                margin: 0 22px;
+                border: 0;
                 border-top: 1px solid var(--divider);
+                flex: none;
+            }
+            .ob-cta-wrap {
+                padding: 14px 22px 6px;
                 background: var(--surface);
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
+                flex: none;
             }
+            .ob-home {
+                width: 134px;
+                height: 5px;
+                border-radius: 999px;
+                background: color-mix(in srgb, var(--text) 65%, transparent);
+                margin: 6px auto 10px;
+                flex: none;
+            }
+
             /* primary CTA: outlined bold (nunca sólido) */
             .ob-cta {
                 min-height: 52px;
@@ -182,6 +302,7 @@
                 border-color: var(--p-on);
                 color: var(--p-on);
             }
+
             /* outlined field, sin ring */
             .ob-field {
                 border: 2px solid var(--border-strong);
@@ -204,6 +325,7 @@
                 color: var(--text-muted);
                 line-height: 1.45;
             }
+
             /* wheel picker: profundidad por fade de color, sin sombra */
             .ob-wheel {
                 position: relative;
@@ -273,6 +395,7 @@
             .ob-dates .ob-wheel-item.center {
                 font-size: 24px;
             }
+
             /* segmented control */
             .ob-seg {
                 display: flex;
@@ -297,6 +420,7 @@
                 color: var(--text);
                 border-color: var(--link);
             }
+
             /* selectable / choice cards */
             .ob-grid2 {
                 display: grid;
@@ -357,6 +481,7 @@
             .ob-choice.on .check {
                 display: grid;
             }
+
             /* stepper */
             .ob-stepper {
                 display: flex;
@@ -394,6 +519,7 @@
                 color: var(--text-muted);
                 text-align: center;
             }
+
             /* switch row */
             .ob-row {
                 display: flex;
@@ -446,6 +572,7 @@
             .tint-pregnancy .ob-switch.on {
                 background: var(--p-accent);
             }
+
             /* note chip + alert reusados de styles.css (.alert) */
             .ob-note-chip {
                 display: inline-flex;
@@ -463,7 +590,7 @@
             .ob-wordmark {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 40px;
+                font-size: 44px;
                 line-height: 1;
                 color: var(--primary-pressed);
                 letter-spacing: -1px;
@@ -476,7 +603,7 @@
                 letter-spacing: 0.14em;
                 text-transform: uppercase;
                 color: var(--text-muted);
-                margin-top: 6px;
+                margin-top: 8px;
             }
             .ob-center {
                 text-align: center;
@@ -516,8 +643,9 @@
                     <p>
                         Referencia estática de las 10 pantallas del onboarding. Aplica las reglas de
                         <code>../../DESIGN.md</code>: sin sombras, botones outlined, sin focus ring y controles custom
-                        (wheel pickers, date wheels, segmented, steppers, switches). Abre con el toggle de tema para ver
-                        light/dark.
+                        (wheel pickers, date wheels, segmented, steppers, switches). El marco imita el dispositivo real:
+                        respeta la barra superior (notch/island) y la inferior (home indicator). Abre con el toggle de
+                        tema para ver light/dark.
                     </p>
                 </div>
                 <button id="themeToggle" class="theme-toggle" type="button">Tema</button>
@@ -528,19 +656,30 @@
                 <div class="ob-shot">
                     <span class="label"><b>01</b> · welcome</span>
                     <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 8%"></i></div>
-                        <div class="ob-body ob-center">
-                            <div class="ob-wordmark">Rea<small>tu ciclo, en calma</small></div>
-                            <h2 style="margin-top: 10px">Bienvenida a Rea</h2>
-                            <p class="lead">
-                                Un espacio íntimo para conocer tu ciclo a tu ritmo. Lo que registres se queda en tu
-                                teléfono, solo para ti.
-                            </p>
-                            <span class="ob-note-chip">Datos en tu dispositivo</span>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Empezar</button>
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
+                                </div>
+                            </div>
+                            <div class="ob-progress"><i style="--p: 8%"></i></div>
+                            <div class="ob-body ob-center">
+                                <div class="ob-wordmark">Rea<small>tu ciclo, en calma</small></div>
+                                <h2 style="margin-top: 12px">Bienvenida a Rea</h2>
+                                <p class="lead">
+                                    Un espacio íntimo para conocer tu ciclo a tu ritmo. Lo que registres se queda en tu
+                                    teléfono, solo para ti.
+                                </p>
+                                <span class="ob-note-chip">Datos en tu dispositivo</span>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Empezar</button>
+                            </div>
+                            <div class="ob-home"></div>
                         </div>
                     </div>
                 </div>
@@ -549,38 +688,49 @@
                 <div class="ob-shot">
                     <span class="label"><b>02</b> · profile</span>
                     <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 18%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">2 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>Cuéntame de ti</h2>
-                            <p class="lead">Con esto basta para cuidar el contenido que verás. Nada más.</p>
-                            <div>
-                                <span class="ob-label">¿Cómo te llamamos?</span>
-                                <div class="ob-field" style="margin-top: 6px">María</div>
-                            </div>
-                            <div>
-                                <span class="ob-label">Año de nacimiento</span>
-                                <div class="ob-wheel" style="margin-top: 6px">
-                                    <div class="ob-wheel-band"></div>
-                                    <div class="ob-wheel-list">
-                                        <span class="ob-wheel-item">1988</span>
-                                        <span class="ob-wheel-item mid">1992</span>
-                                        <span class="ob-wheel-item center">1996</span>
-                                        <span class="ob-wheel-item mid">2000</span>
-                                        <span class="ob-wheel-item">2004</span>
-                                    </div>
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
                                 </div>
-                                <p class="ob-help" style="margin-top: 6px">Solo guardamos el año.</p>
                             </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
+                            <div class="ob-progress"><i style="--p: 18%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">2 / 10</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2>Cuéntame de ti</h2>
+                                <p class="lead">Con esto basta para cuidar el contenido que verás. Nada más.</p>
+                                <div>
+                                    <span class="ob-label">¿Cómo te llamamos?</span>
+                                    <div class="ob-field" style="margin-top: 6px">María</div>
+                                </div>
+                                <div>
+                                    <span class="ob-label">Año de nacimiento</span>
+                                    <div class="ob-wheel" style="margin-top: 6px">
+                                        <div class="ob-wheel-band"></div>
+                                        <div class="ob-wheel-list">
+                                            <span class="ob-wheel-item">1988</span>
+                                            <span class="ob-wheel-item mid">1992</span>
+                                            <span class="ob-wheel-item center">1996</span>
+                                            <span class="ob-wheel-item mid">2000</span>
+                                            <span class="ob-wheel-item">2004</span>
+                                        </div>
+                                    </div>
+                                    <p class="ob-help" style="margin-top: 6px">Solo guardamos el año.</p>
+                                </div>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                            </div>
+                            <div class="ob-home"></div>
                         </div>
                     </div>
                 </div>
@@ -589,74 +739,94 @@
                 <div class="ob-shot">
                     <span class="label"><b>03</b> · intent</span>
                     <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 30%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">3 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>¿Qué buscas en Rea?</h2>
-                            <p class="lead">Puedes cambiarlo cuando quieras.</p>
-                            <div class="ob-grid2">
-                                <div class="ob-choice">
-                                    <span class="ic"
-                                        ><svg class="ic" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg
-                                    ></span>
-                                    <strong>Conocer mi ciclo</strong>
-                                    <small>Entender mi cuerpo y anticiparme.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                                <div class="ob-choice on">
-                                    <span class="ic"
-                                        ><svg class="ic" viewBox="0 0 24 24">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg
-                                    ></span>
-                                    <strong>Evitar embarazo</strong>
-                                    <span class="ob-note-chip" style="margin-top: 2px"
-                                        >Educativo, no anticonceptivo</span
-                                    >
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                                <div class="ob-choice">
-                                    <span class="ic"
-                                        ><svg class="ic" viewBox="0 0 24 24">
-                                            <path
-                                                d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"
-                                            /></svg
-                                    ></span>
-                                    <strong>Buscar un embarazo</strong>
-                                    <small>Reconocer mis días fértiles.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                                <div class="ob-choice">
-                                    <span class="ic"
-                                        ><svg class="ic" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="9" />
-                                            <path d="M9 13h.01M15 13h.01M9.5 16c.5.5 1.5 1 2.5 1s2-.5 2.5-1" /></svg
-                                    ></span>
-                                    <strong>Estoy embarazada</strong>
-                                    <small>Cuidar esta etapa paso a paso.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
+                            <div class="ob-progress"><i style="--p: 30%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">3 / 10</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2>¿Qué buscas en Rea?</h2>
+                                <p class="lead">Puedes cambiarlo cuando quieras.</p>
+                                <div class="ob-grid2">
+                                    <div class="ob-choice">
+                                        <span class="ic">
+                                            <svg class="ic" viewBox="0 0 24 24">
+                                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                            </svg>
+                                        </span>
+                                        <strong>Conocer mi ciclo</strong>
+                                        <small>Entender mi cuerpo y anticiparme.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="ob-choice on">
+                                        <span class="ic">
+                                            <svg class="ic" viewBox="0 0 24 24">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                            </svg>
+                                        </span>
+                                        <strong>Evitar embarazo</strong>
+                                        <span class="ob-note-chip" style="margin-top: 2px"
+                                            >Educativo, no anticonceptivo</span
+                                        >
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="ob-choice">
+                                        <span class="ic">
+                                            <svg class="ic" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"
+                                                />
+                                            </svg>
+                                        </span>
+                                        <strong>Buscar un embarazo</strong>
+                                        <small>Reconocer mis días fértiles.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="ob-choice">
+                                        <span class="ic">
+                                            <svg class="ic" viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="9" />
+                                                <path d="M9 13h.01M15 13h.01M9.5 16c.5.5 1.5 1 2.5 1s2-.5 2.5-1" />
+                                            </svg>
+                                        </span>
+                                        <strong>Estoy embarazada</strong>
+                                        <small>Cuidar esta etapa paso a paso.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                            </div>
+                            <div class="ob-home"></div>
                         </div>
                     </div>
                 </div>
@@ -665,222 +835,28 @@
                 <div class="ob-shot">
                     <span class="label"><b>04</b> · last-period</span>
                     <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 45%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">4 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>Tu último periodo</h2>
-                            <p class="lead">
-                                ¿Cuándo empezó tu última regla? Es el punto de partida de tus predicciones.
-                            </p>
-                            <div class="ob-dates">
-                                <div class="ob-wheel">
-                                    <div class="ob-wheel-band"></div>
-                                    <div class="ob-wheel-list">
-                                        <span class="ob-wheel-item">12</span>
-                                        <span class="ob-wheel-item mid">13</span>
-                                        <span class="ob-wheel-item center">14</span>
-                                        <span class="ob-wheel-item mid">15</span>
-                                        <span class="ob-wheel-item">16</span>
-                                    </div>
-                                </div>
-                                <div class="ob-wheel">
-                                    <div class="ob-wheel-band"></div>
-                                    <div class="ob-wheel-list">
-                                        <span class="ob-wheel-item">abr</span>
-                                        <span class="ob-wheel-item mid">may</span>
-                                        <span class="ob-wheel-item center">jun</span>
-                                        <span class="ob-wheel-item mid">jul</span>
-                                        <span class="ob-wheel-item">ago</span>
-                                    </div>
-                                </div>
-                                <div class="ob-wheel">
-                                    <div class="ob-wheel-band"></div>
-                                    <div class="ob-wheel-list">
-                                        <span class="ob-wheel-item">2024</span>
-                                        <span class="ob-wheel-item mid">2025</span>
-                                        <span class="ob-wheel-item center">2026</span>
-                                        <span class="ob-wheel-item mid">2027</span>
-                                        <span class="ob-wheel-item">2028</span>
-                                    </div>
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
                                 </div>
                             </div>
-                            <div class="ob-row">
-                                <div class="tx"><b>Aún continúa</b><small>Si todavía no terminó</small></div>
-                                <div class="ob-switch"></div>
+                            <div class="ob-progress"><i style="--p: 45%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">4 / 10</span>
                             </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5 · cycle -->
-                <div class="ob-shot">
-                    <span class="label"><b>05</b> · cycle</span>
-                    <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 58%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">5 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>La duración de tu ciclo</h2>
-                            <p class="lead">Es un punto de partida; Rea lo irá afinando con cada registro.</p>
-                            <div>
-                                <span class="ob-label">Días de sangrado</span>
-                                <div class="ob-stepper" style="margin-top: 6px">
-                                    <button type="button">
-                                        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14" /></svg>
-                                    </button>
-                                    <div class="val">5<small>días</small></div>
-                                    <button type="button">
-                                        <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="ob-label">Días entre reglas</span>
-                                <div class="ob-stepper" style="margin-top: 6px">
-                                    <button type="button">
-                                        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14" /></svg>
-                                    </button>
-                                    <div class="val">28<small>días</small></div>
-                                    <button type="button">
-                                        <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <p class="ob-help">¿No estás segura? Deja 5 y 28; lo ajustamos juntas.</p>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6 · regularity -->
-                <div class="ob-shot">
-                    <span class="label"><b>06</b> · regularity</span>
-                    <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 68%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">6 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>¿Qué tan regular es tu ciclo?</h2>
-                            <p class="lead">Sin presión: elige lo que más se parezca a ti.</p>
-                            <div class="ob-grid2">
-                                <div class="ob-choice on">
-                                    <strong>Regular</strong>
-                                    <small>Casi siempre llega cuando lo espero.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                                <div class="ob-choice">
-                                    <strong>Variable</strong>
-                                    <small>A veces se adelanta o se atrasa.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                                <div class="ob-choice">
-                                    <strong>Irregular</strong>
-                                    <small>Cambia bastante de un mes a otro.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                                <div class="ob-choice">
-                                    <strong>Aún no lo sé</strong>
-                                    <small>Lo descubriré con el tiempo.</small>
-                                    <span class="check"
-                                        ><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                            <path d="M20 6 9 17l-5-5" /></svg
-                                    ></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7 · contraception (solo track_only) -->
-                <div class="ob-shot">
-                    <span class="label"><b>07</b> · contraception <small>(track_only)</small></span>
-                    <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 78%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">7 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>¿Usas anticoncepción hormonal?</h2>
-                            <p class="lead">
-                                Pastilla, DIU hormonal, implante, inyección… Cambia cómo Rea lee tu ciclo.
-                            </p>
-                            <div class="ob-seg">
-                                <button class="on" type="button">No</button>
-                                <button type="button">Sí</button>
-                            </div>
-                            <div class="alert warning">
-                                <svg class="ic" viewBox="0 0 24 24" style="margin-top: 2px">
-                                    <path
-                                        d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"
-                                    />
-                                </svg>
-                                <p>
-                                    Si la usas, Rea registra síntomas y sangrados, pero no marcará días fértiles como
-                                    naturales.
+                            <div class="ob-body">
+                                <h2>Tu último periodo</h2>
+                                <p class="lead">
+                                    ¿Cuándo empezó tu última regla? Es el punto de partida de tus predicciones.
                                 </p>
-                            </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 8 · pregnancy-setup (solo pregnancy) -->
-                <div class="ob-shot">
-                    <span class="label"><b>08</b> · pregnancy-setup <small>(pregnancy)</small></span>
-                    <div class="ob-phone ph-pregnancy tint-pregnancy">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 70%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">4 / 6 · embarazo</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2 style="color: var(--p-on)">Tu embarazo</h2>
-                            <p class="lead">La fecha de tu última regla sirve para estimar la edad gestacional.</p>
-                            <div>
-                                <span class="ob-label">¿Cuándo fue tu última regla?</span>
-                                <div class="ob-dates" style="margin-top: 6px">
+                                <div class="ob-dates">
                                     <div class="ob-wheel">
                                         <div class="ob-wheel-band"></div>
                                         <div class="ob-wheel-list">
@@ -894,11 +870,11 @@
                                     <div class="ob-wheel">
                                         <div class="ob-wheel-band"></div>
                                         <div class="ob-wheel-list">
-                                            <span class="ob-wheel-item">feb</span>
-                                            <span class="ob-wheel-item mid">mar</span>
-                                            <span class="ob-wheel-item center">abr</span>
+                                            <span class="ob-wheel-item">abr</span>
                                             <span class="ob-wheel-item mid">may</span>
-                                            <span class="ob-wheel-item">jun</span>
+                                            <span class="ob-wheel-item center">jun</span>
+                                            <span class="ob-wheel-item mid">jul</span>
+                                            <span class="ob-wheel-item">ago</span>
                                         </div>
                                     </div>
                                     <div class="ob-wheel">
@@ -912,15 +888,270 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="ob-row">
+                                    <div class="tx"><b>Aún continúa</b><small>Si todavía no terminó</small></div>
+                                    <div class="ob-switch"></div>
+                                </div>
                             </div>
-                            <div class="ob-row">
-                                <div class="tx"><b>Conozco la fecha probable de parto</b><small>Opcional</small></div>
-                                <div class="ob-switch"></div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
                             </div>
-                            <p class="ob-help">Sin esta fecha, Rea estima por regla de Naegele (FUM + 280 días).</p>
+                            <div class="ob-home"></div>
                         </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
+                    </div>
+                </div>
+
+                <!-- 5 · cycle -->
+                <div class="ob-shot">
+                    <span class="label"><b>05</b> · cycle</span>
+                    <div class="ob-phone">
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
+                                </div>
+                            </div>
+                            <div class="ob-progress"><i style="--p: 58%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">5 / 10</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2>La duración de tu ciclo</h2>
+                                <p class="lead">Es un punto de partida; Rea lo irá afinando con cada registro.</p>
+                                <div>
+                                    <span class="ob-label">Días de sangrado</span>
+                                    <div class="ob-stepper" style="margin-top: 6px">
+                                        <button type="button">
+                                            <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14" /></svg>
+                                        </button>
+                                        <div class="val">5<small>días</small></div>
+                                        <button type="button">
+                                            <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="ob-label">Días entre reglas</span>
+                                    <div class="ob-stepper" style="margin-top: 6px">
+                                        <button type="button">
+                                            <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14" /></svg>
+                                        </button>
+                                        <div class="val">28<small>días</small></div>
+                                        <button type="button">
+                                            <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="ob-help">¿No estás segura? Deja 5 y 28; lo ajustamos juntas.</p>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                            </div>
+                            <div class="ob-home"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6 · regularity -->
+                <div class="ob-shot">
+                    <span class="label"><b>06</b> · regularity</span>
+                    <div class="ob-phone">
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
+                                </div>
+                            </div>
+                            <div class="ob-progress"><i style="--p: 68%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">6 / 10</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2>¿Qué tan regular es tu ciclo?</h2>
+                                <p class="lead">Sin presión: elige lo que más se parezca a ti.</p>
+                                <div class="ob-grid2">
+                                    <div class="ob-choice on">
+                                        <strong>Regular</strong>
+                                        <small>Casi siempre llega cuando lo espero.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="ob-choice">
+                                        <strong>Variable</strong>
+                                        <small>A veces se adelanta o se atrasa.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="ob-choice">
+                                        <strong>Irregular</strong>
+                                        <small>Cambia bastante de un mes a otro.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="ob-choice">
+                                        <strong>Aún no lo sé</strong>
+                                        <small>Lo descubriré con el tiempo.</small>
+                                        <span class="check">
+                                            <svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                                <path d="M20 6 9 17l-5-5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                            </div>
+                            <div class="ob-home"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7 · contraception (solo track_only) -->
+                <div class="ob-shot">
+                    <span class="label"><b>07</b> · contraception <small>(track_only)</small></span>
+                    <div class="ob-phone">
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
+                                </div>
+                            </div>
+                            <div class="ob-progress"><i style="--p: 78%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">7 / 10</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2>¿Usas anticoncepción hormonal?</h2>
+                                <p class="lead">
+                                    Pastilla, DIU hormonal, implante, inyección… Cambia cómo Rea lee tu ciclo.
+                                </p>
+                                <div class="ob-seg">
+                                    <button class="on" type="button">No</button>
+                                    <button type="button">Sí</button>
+                                </div>
+                                <div class="alert warning">
+                                    <svg class="ic" viewBox="0 0 24 24" style="margin-top: 2px">
+                                        <path
+                                            d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"
+                                        />
+                                    </svg>
+                                    <p>
+                                        Si la usas, Rea registra síntomas y sangrados, pero no marcará días fértiles
+                                        como naturales.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                            </div>
+                            <div class="ob-home"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8 · pregnancy-setup (solo pregnancy) -->
+                <div class="ob-shot">
+                    <span class="label"><b>08</b> · pregnancy-setup <small>(pregnancy)</small></span>
+                    <div class="ob-phone tint-pregnancy">
+                        <div class="ob-screen tint-pregnancy">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
+                                </div>
+                            </div>
+                            <div class="ob-progress"><i style="--p: 70%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">4 / 6 · embarazo</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2 style="color: var(--p-on)">Tu embarazo</h2>
+                                <p class="lead">La fecha de tu última regla sirve para estimar la edad gestacional.</p>
+                                <div>
+                                    <span class="ob-label">¿Cuándo fue tu última regla?</span>
+                                    <div class="ob-dates" style="margin-top: 6px">
+                                        <div class="ob-wheel">
+                                            <div class="ob-wheel-band"></div>
+                                            <div class="ob-wheel-list">
+                                                <span class="ob-wheel-item">12</span>
+                                                <span class="ob-wheel-item mid">13</span>
+                                                <span class="ob-wheel-item center">14</span>
+                                                <span class="ob-wheel-item mid">15</span>
+                                                <span class="ob-wheel-item">16</span>
+                                            </div>
+                                        </div>
+                                        <div class="ob-wheel">
+                                            <div class="ob-wheel-band"></div>
+                                            <div class="ob-wheel-list">
+                                                <span class="ob-wheel-item">feb</span>
+                                                <span class="ob-wheel-item mid">mar</span>
+                                                <span class="ob-wheel-item center">abr</span>
+                                                <span class="ob-wheel-item mid">may</span>
+                                                <span class="ob-wheel-item">jun</span>
+                                            </div>
+                                        </div>
+                                        <div class="ob-wheel">
+                                            <div class="ob-wheel-band"></div>
+                                            <div class="ob-wheel-list">
+                                                <span class="ob-wheel-item">2024</span>
+                                                <span class="ob-wheel-item mid">2025</span>
+                                                <span class="ob-wheel-item center">2026</span>
+                                                <span class="ob-wheel-item mid">2027</span>
+                                                <span class="ob-wheel-item">2028</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ob-row">
+                                    <div class="tx">
+                                        <b>Conozco la fecha probable de parto</b><small>Opcional</small>
+                                    </div>
+                                    <div class="ob-switch"></div>
+                                </div>
+                                <p class="ob-help">Sin esta fecha, Rea estima por regla de Naegele (FUM + 280 días).</p>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                            </div>
+                            <div class="ob-home"></div>
                         </div>
                     </div>
                 </div>
@@ -929,61 +1160,72 @@
                 <div class="ob-shot">
                     <span class="label"><b>09</b> · notifications</span>
                     <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 88%"></i></div>
-                        <div class="ob-top">
-                            <span
-                                ><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg
-                            ></span>
-                            <span class="step">9 / 10</span>
-                        </div>
-                        <div class="ob-body">
-                            <h2>Recordatorios suaves</h2>
-                            <p class="lead">Te preguntamos cómo vas, sin agobios. Tú decides cuándo.</p>
-                            <div class="ob-row">
-                                <div class="tx">
-                                    <b>Activar recordatorios</b>
-                                    <small>Te avisamos dentro de la ventana que elijas.</small>
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
                                 </div>
-                                <div class="ob-switch on"><i></i></div>
                             </div>
-                            <div>
-                                <span class="ob-label">Ventana</span>
-                                <div class="ob-dates" style="margin-top: 6px">
-                                    <div class="ob-wheel">
-                                        <div class="ob-wheel-band"></div>
-                                        <div class="ob-wheel-list">
-                                            <span class="ob-wheel-item">07:00</span>
-                                            <span class="ob-wheel-item mid">08:00</span>
-                                            <span class="ob-wheel-item center">09:00</span>
-                                            <span class="ob-wheel-item mid">10:00</span>
-                                            <span class="ob-wheel-item">11:00</span>
+                            <div class="ob-progress"><i style="--p: 88%"></i></div>
+                            <div class="ob-top">
+                                <span class="ob-back">
+                                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                                </span>
+                                <span class="step">9 / 10</span>
+                            </div>
+                            <div class="ob-body">
+                                <h2>Recordatorios suaves</h2>
+                                <p class="lead">Te preguntamos cómo vas, sin agobios. Tú decides cuándo.</p>
+                                <div class="ob-row">
+                                    <div class="tx">
+                                        <b>Activar recordatorios</b>
+                                        <small>Te avisamos dentro de la ventana que elijas.</small>
+                                    </div>
+                                    <div class="ob-switch on"><i></i></div>
+                                </div>
+                                <div>
+                                    <span class="ob-label">Ventana</span>
+                                    <div class="ob-dates" style="margin-top: 6px">
+                                        <div class="ob-wheel">
+                                            <div class="ob-wheel-band"></div>
+                                            <div class="ob-wheel-list">
+                                                <span class="ob-wheel-item">07:00</span>
+                                                <span class="ob-wheel-item mid">08:00</span>
+                                                <span class="ob-wheel-item center">09:00</span>
+                                                <span class="ob-wheel-item mid">10:00</span>
+                                                <span class="ob-wheel-item">11:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="ob-wheel">
+                                            <div class="ob-wheel-band"></div>
+                                            <div class="ob-wheel-list">
+                                                <span class="ob-wheel-item">20:00</span>
+                                                <span class="ob-wheel-item mid">21:00</span>
+                                                <span class="ob-wheel-item center">22:00</span>
+                                                <span class="ob-wheel-item mid">23:00</span>
+                                                <span class="ob-wheel-item">00:00</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="ob-wheel">
-                                        <div class="ob-wheel-band"></div>
-                                        <div class="ob-wheel-list">
-                                            <span class="ob-wheel-item">20:00</span>
-                                            <span class="ob-wheel-item mid">21:00</span>
-                                            <span class="ob-wheel-item center">22:00</span>
-                                            <span class="ob-wheel-item mid">23:00</span>
-                                            <span class="ob-wheel-item">00:00</span>
-                                        </div>
+                                </div>
+                                <div>
+                                    <span class="ob-label">Cada cuánto</span>
+                                    <div class="ob-seg" style="margin-top: 6px">
+                                        <button type="button">3 h</button>
+                                        <button class="on" type="button">6 h</button>
+                                        <button type="button">12 h</button>
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <span class="ob-label">Cada cuánto</span>
-                                <div class="ob-seg" style="margin-top: 6px">
-                                    <button type="button">3 h</button>
-                                    <button class="on" type="button">6 h</button>
-                                    <button type="button">12 h</button>
-                                </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Continuar</button>
+                                <button class="ob-cta secondary" type="button">Ahora no</button>
                             </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Continuar</button>
-                            <button class="ob-cta secondary" type="button">Ahora no</button>
+                            <div class="ob-home"></div>
                         </div>
                     </div>
                 </div>
@@ -992,25 +1234,36 @@
                 <div class="ob-shot">
                     <span class="label"><b>10</b> · complete</span>
                     <div class="ob-phone">
-                        <div class="ob-statusbar"><span>9:41</span><span class="dots">●●●</span></div>
-                        <div class="ob-progress"><i style="--p: 100%"></i></div>
-                        <div class="ob-body ob-center">
-                            <div class="ob-wordmark">Rea<small>todo listo</small></div>
-                            <h2 style="margin-top: 10px">Gracias por dejarnos acompañarte</h2>
-                            <p class="lead">A partir de aquí, Rea aprende contigo.</p>
-                            <div class="alert" style="text-align: left">
-                                <svg class="ic" viewBox="0 0 24 24" style="margin-top: 2px">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <path d="M12 8v4M12 16h.01" />
-                                </svg>
-                                <p>
-                                    Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo
-                                    que registres.
-                                </p>
+                        <div class="ob-screen">
+                            <div class="ob-statusbar">
+                                <span class="ob-time">9:41</span>
+                                <div class="ob-island"></div>
+                                <div class="ob-sb-right">
+                                    <span class="ob-sig"><i></i><i></i><i></i><i></i></span>
+                                    <span class="ob-bat"><i></i></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="ob-cta-wrap">
-                            <button class="ob-cta" type="button">Empezar a usar Rea</button>
+                            <div class="ob-progress"><i style="--p: 100%"></i></div>
+                            <div class="ob-body ob-center">
+                                <div class="ob-wordmark">Rea<small>todo listo</small></div>
+                                <h2 style="margin-top: 12px">Gracias por dejarnos acompañarte</h2>
+                                <p class="lead">A partir de aquí, Rea aprende contigo.</p>
+                                <div class="alert" style="text-align: left">
+                                    <svg class="ic" viewBox="0 0 24 24" style="margin-top: 2px">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M12 8v4M12 16h.01" />
+                                    </svg>
+                                    <p>
+                                        Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en
+                                        lo que registres.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="ob-ctadiv"></div>
+                            <div class="ob-cta-wrap">
+                                <button class="ob-cta" type="button">Empezar a usar Rea</button>
+                            </div>
+                            <div class="ob-home"></div>
                         </div>
                     </div>
                 </div>

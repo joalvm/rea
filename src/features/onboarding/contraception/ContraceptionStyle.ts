@@ -1,83 +1,22 @@
 import { createStyles } from "@/theme/createStyles";
 
-export const useContraceptionStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
-
-    return {
-        screen: {
-            flex: 1,
-            backgroundColor: colors.background,
-        },
-        container: {
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
-        },
-        title: {
-            ...typography.variant.h1,
-            color: colors.text,
-            textAlign: "center",
-        },
-        description: {
-            ...typography.variant.body,
-            color: colors.textSecondary,
-            textAlign: "center",
-            maxWidth: sizing.readableMaxWidth,
-        },
-        links: {
-            alignSelf: "stretch",
-            gap: spacing.sm,
-            marginTop: spacing.sm,
-        },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
-            color: colors.textMuted,
-        },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
-        },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
-        },
-    };
-});
+export const useContraceptionStyles = createStyles((theme) => ({
+    header: {
+        gap: 4,
+    },
+    warningBox: {
+        flexDirection: "row",
+        gap: 8,
+        padding: 12,
+        borderWidth: 1,
+        borderColor: theme.colors.warning,
+        borderRadius: theme.radius.lg,
+        backgroundColor: theme.colors.warningSurface,
+    },
+    warningText: {
+        flex: 1,
+        ...theme.typography.variant.footnote,
+        lineHeight: 18,
+        color: theme.colors.warningText,
+    },
+}));

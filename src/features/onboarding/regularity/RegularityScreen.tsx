@@ -1,29 +1,84 @@
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
-import { Pressable, ScrollView, Text } from "react-native";
+import type { Regularity } from "@/db/enums/reproductiveMode";
+import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
+import type { RegularitySelection } from "@/features/onboarding/shared/types/OnboardingDraft";
+import { getRegularitySelection } from "@/features/onboarding/shared/utils/getRegularitySelection";
 
+import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
+import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
+import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { SelectableCard } from "../shared/components/selectable-card/SelectableCard";
 import { useRegularityStyles } from "./RegularityStyle";
 
 type Props = {
-    onContinue: () => void;
+    onBack: () => void;
+    onPush: (href: string) => void;
 };
 
-/** Onboarding: regularidad percibida (regular | variable | irregular). Ver README. */
-export default function RegularityScreen({ onContinue }: Props) {
-    const { t } = useTranslation("preview");
+type Option = {
+    key: RegularitySelection;
+    value: Regularity;
+};
+
+const OPTIONS: readonly Option[] = [
+    { key: "regular", value: "regular" },
+    { key: "variable", value: "variable" },
+    { key: "irregular", value: "irregular" },
+    { key: "unsure", value: "irregular" },
+];
+
+/** Paso 6: regularidad declarada. "Aún no lo sé" mapea a `irregular` (UI distinta). */
+export default function RegularityScreen({ onBack, onPush }: Props) {
+    const { t } = useTranslation("onboarding");
     const styles = useRegularityStyles();
+    const intent = useOnboardingStore((state) => state.draft.intent);
+    const regularity = useOnboardingStore((state) => state.draft.regularity);
+    const regularitySelection = useOnboardingStore((state) => state.draft.regularitySelection);
+    const set = useOnboardingStore((state) => state.set);
+
+    const selectedKey = getRegularitySelection({ regularity, regularitySelection });
+
+    const choose = (option: Option) => {
+        set({ regularity: option.value, regularitySelection: option.key });
+    };
+
+    const submit = () => {
+        if (!intent) {
+            onPush("/(onboarding)/intent");
+            return;
+        }
+
+        onPush(intent.cycleIntent === "track_only" ? "/(onboarding)/contraception" : "/(onboarding)/notifications");
+    };
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{t("regularity.title")}</Text>
-            <Text style={styles.description}>{t("regularity.body")}</Text>
+        <OnboardingScreen
+            progress={0.68}
+            step={6}
+            total={10}
+            onBack={onBack}
+            cta={{ label: t("cta.continue"), onPress: submit }}
+        >
+            <View style={styles.header}>
+                <ScreenTitle>{t("regularity.title")}</ScreenTitle>
+                <ScreenLead>{t("regularity.lead")}</ScreenLead>
+            </View>
 
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onContinue}
-            >
-                <Text style={styles.primaryText}>{t("actions.continue")}</Text>
-            </Pressable>
-        </ScrollView>
+            <View style={styles.grid}>
+                {OPTIONS.map((option) => (
+                    <View key={option.key} style={styles.cardWrap}>
+                        <SelectableCard
+                            title={t(`regularity.${option.key}.title`)}
+                            subtitle={t(`regularity.${option.key}.subtitle`)}
+                            selected={selectedKey === option.key}
+                            onPress={() => choose(option)}
+                            testID={`regularity-${option.key}`}
+                        />
+                    </View>
+                ))}
+            </View>
+        </OnboardingScreen>
     );
 }

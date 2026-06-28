@@ -1,4 +1,6 @@
+import onboardingEn from "@/lang/en/onboarding.json";
 import previewEn from "@/lang/en/preview.json";
+import onboardingEs from "@/lang/es/onboarding.json";
 import previewEs from "@/lang/es/preview.json";
 
 /**
@@ -8,8 +10,10 @@ import previewEs from "@/lang/es/preview.json";
 export const resources = {
     es: {
         preview: previewEs,
+        onboarding: onboardingEs,
     },
     en: {
         preview: previewEn,
+        onboarding: onboardingEn,
     },
 } as const;

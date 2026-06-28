@@ -60,13 +60,27 @@ Convención completa en `.agents/skills/standards-rea-code-structure`. Lo críti
 - Un feature no importa de otro; lo compartido sube a `shared/` o `components/`.
 - `lang/` es SOLO JSON.
 
+## Boundaries de UI, navegación y datos (reglas duras)
+
+- Navegación (`useRouter`, `router.push/replace/back`, `Redirect`, `Link`) vive **solo** en
+  archivos de ruta `app/**` y layouts/guards. Nunca en screens de feature, hooks, stores,
+  services, mutaciones ni componentes compartidos.
+- Los hooks de feature exponen estado y handlers semánticos (`submit...`, `load...`,
+  `toggle...`) o callbacks inyectables; no conocen rutas ni importan `expo-router`.
+- Los `*Screen.tsx` de feature/subfeature exponen UI + solo los handlers primitivos de
+  navegación que realmente usan (`onPush`, `onReplace`, `onBack`, etc.); nunca importan
+  `expo-router` ni ejecutan navegación directamente.
+- Los componentes, incluidos los screens, nunca interactúan directo con la capa de datos.
+  La frontera obligatoria es `component/screen -> hook o store del feature -> service o
+mutación injectable -> schema`.
+- Los services/mutations del feature reciben `Database` por inyección desde el hook/store.
+  No importar ni consumir singletons de DB desde features.
+
 ## Modelo de dominio
 
-- Intención reproductiva en `reproductive_intent_history`:
-    - `current_mode` ∈ `cycle_tracking` | `ttc` | `pregnancy` (master switch, 3 pilares).
-    - `cycle_intent` ∈ `track_only` | `avoid_pregnancy` (solo si `current_mode =
+- Intención reproductiva en `reproductive_intent_history`: - `current_mode` ∈ `cycle_tracking` | `ttc` | `pregnancy` (master switch, 3 pilares). - `cycle_intent` ∈ `track_only` | `avoid_pregnancy` (solo si `current_mode =
 cycle_tracking`; NULL en ttc/pregnancy). La consistencia modo↔intención y la exclusión
-      TTC+anticonceptivos están enforced por CHECKs de DB.
+  TTC+anticonceptivos están enforced por CHECKs de DB.
 - Los 3 pilares **comparten las mismas rutas**; la UI se adapta por modo, no se
   multiplican features por pilar.
 - Tablas internas (calculadas/sembradas, **sin pantalla de gestión** para la usuaria):

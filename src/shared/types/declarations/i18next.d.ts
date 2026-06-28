@@ -1,5 +1,6 @@
 import "i18next";
 
+import type onboarding from "@/lang/es/onboarding.json";
 import type preview from "@/lang/es/preview.json";
 
 /**
@@ -11,6 +12,7 @@ declare module "i18next" {
     interface CustomTypeOptions {
         resources: {
             preview: typeof preview;
+            onboarding: typeof onboarding;
         };
         returnNull: false;
     }

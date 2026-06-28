@@ -11,8 +11,8 @@ import type { Theme } from "../types/Theme";
 export const lightTheme: Theme = {
     mode: "light",
     colors: {
-        background: mist[50],
-        surface: mist[0],
+        background: mist[0],
+        surface: mist[50],
         surfaceAlt: mist[100],
         surfaceSunken: "#DDEEF4",
         surfaceGlass: "rgba(255,255,255,0.78)",

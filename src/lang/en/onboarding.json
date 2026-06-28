@@ -1,0 +1,134 @@
+{
+    "cta": {
+        "continue": "Continue",
+        "start": "Start",
+        "startApp": "Start using Rea",
+        "notNow": "Not now"
+    },
+    "back": "Back",
+    "welcome": {
+        "wordmark": "Rea",
+        "tagline": "your cycle, in calm",
+        "title": "Welcome to Rea",
+        "body": "An intimate space to get to know your cycle at your own pace. What you log stays on your phone, only for you.",
+        "deviceChip": "Data on your device"
+    },
+    "profile": {
+        "title": "Tell me about you",
+        "lead": "This is enough to tailor what you'll see. Nothing more.",
+        "nameLabel": "What should I call you?",
+        "namePlaceholder": "Your name",
+        "yearLabel": "Year of birth",
+        "yearHelp": "We only store the year."
+    },
+    "intent": {
+        "title": "What are you looking for in Rea?",
+        "lead": "You can change this anytime.",
+        "track": {
+            "title": "Know my cycle",
+            "subtitle": "Understand my body and anticipate it."
+        },
+        "avoid": {
+            "title": "Avoid pregnancy",
+            "subtitle": "Educational, not contraceptive"
+        },
+        "ttc": {
+            "title": "Try to conceive",
+            "subtitle": "Recognize my fertile days."
+        },
+        "preg": {
+            "title": "I'm pregnant",
+            "subtitle": "Care for this stage step by step."
+        }
+    },
+    "lastPeriod": {
+        "title": "Your last period",
+        "lead": "When did your last period start? It's the starting point for your predictions.",
+        "ongoingTitle": "Still going",
+        "ongoingSubtitle": "If it hasn't ended yet"
+    },
+    "cycle": {
+        "title": "Your cycle length",
+        "lead": "It's a starting point; Rea will refine it with every log.",
+        "periodLabel": "Days of bleeding",
+        "cycleLabel": "Days between periods",
+        "days": "days",
+        "help": "Not sure? Leave 5 and 28; we'll adjust together."
+    },
+    "regularity": {
+        "title": "How regular is your cycle?",
+        "lead": "No pressure: pick what looks most like you.",
+        "regular": {
+            "title": "Regular",
+            "subtitle": "Almost always arrives when I expect it."
+        },
+        "variable": {
+            "title": "Variable",
+            "subtitle": "Sometimes early, sometimes late."
+        },
+        "irregular": {
+            "title": "Irregular",
+            "subtitle": "Changes a lot from month to month."
+        },
+        "unsure": {
+            "title": "I don't know yet",
+            "subtitle": "I'll find out over time."
+        }
+    },
+    "contraception": {
+        "title": "Are you on hormonal contraception?",
+        "lead": "Pill, hormonal IUD, implant, injection… It changes how Rea reads your cycle.",
+        "no": "No",
+        "yes": "Yes",
+        "warning": "If you are, Rea logs symptoms and bleeding but won't mark fertile days as natural."
+    },
+    "pregnancySetup": {
+        "title": "Your pregnancy",
+        "lead": "The date of your last period helps estimate gestational age.",
+        "lmpLabel": "When was your last period?",
+        "dueToggleTitle": "I know the estimated due date",
+        "dueLabel": "Estimated due date",
+        "help": "Without this date, Rea estimates via Naegele's rule (LMP + 280 days)."
+    },
+    "notifications": {
+        "title": "Gentle reminders",
+        "lead": "We check in on you, without overwhelming. You decide when.",
+        "enableTitle": "Enable reminders",
+        "enableSubtitle": "We'll notify you within the window you choose.",
+        "windowLabel": "Window",
+        "intervalLabel": "How often",
+        "interval3h": "3 h",
+        "interval6h": "6 h",
+        "interval12h": "12 h"
+    },
+    "complete": {
+        "wordmark": "Rea",
+        "tagline": "all set",
+        "title": "Thank you for letting us join you",
+        "lead": "From here, Rea learns with you.",
+        "disclaimer": "Rea does not diagnose and is not a contraceptive method. Its estimates are based on what you log.",
+        "error": "We couldn't complete onboarding. Please try again."
+    },
+    "months": {
+        "jan": "January",
+        "feb": "February",
+        "mar": "March",
+        "apr": "April",
+        "may": "May",
+        "jun": "June",
+        "jul": "July",
+        "aug": "August",
+        "sep": "September",
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
+    },
+    "validation": {
+        "invalidLastPeriodRange": "The end date cannot be before the start date.",
+        "invalidPregnancyDueDate": "The due date must be after your last period."
+    },
+    "accessibility": {
+        "decrease": "Decrease",
+        "increase": "Increase"
+    }
+}

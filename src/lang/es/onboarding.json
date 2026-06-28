@@ -1,0 +1,134 @@
+{
+    "cta": {
+        "continue": "Continuar",
+        "start": "Empezar",
+        "startApp": "Empezar a usar Rea",
+        "notNow": "Ahora no"
+    },
+    "back": "Volver",
+    "welcome": {
+        "wordmark": "Rea",
+        "tagline": "tu ciclo, en calma",
+        "title": "Bienvenida a Rea",
+        "body": "Un espacio íntimo para conocer tu ciclo a tu ritmo. Lo que registres se queda en tu teléfono, solo para ti.",
+        "deviceChip": "Datos en tu dispositivo"
+    },
+    "profile": {
+        "title": "Cuéntame de ti",
+        "lead": "Con esto basta para cuidar el contenido que verás. Nada más.",
+        "nameLabel": "¿Cómo te llamamos?",
+        "namePlaceholder": "Tu nombre",
+        "yearLabel": "Año de nacimiento",
+        "yearHelp": "Solo guardamos el año."
+    },
+    "intent": {
+        "title": "¿Qué buscas en Rea?",
+        "lead": "Puedes cambiarlo cuando quieras.",
+        "track": {
+            "title": "Conocer mi ciclo",
+            "subtitle": "Entender mi cuerpo y anticiparme."
+        },
+        "avoid": {
+            "title": "Evitar embarazo",
+            "subtitle": "Educativo, no anticonceptivo"
+        },
+        "ttc": {
+            "title": "Buscar un embarazo",
+            "subtitle": "Reconocer mis días fértiles."
+        },
+        "preg": {
+            "title": "Estoy embarazada",
+            "subtitle": "Cuidar esta etapa paso a paso."
+        }
+    },
+    "lastPeriod": {
+        "title": "Tu último periodo",
+        "lead": "¿Cuándo empezó tu última regla? Es el punto de partida de tus predicciones.",
+        "ongoingTitle": "Aún continúa",
+        "ongoingSubtitle": "Si todavía no terminó"
+    },
+    "cycle": {
+        "title": "La duración de tu ciclo",
+        "lead": "Es un punto de partida; Rea lo irá afinando con cada registro.",
+        "periodLabel": "Días de sangrado",
+        "cycleLabel": "Días entre reglas",
+        "days": "días",
+        "help": "¿No estás segura? Deja 5 y 28; lo ajustamos juntas."
+    },
+    "regularity": {
+        "title": "¿Qué tan regular es tu ciclo?",
+        "lead": "Sin presión: elige lo que más se parezca a ti.",
+        "regular": {
+            "title": "Regular",
+            "subtitle": "Casi siempre llega cuando lo espero."
+        },
+        "variable": {
+            "title": "Variable",
+            "subtitle": "A veces se adelanta o se atrasa."
+        },
+        "irregular": {
+            "title": "Irregular",
+            "subtitle": "Cambia bastante de un mes a otro."
+        },
+        "unsure": {
+            "title": "Aún no lo sé",
+            "subtitle": "Lo descubriré con el tiempo."
+        }
+    },
+    "contraception": {
+        "title": "¿Usas anticoncepción hormonal?",
+        "lead": "Pastilla, DIU hormonal, implante, inyección… Cambia cómo Rea lee tu ciclo.",
+        "no": "No",
+        "yes": "Sí",
+        "warning": "Si la usas, Rea registra síntomas y sangrados, pero no marcará días fértiles como naturales."
+    },
+    "pregnancySetup": {
+        "title": "Tu embarazo",
+        "lead": "La fecha de tu última regla sirve para estimar la edad gestacional.",
+        "lmpLabel": "¿Cuándo fue tu última regla?",
+        "dueToggleTitle": "Conozco la fecha probable de parto",
+        "dueLabel": "Fecha probable de parto",
+        "help": "Sin esta fecha, Rea estima por regla de Naegele (FUM + 280 días)."
+    },
+    "notifications": {
+        "title": "Recordatorios suaves",
+        "lead": "Te preguntamos cómo vas, sin agobios. Tú decides cuándo.",
+        "enableTitle": "Activar recordatorios",
+        "enableSubtitle": "Te avisamos dentro de la ventana que elijas.",
+        "windowLabel": "Ventana",
+        "intervalLabel": "Cada cuánto",
+        "interval3h": "3 h",
+        "interval6h": "6 h",
+        "interval12h": "12 h"
+    },
+    "complete": {
+        "wordmark": "Rea",
+        "tagline": "todo listo",
+        "title": "Gracias por dejarnos acompañarte",
+        "lead": "A partir de aquí, Rea aprende contigo.",
+        "disclaimer": "Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo que registres.",
+        "error": "No se pudo completar el onboarding. Inténtalo de nuevo."
+    },
+    "months": {
+        "jan": "enero",
+        "feb": "febrero",
+        "mar": "marzo",
+        "apr": "abril",
+        "may": "mayo",
+        "jun": "junio",
+        "jul": "julio",
+        "aug": "agosto",
+        "sep": "septiembre",
+        "oct": "octubre",
+        "nov": "noviembre",
+        "dec": "diciembre"
+    },
+    "validation": {
+        "invalidLastPeriodRange": "La fecha de fin no puede ser anterior a la de inicio.",
+        "invalidPregnancyDueDate": "La fecha probable de parto debe ser posterior a tu última regla."
+    },
+    "accessibility": {
+        "decrease": "Disminuir",
+        "increase": "Aumentar"
+    }
+}

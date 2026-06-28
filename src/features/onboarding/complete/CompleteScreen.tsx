@@ -1,33 +1,51 @@
+import { Info } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { Text, View } from "react-native";
 
-import { Pressable, ScrollView, Text } from "react-native";
+import { useCompleteStyles } from "@/features/onboarding/complete/CompleteStyle";
+import { useCompleteOnboarding } from "@/features/onboarding/complete/hooks/useCompleteOnboarding";
+import { useTheme } from "@/theme/useTheme";
 
-import { useCompleteStyles } from "./CompleteStyle";
+import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
+import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
+import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
 
 type Props = {
-    onFinish: () => void;
+    onReplace: (href: string) => void;
 };
 
-/**
- * Último paso del onboarding: disclaimer + arranque.
- * Persiste perfil + intención reproductiva + primer periodo y sella
- * `user_profile.onboarding_completed_at`. Ver README de la feature.
- */
-export default function CompleteScreen({ onFinish }: Props) {
-    const { t } = useTranslation("preview");
+/** Paso 10: cierre. Persiste todo en una transacción y redirige a la app. */
+export default function CompleteScreen({ onReplace }: Props) {
+    const { t } = useTranslation("onboarding");
+    const theme = useTheme();
     const styles = useCompleteStyles();
+    const { submitCompleteOnboarding, isSubmitting } = useCompleteOnboarding();
+
+    async function handleStartApp() {
+        const didComplete = await submitCompleteOnboarding();
+        if (!didComplete) {
+            return;
+        }
+
+        onReplace("/(tabs)");
+    }
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{t("complete.title")}</Text>
-            <Text style={styles.description}>{t("complete.disclaimer")}</Text>
+        <OnboardingScreen
+            progress={1}
+            center
+            cta={{ label: t("cta.startApp"), onPress: handleStartApp, disabled: isSubmitting }}
+        >
+            <Text style={styles.wordmark}>{t("complete.wordmark")}</Text>
+            <Text style={styles.tagline}>{t("complete.tagline")}</Text>
+            <View style={styles.spacer} />
+            <ScreenTitle>{t("complete.title")}</ScreenTitle>
+            <ScreenLead>{t("complete.lead")}</ScreenLead>
 
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onFinish}
-            >
-                <Text style={styles.primaryText}>{t("complete.finish")}</Text>
-            </Pressable>
-        </ScrollView>
+            <View style={styles.disclaimerBox}>
+                <Info size={18} color={theme.colors.textSecondary} strokeWidth={2.2} />
+                <Text style={styles.disclaimerText}>{t("complete.disclaimer")}</Text>
+            </View>
+        </OnboardingScreen>
     );
 }

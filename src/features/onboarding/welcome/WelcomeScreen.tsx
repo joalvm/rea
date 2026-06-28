@@ -1,37 +1,34 @@
 import { useTranslation } from "react-i18next";
+import { Text, View } from "react-native";
 
-import { Pressable, ScrollView, Text } from "react-native";
-
+import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
+import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
+import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
 import { useWelcomeStyles } from "./WelcomeStyle";
 
 type Props = {
-    onStart: () => void;
-    onImport: () => void;
+    onReplace: (href: string) => void;
 };
 
-/** Paso 1 del onboarding: bienvenida + promesa de privacidad. Ver README de la feature. */
-export default function WelcomeScreen({ onStart, onImport }: Props) {
-    const { t } = useTranslation("preview");
+/** Paso 1: bienvenida + promesa de privacidad. */
+export default function WelcomeScreen({ onReplace }: Props) {
+    const { t } = useTranslation("onboarding");
     const styles = useWelcomeStyles();
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{t("welcome.title")}</Text>
-            <Text style={styles.description}>{t("welcome.body")}</Text>
-
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onStart}
-            >
-                <Text style={styles.primaryText}>{t("welcome.start")}</Text>
-            </Pressable>
-
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.secondary, pressed && styles.pressed]}
-                onPress={onImport}
-            >
-                <Text style={styles.secondaryText}>{t("welcome.restore")}</Text>
-            </Pressable>
-        </ScrollView>
+        <OnboardingScreen
+            progress={0.06}
+            center
+            cta={{ label: t("cta.start"), onPress: () => onReplace("/(onboarding)/profile") }}
+        >
+            <Text style={styles.wordmark}>{t("welcome.wordmark")}</Text>
+            <Text style={styles.tagline}>{t("welcome.tagline")}</Text>
+            <View style={styles.spacer} />
+            <ScreenTitle>{t("welcome.title")}</ScreenTitle>
+            <ScreenLead>{t("welcome.body")}</ScreenLead>
+            <View style={styles.deviceChip}>
+                <Text style={styles.deviceChipText}>{t("welcome.deviceChip")}</Text>
+            </View>
+        </OnboardingScreen>
     );
 }

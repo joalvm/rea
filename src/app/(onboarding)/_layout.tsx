@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 
+/** Stack del grupo onboarding. Cabecera oculta (cada pantalla dibuja su chrome). */
 export default function OnboardingLayout() {
     return (
         <Stack
@@ -9,13 +10,13 @@ export default function OnboardingLayout() {
             }}
         >
             <Stack.Screen name="welcome" />
-            <Stack.Screen name="import" />
-            <Stack.Screen name="birth-year" />
+            <Stack.Screen name="profile" />
+            <Stack.Screen name="intent" />
             <Stack.Screen name="last-period" />
             <Stack.Screen name="cycle" />
             <Stack.Screen name="regularity" />
             <Stack.Screen name="contraception" />
-            <Stack.Screen name="goal" />
+            <Stack.Screen name="pregnancy-setup" />
             <Stack.Screen name="notifications" />
             <Stack.Screen name="complete" />
         </Stack>

@@ -11,11 +11,12 @@ reproductiva, y deja marcado `app_settings.onboarding_completed_at` para que el 
 
 ## 1. Arquitectura — por rutas, sin shell
 
-- Cada pantalla es una **ruta** bajo `src/app/(onboarding)/`. La navegación se hace con `router.push` / `router.replace`.
+- Cada pantalla es una **ruta** bajo `src/app/(onboarding)/`. La navegación se decide en el archivo de ruta con `router.push` / `router.replace`.
 - `(onboarding)/_layout.tsx` es solo el `Stack` de ruta (cabecera oculta, animación). **No** es un shell con props.
 - El estado del borrador vive en el **store efímero** (`shared/stores/useOnboardingStore.ts`, Zustand). Cada pantalla lee y escribe el store directamente.
-- **Ninguna pantalla recibe callbacks ni params** desde el padre: el archivo de ruta solo renderiza `<XScreen />`.
-- La persistencia es **una transacción atómica** al final (`shared/mutations/completeOnboarding.ts`); los pasos intermedios solo actualizan el store.
+- Cada `*Screen.tsx` recibe solo los handlers primitivos de navegación que realmente usa (`onPush`, `onReplace`, `onBack`), decide cuándo llamarlos y no conoce `expo-router`.
+- Hooks y servicios devuelven handlers/resultados semánticos; no importan `expo-router`.
+- La persistencia es **una transacción atómica** al final (`complete/services/completeOnboarding.ts`); los pasos intermedios solo actualizan el store.
 
 ## 2. Inventario de pantallas
 
@@ -109,9 +110,11 @@ type OnboardingDraft = {
 
 `useOnboardingStore` (Zustand) expone el draft + setters por campo + `reset()`. Es estado de formulario: **no cachea DB**.
 
-## 6. Mutación `completeOnboarding`
+## 6. Hook + servicio de cierre
 
-`shared/mutations/completeOnboarding.ts` — `(db, draft) => Promise<profileId>`, todo en `db.transaction`:
+`complete/hooks/useCompleteOnboarding.ts` resuelve la orquestación del paso final: obtiene la conexión desde infraestructura, llama al servicio, resetea el store y devuelve el resultado a la ruta dueña.
+
+`complete/services/completeOnboarding.ts` — `(database, draft) => Promise<profileId>`, todo en `database.transaction`:
 
 1. Crea `user_profile` (`id` vía `src/db/utils/uuid.ts`).
 2. Crea `app_settings` (recordatorios del draft + `onboarding_completed_at = now` + defaults).
@@ -121,13 +124,13 @@ type OnboardingDraft = {
 
 Patrón inyectable (igual que los seeders) → testeable con libsql `:memory:`.
 
-## 7. Fix del gate
+## 7. Gate de entrada
 
-`src/app/index.tsx` consulta hoy `user_profile.onboarding_completed_at`, columna que **no existe** (está en `app_settings`). El query falla y siempre redirige a onboarding. Fix: leer `app_settings.onboarding_completed_at`.
+`src/app/index.tsx` lee `app_settings.onboarding_completed_at` para decidir si redirigir a onboarding o a la app principal.
 
 ## 8. Controles custom (componentes hoja, sin shell)
 
-Viven en `src/features/onboarding/shared/components/`:
+Viven en `src/features/onboarding/shared/components/`, con **una carpeta por componente** y su `*Style.ts` hermano:
 
 - `ProgressIndicator`, `PrimaryButton`, `SecondaryButton`.
 - `WheelPicker` (columna scrolleable, fade por color), `DateWheel` (3 wheels d/m/a).
@@ -137,14 +140,32 @@ Contratos visuales y tokens: ver `/DESIGN.md` §3. Si se reusan fuera de onboard
 
 ## 9. Fases de implementación
 
-1. **Fase 0 — Diseño** (este README + `DESIGN.md` + `onboarding.html`). ✅
-2. **Fase 1 — Controles**: componentes hoja + estilos con tokens.
-3. **Fase 2 — Estructura**: renames (`birth-year→profile`, `goal→intent`), delete `import`, nueva `pregnancy-setup`, nav condicional.
-4. **Fase 3 — Datos**: `OnboardingDraft` + store + `completeOnboarding` + fix gate.
-5. **Fase 4 — Captura**: cada pantalla wired al store.
-6. **Fase 5 — i18n**: namespace `onboarding`.
-7. **Fase 6 — Tests** + validación (`format` → `lint:fix` → `typecheck` → `lint`).
-8. **Fase 7 — README** final (este archivo, pulido).
+1. **Fase 0 — Diseño** (`DESIGN.md` + `onboarding.html` + este README). ✅
+2. **Fase 1 — Controles**: componentes hoja bajo `shared/components/` (`OnboardingScreen`,
+   `PrimaryButton`, `ProgressIndicator`, `ScreenTitle/Lead/HelpText/FieldLabel`, `OutlinedField`,
+   `WheelPicker`, `DateWheel`, `SegmentedControl`, `SelectableCard`, `Stepper`, `ToggleRow`). ✅
+3. **Fase 2 — Estructura**: routes `profile`/`intent`/`pregnancy-setup`, delete `import`, `_layout`
+   con la lista nueva y navegación directa desde cada screen usando handlers primitivos de ruta. ✅
+4. **Fase 3 — Datos**: `OnboardingDraft` + `useOnboardingStore` (Zustand efímero),
+   servicio `completeOnboarding` (transacción), hook `useCompleteOnboarding` y fix del gate (`app_settings`). ✅
+5. **Fase 4 — Captura**: cada pantalla lee/escribe el store y usa solo `onPush` / `onReplace` / `onBack`; la ruta dueña ejecuta esas primitivas. ✅
+6. **Fase 5 — i18n**: namespace `onboarding` (`src/lang/{es,en}/onboarding.json`), registrado en
+   `resources`/`namespaceCatalog`/tipado. ✅
+7. **Fase 6 — Tests**: `completeOnboarding` (integración, las 4 intenciones + atomicidad),
+   helpers de draft (unit) y validaciones de parches de fecha/selección de regularidad. ✅
+8. **Fase 7 — README** final (este archivo). ✅
+
+### Notas de implementación
+
+- **Rutas tipadas**: `app.json` tiene `experiments.typedRoutes`. `.expo/types/router.d.ts` es local
+  (gitignored) y lo regenera el bundler al hacer `expo start`; CI corre sin él y `Href` cae a
+  `string`. Tras renombrar/crear rutas, arranca Expo una vez para refrescar el autocompletado.
+- **Tests + transacciones**: el backend local de `@libsql/client` con `:memory:` recicla la
+  conexión tras `db.transaction()` abriendo un `new Database(":memory:")` vacío, lo que borra el
+  esquema. Por eso `completeOnboarding` se prueba con `test/utils/createFileDatabase.ts`
+  (DB en archivo temporal) y no con `:memory:`.
+- **Sin sombras / sin botón sólido / sin focus ring**: los placeholders heredados usaban
+  `shadows[*]` y `colors.primary` sólido; el rediseño los elimina (ver `DESIGN.md`).
 
 ## 10. Fuera de alcance (por ahora)
 
