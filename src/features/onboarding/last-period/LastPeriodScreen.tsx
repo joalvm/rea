@@ -17,7 +17,7 @@ type Props = {
     onPush: (href: string) => void;
 };
 
-/** Paso 4: inicio del último periodo (cycle_tracking/ttc) + toggle "aún continúa". */
+/** Paso 4: inicio del último periodo (modos de seguimiento de ciclo) + toggle "aún continúa". */
 export default function LastPeriodScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const styles = useLastPeriodStyles();

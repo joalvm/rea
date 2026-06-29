@@ -50,7 +50,9 @@ export default function RegularityScreen({ onBack, onPush }: Props) {
             return;
         }
 
-        onPush(intent.cycleIntent === "track_only" ? "/(onboarding)/contraception" : "/(onboarding)/notifications");
+        onPush(
+            intent.reproductiveMode === "tracking_only" ? "/(onboarding)/contraception" : "/(onboarding)/notifications",
+        );
     };
 
     return (

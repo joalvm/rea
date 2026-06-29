@@ -24,7 +24,7 @@ describe("reproductiveIntentHistory schema integration", () => {
 
         expect(rows).toHaveLength(1);
         expect(rows[0]?.profileId).toBe(profileSeed.id);
-        expect(rows[0]?.currentMode).toBe("cycle_tracking");
+        expect(rows[0]?.reproductiveMode).toBe("tracking_only");
     });
 
     it("rejects orphan rows and invalid lifecycle constraints", async () => {
@@ -54,34 +54,26 @@ describe("reproductiveIntentHistory schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("enforces cycle_intent consistency with current_mode", async () => {
+    it("rejects an unknown reproductive_mode value", async () => {
         await seedProfile(context.database);
 
         await expect(
             seedReproductiveIntentHistory(context.database, {
-                id: "reproductive-intent-cycle-without-intent",
-                cycleIntent: null,
-            }),
-        ).rejects.toThrow();
-
-        await expect(
-            seedReproductiveIntentHistory(context.database, {
-                id: "reproductive-intent-ttc-with-intent",
+                id: "reproductive-intent-unknown-mode",
                 effectiveFrom: "2026-02-01",
-                currentMode: "ttc",
+                reproductiveMode: "cycle_tracking" as never,
             }),
         ).rejects.toThrow();
     });
 
-    it("rejects ttc together with hormonal contraception", async () => {
+    it("rejects tracking_ttc together with hormonal contraception", async () => {
         await seedProfile(context.database);
 
         await expect(
             seedReproductiveIntentHistory(context.database, {
                 id: "reproductive-intent-ttc-hormonal",
                 effectiveFrom: "2026-02-01",
-                currentMode: "ttc",
-                cycleIntent: null,
+                reproductiveMode: "tracking_ttc",
                 hormonalContraception: true,
             }),
         ).rejects.toThrow();

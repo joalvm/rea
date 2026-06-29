@@ -9,18 +9,18 @@ import {
 } from "@/features/onboarding/shared/types/OnboardingDraft";
 
 describe("onboarding draft helpers", () => {
-    it("exposes the four intent choices with the right (mode, cycle_intent) pairs", () => {
+    it("exposes the four intent choices with the right reproductive_mode", () => {
         const byKey = Object.fromEntries(INTENT_CHOICES.map((choice) => [choice.key, choice]));
 
-        expect(byKey.track).toEqual({ key: "track", currentMode: "cycle_tracking", cycleIntent: "track_only" });
-        expect(byKey.avoid).toEqual({ key: "avoid", currentMode: "cycle_tracking", cycleIntent: "avoid_pregnancy" });
-        expect(byKey.ttc).toEqual({ key: "ttc", currentMode: "ttc", cycleIntent: null });
-        expect(byKey.preg).toEqual({ key: "preg", currentMode: "pregnancy", cycleIntent: null });
+        expect(byKey.track).toEqual({ key: "track", reproductiveMode: "tracking_only" });
+        expect(byKey.avoid).toEqual({ key: "avoid", reproductiveMode: "tracking_avoid_pregnancy" });
+        expect(byKey.ttc).toEqual({ key: "ttc", reproductiveMode: "tracking_ttc" });
+        expect(byKey.preg).toEqual({ key: "preg", reproductiveMode: "pregnancy_tracking" });
     });
 
     it("finds an intent by key and returns undefined for unknown keys", () => {
-        expect(findIntent("track" as IntentKey)?.currentMode).toBe("cycle_tracking");
-        expect(findIntent("preg" as IntentKey)?.cycleIntent).toBeNull();
+        expect(findIntent("track" as IntentKey)?.reproductiveMode).toBe("tracking_only");
+        expect(findIntent("preg" as IntentKey)?.reproductiveMode).toBe("pregnancy_tracking");
     });
 
     it("requires a trimmed name and a birth year to consider profile complete", () => {

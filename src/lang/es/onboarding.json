@@ -24,6 +24,18 @@
     "intent": {
         "title": "¿Qué buscas en Rea?",
         "lead": "Puedes cambiarlo cuando quieras.",
+        "modifierLabel": "¿Buscas algo específico?",
+        "modifierHint": "Es opcional: sin elegir, solo conoces tu ciclo.",
+        "master": {
+            "cycle": {
+                "title": "Seguir mi ciclo",
+                "subtitle": "Entender tu cuerpo y anticipar tus días."
+            },
+            "pregnancy": {
+                "title": "Seguir mi embarazo",
+                "subtitle": "Acompañar esta etapa paso a paso."
+            }
+        },
         "track": {
             "title": "Conocer mi ciclo",
             "subtitle": "Entender mi cuerpo y anticiparme."

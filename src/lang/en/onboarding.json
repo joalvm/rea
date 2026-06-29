@@ -24,6 +24,18 @@
     "intent": {
         "title": "What are you looking for in Rea?",
         "lead": "You can change this anytime.",
+        "modifierLabel": "Looking for something specific?",
+        "modifierHint": "Optional: pick none to just learn your cycle.",
+        "master": {
+            "cycle": {
+                "title": "Track my cycle",
+                "subtitle": "Understand your body and anticipate your days."
+            },
+            "pregnancy": {
+                "title": "Track my pregnancy",
+                "subtitle": "Care for this stage step by step."
+            }
+        },
         "track": {
             "title": "Know my cycle",
             "subtitle": "Understand my body and anticipate it."

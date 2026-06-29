@@ -10,8 +10,7 @@ describe("reproductiveIntentHistory schema", () => {
             "user_id",
             "effective_from",
             "effective_to",
-            "current_mode",
-            "cycle_intent",
+            "reproductive_mode",
             "regularity",
             "hormonal_contraception",
             "declared_cycle_length",
@@ -26,9 +25,7 @@ describe("reproductiveIntentHistory schema", () => {
     it("declares checks, indexes and profile foreign key", () => {
         expect(indexNames(reproductiveIntentHistory)).toEqual(["uq_reproductive_intent_single_open"]);
         expect(checkNames(reproductiveIntentHistory)).toEqual([
-            "reproductive_intent_current_mode_check",
-            "cycle_intent_check",
-            "cycle_intent_mode_consistency_check",
+            "reproductive_mode_check",
             "regularity_check",
             "hormonal_contraception_check",
             "ttc_hormonal_contraception_exclusion_check",

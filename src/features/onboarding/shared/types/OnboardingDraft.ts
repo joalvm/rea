@@ -1,18 +1,16 @@
-import type { CycleIntent, Regularity, ReproductiveMode } from "@/db/enums/reproductiveMode";
+import type { Regularity, ReproductiveMode } from "@/db/enums/reproductiveMode";
 
-/** Par `(currentMode, cycleIntent)` elegido en la pantalla de intención. */
+/** Modo de seguimiento reproductivo elegido en la pantalla de intención. */
 export type IntentChoice = {
-    currentMode: ReproductiveMode;
-    /** `null` para `ttc` y `pregnancy`. */
-    cycleIntent: CycleIntent | null;
+    reproductiveMode: ReproductiveMode;
 };
 
 /** Las 4 intenciones de onboarding. Las etiquetas vienen de i18n (`intent.<key>.*`). */
 export const INTENT_CHOICES = [
-    { key: "track", currentMode: "cycle_tracking", cycleIntent: "track_only" },
-    { key: "avoid", currentMode: "cycle_tracking", cycleIntent: "avoid_pregnancy" },
-    { key: "ttc", currentMode: "ttc", cycleIntent: null },
-    { key: "preg", currentMode: "pregnancy", cycleIntent: null },
+    { key: "track", reproductiveMode: "tracking_only" },
+    { key: "avoid", reproductiveMode: "tracking_avoid_pregnancy" },
+    { key: "ttc", reproductiveMode: "tracking_ttc" },
+    { key: "preg", reproductiveMode: "pregnancy_tracking" },
 ] as const satisfies readonly ({ key: string } & IntentChoice)[];
 
 export type IntentKey = (typeof INTENT_CHOICES)[number]["key"];
@@ -24,7 +22,7 @@ export type OnboardingDraft = {
     name: string;
     birthYear: number | null;
     intent: IntentChoice | null;
-    /** YYYY-MM-DD del inicio del último periodo (cycle_tracking/ttc). */
+    /** YYYY-MM-DD del inicio del último periodo (modos de seguimiento de ciclo). */
     lastPeriodStart: string | null;
     lastPeriodOngoing: boolean;
     lastPeriodEnd: string | null;

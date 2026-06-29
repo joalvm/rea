@@ -78,11 +78,17 @@ mutación injectable -> schema`.
 
 ## Modelo de dominio
 
-- Intención reproductiva en `reproductive_intent_history`: - `current_mode` ∈ `cycle_tracking` | `ttc` | `pregnancy` (master switch, 3 pilares). - `cycle_intent` ∈ `track_only` | `avoid_pregnancy` (solo si `current_mode =
-cycle_tracking`; NULL en ttc/pregnancy). La consistencia modo↔intención y la exclusión
-  TTC+anticonceptivos están enforced por CHECKs de DB.
-- Los 3 pilares **comparten las mismas rutas**; la UI se adapta por modo, no se
-  multiplican features por pilar.
+- Intención reproductiva en `reproductive_intent_history.reproductive_mode`: un único
+  eje que combina tipo de seguimiento + intención. Valores: `tracking_only` |
+  `tracking_avoid_pregnancy` | `tracking_ttc` | `pregnancy_tracking`. Reemplaza al
+  antiguo par (`current_mode`, `cycle_intent`); ya no hay columna `cycle_intent` ni
+  CHECK de consistencia. La exclusión TTC+anticonceptivos sigue enforced por CHECK.
+- Para ramificar ciclo vs embarazo usar `isPregnancyMode(mode)` (`pregnancy_tracking`).
+- Los modos **comparten las mismas rutas**; la UI se adapta por modo, no se multiplican
+  features por modo.
+- Segmentación de contenido y síntomas: `content_items.target_mode` y
+  `symptom_catalog.applicable_mode` usan el mismo vocabulario + `all`
+  (`reproductiveModeFilterValues`).
 - Tablas internas (calculadas/sembradas, **sin pantalla de gestión** para la usuaria):
   `daily_summary`, `cycle_predictions` (read models); `content_*` (motor editorial);
   `symptom_catalog` (seed global); `medication_catalog` (crece implícitamente desde

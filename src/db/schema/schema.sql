@@ -7,10 +7,11 @@
 -- 1. Perfil y Configuración separados (1:1).
 -- 2. 3FN en datos transaccionales (escritura).
 -- 3. Proyecciones de lectura desnormalizadas (daily_summary, cycle_predictions).
--- 4. Modo de la app regido por `reproductive_intent_history.current_mode`.
---    - 'cycle_tracking': Predicciones de periodo y ovulación estándar.
---    - 'ttc': Foco en ventana fértil, temperatura basal y tests de ovulación.
---    - 'pregnancy': Pausa predicciones de ciclo, activa predicciones de semana.
+-- 4. Modo de la app regido por `reproductive_intent_history.reproductive_mode`.
+--    - 'tracking_only': Predicciones de periodo y ovulación estándar.
+--    - 'tracking_avoid_pregnancy': Ventana fértil como método natural (ritmo/sintotérmico).
+--    - 'tracking_ttc': Foco en ventana fértil, temperatura basal y tests de ovulación.
+--    - 'pregnancy_tracking': Pausa predicciones de ciclo, activa predicciones de semana.
 -- ============================================================================
 
 PRAGMA foreign_keys = ON;
@@ -51,25 +52,21 @@ CREATE TABLE IF NOT EXISTS app_settings (
 ) STRICT;
 
 -- ----------------------------------------------------------------------------
--- INTENCIÓN REPRODUCTIVA (Master Switch del Hero de la App)
--- Cambiar el `current_mode` transforma la interfaz y las predicciones.
--- `cycle_intent` refina el modo ciclo: `track_only` (neutral) o
--- `avoid_pregnancy` (método del ritmo/sintotérmico). NULL en ttc/pregnancy.
+-- INTENCIÓN REPRODUCTIVA (Eje único de seguimiento)
+-- `reproductive_mode` combina tipo de seguimiento + intención en un único eje.
+-- Cambiarlo transforma la interfaz y las predicciones.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS reproductive_intent_history (
     id                         TEXT PRIMARY KEY NOT NULL, -- UUIDv7.
     user_id                    TEXT NOT NULL,
     effective_from             TEXT NOT NULL,             -- Fecha de vigencia del modo.
     effective_to               TEXT,                      -- NULL si es el modo actual.
-    current_mode               TEXT NOT NULL CHECK (current_mode IN (
-                                   'cycle_tracking',     -- Pilar 1: Seguimiento estándar.
-                                   'ttc',                -- Pilar 2: Buscando embarazo.
-                                   'pregnancy'           -- Pilar 3: Embarazo en curso.
+    reproductive_mode          TEXT NOT NULL CHECK (reproductive_mode IN (
+                                   'tracking_only',           -- Seguimiento neutral del ciclo.
+                                   'tracking_avoid_pregnancy', -- Anticonceptivo natural (ritmo/sintotérmico).
+                                   'tracking_ttc',             -- Buscando embarazo: ventana fértil, tests, BBT.
+                                   'pregnancy_tracking'        -- Embarazo en curso.
                                )),
-    cycle_intent               TEXT CHECK (cycle_intent IS NULL OR cycle_intent IN (
-                                   'track_only',         -- Seguimiento neutral.
-                                   'avoid_pregnancy'     -- Anticonceptivo natural (ritmo/sintotérmico).
-                               )),                       -- NOT NULL solo cuando current_mode = 'cycle_tracking'.
     regularity                 TEXT NOT NULL CHECK (regularity IN ('regular', 'variable', 'irregular')),
     hormonal_contraception     INTEGER NOT NULL CHECK (hormonal_contraception IN (0, 1)),
     declared_cycle_length      INTEGER NOT NULL CHECK (declared_cycle_length BETWEEN 15 AND 90),
@@ -82,10 +79,8 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
     CHECK (effective_from LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to >= effective_from),
-    -- cycle_intent obligatorio en modo ciclo, prohibido en ttc/pregnancy.
-    CHECK ((current_mode = 'cycle_tracking') = (cycle_intent IS NOT NULL)),
     -- TTC y anticoncepción hormonal son excluyentes.
-    CHECK (NOT (current_mode = 'ttc' AND hormonal_contraception = 1)),
+    CHECK (NOT (reproductive_mode = 'tracking_ttc' AND hormonal_contraception = 1)),
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
 ) STRICT;
 
@@ -95,7 +90,7 @@ WHERE effective_to IS NULL AND deleted_at IS NULL;
 
 -- ----------------------------------------------------------------------------
 -- RACHAS DE PERIODO (Episodios menstruales)
--- Se pausa automáticamente si `current_mode` cambia a 'pregnancy'.
+-- Se pausa automáticamente si `reproductive_mode` cambia a 'pregnancy_tracking'.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS period_runs (
     id          TEXT PRIMARY KEY NOT NULL, -- UUIDv7.
@@ -123,8 +118,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_period_runs_single_open
 ON period_runs(user_id) WHERE status = 'open' AND deleted_at IS NULL;
 
 -- ----------------------------------------------------------------------------
--- EPISODIOS DE EMBARAZO (Pilar 3)
--- Reemplaza a period_runs como evento principal cuando current_mode = 'pregnancy'.
+-- EPISODIOS DE EMBARAZO
+-- Reemplaza a period_runs como evento principal cuando reproductive_mode = 'pregnancy_tracking'.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS pregnancy_episodes (
     id              TEXT PRIMARY KEY NOT NULL, -- UUIDv7.
@@ -151,8 +146,8 @@ ON pregnancy_episodes(user_id) WHERE end_date IS NULL AND deleted_at IS NULL;
 
 -- ----------------------------------------------------------------------------
 -- CATÁLOGO DE SÍNTOMAS (Global)
--- `applicable_mode` filtra qué síntomas mostrar según el estado de la usuaria.
--- Ej: "Náuseas" aplica en TTC y Pregnancy. "Cólicos menstruales" en Cycle.
+-- `applicable_mode` filtra qué síntomas mostrar según el modo de seguimiento.
+-- Ej: "Náuseas" aplica en tracking_ttc y pregnancy_tracking. "Cólicos menstruales" en los de ciclo.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS symptom_catalog (
     symptom_key      TEXT PRIMARY KEY NOT NULL,
@@ -162,7 +157,7 @@ CREATE TABLE IF NOT EXISTS symptom_catalog (
                      )),
     label_key        TEXT NOT NULL,            -- Clave para i18n en src/lang.
     applicable_mode  TEXT NOT NULL DEFAULT 'all' CHECK (applicable_mode IN (
-                         'cycle_tracking', 'ttc', 'pregnancy', 'all'
+                         'tracking_only', 'tracking_avoid_pregnancy', 'tracking_ttc', 'pregnancy_tracking', 'all'
                      )),
     ui_priority      INTEGER NOT NULL DEFAULT 100,
     is_quick_option  INTEGER NOT NULL DEFAULT 0 CHECK (is_quick_option IN (0, 1)),
@@ -194,7 +189,7 @@ ON medication_catalog(user_id, normalized_name) WHERE deleted_at IS NULL;
 
 -- ----------------------------------------------------------------------------
 -- CHECK-INS (El core de captura de datos)
--- Captura señales de Pilar 1, 2 y 3. Lo que no aplica se deja en NULL.
+-- Captura señales de ciclo, fertilidad y embarazo. Lo que no aplica se deja en NULL.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS checkins (
     id                      TEXT PRIMARY KEY NOT NULL, -- UUIDv7.
@@ -202,7 +197,7 @@ CREATE TABLE IF NOT EXISTS checkins (
     recorded_at             TEXT NOT NULL,             -- Timestamp ISO exacto.
     local_date              TEXT NOT NULL,             -- 'YYYY-MM-DD' inmutable.
 
-    -- Señales de Ciclo (Pilar 1)
+    -- Señales de Ciclo
     bleeding_intensity      INTEGER CHECK (bleeding_intensity BETWEEN 0 AND 4), -- 0=nada, 1=spotting, 2=ligero, 3=moderado, 4=abundante.
     clots                   INTEGER CHECK (clots BETWEEN 0 AND 3),
     mood                    INTEGER CHECK (mood BETWEEN 1 AND 5),
@@ -213,14 +208,14 @@ CREATE TABLE IF NOT EXISTS checkins (
     pms_intensity           INTEGER CHECK (pms_intensity BETWEEN 0 AND 5),
     period_status_signal    TEXT CHECK (period_status_signal IN ('started', 'ended', 'ongoing') OR period_status_signal IS NULL),
 
-    -- Señales de Fertilidad y TTC (Pilar 2)
+    -- Señales de Fertilidad y TTC
     cervical_mucus          INTEGER CHECK (cervical_mucus IS NULL OR (cervical_mucus BETWEEN 0 AND 4)), -- 0 seco, 4 pico fértil.
     cervical_position       INTEGER CHECK (cervical_position IS NULL OR (cervical_position BETWEEN 0 AND 2)), -- 0 bajo, 1 medio, 2 alto.
     basal_body_temp_c       REAL CHECK (basal_body_temp_c IS NULL OR (basal_body_temp_c BETWEEN 35.0 AND 38.0)), -- Temperatura basal en ºC.
     opk_result              TEXT CHECK (opk_result IN ('negative', 'positive', 'invalid') OR opk_result IS NULL), -- Test de ovulación.
     pregnancy_test_result   TEXT CHECK (pregnancy_test_result IN ('negative', 'positive', 'invalid') OR pregnancy_test_result IS NULL), -- Test de embarazo.
 
-    -- Señales de Embarazo (Pilar 3)
+    -- Señales de Embarazo
     morning_sickness        INTEGER CHECK (morning_sickness IS NULL OR (morning_sickness BETWEEN 0 AND 3)), -- 0 no, 1 leve, 2 moderado, 3 severo.
     fetal_movement          INTEGER CHECK (fetal_movement IS NULL OR (fetal_movement BETWEEN 0 AND 3)),
 
@@ -404,8 +399,8 @@ CREATE TABLE IF NOT EXISTS content_items (
     body_key         TEXT NOT NULL,
     min_confidence   TEXT CHECK (min_confidence IN ('low', 'medium', 'high') OR min_confidence IS NULL),
     target_mode      TEXT NOT NULL DEFAULT 'all' CHECK (target_mode IN (
-                         'cycle_tracking', 'ttc', 'pregnancy', 'all'
-                     )), -- Filtra si el tip es para ciclo, TTC o embarazo.
+                         'tracking_only', 'tracking_avoid_pregnancy', 'tracking_ttc', 'pregnancy_tracking', 'all'
+                     )), -- Filtra el modo de seguimiento al que aplica el contenido.
     priority         INTEGER NOT NULL DEFAULT 100,
     locale           TEXT NOT NULL DEFAULT 'es',
     source_id        TEXT,
@@ -435,7 +430,7 @@ CREATE TABLE IF NOT EXISTS content_rules (
     trigger_key      TEXT,        -- Ej: 'pain' (symptom), 'luteal' (phase).
     min_value        REAL,        -- Ej: 3 (para pain >= 3).
     max_value        REAL,
-    required_value   TEXT,        -- Ej: 'ttc' (intent).
+    required_value   TEXT,        -- Ej: 'tracking_ttc' (reproductive_mode).
     priority         INTEGER NOT NULL DEFAULT 100,
     created_at       TEXT NOT NULL,
     updated_at       TEXT NOT NULL,
@@ -479,8 +474,8 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 ) STRICT;
 
 INSERT OR IGNORE INTO schema_migrations(version, name, applied_at)
-VALUES (1, 'schema_v1_cycle_intent', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
+VALUES (2, 'schema_v2_reproductive_mode', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
 
 COMMIT;
 
-PRAGMA user_version = 1;
+PRAGMA user_version = 2;

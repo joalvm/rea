@@ -37,7 +37,7 @@ export const symptomCatalog = sqliteTable(
         ),
         check(
             "symptom_applicable_mode_check",
-            sql`${table.applicableMode} IN ('cycle_tracking', 'ttc', 'pregnancy', 'all')`,
+            sql`${table.applicableMode} IN ('tracking_only', 'tracking_avoid_pregnancy', 'tracking_ttc', 'pregnancy_tracking', 'all')`,
         ),
         check("symptom_quick_option_check", sql`${table.isQuickOption} IN (0, 1)`),
         check("symptom_active_check", sql`${table.isActive} IN (0, 1)`),

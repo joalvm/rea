@@ -16,7 +16,7 @@ type Props = {
     onPush: (href: string) => void;
 };
 
-/** Paso 7 (solo track_only): anticoncepción hormonal. Fuerza `false` en evitar/ttc. */
+/** Paso 7 (solo tracking_only): anticoncepción hormonal. */
 export default function ContraceptionScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const theme = useTheme();

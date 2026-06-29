@@ -15,7 +15,7 @@ import { contentSource } from "./contentSource";
  * - `topic`: Tema interno usado para reglas y agrupación.
  * - `titleKey`, `bodyKey`: Claves i18n del texto visible.
  * - `minConfidence`: Confianza mínima requerida para mostrar el contenido, si aplica.
- * - `targetMode`: Segmenta si el contenido aplica a ciclo, TTC, embarazo o a todos.
+ * - `targetMode`: Segmenta si el contenido aplica a un modo de seguimiento o a todos.
  * - `priority`: Prioridad de selección y orden.
  * - `locale`: Locale del recurso.
  * - `sourceId`: Fuente asociada, si existe.
@@ -60,7 +60,7 @@ export const contentItem = sqliteTable(
         ),
         check(
             "content_item_target_mode_check",
-            sql`${table.targetMode} IN ('cycle_tracking', 'ttc', 'pregnancy', 'all')`,
+            sql`${table.targetMode} IN ('tracking_only', 'tracking_avoid_pregnancy', 'tracking_ttc', 'pregnancy_tracking', 'all')`,
         ),
         check("content_item_active_check", sql`${table.isActive} IN (0, 1)`),
         check(

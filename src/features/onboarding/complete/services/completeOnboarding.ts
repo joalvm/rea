@@ -1,4 +1,5 @@
 import type { Database } from "@/db/client";
+import { isPregnancyMode } from "@/db/enums/reproductiveMode";
 import { appSettings } from "@/db/schema/appSettings";
 import { periodRun } from "@/db/schema/periodRun";
 import { pregnancyEpisode } from "@/db/schema/pregnancyEpisode";
@@ -19,8 +20,8 @@ export async function completeOnboarding(database: Database, draft: OnboardingDr
     const now = new Date().toISOString();
     const today = todayLocalISO();
     const profileId = uuid();
-    const intent = draft.intent;
-    const mode = intent?.currentMode ?? "cycle_tracking";
+    const mode = draft.intent?.reproductiveMode ?? "tracking_only";
+    const pregnancy = isPregnancyMode(mode);
 
     try {
         await database.transaction(async (tx) => {
@@ -43,37 +44,20 @@ export async function completeOnboarding(database: Database, draft: OnboardingDr
                 updatedAt: now,
             });
 
-            if (mode === "pregnancy") {
-                await tx.insert(reproductiveIntentHistory).values({
-                    id: uuid(),
-                    profileId,
-                    effectiveFrom: today,
-                    currentMode: "pregnancy",
-                    cycleIntent: null,
-                    regularity: "irregular",
-                    hormonalContraception: false,
-                    declaredCycleLength: 28,
-                    declaredPeriodLength: 5,
-                    createdAt: now,
-                    updatedAt: now,
-                });
-            } else {
-                await tx.insert(reproductiveIntentHistory).values({
-                    id: uuid(),
-                    profileId,
-                    effectiveFrom: today,
-                    currentMode: mode,
-                    cycleIntent: mode === "cycle_tracking" ? (intent?.cycleIntent ?? "track_only") : null,
-                    regularity: draft.regularity,
-                    hormonalContraception: draft.hormonalContraception,
-                    declaredCycleLength: draft.cycleLength,
-                    declaredPeriodLength: draft.periodLength,
-                    createdAt: now,
-                    updatedAt: now,
-                });
-            }
+            await tx.insert(reproductiveIntentHistory).values({
+                id: uuid(),
+                profileId,
+                effectiveFrom: today,
+                reproductiveMode: mode,
+                regularity: pregnancy ? "irregular" : draft.regularity,
+                hormonalContraception: pregnancy ? false : draft.hormonalContraception,
+                declaredCycleLength: pregnancy ? 28 : draft.cycleLength,
+                declaredPeriodLength: pregnancy ? 5 : draft.periodLength,
+                createdAt: now,
+                updatedAt: now,
+            });
 
-            if (mode === "pregnancy" && draft.pregnancyLmp) {
+            if (pregnancy && draft.pregnancyLmp) {
                 await tx.insert(pregnancyEpisode).values({
                     id: uuid(),
                     profileId,
@@ -84,7 +68,7 @@ export async function completeOnboarding(database: Database, draft: OnboardingDr
                 });
             }
 
-            if ((mode === "cycle_tracking" || mode === "ttc") && draft.lastPeriodStart) {
+            if (!pregnancy && draft.lastPeriodStart) {
                 await tx.insert(periodRun).values({
                     id: uuid(),
                     profileId,
