@@ -15,7 +15,7 @@ type Props = {
     onPush: (href: string) => void;
 };
 
-/** Paso 5: duración declarada del ciclo y del sangrado (punto de partida). */
+/** Paso 4: duración declarada del ciclo y del sangrado (punto de partida). */
 export default function CycleScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const styles = useCycleStyles();
@@ -25,8 +25,8 @@ export default function CycleScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.58}
-            step={5}
+            progress={0.45}
+            step={4}
             total={10}
             onBack={onBack}
             cta={{ label: t("cta.continue"), onPress: () => onPush("/(onboarding)/regularity") }}

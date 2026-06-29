@@ -29,7 +29,7 @@ const OPTIONS: readonly Option[] = [
     { key: "unsure", value: "irregular" },
 ];
 
-/** Paso 6: regularidad declarada. "Aún no lo sé" mapea a `irregular` (UI distinta). */
+/** Paso 5: regularidad declarada. "Aún no lo sé" mapea a `irregular` (UI distinta). */
 export default function RegularityScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const styles = useRegularityStyles();
@@ -50,15 +50,13 @@ export default function RegularityScreen({ onBack, onPush }: Props) {
             return;
         }
 
-        onPush(
-            intent.reproductiveMode === "tracking_only" ? "/(onboarding)/contraception" : "/(onboarding)/notifications",
-        );
+        onPush("/(onboarding)/last-period");
     };
 
     return (
         <OnboardingScreen
-            progress={0.68}
-            step={6}
+            progress={0.58}
+            step={5}
             total={10}
             onBack={onBack}
             cta={{ label: t("cta.continue"), onPress: submit }}

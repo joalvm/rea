@@ -73,9 +73,7 @@ export default function IntentScreen({ onBack, onPush }: Props) {
         if (!intent) {
             return;
         }
-        onPush(
-            isPregnancyMode(intent.reproductiveMode) ? "/(onboarding)/pregnancy-setup" : "/(onboarding)/last-period",
-        );
+        onPush(isPregnancyMode(intent.reproductiveMode) ? "/(onboarding)/pregnancy-setup" : "/(onboarding)/cycle");
     };
 
     return (

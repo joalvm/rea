@@ -56,8 +56,10 @@
     "lastPeriod": {
         "title": "Tu último periodo",
         "lead": "¿Cuándo empezó tu última regla? Es el punto de partida de tus predicciones.",
-        "ongoingTitle": "Aún continúa",
-        "ongoingSubtitle": "Si todavía no terminó"
+        "ongoingTitle": "Todavía tengo el periodo",
+        "ongoingSubtitle": "El sangrado aún no ha terminado.",
+        "endDateTitle": "¿Cuándo terminó?",
+        "endDateHelp": "El último día de sangrado."
     },
     "cycle": {
         "title": "La duración de tu ciclo",

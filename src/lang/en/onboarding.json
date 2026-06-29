@@ -56,8 +56,10 @@
     "lastPeriod": {
         "title": "Your last period",
         "lead": "When did your last period start? It's the starting point for your predictions.",
-        "ongoingTitle": "Still going",
-        "ongoingSubtitle": "If it hasn't ended yet"
+        "ongoingTitle": "I'm still on my period",
+        "ongoingSubtitle": "The bleeding hasn't ended yet.",
+        "endDateTitle": "When did it end?",
+        "endDateHelp": "The last day you bled."
     },
     "cycle": {
         "title": "Your cycle length",

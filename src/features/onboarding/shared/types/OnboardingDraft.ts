@@ -45,7 +45,7 @@ export const INITIAL_ONBOARDING_DRAFT: OnboardingDraft = {
     birthYear: null,
     intent: null,
     lastPeriodStart: null,
-    lastPeriodOngoing: false,
+    lastPeriodOngoing: true,
     lastPeriodEnd: null,
     cycleLength: 28,
     periodLength: 5,

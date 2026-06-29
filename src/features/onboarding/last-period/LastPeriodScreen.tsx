@@ -17,11 +17,12 @@ type Props = {
     onPush: (href: string) => void;
 };
 
-/** Paso 4: inicio del último periodo (modos de seguimiento de ciclo) + toggle "aún continúa". */
+/** Paso 6: inicio del último periodo (modos de seguimiento de ciclo) + toggle "aún continúa". */
 export default function LastPeriodScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const styles = useLastPeriodStyles();
     const draft = useOnboardingStore((state) => state.draft);
+    const intent = useOnboardingStore((state) => state.draft.intent);
     const set = useOnboardingStore((state) => state.set);
 
     const start: YMD = draft.lastPeriodStart ? isoToYMD(draft.lastPeriodStart) : todayYMD();
@@ -50,13 +51,21 @@ export default function LastPeriodScreen({ onBack, onPush }: Props) {
         }
 
         set(result.patch);
-        onPush("/(onboarding)/cycle");
+
+        if (!intent) {
+            onPush("/(onboarding)/intent");
+            return;
+        }
+
+        onPush(
+            intent.reproductiveMode === "tracking_only" ? "/(onboarding)/contraception" : "/(onboarding)/notifications",
+        );
     };
 
     return (
         <OnboardingScreen
-            progress={0.45}
-            step={4}
+            progress={0.68}
+            step={6}
             total={10}
             onBack={onBack}
             cta={{ label: t("cta.continue"), onPress: submit }}
@@ -75,9 +84,17 @@ export default function LastPeriodScreen({ onBack, onPush }: Props) {
                 testID="last-period-start"
             />
 
+            <ToggleRow
+                title={t("lastPeriod.ongoingTitle")}
+                subtitle={t("lastPeriod.ongoingSubtitle")}
+                value={draft.lastPeriodOngoing}
+                onChange={(value) => set({ lastPeriodOngoing: value })}
+                testID="last-period-ongoing"
+            />
+
             {!draft.lastPeriodOngoing ? (
                 <View style={styles.fieldGroup}>
-                    <FieldLabel>{t("lastPeriod.ongoingTitle")}</FieldLabel>
+                    <FieldLabel>{t("lastPeriod.endDateTitle")}</FieldLabel>
                     <DateWheel
                         value={end}
                         monthLabels={monthLabels}
@@ -88,14 +105,6 @@ export default function LastPeriodScreen({ onBack, onPush }: Props) {
                     />
                 </View>
             ) : null}
-
-            <ToggleRow
-                title={t("lastPeriod.ongoingTitle")}
-                subtitle={t("lastPeriod.ongoingSubtitle")}
-                value={draft.lastPeriodOngoing}
-                onChange={(value) => set({ lastPeriodOngoing: value })}
-                testID="last-period-ongoing"
-            />
         </OnboardingScreen>
     );
 }
