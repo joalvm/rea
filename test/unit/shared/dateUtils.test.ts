@@ -4,38 +4,38 @@ import { capitalizeFirst } from "@/shared/utils/capitalizeFirst";
 import { startOfDay } from "@/shared/utils/startOfDay";
 import { toCalendarDate } from "@/shared/utils/toCalendarDate";
 
-describe("toCalendarDate", () => {
-    it("anchors a YYYY-MM-DD string at local noon to avoid timezone day shifts", () => {
+describe("Conversión a fecha de calendario", () => {
+    it("ancla una cadena YYYY-MM-DD al mediodía local para evitar saltos de día por zona horaria", () => {
         const date = toCalendarDate("2026-06-25");
         expect([date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()]).toEqual([2026, 5, 25, 12]);
     });
 
-    it("returns Date instances unchanged (same reference)", () => {
+    it("devuelve instancias de Date sin cambios (misma referencia)", () => {
         const original = new Date(2026, 0, 1, 8, 30);
         expect(toCalendarDate(original)).toBe(original);
     });
 
-    it("treats numbers as epoch milliseconds", () => {
+    it("trata números como milisegundos epoch", () => {
         expect(toCalendarDate(0).getTime()).toBe(0);
     });
 
-    it("respects an explicit time in an ISO datetime string", () => {
+    it("respeta una hora explícita en una cadena ISO datetime", () => {
         expect(toCalendarDate("2026-06-25T00:00:00Z").getTime()).toBe(Date.UTC(2026, 5, 25));
     });
 });
 
-describe("capitalizeFirst", () => {
-    it("capitalizes only the first letter", () => {
+describe("Capitalización de la primera letra", () => {
+    it("capitaliza solo la primera letra", () => {
         expect(capitalizeFirst("junio")).toBe("Junio");
     });
 
-    it("leaves an empty string untouched", () => {
+    it("deja intacta una cadena vacía", () => {
         expect(capitalizeFirst("")).toBe("");
     });
 });
 
-describe("startOfDay", () => {
-    it("zeroes the time component without mutating the input", () => {
+describe("Inicio del día", () => {
+    it("pone a cero el componente de hora sin mutar la entrada", () => {
         const input = new Date(2026, 5, 25, 13, 45, 10);
         const result = startOfDay(input);
         expect([result.getHours(), result.getMinutes(), result.getSeconds()]).toEqual([0, 0, 0]);

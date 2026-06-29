@@ -1,4 +1,7 @@
 import type { Regularity, ReproductiveMode } from "@/db/enums/reproductiveMode";
+import { defaultReminderSettings } from "@/shared/schemas/reminder/reminderDefaults";
+
+import { profileSchema } from "../../profile/schemas/profileSchema";
 
 /** Modo de seguimiento reproductivo elegido en la pantalla de intención. */
 export type IntentChoice = {
@@ -54,10 +57,10 @@ export const INITIAL_ONBOARDING_DRAFT: OnboardingDraft = {
     hormonalContraception: false,
     pregnancyLmp: null,
     pregnancyDueDate: null,
-    remindersEnabled: true,
-    reminderWindowStart: "09:00",
-    reminderWindowEnd: "22:00",
-    reminderIntervalHours: 6,
+    remindersEnabled: defaultReminderSettings.remindersEnabled,
+    reminderWindowStart: defaultReminderSettings.reminderWindowStart,
+    reminderWindowEnd: defaultReminderSettings.reminderWindowEnd,
+    reminderIntervalHours: defaultReminderSettings.reminderIntervalHours,
 };
 
 /** Encuentra la definición de intención por clave. */
@@ -67,5 +70,8 @@ export function findIntent(key: IntentKey): IntentChoice | undefined {
 
 /** ¿Está completa la captura de perfil (nombre + año)? Habilita el CTA de `profile`. */
 export function isProfileComplete(draft: OnboardingDraft): boolean {
-    return draft.name.trim().length > 0 && draft.birthYear !== null;
+    return profileSchema.safeParse({
+        birthYear: draft.birthYear,
+        name: draft.name,
+    }).success;
 }

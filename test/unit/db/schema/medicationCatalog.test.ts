@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { medicationCatalog } from "@/db/schema/medicationCatalog";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("medicationCatalog schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de medicationCatalog", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(medicationCatalog)).toEqual([
             "id",
             "user_id",
@@ -18,7 +18,7 @@ describe("medicationCatalog schema", () => {
         ]);
     });
 
-    it("declares checks, active-name index and profile foreign key", () => {
+    it("declara restricciones CHECK, el índice de nombre activo y la clave foránea a profile", () => {
         expect(medicationCatalog.version.default).toBe(1);
         expect(indexNames(medicationCatalog)).toEqual(["uq_medication_catalog_active_name"]);
         expect(checkNames(medicationCatalog)).toEqual([

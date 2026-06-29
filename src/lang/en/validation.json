@@ -1,0 +1,11 @@
+{
+    "onboarding": {
+        "invalidProfile": "Please review your name and year of birth.",
+        "invalidLastPeriodRange": "The end date cannot be before the start date.",
+        "invalidPregnancyDueDate": "The due date must be after your last period.",
+        "invalidReminderInterval": "The reminder interval is invalid.",
+        "invalidReminderTime": "Reminder times must stay between 00:00 and 23:59.",
+        "invalidReminderWindowRange": "The end time cannot be earlier than the start time, and the window must stay within the same day."
+    },
+    "settings": {}
+}

@@ -25,7 +25,7 @@ afterEach(() => {
 const context = {
     get database() {
         if (database == null) {
-            throw new Error("File database accessed before initialization");
+            throw new Error("se accedió a la base de datos de archivo antes de inicializarla");
         }
         return database;
     },
@@ -46,8 +46,8 @@ function buildDraft(overrides: Partial<OnboardingDraft> = {}): OnboardingDraft {
 
 const intent = (choice: IntentChoice): IntentChoice => choice;
 
-describe("completeOnboarding integration", () => {
-    it("persists tracking_only with a closed period run", async () => {
+describe("Integración de completeOnboarding", () => {
+    it("persiste tracking_only con un tramo de periodo cerrado", async () => {
         const profileId = await completeOnboarding(context.database.db as unknown as Database, buildDraft());
 
         const profiles = await context.database.db.select().from(profile).where(eq(profile.id, profileId));
@@ -72,7 +72,7 @@ describe("completeOnboarding integration", () => {
         expect(pregnancies).toHaveLength(0);
     });
 
-    it("persists tracking_avoid_pregnancy without a period run when none is provided", async () => {
+    it("persiste tracking_avoid_pregnancy sin tramo de periodo cuando no se proporciona ninguno", async () => {
         await completeOnboarding(
             context.database.db as unknown as Database,
             buildDraft({
@@ -90,7 +90,7 @@ describe("completeOnboarding integration", () => {
         expect(runs).toHaveLength(0);
     });
 
-    it("persists tracking_ttc with forced no hormonal contraception", async () => {
+    it("persiste tracking_ttc forzando anticoncepción hormonal en false", async () => {
         await completeOnboarding(
             context.database.db as unknown as Database,
             buildDraft({
@@ -103,7 +103,7 @@ describe("completeOnboarding integration", () => {
         expect(intents[0]?.reproductiveMode).toBe("tracking_ttc");
     });
 
-    it("persists pregnancy_tracking with neutral defaults and an open episode", async () => {
+    it("persiste pregnancy_tracking con valores por defecto neutros y un episodio abierto", async () => {
         await completeOnboarding(
             context.database.db as unknown as Database,
             buildDraft({
@@ -133,13 +133,31 @@ describe("completeOnboarding integration", () => {
         expect(runs).toHaveLength(0);
     });
 
-    it("rolls back everything when a CHECK constraint is violated", async () => {
+    it("revierte todo cuando se viola una restricción CHECK", async () => {
         await expect(
             completeOnboarding(
                 context.database.db as unknown as Database,
                 buildDraft({
                     intent: intent({ reproductiveMode: "tracking_ttc" }),
                     hormonalContraception: true,
+                }),
+            ),
+        ).rejects.toThrow();
+
+        const profiles = await context.database.client.execute("SELECT COUNT(*) AS total FROM user_profile");
+        expect(Number(profiles.rows[0]?.total ?? 0)).toBe(0);
+
+        const settings = await context.database.client.execute("SELECT COUNT(*) AS total FROM app_settings");
+        expect(Number(settings.rows[0]?.total ?? 0)).toBe(0);
+    });
+
+    it("revierte todo cuando los recordatorios violan el contrato de la base de datos", async () => {
+        await expect(
+            completeOnboarding(
+                context.database.db as unknown as Database,
+                buildDraft({
+                    reminderWindowStart: "22:00",
+                    reminderWindowEnd: "09:00",
                 }),
             ),
         ).rejects.toThrow();

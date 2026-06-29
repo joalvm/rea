@@ -9,13 +9,13 @@ jest.mock("expo-localization", () => ({
 import { formatCurrency } from "@/modules/l10n/formatCurrency";
 import { PRIMARY_REGION, resolveFormattingLocale } from "@/modules/l10n/resolveFormattingLocale";
 
-describe("Peru as the default market", () => {
-    it("assumes the Peru region when the device reports none", () => {
+describe("Perú como mercado por defecto", () => {
+    it("asume la región de Perú cuando el dispositivo no reporta ninguna", () => {
         expect(PRIMARY_REGION).toBe("PE");
         expect(resolveFormattingLocale()).toBe("es-PE");
     });
 
-    it("falls back to the Peruvian sol when the system reports no currency", () => {
+    it("cae al sol peruano cuando el sistema no reporta moneda", () => {
         expect(formatCurrency(1234.5)).toMatch(/S\/|PEN/);
     });
 });

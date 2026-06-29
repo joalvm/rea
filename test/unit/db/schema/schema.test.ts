@@ -22,8 +22,8 @@ import {
 } from "@/db/schema/schema";
 import { tableName } from "@test/db/utils/schemaMetadata";
 
-describe("database schema root", () => {
-    it("exports every domain table from the root schema", () => {
+describe("Raíz del esquema de base de datos", () => {
+    it("exporta todas las tablas de dominio desde el esquema raíz", () => {
         expect(
             [
                 schemaMigration,

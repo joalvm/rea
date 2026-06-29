@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { useMemo, useState } from "react";
-import { View } from "react-native";
-import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
+import { Alert, View } from "react-native";
+import { useOnboardingStore } from "../shared/stores/useOnboardingStore";
+import { profileSchema, DEFAULT_BIRTH_YEAR, MAX_BIRTH_YEAR, MIN_BIRTH_YEAR } from "./schemas/profileSchema";
 
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { HelpText } from "../shared/components/help-text/HelpText";
@@ -12,35 +12,39 @@ import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
 import { WheelPicker } from "../shared/components/wheel-picker/WheelPicker";
 import { useProfileStyles } from "./ProfileStyle";
 
-const MIN_YEAR = 1925;
-const MAX_YEAR = new Date().getFullYear();
-
 type Props = {
     onBack: () => void;
     onPush: (href: string) => void;
 };
 
+const BIRTH_YEAR_OPTIONS = Array.from({ length: MAX_BIRTH_YEAR - MIN_BIRTH_YEAR + 1 }, (_, index) =>
+    String(MIN_BIRTH_YEAR + index),
+);
+
 /** Paso 2: nombre + año de nacimiento. Año siempre con valor (rueda); CTA pide nombre. */
 export default function ProfileScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
+    const { t: tValidation } = useTranslation("validation");
     const styles = useProfileStyles();
     const name = useOnboardingStore((state) => state.draft.name);
     const storedYear = useOnboardingStore((state) => state.draft.birthYear);
     const set = useOnboardingStore((state) => state.set);
-
-    const years = useMemo(() => {
-        const items: string[] = [];
-        for (let year = MIN_YEAR; year <= MAX_YEAR; year += 1) {
-            items.push(String(year));
-        }
-        return items;
-    }, []);
-
-    const defaultIndex = Math.min(years.length - 1, Math.max(0, (storedYear ?? MAX_YEAR - 30) - MIN_YEAR));
-    const [yearIndex, setYearIndex] = useState(defaultIndex);
+    const selectedBirthYear = Math.min(MAX_BIRTH_YEAR, Math.max(MIN_BIRTH_YEAR, storedYear ?? DEFAULT_BIRTH_YEAR));
+    const yearIndex = selectedBirthYear - MIN_BIRTH_YEAR;
 
     const submit = () => {
-        set({ name: name.trim(), birthYear: MIN_YEAR + yearIndex });
+        const result = profileSchema.safeParse({
+            birthYear: selectedBirthYear,
+            name,
+        });
+
+        if (!result.success) {
+            Alert.alert(tValidation("onboarding.invalidProfile"));
+            return;
+        }
+
+        set(result.data);
         onPush("/(onboarding)/intent");
     };
 
@@ -50,7 +54,7 @@ export default function ProfileScreen({ onBack, onPush }: Props) {
             step={2}
             total={10}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: submit, disabled: name.trim().length === 0 }}
+            cta={{ label: tCommon("action.continue"), onPress: submit, disabled: name.trim().length === 0 }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("profile.title")}</ScreenTitle>
@@ -69,7 +73,12 @@ export default function ProfileScreen({ onBack, onPush }: Props) {
 
             <View style={styles.fieldGroup}>
                 <FieldLabel>{t("profile.yearLabel")}</FieldLabel>
-                <WheelPicker items={years} valueIndex={yearIndex} onChange={setYearIndex} testID="profile-year" />
+                <WheelPicker
+                    items={BIRTH_YEAR_OPTIONS}
+                    valueIndex={yearIndex}
+                    onChange={(index) => set({ birthYear: MIN_BIRTH_YEAR + index })}
+                    testID="profile-year"
+                />
                 <HelpText>{t("profile.yearHelp")}</HelpText>
             </View>
         </OnboardingScreen>

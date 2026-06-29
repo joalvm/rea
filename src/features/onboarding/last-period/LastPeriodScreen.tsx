@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
-import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
-import { buildLastPeriodDraftPatch } from "@/features/onboarding/shared/utils/buildLastPeriodDraftPatch";
-import { type YMD, isoToYMD, todayYMD, ymdToISO } from "@/features/onboarding/shared/utils/onboardingDate";
+import { getMonthLabels } from "@/modules/l10n/getMonthLabels";
+import { useOnboardingStore } from "../shared/stores/useOnboardingStore";
+import { lastPeriodSchema } from "./schemas/lastPeriodSchema";
+import { type YMD, isoToYMD, todayYMD, ymdToISO } from "../shared/utils/onboardingDate";
 
 import { DateWheel } from "../shared/components/date-wheel/DateWheel";
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
@@ -20,6 +21,8 @@ type Props = {
 /** Paso 6: inicio del último periodo (modos de seguimiento de ciclo) + toggle "aún continúa". */
 export default function LastPeriodScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
+    const { t: tValidation } = useTranslation("validation");
     const styles = useLastPeriodStyles();
     const draft = useOnboardingStore((state) => state.draft);
     const intent = useOnboardingStore((state) => state.draft.intent);
@@ -28,29 +31,21 @@ export default function LastPeriodScreen({ onBack, onPush }: Props) {
     const start: YMD = draft.lastPeriodStart ? isoToYMD(draft.lastPeriodStart) : todayYMD();
     const end: YMD = draft.lastPeriodEnd ? isoToYMD(draft.lastPeriodEnd) : todayYMD();
 
-    const monthLabels = [
-        t("months.jan"),
-        t("months.feb"),
-        t("months.mar"),
-        t("months.apr"),
-        t("months.may"),
-        t("months.jun"),
-        t("months.jul"),
-        t("months.aug"),
-        t("months.sep"),
-        t("months.oct"),
-        t("months.nov"),
-        t("months.dec"),
-    ];
+    const monthLabels = getMonthLabels();
 
     const submit = () => {
-        const result = buildLastPeriodDraftPatch(start, end, draft.lastPeriodOngoing);
-        if (!result.isValid) {
-            Alert.alert(t("validation.invalidLastPeriodRange"));
+        const result = lastPeriodSchema.safeParse({
+            lastPeriodEnd: draft.lastPeriodOngoing ? null : ymdToISO(end),
+            lastPeriodOngoing: draft.lastPeriodOngoing,
+            lastPeriodStart: ymdToISO(start),
+        });
+
+        if (!result.success) {
+            Alert.alert(tValidation("onboarding.invalidLastPeriodRange"));
             return;
         }
 
-        set(result.patch);
+        set(result.data);
 
         if (!intent) {
             onPush("/(onboarding)/intent");
@@ -68,7 +63,7 @@ export default function LastPeriodScreen({ onBack, onPush }: Props) {
             step={6}
             total={10}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: submit }}
+            cta={{ label: tCommon("action.continue"), onPress: submit }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("lastPeriod.title")}</ScreenTitle>

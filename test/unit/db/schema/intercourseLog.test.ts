@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { intercourseLog } from "@/db/schema/intercourseLog";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("intercourseLog schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de intercourseLog", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(intercourseLog)).toEqual([
             "id",
             "user_id",
@@ -19,7 +19,7 @@ describe("intercourseLog schema", () => {
         ]);
     });
 
-    it("keeps defaults, checks, index and profile foreign key", () => {
+    it("conserva valores por defecto, restricciones CHECK, índice y la clave foránea a profile", () => {
         expect(intercourseLog.version.default).toBe(1);
         expect(indexNames(intercourseLog)).toEqual(["ix_intercourse_log_date"]);
         expect(checkNames(intercourseLog)).toEqual([

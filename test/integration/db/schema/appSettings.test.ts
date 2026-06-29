@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("appSettings schema integration", () => {
-    it("inserts and queries a valid app settings row", async () => {
+describe("Integración del esquema de appSettings", () => {
+    it("inserta y consulta una fila válida de appSettings", async () => {
         await seedProfile(context.database);
         await seedAppSettings(context.database);
 
@@ -25,7 +25,7 @@ describe("appSettings schema integration", () => {
         expect(rows[0]?.onboardingCompletedAt).toBeNull();
     });
 
-    it("rejects orphan rows and invalid reminder or theme constraints", async () => {
+    it("rechaza filas huérfanas y restricciones inválidas de recordatorios o tema", async () => {
         await expect(
             seedAppSettings(context.database, {
                 userId: "missing-profile",
@@ -42,6 +42,21 @@ describe("appSettings schema integration", () => {
         ).rejects.toThrow();
 
         await expect(
+            seedAppSettings(context.database, {
+                userId: profileSeed.id,
+                reminderWindowStart: "24:00",
+            }),
+        ).rejects.toThrow();
+
+        await expect(
+            seedAppSettings(context.database, {
+                userId: profileSeed.id,
+                reminderWindowStart: "22:00",
+                reminderWindowEnd: "09:00",
+            }),
+        ).rejects.toThrow();
+
+        await expect(
             context.database.client.execute({
                 sql: `
                     INSERT INTO app_settings (
@@ -53,7 +68,7 @@ describe("appSettings schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedAppSettings(context.database);
 

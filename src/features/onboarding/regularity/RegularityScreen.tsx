@@ -32,6 +32,7 @@ const OPTIONS: readonly Option[] = [
 /** Paso 5: regularidad declarada. "Aún no lo sé" mapea a `irregular` (UI distinta). */
 export default function RegularityScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
     const styles = useRegularityStyles();
     const intent = useOnboardingStore((state) => state.draft.intent);
     const regularity = useOnboardingStore((state) => state.draft.regularity);
@@ -59,7 +60,7 @@ export default function RegularityScreen({ onBack, onPush }: Props) {
             step={5}
             total={10}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: submit }}
+            cta={{ label: tCommon("action.continue"), onPress: submit }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("regularity.title")}</ScreenTitle>

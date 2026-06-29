@@ -19,6 +19,7 @@ type Props = {
 /** Paso 7 (solo tracking_only): anticoncepción hormonal. */
 export default function ContraceptionScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
     const styles = useContraceptionStyles();
     const hormonal = useOnboardingStore((state) => state.draft.hormonalContraception);
@@ -30,7 +31,7 @@ export default function ContraceptionScreen({ onBack, onPush }: Props) {
             step={7}
             total={10}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: () => onPush("/(onboarding)/notifications") }}
+            cta={{ label: tCommon("action.continue"), onPress: () => onPush("/(onboarding)/notifications") }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("contraception.title")}</ScreenTitle>

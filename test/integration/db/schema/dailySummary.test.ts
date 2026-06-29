@@ -10,8 +10,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("dailySummary schema integration", () => {
-    it("inserts and queries a valid summary row", async () => {
+describe("Integración del esquema de dailySummary", () => {
+    it("inserta y consulta una fila válida de resumen", async () => {
         await seedProfile(context.database);
         await seedSymptomCatalog(context.database);
         await seedDailySummary(context.database, {
@@ -27,7 +27,7 @@ describe("dailySummary schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects duplicate composite keys and invalid foreign keys or dates", async () => {
+    it("rechaza claves compuestas duplicadas y claves foráneas o fechas inválidas", async () => {
         await seedProfile(context.database);
         await seedSymptomCatalog(context.database);
         await seedDailySummary(context.database, {
@@ -57,7 +57,7 @@ describe("dailySummary schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedDailySummary(context.database);
 

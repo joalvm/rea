@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { periodRun } from "@/db/schema/periodRun";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("periodRun schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de periodRun", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(periodRun)).toEqual([
             "id",
             "user_id",
@@ -19,7 +19,7 @@ describe("periodRun schema", () => {
         ]);
     });
 
-    it("keeps defaults, checks, indexes and profile foreign key", () => {
+    it("conserva valores por defecto, restricciones CHECK, índices y la clave foránea a profile", () => {
         expect(periodRun.status.default).toBe("open");
         expect(periodRun.source.default).toBe("user_confirmed");
         expect(periodRun.status.enumValues).toEqual(["open", "closed", "excluded"]);

@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { reproductiveIntentHistory } from "@/db/schema/reproductiveIntentHistory";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("reproductiveIntentHistory schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de reproductiveIntentHistory", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(reproductiveIntentHistory)).toEqual([
             "id",
             "user_id",
@@ -22,7 +22,7 @@ describe("reproductiveIntentHistory schema", () => {
         ]);
     });
 
-    it("declares checks, indexes and profile foreign key", () => {
+    it("declara restricciones CHECK, índices y la clave foránea a profile", () => {
         expect(indexNames(reproductiveIntentHistory)).toEqual(["uq_reproductive_intent_single_open"]);
         expect(checkNames(reproductiveIntentHistory)).toEqual([
             "reproductive_mode_check",

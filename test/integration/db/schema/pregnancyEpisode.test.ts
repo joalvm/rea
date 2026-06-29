@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("pregnancyEpisode schema integration", () => {
-    it("inserts and queries a valid pregnancy episode", async () => {
+describe("Integración del esquema de pregnancyEpisode", () => {
+    it("inserta y consulta un episodio de embarazo válido", async () => {
         await seedProfile(context.database);
         await seedPregnancyEpisode(context.database);
 
@@ -23,7 +23,7 @@ describe("pregnancyEpisode schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects orphan rows and invalid lifecycle combinations", async () => {
+    it("rechaza filas huérfanas y combinaciones inválidas del ciclo de vida", async () => {
         await expect(
             seedPregnancyEpisode(context.database, {
                 id: "pregnancy-orphan",
@@ -49,7 +49,7 @@ describe("pregnancyEpisode schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedPregnancyEpisode(context.database);
 

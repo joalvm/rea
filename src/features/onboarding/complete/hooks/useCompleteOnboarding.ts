@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 
 import { useDatabase } from "@/db/useDatabase";
-import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
+import { useOnboardingStore } from "../../shared/stores/useOnboardingStore";
 
 import { completeOnboarding } from "../services/completeOnboarding";
 
 export function useCompleteOnboarding() {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("exception");
     const database = useDatabase();
     const draft = useOnboardingStore((state) => state.draft);
     const reset = useOnboardingStore((state) => state.reset);
@@ -26,9 +26,10 @@ export function useCompleteOnboarding() {
             reset();
             return true;
         } catch {
-            setIsSubmitting(false);
-            Alert.alert(t("complete.error"));
+            Alert.alert(t("onboarding.complete"));
             return false;
+        } finally {
+            setIsSubmitting(false);
         }
     }
 

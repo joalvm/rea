@@ -39,9 +39,16 @@ CREATE TABLE IF NOT EXISTS user_profile (
 CREATE TABLE IF NOT EXISTS app_settings (
     user_id                    TEXT PRIMARY KEY NOT NULL,
     reminders_enabled          INTEGER NOT NULL DEFAULT 1 CHECK (reminders_enabled IN (0, 1)),
-    reminder_interval_hours    INTEGER NOT NULL DEFAULT 6 CHECK (reminder_interval_hours BETWEEN 1 AND 24),
-    reminder_window_start      TEXT NOT NULL DEFAULT '09:00' CHECK (reminder_window_start LIKE '__:__'),
-    reminder_window_end        TEXT NOT NULL DEFAULT '22:00' CHECK (reminder_window_end LIKE '__:__'),
+    reminder_interval_hours    INTEGER NOT NULL DEFAULT 6 CHECK (reminder_interval_hours IN (3, 6, 12)),
+    reminder_window_start      TEXT NOT NULL DEFAULT '09:00' CHECK (
+                                  reminder_window_start GLOB '[0-2][0-9]:[0-5][0-9]'
+                                  AND reminder_window_start BETWEEN '00:00' AND '23:59'
+                              ),
+    reminder_window_end        TEXT NOT NULL DEFAULT '22:00' CHECK (
+                                  reminder_window_end GLOB '[0-2][0-9]:[0-5][0-9]'
+                                  AND reminder_window_end BETWEEN '00:00' AND '23:59'
+                                  AND reminder_window_end >= reminder_window_start
+                              ),
     theme                      TEXT NOT NULL DEFAULT 'system' CHECK (theme IN ('system', 'light', 'dark')),
     temperature_unit           TEXT NOT NULL DEFAULT 'celsius' CHECK (temperature_unit IN ('celsius', 'fahrenheit')),
     onboarding_completed_at    TEXT, -- Fecha de finalización del onboarding (NULL si no se completó).

@@ -43,6 +43,7 @@ type Props = {
  */
 export default function IntentScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
     const styles = useIntentStyles();
     const intent = useOnboardingStore((state) => state.draft.intent);
     const setIntent = useOnboardingStore((state) => state.setIntent);
@@ -82,7 +83,7 @@ export default function IntentScreen({ onBack, onPush }: Props) {
             step={3}
             total={10}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: submit, disabled: !intent }}
+            cta={{ label: tCommon("action.continue"), onPress: submit, disabled: !intent }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("intent.title")}</ScreenTitle>

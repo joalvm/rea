@@ -1,7 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
+import { INITIAL_ONBOARDING_DRAFT } from "@/features/onboarding/shared/types/OnboardingDraft";
 import { hourLabels } from "@/features/onboarding/shared/utils/onboardingDate";
+import { getReminderHourIndex } from "@/shared/schemas/reminder/getReminderHourIndex";
+import { reminderSchema } from "@/shared/schemas/reminder/reminderSchema";
 
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
@@ -17,21 +20,43 @@ type Props = {
     onPush: (href: string) => void;
 };
 
-function hourFromLabel(label: string): number {
-    return Number(label.split(":")[0] ?? 0);
-}
-
 const HOURS = hourLabels(0, 23);
 
 /** Paso 9: recordatorios suaves (toggle + ventana horaria + intervalo). */
 export default function NotificationsScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
+    const { t: tValidation } = useTranslation("validation");
     const styles = useNotificationsStyles();
     const draft = useOnboardingStore((state) => state.draft);
     const set = useOnboardingStore((state) => state.set);
 
-    const startHour = hourFromLabel(draft.reminderWindowStart);
-    const endHour = hourFromLabel(draft.reminderWindowEnd);
+    const startHour = getReminderHourIndex(draft.reminderWindowStart, INITIAL_ONBOARDING_DRAFT.reminderWindowStart);
+    const endHour = getReminderHourIndex(draft.reminderWindowEnd, INITIAL_ONBOARDING_DRAFT.reminderWindowEnd);
+
+    const submit = () => {
+        const result = reminderSchema.safeParse(draft);
+
+        if (!result.success) {
+            const firstIssue = result.error.issues[0];
+            const field = firstIssue?.path[0];
+
+            if (firstIssue?.message === "endBeforeStart") {
+                Alert.alert(tValidation("onboarding.invalidReminderWindowRange"));
+                return;
+            }
+
+            if (field === "reminderIntervalHours") {
+                Alert.alert(tValidation("onboarding.invalidReminderInterval"));
+                return;
+            }
+
+            Alert.alert(tValidation("onboarding.invalidReminderTime"));
+            return;
+        }
+
+        onPush("/(onboarding)/complete");
+    };
 
     return (
         <OnboardingScreen
@@ -39,11 +64,8 @@ export default function NotificationsScreen({ onBack, onPush }: Props) {
             step={9}
             total={10}
             onBack={onBack}
-            cta={{
-                label: t("cta.continue"),
-                onPress: () => onPush("/(onboarding)/complete"),
-            }}
-            secondaryCta={{ label: t("cta.notNow"), onPress: () => onPush("/(onboarding)/complete") }}
+            cta={{ label: tCommon("action.continue"), onPress: submit }}
+            secondaryCta={{ label: tCommon("action.notNow"), onPress: submit }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("notifications.title")}</ScreenTitle>

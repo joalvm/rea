@@ -11,8 +11,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("checkinSymptom schema integration", () => {
-    it("inserts and queries a valid bridge row", async () => {
+describe("Integración del esquema de checkinSymptom", () => {
+    it("inserta y consulta una fila puente válida", async () => {
         await seedProfile(context.database);
         await seedSymptomCatalog(context.database);
         await seedCheckin(context.database);
@@ -27,7 +27,7 @@ describe("checkinSymptom schema integration", () => {
         expect(rows[0]?.symptomKey).toBe(symptomCatalogSeed.symptomKey);
     });
 
-    it("rejects duplicate composite keys, missing parents and invalid intensity", async () => {
+    it("rechaza claves compuestas duplicadas, padres faltantes e intensidad inválida", async () => {
         await seedProfile(context.database);
         await seedSymptomCatalog(context.database);
         await seedCheckin(context.database);
@@ -61,7 +61,7 @@ describe("checkinSymptom schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning checkin is deleted", async () => {
+    it("elimina en cascada cuando se elimina el check-in propietario", async () => {
         await seedProfile(context.database);
         await seedSymptomCatalog(context.database);
         await seedCheckin(context.database);

@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import { Alert, View } from "react-native";
 
+import { getMonthLabels } from "@/modules/l10n/getMonthLabels";
 import { useTheme } from "@/theme/useTheme";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
-import { buildPregnancyDraftPatch } from "@/features/onboarding/shared/utils/buildPregnancyDraftPatch";
+import { estimateDueDate } from "@/features/onboarding/pregnancy-setup/utils/estimateDueDate";
+import { pregnancySchema } from "@/features/onboarding/pregnancy-setup/schemas/pregnancySchema";
 import { type YMD, isoToYMD, todayYMD, ymdToISO } from "@/features/onboarding/shared/utils/onboardingDate";
 
 import { DateWheel } from "../shared/components/date-wheel/DateWheel";
@@ -24,6 +25,8 @@ type Props = {
 /** Paso (solo pregnancy): FUM + fecha probable de parto opcional. Tono teal. */
 export default function PregnancySetupScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
+    const { t: tValidation } = useTranslation("validation");
     const theme = useTheme();
     const styles = usePregnancySetupStyles();
     const accent = theme.phases.pregnancy.accent;
@@ -32,37 +35,28 @@ export default function PregnancySetupScreen({ onBack, onPush }: Props) {
     const due = useOnboardingStore((state) => state.draft.pregnancyDueDate);
     const set = useOnboardingStore((state) => state.set);
 
-    const [knowDue, setKnowDue] = useState(due !== null);
-
     const lmpParts: YMD = lmp ? isoToYMD(lmp) : todayYMD();
-    const dueParts: YMD = due ? isoToYMD(due) : todayYMD();
+    const knowDue = due !== null;
+    const fallbackDueDate = estimateDueDate(lmpParts);
+    const dueParts: YMD = due ? isoToYMD(due) : isoToYMD(fallbackDueDate);
 
-    const monthLabels = [
-        t("months.jan"),
-        t("months.feb"),
-        t("months.mar"),
-        t("months.apr"),
-        t("months.may"),
-        t("months.jun"),
-        t("months.jul"),
-        t("months.aug"),
-        t("months.sep"),
-        t("months.oct"),
-        t("months.nov"),
-        t("months.dec"),
-    ];
+    const monthLabels = getMonthLabels();
 
     const minYear = new Date().getFullYear() - 1;
     const maxYear = new Date().getFullYear();
 
     const submit = () => {
-        const result = buildPregnancyDraftPatch(lmpParts, dueParts, knowDue);
-        if (!result.isValid) {
-            Alert.alert(t("validation.invalidPregnancyDueDate"));
+        const result = pregnancySchema.safeParse({
+            pregnancyDueDate: knowDue ? ymdToISO(dueParts) : null,
+            pregnancyLmp: ymdToISO(lmpParts),
+        });
+
+        if (!result.success) {
+            Alert.alert(tValidation("onboarding.invalidPregnancyDueDate"));
             return;
         }
 
-        set(result.patch);
+        set(result.data);
         onPush("/(onboarding)/notifications");
     };
 
@@ -73,7 +67,7 @@ export default function PregnancySetupScreen({ onBack, onPush }: Props) {
             total={6}
             accent={accent}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: submit }}
+            cta={{ label: tCommon("action.continue"), onPress: submit }}
         >
             <View style={styles.header}>
                 <ScreenTitle accent={accent}>{t("pregnancySetup.title")}</ScreenTitle>
@@ -97,10 +91,12 @@ export default function PregnancySetupScreen({ onBack, onPush }: Props) {
                 value={knowDue}
                 accent={accent}
                 onChange={(value) => {
-                    setKnowDue(value);
                     if (!value) {
                         set({ pregnancyDueDate: null });
+                        return;
                     }
+
+                    set({ pregnancyDueDate: due ?? fallbackDueDate });
                 }}
                 testID="pregnancy-due-toggle"
             />

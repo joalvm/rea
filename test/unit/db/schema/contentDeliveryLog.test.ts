@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { contentDeliveryLog } from "@/db/schema/contentDeliveryLog";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("contentDeliveryLog schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de contentDeliveryLog", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(contentDeliveryLog)).toEqual([
             "id",
             "user_id",
@@ -16,7 +16,7 @@ describe("contentDeliveryLog schema", () => {
         ]);
     });
 
-    it("declares surface checks, index and foreign keys", () => {
+    it("declara restricciones de superficie, índice y claves foráneas", () => {
         expect(contentDeliveryLog.surface.enumValues).toEqual(["today", "day_detail", "statistics"]);
         expect(indexNames(contentDeliveryLog)).toEqual(["ix_content_delivery_user_recent"]);
         expect(checkNames(contentDeliveryLog)).toEqual(["content_delivery_surface_check"]);

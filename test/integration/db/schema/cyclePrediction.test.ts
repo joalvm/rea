@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("cyclePrediction schema integration", () => {
-    it("inserts and queries a valid cycle prediction row", async () => {
+describe("Integración del esquema de cyclePrediction", () => {
+    it("inserta y consulta una fila válida de predicción de ciclo", async () => {
         await seedProfile(context.database);
         await seedCyclePrediction(context.database);
 
@@ -28,7 +28,7 @@ describe("cyclePrediction schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects orphan rows and duplicate composite keys", async () => {
+    it("rechaza filas huérfanas y claves compuestas duplicadas", async () => {
         await expect(
             seedCyclePrediction(context.database, {
                 profileId: "missing-profile",
@@ -41,7 +41,7 @@ describe("cyclePrediction schema integration", () => {
         await expect(seedCyclePrediction(context.database)).rejects.toThrow();
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedCyclePrediction(context.database);
 

@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { appSettings } from "@/db/schema/appSettings";
 import { checkNames, columnNames, foreignKeys, tableName } from "@test/db/utils/schemaMetadata";
 
-describe("appSettings schema", () => {
-    it("defines the app_settings table contract", () => {
+describe("Esquema de appSettings", () => {
+    it("define el contrato de la tabla app_settings", () => {
         expect(tableName(appSettings)).toBe("app_settings");
         expect(columnNames(appSettings)).toEqual([
             "user_id",
@@ -21,7 +21,7 @@ describe("appSettings schema", () => {
         ]);
     });
 
-    it("keeps defaults, checks and foreign key", () => {
+    it("conserva valores por defecto, restricciones CHECK y clave foránea", () => {
         expect(appSettings.remindersEnabled.default).toBe(true);
         expect(appSettings.reminderIntervalHours.default).toBe(6);
         expect(appSettings.reminderWindowStart.default).toBe("09:00");
@@ -34,6 +34,7 @@ describe("appSettings schema", () => {
             "app_settings_reminder_interval_hours_check",
             "app_settings_reminder_window_start_check",
             "app_settings_reminder_window_end_check",
+            "app_settings_reminder_window_order_check",
             "app_settings_theme_check",
             "app_settings_temperature_unit_check",
         ]);

@@ -7,8 +7,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("profile schema integration", () => {
-    it("inserts and queries a valid profile on real SQLite", async () => {
+describe("Integración del esquema de profile", () => {
+    it("inserta y consulta un perfil válido en SQLite real", async () => {
         await seedProfile(context.database);
 
         const rows = await context.database.db.select().from(profile).where(eq(profile.id, profileSeed.id));
@@ -17,7 +17,7 @@ describe("profile schema integration", () => {
         expect(rows[0]?.id).toBe(profileSeed.id);
     });
 
-    it("rejects invalid birth year constraints on real SQLite", async () => {
+    it("rechaza restricciones inválidas de año de nacimiento en SQLite real", async () => {
         await expect(
             context.database.db.insert(profile).values({
                 id: "profile-invalid-birth-year",

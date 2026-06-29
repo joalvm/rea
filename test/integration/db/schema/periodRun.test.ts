@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("periodRun schema integration", () => {
-    it("inserts and queries a valid period run", async () => {
+describe("Integración del esquema de periodRun", () => {
+    it("inserta y consulta un tramo de periodo válido", async () => {
         await seedProfile(context.database);
         await seedPeriodRun(context.database);
 
@@ -20,7 +20,7 @@ describe("periodRun schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects orphan rows and invalid date ranges", async () => {
+    it("rechaza filas huérfanas y rangos de fechas inválidos", async () => {
         await expect(
             seedPeriodRun(context.database, {
                 id: "period-run-orphan",
@@ -39,7 +39,7 @@ describe("periodRun schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("enforces active uniqueness by start date and only allows one open run per user", async () => {
+    it("hace cumplir la unicidad activa por fecha de inicio y solo permite un tramo abierto por usuaria", async () => {
         await seedProfile(context.database);
         await seedPeriodRun(context.database, {
             id: "period-run-active-1",
@@ -65,7 +65,7 @@ describe("periodRun schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("allows reinsertion after soft delete when no other open run blocks it", async () => {
+    it("permite reinsertar tras el borrado suave cuando no lo bloquea otro tramo abierto", async () => {
         await seedProfile(context.database);
 
         await seedPeriodRun(context.database, {
@@ -95,7 +95,7 @@ describe("periodRun schema integration", () => {
         expect(Number(rows.rows[0]?.total ?? 0)).toBe(2);
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedPeriodRun(context.database);
 

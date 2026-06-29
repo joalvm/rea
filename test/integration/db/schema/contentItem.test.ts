@@ -8,8 +8,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("contentItem schema integration", () => {
-    it("inserts and queries a valid content item row", async () => {
+describe("Integración del esquema de contentItem", () => {
+    it("inserta y consulta una fila válida de ítem de contenido", async () => {
         await seedContentSource(context.database);
         await seedContentItem(context.database);
 
@@ -19,7 +19,7 @@ describe("contentItem schema integration", () => {
         expect(rows[0]?.topic).toBe("hydration");
     });
 
-    it("rejects invalid foreign keys, confidence values and editorial ranges", async () => {
+    it("rechaza claves foráneas, valores de confianza y rangos editoriales inválidos", async () => {
         await expect(
             seedContentItem(context.database, {
                 id: "content-item-orphan-source",

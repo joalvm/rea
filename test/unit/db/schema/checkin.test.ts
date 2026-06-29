@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { checkin } from "@/db/schema/checkin";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("checkin schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de checkin", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(checkin)).toEqual([
             "id",
             "user_id",
@@ -35,7 +35,7 @@ describe("checkin schema", () => {
         ]);
     });
 
-    it("declares checks, indexes and profile foreign key", () => {
+    it("declara restricciones CHECK, índices y la clave foránea a profile", () => {
         expect(indexNames(checkin)).toEqual(["ix_checkins_date_search", "ix_checkins_chronological"]);
         expect(checkNames(checkin)).toContain("checkin_cervical_mucus_check");
         expect(checkNames(checkin)).toContain("checkin_period_status_signal_check");

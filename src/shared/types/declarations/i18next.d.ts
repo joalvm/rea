@@ -1,7 +1,10 @@
 import "i18next";
 
+import type common from "@/lang/es/common.json";
+import type exception from "@/lang/es/exception.json";
 import type onboarding from "@/lang/es/onboarding.json";
 import type preview from "@/lang/es/preview.json";
+import type validation from "@/lang/es/validation.json";
 
 /**
  * Tipado fuerte de claves para `t(...)` y `useTranslation`, derivado de los JSON
@@ -11,8 +14,11 @@ import type preview from "@/lang/es/preview.json";
 declare module "i18next" {
     interface CustomTypeOptions {
         resources: {
+            common: typeof common;
+            exception: typeof exception;
             preview: typeof preview;
             onboarding: typeof onboarding;
+            validation: typeof validation;
         };
         returnNull: false;
     }

@@ -1,11 +1,4 @@
 {
-    "cta": {
-        "continue": "Continue",
-        "start": "Start",
-        "startApp": "Start using Rea",
-        "notNow": "Not now"
-    },
-    "back": "Back",
     "welcome": {
         "wordmark": "Rea",
         "tagline": "your cycle, in calm",
@@ -120,29 +113,6 @@
         "tagline": "all set",
         "title": "Thank you for letting us join you",
         "lead": "From here, Rea learns with you.",
-        "disclaimer": "Rea does not diagnose and is not a contraceptive method. Its estimates are based on what you log.",
-        "error": "We couldn't complete onboarding. Please try again."
-    },
-    "months": {
-        "jan": "January",
-        "feb": "February",
-        "mar": "March",
-        "apr": "April",
-        "may": "May",
-        "jun": "June",
-        "jul": "July",
-        "aug": "August",
-        "sep": "September",
-        "oct": "October",
-        "nov": "November",
-        "dec": "December"
-    },
-    "validation": {
-        "invalidLastPeriodRange": "The end date cannot be before the start date.",
-        "invalidPregnancyDueDate": "The due date must be after your last period."
-    },
-    "accessibility": {
-        "decrease": "Decrease",
-        "increase": "Increase"
+        "disclaimer": "Rea does not diagnose and is not a contraceptive method. Its estimates are based on what you log."
     }
 }

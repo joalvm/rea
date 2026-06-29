@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { dailySummary } from "@/db/schema/dailySummary";
 import { checkNames, columnNames, foreignKeys, indexNames, primaryKeyColumns } from "@test/db/utils/schemaMetadata";
 
-describe("dailySummary schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de dailySummary", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(dailySummary)).toEqual([
             "local_date",
             "user_id",
@@ -32,7 +32,7 @@ describe("dailySummary schema", () => {
         ]);
     });
 
-    it("keeps defaults, composite key, checks, index and foreign keys", () => {
+    it("conserva valores por defecto, clave compuesta, restricciones CHECK, índice y claves foráneas", () => {
         expect(dailySummary.hadIntercourse.default).toBe(false);
         expect(dailySummary.estimatedPhase.default).toBe("unknown");
         expect(dailySummary.phaseConfidence.default).toBe("low");

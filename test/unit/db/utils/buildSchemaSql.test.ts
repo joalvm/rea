@@ -2,8 +2,8 @@ import { describe, expect, it } from "@jest/globals";
 
 import { buildCreateSchemaStatements, buildDropSchemaStatements } from "@/db/utils/buildSchemaSql";
 
-describe("buildSchemaSql", () => {
-    it("builds create statements with indexes and foreign keys", () => {
+describe("Generación de SQL del esquema", () => {
+    it("construye sentencias CREATE con índices y claves foráneas", () => {
         const statements = buildCreateSchemaStatements();
 
         expect(statements).toContainEqual(expect.stringContaining('CREATE TABLE IF NOT EXISTS "schema_migrations"'));
@@ -25,7 +25,7 @@ describe("buildSchemaSql", () => {
         expect(statements).toContainEqual(expect.stringContaining('PRIMARY KEY ("user_id", "local_date")'));
     });
 
-    it("drops tables in reverse dependency order", () => {
+    it("elimina tablas en orden inverso de dependencias", () => {
         const statements = buildDropSchemaStatements();
 
         expect(statements[0]).toBe('DROP TABLE IF EXISTS "content_delivery_log";');

@@ -17,6 +17,7 @@ type Props = {
 /** Paso 10: cierre. Persiste todo en una transacción y redirige a la app. */
 export default function CompleteScreen({ onReplace }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
     const styles = useCompleteStyles();
     const { submitCompleteOnboarding, isSubmitting } = useCompleteOnboarding();
@@ -34,7 +35,7 @@ export default function CompleteScreen({ onReplace }: Props) {
         <OnboardingScreen
             progress={1}
             center
-            cta={{ label: t("cta.startApp"), onPress: handleStartApp, disabled: isSubmitting }}
+            cta={{ label: tCommon("action.startApp"), onPress: handleStartApp, disabled: isSubmitting }}
         >
             <Text style={styles.wordmark}>{t("complete.wordmark")}</Text>
             <Text style={styles.tagline}>{t("complete.tagline")}</Text>

@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { contentSource } from "@/db/schema/contentSource";
 import { checkNames, columnNames } from "@test/db/utils/schemaMetadata";
 
-describe("contentSource schema", () => {
-    it("defines table columns and source type checks", () => {
+describe("Esquema de contentSource", () => {
+    it("define las columnas de la tabla y las restricciones del tipo de fuente", () => {
         expect(columnNames(contentSource)).toEqual([
             "id",
             "label_key",

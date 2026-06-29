@@ -1,11 +1,4 @@
 {
-    "cta": {
-        "continue": "Continuar",
-        "start": "Empezar",
-        "startApp": "Empezar a usar Rea",
-        "notNow": "Ahora no"
-    },
-    "back": "Volver",
     "welcome": {
         "wordmark": "Rea",
         "tagline": "tu ciclo, en calma",
@@ -120,29 +113,6 @@
         "tagline": "todo listo",
         "title": "Gracias por dejarnos acompañarte",
         "lead": "A partir de aquí, Rea aprende contigo.",
-        "disclaimer": "Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo que registres.",
-        "error": "No se pudo completar el onboarding. Inténtalo de nuevo."
-    },
-    "months": {
-        "jan": "enero",
-        "feb": "febrero",
-        "mar": "marzo",
-        "apr": "abril",
-        "may": "mayo",
-        "jun": "junio",
-        "jul": "julio",
-        "aug": "agosto",
-        "sep": "septiembre",
-        "oct": "octubre",
-        "nov": "noviembre",
-        "dec": "diciembre"
-    },
-    "validation": {
-        "invalidLastPeriodRange": "La fecha de fin no puede ser anterior a la de inicio.",
-        "invalidPregnancyDueDate": "La fecha probable de parto debe ser posterior a tu última regla."
-    },
-    "accessibility": {
-        "decrease": "Disminuir",
-        "increase": "Aumentar"
+        "disclaimer": "Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo que registres."
     }
 }

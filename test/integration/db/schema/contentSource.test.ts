@@ -7,8 +7,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("contentSource schema integration", () => {
-    it("inserts and queries a valid content source row", async () => {
+describe("Integración del esquema de contentSource", () => {
+    it("inserta y consulta una fila válida de fuente de contenido", async () => {
         await seedContentSource(context.database);
 
         const rows = await context.database.db
@@ -20,7 +20,7 @@ describe("contentSource schema integration", () => {
         expect(rows[0]?.sourceType).toBe("medical_guideline");
     });
 
-    it("rejects invalid source types on real SQLite", async () => {
+    it("rechaza tipos de fuente inválidos en SQLite real", async () => {
         await expect(
             context.database.client.execute({
                 sql: `

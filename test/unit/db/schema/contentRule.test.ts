@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { contentRule } from "@/db/schema/contentRule";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("contentRule schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de contentRule", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(contentRule)).toEqual([
             "id",
             "content_item_id",
@@ -19,7 +19,7 @@ describe("contentRule schema", () => {
         ]);
     });
 
-    it("keeps defaults, checks, index and content item foreign key", () => {
+    it("conserva valores por defecto, restricciones CHECK, índice y la clave foránea a contentItem", () => {
         expect(contentRule.priority.default).toBe(100);
         expect(contentRule.triggerType.enumValues).toEqual([
             "phase",

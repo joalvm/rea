@@ -56,7 +56,7 @@ function toRgb(color: string, backdrop = "#FFFFFF"): Rgb {
 
     const rgbaMatch = /^rgba\((\d+),(\d+),(\d+),([0-9.]+)\)$/.exec(color);
     if (!rgbaMatch) {
-        throw new Error(`Unsupported color format: ${color}`);
+        throw new Error(`Formato de color no compatible: ${color}`);
     }
 
     const red = rgbaMatch[1];
@@ -65,7 +65,7 @@ function toRgb(color: string, backdrop = "#FFFFFF"): Rgb {
     const alphaValue = rgbaMatch[4];
 
     if (!red || !green || !blue || !alphaValue) {
-        throw new Error(`Incomplete color format: ${color}`);
+        throw new Error(`Formato de color incompleto: ${color}`);
     }
 
     const alpha = Number.parseFloat(alphaValue);

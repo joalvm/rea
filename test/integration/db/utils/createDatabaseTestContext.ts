@@ -17,7 +17,7 @@ export function createDatabaseTestContext() {
     return {
         get database() {
             if (database == null) {
-                throw new Error("Real database test context was accessed before initialization");
+                throw new Error("se accedió al contexto real de pruebas de base de datos antes de inicializarlo");
             }
 
             return database;

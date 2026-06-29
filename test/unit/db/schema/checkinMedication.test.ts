@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { checkinMedication } from "@/db/schema/checkinMedication";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("checkinMedication schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de checkinMedication", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(checkinMedication)).toEqual([
             "id",
             "checkin_id",
@@ -19,7 +19,7 @@ describe("checkinMedication schema", () => {
         ]);
     });
 
-    it("declares checks, indexes and foreign keys", () => {
+    it("declara restricciones CHECK, índices y claves foráneas", () => {
         expect(indexNames(checkinMedication)).toEqual([
             "ix_checkin_medications_by_checkin",
             "ix_checkin_medications_lookup",

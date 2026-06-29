@@ -10,8 +10,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("contentRule schema integration", () => {
-    it("inserts and queries a valid content rule row", async () => {
+describe("Integración del esquema de contentRule", () => {
+    it("inserta y consulta una fila válida de regla de contenido", async () => {
         await seedContentSource(context.database);
         await seedContentItem(context.database);
         await seedContentRule(context.database);
@@ -22,7 +22,7 @@ describe("contentRule schema integration", () => {
         expect(rows[0]?.triggerType).toBe("general");
     });
 
-    it("rejects orphan rules and invalid trigger types", async () => {
+    it("rechaza reglas huérfanas y tipos de disparador inválidos", async () => {
         await expect(
             seedContentRule(context.database, {
                 id: "content-rule-orphan",
@@ -50,7 +50,7 @@ describe("contentRule schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning content item is deleted", async () => {
+    it("elimina en cascada cuando se elimina el ítem de contenido propietario", async () => {
         await seedContentSource(context.database);
         await seedContentItem(context.database);
         await seedContentRule(context.database);

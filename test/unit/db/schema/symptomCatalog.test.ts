@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { symptomCatalog } from "@/db/schema/symptomCatalog";
 import { checkNames, columnNames } from "@test/db/utils/schemaMetadata";
 
-describe("symptomCatalog schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de symptomCatalog", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(symptomCatalog)).toEqual([
             "symptom_key",
             "group_key",
@@ -18,7 +18,7 @@ describe("symptomCatalog schema", () => {
         ]);
     });
 
-    it("keeps defaults, enum values and checks", () => {
+    it("conserva valores por defecto, valores enum y restricciones CHECK", () => {
         expect(symptomCatalog.uiPriority.default).toBe(100);
         expect(symptomCatalog.isQuickOption.default).toBe(false);
         expect(symptomCatalog.isActive.default).toBe(true);

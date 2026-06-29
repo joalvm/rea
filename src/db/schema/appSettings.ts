@@ -2,14 +2,12 @@ import { relations, sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 import { appThemeValues, temperatureUnitValues } from "@/db/enums/appSettings";
+import { defaultReminderSettings } from "@/shared/schemas/reminder/reminderDefaults";
 
 import { profile } from "./profile";
 
 const defaults = {
-    remindersEnabled: true,
-    reminderIntervalHours: 6,
-    reminderWindowStart: "09:00",
-    reminderWindowEnd: "22:00",
+    ...defaultReminderSettings,
     theme: "system" as const,
     temperatureUnit: "celsius" as const,
     version: 1,
@@ -48,9 +46,19 @@ export const appSettings = sqliteTable(
     },
     (table) => [
         check("app_settings_reminders_enabled_check", sql`${table.remindersEnabled} IN (0, 1)`),
-        check("app_settings_reminder_interval_hours_check", sql`${table.reminderIntervalHours} BETWEEN 1 AND 24`),
-        check("app_settings_reminder_window_start_check", sql`${table.reminderWindowStart} LIKE '__:__'`),
-        check("app_settings_reminder_window_end_check", sql`${table.reminderWindowEnd} LIKE '__:__'`),
+        check("app_settings_reminder_interval_hours_check", sql`${table.reminderIntervalHours} IN (3, 6, 12)`),
+        check(
+            "app_settings_reminder_window_start_check",
+            sql`${table.reminderWindowStart} GLOB '[0-2][0-9]:[0-5][0-9]' AND ${table.reminderWindowStart} BETWEEN '00:00' AND '23:59'`,
+        ),
+        check(
+            "app_settings_reminder_window_end_check",
+            sql`${table.reminderWindowEnd} GLOB '[0-2][0-9]:[0-5][0-9]' AND ${table.reminderWindowEnd} BETWEEN '00:00' AND '23:59'`,
+        ),
+        check(
+            "app_settings_reminder_window_order_check",
+            sql`${table.reminderWindowEnd} >= ${table.reminderWindowStart}`,
+        ),
         check("app_settings_theme_check", sql`${table.theme} IN ('system', 'light', 'dark')`),
         check("app_settings_temperature_unit_check", sql`${table.temperatureUnit} IN ('celsius', 'fahrenheit')`),
     ],

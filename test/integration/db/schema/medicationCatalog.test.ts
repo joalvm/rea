@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("medicationCatalog schema integration", () => {
-    it("inserts and queries a valid medication catalog row", async () => {
+describe("Integración del esquema de medicationCatalog", () => {
+    it("inserta y consulta una fila válida del catálogo de medicamentos", async () => {
         await seedProfile(context.database);
         await seedMedicationCatalog(context.database);
 
@@ -23,7 +23,7 @@ describe("medicationCatalog schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects orphan rows and empty names", async () => {
+    it("rechaza filas huérfanas y nombres vacíos", async () => {
         await expect(
             seedMedicationCatalog(context.database, {
                 id: "medication-orphan",
@@ -61,7 +61,7 @@ describe("medicationCatalog schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("enforces the active partial unique index and allows reinsertion after soft delete", async () => {
+    it("hace cumplir el índice único parcial activo y permite reinsertar tras el borrado suave", async () => {
         await seedProfile(context.database);
         await seedMedicationCatalog(context.database, {
             id: "medication-active-1",
@@ -98,7 +98,7 @@ describe("medicationCatalog schema integration", () => {
         expect(Number(rows.rows[0]?.total ?? 0)).toBe(2);
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedMedicationCatalog(context.database);
 

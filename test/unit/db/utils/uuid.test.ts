@@ -18,15 +18,15 @@ jest.mock("expo-crypto", () => ({
     },
 }));
 
-describe("uuid", () => {
-    it("generates valid UUIDv7 values", () => {
+describe("Generación de UUID", () => {
+    it("genera valores UUIDv7 válidos", () => {
         const id = uuid();
 
         expect(isUuidV7(id)).toBe(true);
         expect(id.charAt(14)).toBe("7");
     });
 
-    it("encodes the timestamp in lexicographic order", () => {
+    it("codifica la marca de tiempo en orden lexicográfico", () => {
         const firstId = uuid(new Date("2026-01-01T00:00:00.000Z").getTime());
         const secondId = uuid(new Date("2026-01-01T00:00:01.000Z").getTime());
 

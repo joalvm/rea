@@ -12,8 +12,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("contentDeliveryLog schema integration", () => {
-    it("inserts and queries a valid delivery log row", async () => {
+describe("Integración del esquema de contentDeliveryLog", () => {
+    it("inserta y consulta una fila válida del registro de entrega", async () => {
         await seedProfile(context.database);
         await seedContentSource(context.database);
         await seedContentItem(context.database);
@@ -28,7 +28,7 @@ describe("contentDeliveryLog schema integration", () => {
         expect(rows[0]?.surface).toBe("today");
     });
 
-    it("rejects orphan foreign keys and invalid surfaces", async () => {
+    it("rechaza claves foráneas huérfanas y superficies inválidas", async () => {
         await expect(
             seedContentDeliveryLog(context.database, {
                 id: "content-delivery-missing-profile",
@@ -66,7 +66,7 @@ describe("contentDeliveryLog schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning content item is deleted", async () => {
+    it("elimina en cascada cuando se elimina el ítem de contenido propietario", async () => {
         await seedProfile(context.database);
         await seedContentSource(context.database);
         await seedContentItem(context.database);
@@ -79,7 +79,7 @@ describe("contentDeliveryLog schema integration", () => {
         expect(Number(remaining.rows[0]?.total ?? 0)).toBe(0);
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedContentSource(context.database);
         await seedContentItem(context.database);

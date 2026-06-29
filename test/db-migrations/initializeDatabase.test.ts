@@ -15,8 +15,8 @@ function createDatabaseDouble(currentVersion: number): jest.Mocked<DatabaseDoubl
     };
 }
 
-describe("initializeDatabase", () => {
-    it("skips the schema reset when the stored version is current", async () => {
+describe("Inicialización de la base de datos", () => {
+    it("omite el reinicio del esquema cuando la versión guardada está vigente", async () => {
         const database = createDatabaseDouble(DATABASE_VERSION);
 
         await initializeDatabase(database);
@@ -32,7 +32,7 @@ describe("initializeDatabase", () => {
         expect(executedStatements).toContainEqual(expect.stringContaining("UPDATE symptom_catalog"));
     });
 
-    it("resets the schema when the stored version is outdated", async () => {
+    it("reinicia el esquema cuando la versión guardada está desactualizada", async () => {
         const database = createDatabaseDouble(DATABASE_VERSION - 1);
 
         await initializeDatabase(database);
@@ -47,8 +47,8 @@ describe("initializeDatabase", () => {
     });
 });
 
-describe("resetDatabase", () => {
-    it("re-enables foreign keys even when the reset fails", async () => {
+describe("Reinicio de la base de datos", () => {
+    it("reactiva las claves foráneas incluso cuando el reinicio falla", async () => {
         const database = {
             execAsync: jest.fn(async (_source: string) => undefined),
         };

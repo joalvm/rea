@@ -28,7 +28,7 @@ export async function createFileDatabase() {
 
     if (foreignKeysEnabled !== 1) {
         client.close();
-        throw new Error("File-backed test client started without foreign key enforcement");
+        throw new Error("El cliente de prueba con base de datos en archivo inició sin forzar claves foráneas");
     }
 
     return {

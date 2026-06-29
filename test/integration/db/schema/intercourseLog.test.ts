@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("intercourseLog schema integration", () => {
-    it("inserts and queries a valid intercourse event", async () => {
+describe("Integración del esquema de intercourseLog", () => {
+    it("inserta y consulta un evento válido de relaciones sexuales", async () => {
         await seedProfile(context.database);
         await seedIntercourseLog(context.database);
 
@@ -23,7 +23,7 @@ describe("intercourseLog schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects orphan rows and invalid date or protected flag values", async () => {
+    it("rechaza filas huérfanas y valores inválidos de fecha o bandera de protección", async () => {
         await expect(
             seedIntercourseLog(context.database, {
                 id: "intercourse-orphan",
@@ -83,7 +83,7 @@ describe("intercourseLog schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedIntercourseLog(context.database);
 

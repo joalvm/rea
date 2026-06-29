@@ -9,8 +9,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("checkin schema integration", () => {
-    it("inserts and queries a valid checkin", async () => {
+describe("Integración del esquema de checkin", () => {
+    it("inserta y consulta un check-in válido", async () => {
         await seedProfile(context.database);
         await seedCheckin(context.database);
 
@@ -20,7 +20,7 @@ describe("checkin schema integration", () => {
         expect(rows[0]?.profileId).toBe(profileSeed.id);
     });
 
-    it("rejects orphan rows and invalid metric or date constraints", async () => {
+    it("rechaza filas huérfanas y restricciones inválidas de métricas o fechas", async () => {
         await expect(
             seedCheckin(context.database, {
                 id: "checkin-orphan",
@@ -45,7 +45,7 @@ describe("checkin schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedCheckin(context.database);
 

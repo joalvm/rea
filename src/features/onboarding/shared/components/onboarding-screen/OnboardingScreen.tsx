@@ -43,7 +43,7 @@ export function OnboardingScreen({
     center,
     children,
 }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("common");
     const theme = useTheme();
     const styles = useOnboardingScreenStyles();
 
@@ -62,7 +62,7 @@ export function OnboardingScreen({
                             <Pressable
                                 onPress={onBack}
                                 accessibilityRole="button"
-                                accessibilityLabel={t("back")}
+                                accessibilityLabel={t("action.back")}
                                 style={({ pressed }) => [styles.back, pressed && styles.backPressed]}
                             >
                                 <ChevronLeft size={20} color={theme.colors.textSecondary} strokeWidth={2.4} />

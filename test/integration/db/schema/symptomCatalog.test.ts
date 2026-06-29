@@ -11,8 +11,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("symptomCatalog schema integration", () => {
-    it("inserts and queries a valid symptom catalog row", async () => {
+describe("Integración del esquema de symptomCatalog", () => {
+    it("inserta y consulta una fila válida del catálogo de síntomas", async () => {
         await seedSymptomCatalog(context.database);
 
         const rows = await context.database.db
@@ -24,7 +24,7 @@ describe("symptomCatalog schema integration", () => {
         expect(rows[0]?.groupKey).toBe("pain");
     });
 
-    it("rejects invalid enum and boolean values on real SQLite", async () => {
+    it("rechaza valores inválidos de enum y boolean en SQLite real", async () => {
         await expect(
             context.database.client.execute({
                 sql: `
@@ -55,7 +55,7 @@ describe("symptomCatalog schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("applies runtime seeder and deactivates rows missing from canonical catalog", async () => {
+    it("aplica el seeder en tiempo de ejecución y desactiva filas ausentes del catálogo canónico", async () => {
         await context.database.client.execute({
             sql: `
                 INSERT INTO symptom_catalog (

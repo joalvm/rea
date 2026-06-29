@@ -11,8 +11,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("checkinMedication schema integration", () => {
-    it("inserts and queries a valid medication event", async () => {
+describe("Integración del esquema de checkinMedication", () => {
+    it("inserta y consulta un evento de medicación válido", async () => {
         await seedProfile(context.database);
         await seedMedicationCatalog(context.database);
         await seedCheckin(context.database);
@@ -27,7 +27,7 @@ describe("checkinMedication schema integration", () => {
         expect(rows[0]?.medicationId).toBe(medicationCatalogSeed.id);
     });
 
-    it("rejects missing parents and invalid relief", async () => {
+    it("rechaza padres faltantes y alivio inválido", async () => {
         await seedProfile(context.database);
         await seedMedicationCatalog(context.database);
         await seedCheckin(context.database);
@@ -54,7 +54,7 @@ describe("checkinMedication schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning checkin is deleted", async () => {
+    it("elimina en cascada cuando se elimina el check-in propietario", async () => {
         await seedProfile(context.database);
         await seedMedicationCatalog(context.database);
         await seedCheckin(context.database);

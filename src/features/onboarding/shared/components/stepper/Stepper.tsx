@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function Stepper({ value, min, max, step = 1, unit, onChange, testID }: Props) {
-    const { t } = useTranslation("onboarding");
+    const { t } = useTranslation("common");
     const theme = useTheme();
     const styles = useStepperStyles();
 

@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { contentItem } from "@/db/schema/contentItem";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("contentItem schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de contentItem", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(contentItem)).toEqual([
             "id",
             "content_type",
@@ -26,7 +26,7 @@ describe("contentItem schema", () => {
         ]);
     });
 
-    it("keeps defaults, checks, index and source foreign key", () => {
+    it("conserva valores por defecto, restricciones CHECK, índice y la clave foránea a contentSource", () => {
         expect(contentItem.priority.default).toBe(100);
         expect(contentItem.locale.default).toBe("es");
         expect(contentItem.isActive.default).toBe(true);

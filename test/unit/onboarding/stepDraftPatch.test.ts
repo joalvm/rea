@@ -1,69 +1,122 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { buildLastPeriodDraftPatch } from "@/features/onboarding/shared/utils/buildLastPeriodDraftPatch";
-import { buildPregnancyDraftPatch } from "@/features/onboarding/shared/utils/buildPregnancyDraftPatch";
 import { getRegularitySelection } from "@/features/onboarding/shared/utils/getRegularitySelection";
+import { lastPeriodSchema } from "@/features/onboarding/last-period/schemas/lastPeriodSchema";
+import { estimateDueDate } from "@/features/onboarding/pregnancy-setup/utils/estimateDueDate";
+import { pregnancySchema } from "@/features/onboarding/pregnancy-setup/schemas/pregnancySchema";
 
 describe("Parches de pasos del onboarding", () => {
     it("sincroniza el último periodo visible aunque la usuaria no toque la rueda", () => {
-        const result = buildLastPeriodDraftPatch(
-            { year: 2026, month: 5, day: 1 },
-            { year: 2026, month: 5, day: 5 },
-            false,
-        );
+        const result = lastPeriodSchema.safeParse({
+            lastPeriodEnd: "2026-05-05",
+            lastPeriodOngoing: false,
+            lastPeriodStart: "2026-05-01",
+        });
 
-        expect(result).toEqual({
-            isValid: true,
-            patch: {
-                lastPeriodStart: "2026-05-01",
-                lastPeriodEnd: "2026-05-05",
-            },
+        expect(result.success).toBe(true);
+
+        if (!result.success) {
+            throw new Error("se esperaba un paso válido de último periodo");
+        }
+
+        expect(result.data).toEqual({
+            lastPeriodEnd: "2026-05-05",
+            lastPeriodOngoing: false,
+            lastPeriodStart: "2026-05-01",
         });
     });
 
     it("rechaza un último periodo cuyo fin queda antes del inicio", () => {
-        expect(
-            buildLastPeriodDraftPatch({ year: 2026, month: 5, day: 10 }, { year: 2026, month: 5, day: 5 }, false),
-        ).toEqual({ isValid: false });
+        const result = lastPeriodSchema.safeParse({
+            lastPeriodEnd: "2026-05-05",
+            lastPeriodOngoing: false,
+            lastPeriodStart: "2026-05-10",
+        });
+
+        expect(result.success).toBe(false);
+
+        if (result.success) {
+            throw new Error("se esperaba un paso inválido de último periodo");
+        }
+
+        expect(result.error.issues[0]?.message).toBe("endBeforeStart");
     });
 
     it("limpia la fecha de fin del periodo cuando la usuaria marca que sigue en curso", () => {
-        expect(
-            buildLastPeriodDraftPatch({ year: 2026, month: 5, day: 10 }, { year: 2026, month: 5, day: 12 }, true),
-        ).toEqual({
-            isValid: true,
-            patch: {
-                lastPeriodStart: "2026-05-10",
-                lastPeriodEnd: null,
-            },
+        const result = lastPeriodSchema.safeParse({
+            lastPeriodEnd: "2026-05-12",
+            lastPeriodOngoing: true,
+            lastPeriodStart: "2026-05-10",
+        });
+
+        expect(result.success).toBe(true);
+
+        if (!result.success) {
+            throw new Error("se esperaba un paso válido de último periodo en curso");
+        }
+
+        expect(result.data).toEqual({
+            lastPeriodEnd: null,
+            lastPeriodOngoing: true,
+            lastPeriodStart: "2026-05-10",
         });
     });
 
     it("sincroniza la FUM visible del embarazo aunque no haya interacción", () => {
-        const result = buildPregnancyDraftPatch(
-            { year: 2026, month: 2, day: 10 },
-            { year: 2026, month: 11, day: 17 },
-            false,
-        );
+        const result = pregnancySchema.safeParse({
+            pregnancyDueDate: null,
+            pregnancyLmp: "2026-02-10",
+        });
 
-        expect(result).toEqual({
-            isValid: true,
-            patch: {
-                pregnancyLmp: "2026-02-10",
-                pregnancyDueDate: null,
-            },
+        expect(result.success).toBe(true);
+
+        if (!result.success) {
+            throw new Error("se esperaba un paso válido de embarazo");
+        }
+
+        expect(result.data).toEqual({
+            pregnancyDueDate: null,
+            pregnancyLmp: "2026-02-10",
         });
     });
 
     it("rechaza una fecha probable de parto igual o anterior a la última regla", () => {
-        expect(
-            buildPregnancyDraftPatch({ year: 2026, month: 2, day: 10 }, { year: 2026, month: 2, day: 10 }, true),
-        ).toEqual({ isValid: false });
+        const result = pregnancySchema.safeParse({
+            pregnancyDueDate: "2026-02-10",
+            pregnancyLmp: "2026-02-10",
+        });
+
+        expect(result.success).toBe(false);
+
+        if (result.success) {
+            throw new Error("se esperaba un paso inválido de embarazo");
+        }
+
+        expect(result.error.issues[0]?.message).toBe("dueNotAfterLmp");
+    });
+
+    it("estima una fecha probable coherente al activar el toggle sin fecha previa", () => {
+        expect(estimateDueDate({ year: 2026, month: 2, day: 10 })).toBe("2026-11-17");
+    });
+
+    it("rechaza fechas imposibles del calendario", () => {
+        const result = pregnancySchema.safeParse({
+            pregnancyDueDate: null,
+            pregnancyLmp: "2026-02-30",
+        });
+
+        expect(result.success).toBe(false);
+
+        if (result.success) {
+            throw new Error("se esperaba una fecha de calendario inválida");
+        }
+
+        expect(result.error.issues[0]?.path[0]).toBe("pregnancyLmp");
     });
 });
 
 describe("Selección de regularidad", () => {
-    it("preserva la opción unsure al volver atrás", () => {
+    it("preserva la opción no estoy segura al volver atrás", () => {
         expect(
             getRegularitySelection({
                 regularity: "irregular",

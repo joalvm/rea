@@ -13,13 +13,14 @@ type Props = {
 /** Paso 1: bienvenida + promesa de privacidad. */
 export default function WelcomeScreen({ onReplace }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
     const styles = useWelcomeStyles();
 
     return (
         <OnboardingScreen
             progress={0.06}
             center
-            cta={{ label: t("cta.start"), onPress: () => onReplace("/(onboarding)/profile") }}
+            cta={{ label: tCommon("action.start"), onPress: () => onReplace("/(onboarding)/profile") }}
         >
             <Text style={styles.wordmark}>{t("welcome.wordmark")}</Text>
             <Text style={styles.tagline}>{t("welcome.tagline")}</Text>

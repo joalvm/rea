@@ -18,6 +18,7 @@ type Props = {
 /** Paso 4: duración declarada del ciclo y del sangrado (punto de partida). */
 export default function CycleScreen({ onBack, onPush }: Props) {
     const { t } = useTranslation("onboarding");
+    const { t: tCommon } = useTranslation("common");
     const styles = useCycleStyles();
     const cycleLength = useOnboardingStore((state) => state.draft.cycleLength);
     const periodLength = useOnboardingStore((state) => state.draft.periodLength);
@@ -29,7 +30,7 @@ export default function CycleScreen({ onBack, onPush }: Props) {
             step={4}
             total={10}
             onBack={onBack}
-            cta={{ label: t("cta.continue"), onPress: () => onPush("/(onboarding)/regularity") }}
+            cta={{ label: tCommon("action.continue"), onPress: () => onPush("/(onboarding)/regularity") }}
         >
             <View style={styles.header}>
                 <ScreenTitle>{t("cycle.title")}</ScreenTitle>

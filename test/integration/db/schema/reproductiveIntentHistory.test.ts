@@ -12,8 +12,8 @@ import { createDatabaseTestContext } from "@test/integration/db/utils/createData
 
 const context = createDatabaseTestContext();
 
-describe("reproductiveIntentHistory schema integration", () => {
-    it("inserts and queries a valid reproductive intent row", async () => {
+describe("Integración del esquema de reproductiveIntentHistory", () => {
+    it("inserta y consulta una fila válida de intención reproductiva", async () => {
         await seedProfile(context.database);
         await seedReproductiveIntentHistory(context.database);
 
@@ -27,7 +27,7 @@ describe("reproductiveIntentHistory schema integration", () => {
         expect(rows[0]?.reproductiveMode).toBe("tracking_only");
     });
 
-    it("rejects orphan rows and invalid lifecycle constraints", async () => {
+    it("rechaza filas huérfanas y restricciones inválidas del ciclo de vida", async () => {
         await expect(
             seedReproductiveIntentHistory(context.database, {
                 id: "reproductive-intent-orphan",
@@ -54,7 +54,7 @@ describe("reproductiveIntentHistory schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("rejects an unknown reproductive_mode value", async () => {
+    it("rechaza un valor desconocido de reproductive_mode", async () => {
         await seedProfile(context.database);
 
         await expect(
@@ -66,7 +66,7 @@ describe("reproductiveIntentHistory schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("rejects tracking_ttc together with hormonal contraception", async () => {
+    it("rechaza tracking_ttc junto con anticoncepción hormonal", async () => {
         await seedProfile(context.database);
 
         await expect(
@@ -79,7 +79,7 @@ describe("reproductiveIntentHistory schema integration", () => {
         ).rejects.toThrow();
     });
 
-    it("cascades when the owning profile is deleted", async () => {
+    it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedReproductiveIntentHistory(context.database);
 

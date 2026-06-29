@@ -3,8 +3,8 @@ import { describe, expect, it } from "@jest/globals";
 import { pregnancyEpisode } from "@/db/schema/pregnancyEpisode";
 import { checkNames, columnNames, foreignKeys, indexNames } from "@test/db/utils/schemaMetadata";
 
-describe("pregnancyEpisode schema", () => {
-    it("defines table columns", () => {
+describe("Esquema de pregnancyEpisode", () => {
+    it("define las columnas de la tabla", () => {
         expect(columnNames(pregnancyEpisode)).toEqual([
             "id",
             "user_id",
@@ -20,7 +20,7 @@ describe("pregnancyEpisode schema", () => {
         ]);
     });
 
-    it("keeps defaults, checks, indexes and profile foreign key", () => {
+    it("conserva valores por defecto, restricciones CHECK, índices y la clave foránea a profile", () => {
         expect(pregnancyEpisode.version.default).toBe(1);
         expect(indexNames(pregnancyEpisode)).toEqual(["uq_pregnancy_single_ongoing"]);
         expect(checkNames(pregnancyEpisode)).toEqual([

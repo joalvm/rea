@@ -5,7 +5,7 @@ import type { RealDatabase } from "@test/utils/createRealDatabase";
 const [defaultRuntimeSymptom] = symptomCatalogSeedRows;
 
 if (defaultRuntimeSymptom == null) {
-    throw new Error("symptomCatalogSeedRows must define at least one symptom");
+    throw new Error("symptomCatalogSeedRows debe definir al menos un síntoma");
 }
 
 const defaultSymptomCatalog: InsertSymptomCatalog = {
