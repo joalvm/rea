@@ -9,9 +9,7 @@ export const useToggleRowStyles = createStyles((theme) => {
             alignItems: "center",
             justifyContent: "space-between",
             gap: spacing.md,
-            paddingVertical: spacing.md,
-            borderBottomWidth: borderWidth.thin,
-            borderBottomColor: colors.divider,
+            paddingVertical: spacing.sm,
         },
         text: {
             flex: 1,
@@ -23,7 +21,8 @@ export const useToggleRowStyles = createStyles((theme) => {
             gap: 6,
         },
         title: {
-            ...typography.variant.callout,
+            fontFamily: typography.families.heading,
+            fontSize: typography.sizes.callout + 1,
             color: colors.text,
         },
         subtitle: {

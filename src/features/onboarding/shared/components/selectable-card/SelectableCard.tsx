@@ -32,16 +32,14 @@ export function SelectableCard({ title, subtitle, Icon, extra, selected, onPress
         >
             {Icon ? (
                 <View style={[styles.iconBubble, selected && styles.iconBubbleOn]}>
-                    <Icon size={20} color={selected ? theme.colors.onPrimary : theme.colors.link} strokeWidth={2.2} />
+                    <Icon size={22} color={selected ? theme.colors.onPrimary : theme.colors.link} strokeWidth={2.2} />
                 </View>
             ) : null}
-            <Text style={styles.title}>{title}</Text>
-            {subtitle ? (
-                <View style={styles.subtitleWrap}>
-                    <Text style={styles.subtitle}>{subtitle}</Text>
-                </View>
-            ) : null}
-            {extra}
+            <View style={styles.textWrap}>
+                <Text style={styles.title}>{title}</Text>
+                {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+                {extra}
+            </View>
             {selected ? (
                 <View style={styles.check}>
                     <Check size={14} color={theme.colors.onPrimary} strokeWidth={3} />

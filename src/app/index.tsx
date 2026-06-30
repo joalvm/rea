@@ -1,7 +1,8 @@
 import { Redirect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+
+import { BrandSplash } from "@/components/brand-splash/BrandSplash";
 
 type GateState = "loading" | "onboarding" | "ready";
 
@@ -37,7 +38,7 @@ export default function Index() {
     }, [db]);
 
     if (state === "loading") {
-        return <View />;
+        return <BrandSplash />;
     }
 
     if (state === "onboarding") {

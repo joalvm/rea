@@ -1,33 +1,27 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useWelcomeStyles = createStyles((theme) => ({
-    wordmark: {
-        fontFamily: theme.typography.families.heading,
-        fontSize: 44,
-        lineHeight: 46,
-        color: theme.colors.primaryPressed,
-        letterSpacing: -1,
+    brand: {
+        alignItems: "center",
+        gap: theme.spacing.sm,
     },
     tagline: {
         ...theme.typography.variant.overline,
+        letterSpacing: 2.5,
         color: theme.colors.textMuted,
-        marginTop: 8,
-    },
-    spacer: {
-        height: theme.spacing.xl,
     },
     deviceChip: {
-        marginTop: theme.spacing.sm,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 6,
+        alignSelf: "center",
         paddingHorizontal: theme.spacing.md,
         paddingVertical: theme.spacing.xs + 2,
-        borderRadius: 999,
-        backgroundColor: theme.colors.warningSurface,
-        borderWidth: 1,
-        borderColor: theme.colors.warning,
-        alignSelf: "center",
+        borderRadius: theme.radius.pill,
+        backgroundColor: theme.colors.primaryTint,
     },
     deviceChipText: {
         ...theme.typography.variant.caption,
-        color: theme.colors.warningText,
+        color: theme.colors.link,
     },
 }));

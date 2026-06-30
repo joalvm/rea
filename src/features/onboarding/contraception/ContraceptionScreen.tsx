@@ -1,4 +1,4 @@
-import { TriangleAlert } from "lucide-react-native";
+import { ShieldCheck, TriangleAlert } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
@@ -6,18 +6,16 @@ import { useTheme } from "@/theme/useTheme";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SegmentedControl } from "../shared/components/segmented-control/SegmentedControl";
 import { useContraceptionStyles } from "./ContraceptionStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
 /** Paso 7 (solo tracking_only): anticoncepción hormonal. */
-export default function ContraceptionScreen({ onBack, onPush }: Props) {
+export default function ContraceptionScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
@@ -27,16 +25,11 @@ export default function ContraceptionScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.78}
             step={7}
-            total={10}
-            onBack={onBack}
+            total={9}
             cta={{ label: tCommon("action.continue"), onPress: () => onPush("/(onboarding)/notifications") }}
         >
-            <View style={styles.header}>
-                <ScreenTitle>{t("contraception.title")}</ScreenTitle>
-                <ScreenLead>{t("contraception.lead")}</ScreenLead>
-            </View>
+            <ScreenHeader Icon={ShieldCheck} title={t("contraception.title")} lead={t("contraception.lead")} />
 
             <SegmentedControl
                 options={[

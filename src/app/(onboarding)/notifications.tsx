@@ -6,5 +6,5 @@ import NotificationsScreen from "@/features/onboarding/notifications/Notificatio
 export default function NotificationsRoute() {
     const router = useRouter();
 
-    return <NotificationsScreen onBack={() => router.back()} onPush={(href) => router.push(href as Href)} />;
+    return <NotificationsScreen onPush={(href) => router.push(href as Href)} />;
 }

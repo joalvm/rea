@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { View } from "react-native";
 
+import { WheelGroup } from "../wheel-group/WheelGroup";
 import { WheelPicker } from "../wheel-picker/WheelPicker";
 import { useDateWheelStyles } from "./DateWheelStyle";
 
@@ -41,7 +42,7 @@ export function DateWheel({ value, onChange, monthLabels, minYear, maxYear, test
     const yearItems = useMemo(() => range(minYear, maxYear), [minYear, maxYear]);
 
     return (
-        <View style={styles.row} testID={testID}>
+        <WheelGroup testID={testID}>
             <View style={styles.day}>
                 <WheelPicker
                     items={dayItems}
@@ -75,6 +76,6 @@ export function DateWheel({ value, onChange, monthLabels, minYear, maxYear, test
                     }
                 />
             </View>
-        </View>
+        </WheelGroup>
     );
 }

@@ -1,39 +1,45 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const usePrimaryButtonStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, borderWidth } = theme;
+    const { colors, spacing, radius, typography, shadows } = theme;
 
     return {
+        // CTA primario = relleno celeste sólido + texto navy (onPrimary). Sin borde.
+        // La forma la define el relleno + una sombra-susurro tintada de marca.
         primary: {
-            minHeight: 52,
+            minHeight: theme.sizing.controlLg, // 56
             borderRadius: radius.pill,
-            borderWidth: borderWidth.thick,
-            borderColor: colors.link,
-            backgroundColor: "transparent",
+            backgroundColor: colors.primary,
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
             gap: spacing.sm,
             paddingHorizontal: spacing.xl,
+            ...shadows[2],
+            shadowColor: colors.primary,
+            shadowOpacity: 0.35,
         },
         primaryText: {
             fontFamily: typography.families.heading,
-            fontSize: typography.sizes.body,
-            lineHeight: typography.sizes.body + 4,
-            color: colors.link,
+            fontSize: typography.sizes.title,
+            lineHeight: typography.sizes.title + 4,
+            color: colors.onPrimary,
         },
         primaryPressed: {
-            backgroundColor: colors.primaryTint,
+            opacity: theme.state.pressedOpacity,
+            transform: [{ scale: theme.state.pressedScale }],
         },
         primaryDisabled: {
-            borderColor: colors.borderStrong,
-            opacity: 0.4,
+            backgroundColor: colors.surfaceSunken,
+            shadowOpacity: 0,
+            elevation: 0,
         },
         primaryDisabledText: {
             color: colors.textMuted,
         },
+        // CTA secundario = ghost/text, sin relleno.
         secondary: {
-            minHeight: 44,
+            minHeight: theme.sizing.minTouch,
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "transparent",
@@ -42,10 +48,11 @@ export const usePrimaryButtonStyles = createStyles((theme) => {
             opacity: 0.6,
         },
         secondaryDisabled: {
-            opacity: 0.4,
+            opacity: theme.state.disabledOpacity,
         },
         secondaryText: {
             ...typography.variant.bodyStrong,
+            fontFamily: typography.families.heading,
             color: colors.textMuted,
         },
     };

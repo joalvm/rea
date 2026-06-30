@@ -6,5 +6,5 @@ import LastPeriodScreen from "@/features/onboarding/last-period/LastPeriodScreen
 export default function LastPeriodRoute() {
     const router = useRouter();
 
-    return <LastPeriodScreen onBack={() => router.back()} onPush={(href) => router.push(href as Href)} />;
+    return <LastPeriodScreen onPush={(href) => router.push(href as Href)} />;
 }

@@ -6,4 +6,9 @@ export const useScreenLeadStyles = createStyles((theme) => ({
         color: theme.colors.textSecondary,
         marginTop: -6,
     },
+    center: {
+        textAlign: "center",
+        marginTop: 0,
+        maxWidth: 300,
+    },
 }));

@@ -7,6 +7,7 @@ import { useCompleteOnboarding } from "@/features/onboarding/complete/hooks/useC
 import { useTheme } from "@/theme/useTheme";
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
+import { ReaIllustration } from "../shared/components/rea-illustration/ReaIllustration";
 import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
 import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
 
@@ -33,18 +34,21 @@ export default function CompleteScreen({ onReplace }: Props) {
 
     return (
         <OnboardingScreen
-            progress={1}
+            step={9}
+            total={9}
             center
             cta={{ label: tCommon("action.startApp"), onPress: handleStartApp, disabled: isSubmitting }}
         >
-            <Text style={styles.wordmark}>{t("complete.wordmark")}</Text>
-            <Text style={styles.tagline}>{t("complete.tagline")}</Text>
-            <View style={styles.spacer} />
-            <ScreenTitle>{t("complete.title")}</ScreenTitle>
-            <ScreenLead>{t("complete.lead")}</ScreenLead>
+            <View style={styles.brand}>
+                <Text style={styles.wordmark}>{t("complete.wordmark")}</Text>
+                <Text style={styles.tagline}>{t("complete.tagline")}</Text>
+            </View>
+            <ReaIllustration variant="complete" />
+            <ScreenTitle center>{t("complete.title")}</ScreenTitle>
+            <ScreenLead center>{t("complete.lead")}</ScreenLead>
 
             <View style={styles.disclaimerBox}>
-                <Info size={18} color={theme.colors.textSecondary} strokeWidth={2.2} />
+                <Info size={18} color={theme.colors.link} strokeWidth={2.2} />
                 <Text style={styles.disclaimerText}>{t("complete.disclaimer")}</Text>
             </View>
         </OnboardingScreen>

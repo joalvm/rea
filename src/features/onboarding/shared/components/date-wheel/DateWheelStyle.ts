@@ -1,10 +1,6 @@
 import { createStyles } from "@/theme/createStyles";
 
-export const useDateWheelStyles = createStyles((theme) => ({
-    row: {
-        flexDirection: "row",
-        gap: theme.spacing.sm,
-    },
+export const useDateWheelStyles = createStyles(() => ({
     day: {
         flex: 1,
     },

@@ -6,5 +6,5 @@ import ContraceptionScreen from "@/features/onboarding/contraception/Contracepti
 export default function ContraceptionRoute() {
     const router = useRouter();
 
-    return <ContraceptionScreen onBack={() => router.back()} onPush={(href) => router.push(href as Href)} />;
+    return <ContraceptionScreen onPush={(href) => router.push(href as Href)} />;
 }

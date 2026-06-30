@@ -14,7 +14,7 @@ reproductiva, y deja marcado `app_settings.onboarding_completed_at` para que el 
 - Cada pantalla es una **ruta** bajo `src/app/(onboarding)/`. La navegación se decide en el archivo de ruta con `router.push` / `router.replace`.
 - `(onboarding)/_layout.tsx` es solo el `Stack` de ruta (cabecera oculta, animación). **No** es un shell con props.
 - El estado del borrador vive en el **store efímero** (`shared/stores/useOnboardingStore.ts`, Zustand). Cada pantalla lee y escribe el store directamente.
-- Cada `*Screen.tsx` recibe solo los handlers primitivos de navegación que realmente usa (`onPush`, `onReplace`, `onBack`), decide cuándo llamarlos y no conoce `expo-router`.
+- Cada `*Screen.tsx` recibe solo los handlers primitivos de navegación que realmente usa (`onPush`, `onReplace`), decide cuándo llamarlos y no conoce `expo-router`. La navegación hacia atrás la resuelve el gesto/botón del dispositivo (stack de expo-router); no hay botón de "atrás" propio.
 - Hooks y servicios devuelven handlers/resultados semánticos; no importan `expo-router`.
 - La persistencia es **una transacción atómica** al final (`complete/services/completeOnboarding.ts`); los pasos intermedios solo actualizan el store.
 
@@ -150,7 +150,7 @@ Contratos visuales y tokens: ver `/DESIGN.md` §3. Si se reusan fuera de onboard
    con la lista nueva y navegación directa desde cada screen usando handlers primitivos de ruta. ✅
 4. **Fase 3 — Datos**: `OnboardingDraft` + `useOnboardingStore` (Zustand efímero),
    servicio `completeOnboarding` (transacción), hook `useCompleteOnboarding` y fix del gate (`app_settings`). ✅
-5. **Fase 4 — Captura**: cada pantalla lee/escribe el store y usa solo `onPush` / `onReplace` / `onBack`; la ruta dueña ejecuta esas primitivas. ✅
+5. **Fase 4 — Captura**: cada pantalla lee/escribe el store y usa solo `onPush` / `onReplace`; la ruta dueña ejecuta esas primitivas (el "atrás" lo resuelve el dispositivo). ✅
 6. **Fase 5 — i18n**: namespace `onboarding` (`src/lang/{es,en}/onboarding.json`), registrado en
    `resources`/`namespaceCatalog`/tipado. ✅
 7. **Fase 6 — Tests**: `completeOnboarding` (integración, las 4 intenciones + atomicidad),

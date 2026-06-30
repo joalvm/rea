@@ -7,10 +7,6 @@ export const useNotificationsStyles = createStyles(() => ({
     fieldGroup: {
         gap: 6,
     },
-    timeRow: {
-        flexDirection: "row",
-        gap: 8,
-    },
     timeColumn: {
         flex: 1,
     },

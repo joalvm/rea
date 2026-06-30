@@ -6,5 +6,5 @@ import ProfileScreen from "@/features/onboarding/profile/ProfileScreen";
 export default function ProfileRoute() {
     const router = useRouter();
 
-    return <ProfileScreen onBack={() => router.back()} onPush={(href) => router.push(href as Href)} />;
+    return <ProfileScreen onPush={(href) => router.push(href as Href)} />;
 }

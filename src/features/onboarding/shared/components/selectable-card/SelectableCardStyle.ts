@@ -1,55 +1,61 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useSelectableCardStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, borderWidth } = theme;
+    const { colors, spacing, radius, typography, borderWidth, shadows } = theme;
 
     return {
+        // Tarjeta suave: superficie + borde fino + sombra-susurro (no flotante).
+        // Seleccionada = borde de marca 2px + tinte celeste + check. Sin ring.
         card: {
             position: "relative",
-            borderWidth: borderWidth.thick,
-            borderColor: colors.borderStrong,
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: spacing.md,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.border,
             borderRadius: radius.xl,
             backgroundColor: colors.surface,
             padding: spacing.lg,
-            gap: spacing.xs + 2,
+            paddingRight: spacing.xl + spacing.md,
+            ...shadows[1],
         },
         cardOn: {
-            borderColor: colors.primaryPressed,
+            borderWidth: borderWidth.thick,
+            borderColor: colors.primary,
             backgroundColor: colors.primarySubtle,
         },
         iconBubble: {
-            width: 40,
-            height: 40,
-            borderRadius: radius.md,
+            width: 46,
+            height: 46,
+            borderRadius: radius.lg,
             backgroundColor: colors.primaryTint,
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: spacing.xs,
         },
         iconBubbleOn: {
             backgroundColor: colors.primary,
         },
-        title: {
-            ...typography.variant.bodyStrong,
-            fontFamily: typography.families.heading,
-            fontSize: typography.sizes.callout + 0.5,
-            color: colors.text,
+        textWrap: {
+            flex: 1,
+            gap: 3,
         },
-        subtitleWrap: {
-            height: 36,
-            justifyContent: "center",
+        title: {
+            fontFamily: typography.families.heading,
+            fontSize: typography.sizes.callout + 1,
+            lineHeight: typography.sizes.callout + 6,
+            color: colors.text,
         },
         subtitle: {
             ...typography.variant.caption,
-            lineHeight: 16,
+            lineHeight: 17,
             color: colors.textMuted,
         },
         check: {
             position: "absolute",
             top: spacing.md,
             right: spacing.md,
-            width: 22,
-            height: 22,
+            width: 24,
+            height: 24,
             borderRadius: 999,
             backgroundColor: colors.primary,
             alignItems: "center",

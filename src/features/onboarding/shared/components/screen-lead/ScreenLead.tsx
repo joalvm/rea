@@ -4,10 +4,11 @@ import { useScreenLeadStyles } from "./ScreenLeadStyle";
 
 type Props = {
     children: string;
+    center?: boolean;
 };
 
-export function ScreenLead({ children }: Props) {
+export function ScreenLead({ children, center }: Props) {
     const styles = useScreenLeadStyles();
 
-    return <Text style={styles.lead}>{children}</Text>;
+    return <Text style={[styles.lead, center && styles.center]}>{children}</Text>;
 }

@@ -1,35 +1,34 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useCompleteStyles = createStyles((theme) => ({
+    brand: {
+        alignItems: "center",
+        gap: 6,
+    },
     wordmark: {
         fontFamily: theme.typography.families.heading,
-        fontSize: 44,
-        lineHeight: 46,
-        color: theme.colors.primaryPressed,
-        letterSpacing: -1,
+        fontSize: 46,
+        lineHeight: 48,
+        color: theme.colors.primary,
+        letterSpacing: -1.5,
     },
     tagline: {
         ...theme.typography.variant.overline,
+        letterSpacing: 2.5,
         color: theme.colors.textMuted,
-        marginTop: 8,
     },
-    spacer: {
-        height: theme.spacing.xl,
-    },
+    // Aviso suave (no método/diagnóstico) en tinte de marca, sin borde.
     disclaimerBox: {
         flexDirection: "row",
-        gap: 8,
-        padding: 12,
-        borderWidth: 1,
-        borderColor: theme.colors.border,
+        gap: theme.spacing.sm,
+        padding: theme.spacing.md,
         borderRadius: theme.radius.lg,
-        backgroundColor: theme.colors.surfaceAlt,
-        marginTop: theme.spacing.sm,
+        backgroundColor: theme.colors.primarySubtle,
     },
     disclaimerText: {
         flex: 1,
         ...theme.typography.variant.footnote,
         lineHeight: 18,
-        color: theme.colors.textSecondary,
+        color: theme.colors.link,
     },
 }));

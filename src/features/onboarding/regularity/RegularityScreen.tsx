@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react-native";
+import { Activity, CalendarCheck, CalendarRange, HelpCircle, Waves } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -7,30 +9,29 @@ import type { RegularitySelection } from "@/features/onboarding/shared/types/Onb
 import { getRegularitySelection } from "@/features/onboarding/shared/utils/getRegularitySelection";
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SelectableCard } from "../shared/components/selectable-card/SelectableCard";
 import { useRegularityStyles } from "./RegularityStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
 type Option = {
     key: RegularitySelection;
     value: Regularity;
+    Icon: LucideIcon;
 };
 
 const OPTIONS: readonly Option[] = [
-    { key: "regular", value: "regular" },
-    { key: "variable", value: "variable" },
-    { key: "irregular", value: "irregular" },
-    { key: "unsure", value: "irregular" },
+    { key: "regular", value: "regular", Icon: CalendarCheck },
+    { key: "variable", value: "variable", Icon: Waves },
+    { key: "irregular", value: "irregular", Icon: Activity },
+    { key: "unsure", value: "irregular", Icon: HelpCircle },
 ];
 
 /** Paso 5: regularidad declarada. "Aún no lo sé" mapea a `irregular` (UI distinta). */
-export default function RegularityScreen({ onBack, onPush }: Props) {
+export default function RegularityScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const styles = useRegularityStyles();
@@ -55,29 +56,20 @@ export default function RegularityScreen({ onBack, onPush }: Props) {
     };
 
     return (
-        <OnboardingScreen
-            progress={0.58}
-            step={5}
-            total={10}
-            onBack={onBack}
-            cta={{ label: tCommon("action.continue"), onPress: submit }}
-        >
-            <View style={styles.header}>
-                <ScreenTitle>{t("regularity.title")}</ScreenTitle>
-                <ScreenLead>{t("regularity.lead")}</ScreenLead>
-            </View>
+        <OnboardingScreen step={5} total={9} cta={{ label: tCommon("action.continue"), onPress: submit }}>
+            <ScreenHeader Icon={CalendarRange} title={t("regularity.title")} lead={t("regularity.lead")} />
 
-            <View style={styles.grid}>
+            <View style={styles.list}>
                 {OPTIONS.map((option) => (
-                    <View key={option.key} style={styles.cardWrap}>
-                        <SelectableCard
-                            title={t(`regularity.${option.key}.title`)}
-                            subtitle={t(`regularity.${option.key}.subtitle`)}
-                            selected={selectedKey === option.key}
-                            onPress={() => choose(option)}
-                            testID={`regularity-${option.key}`}
-                        />
-                    </View>
+                    <SelectableCard
+                        key={option.key}
+                        title={t(`regularity.${option.key}.title`)}
+                        subtitle={t(`regularity.${option.key}.subtitle`)}
+                        Icon={option.Icon}
+                        selected={selectedKey === option.key}
+                        onPress={() => choose(option)}
+                        testID={`regularity-${option.key}`}
+                    />
                 ))}
             </View>
         </OnboardingScreen>

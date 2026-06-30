@@ -2,11 +2,16 @@ import type { ViewStyle } from "react-native";
 import type { ShadowSet } from "../types/elevation";
 
 /**
- * Tokens de elevación / sombra (tokens crudos).
+ * Tokens de elevación / sombra (tokens crudos) — sistema "Rea Soft".
  *
- * En claro usamos sombras suaves y difusas (estética "soft"). En oscuro las
- * sombras casi no se ven, así que la jerarquía se apoya en superficies más
- * claras y bordes; las sombras se reducen para evitar halos sucios.
+ * La dirección visual es suave y aireada: las sombras existen pero son un
+ * SUSURRO (apenas perceptibles). Definen la flotación de una tarjeta o un CTA
+ * sobre el lienzo, nunca un drama de profundidad. La jerarquía se apoya sobre
+ * todo en superficie + borde fino + ritmo; la sombra solo redondea la sensación.
+ *
+ *  - `1` = tarjeta en reposo (susurro).
+ *  - `2` = elemento que flota un poco más (CTA, hoja).
+ *  - `3` = overlay / sheet (reservado).
  *
  * Cada nivel combina las props de iOS (`shadow*`) con `elevation` de Android.
  */
@@ -29,12 +34,12 @@ export const shadowsLight: ShadowSet = {
         shadowOffset: { width: 0, height: 0 },
         elevation: 0,
     },
-    1: { ...ios("#062633", 0.07, 8, 2), elevation: 1 },
-    2: { ...ios("#062633", 0.11, 16, 6), elevation: 3 },
-    3: { ...ios("#062633", 0.15, 28, 12), elevation: 8 },
+    1: { ...ios("#0A3A4A", 0.05, 10, 3), elevation: 1 },
+    2: { ...ios("#0A3A4A", 0.08, 18, 6), elevation: 3 },
+    3: { ...ios("#0A3A4A", 0.12, 26, 12), elevation: 8 },
 };
 
-/** Sombras para modo oscuro: más profundas pero muy sutiles. */
+/** Sombras para modo oscuro: casi imperceptibles (la jerarquía vive en superficie + borde). */
 export const shadowsDark: ShadowSet = {
     0: {
         shadowColor: "transparent",
@@ -43,7 +48,7 @@ export const shadowsDark: ShadowSet = {
         shadowOffset: { width: 0, height: 0 },
         elevation: 0,
     },
-    1: { ...ios("#000000", 0.3, 8, 2), elevation: 1 },
-    2: { ...ios("#000000", 0.4, 16, 6), elevation: 3 },
-    3: { ...ios("#000000", 0.5, 28, 12), elevation: 8 },
+    1: { ...ios("#000000", 0.22, 10, 3), elevation: 1 },
+    2: { ...ios("#000000", 0.3, 18, 6), elevation: 3 },
+    3: { ...ios("#000000", 0.4, 26, 12), elevation: 8 },
 };

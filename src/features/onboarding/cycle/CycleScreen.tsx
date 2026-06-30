@@ -1,24 +1,23 @@
+import { Lightbulb, RefreshCw } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
+import { useTheme } from "@/theme/useTheme";
 
-import { FieldLabel } from "../shared/components/field-label/FieldLabel";
-import { HelpText } from "../shared/components/help-text/HelpText";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { Stepper } from "../shared/components/stepper/Stepper";
 import { useCycleStyles } from "./CycleStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
 /** Paso 4: duración declarada del ciclo y del sangrado (punto de partida). */
-export default function CycleScreen({ onBack, onPush }: Props) {
+export default function CycleScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
+    const theme = useTheme();
     const styles = useCycleStyles();
     const cycleLength = useOnboardingStore((state) => state.draft.cycleLength);
     const periodLength = useOnboardingStore((state) => state.draft.periodLength);
@@ -26,42 +25,42 @@ export default function CycleScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.45}
             step={4}
-            total={10}
-            onBack={onBack}
+            total={9}
             cta={{ label: tCommon("action.continue"), onPress: () => onPush("/(onboarding)/regularity") }}
         >
-            <View style={styles.header}>
-                <ScreenTitle>{t("cycle.title")}</ScreenTitle>
-                <ScreenLead>{t("cycle.lead")}</ScreenLead>
+            <ScreenHeader Icon={RefreshCw} title={t("cycle.title")} lead={t("cycle.lead")} />
+
+            <View style={styles.rows}>
+                <View style={styles.row}>
+                    <Text style={styles.rowLabel}>{t("cycle.periodLabel")}</Text>
+                    <Stepper
+                        value={periodLength}
+                        min={1}
+                        max={15}
+                        unit={t("cycle.days")}
+                        onChange={(value) => set({ periodLength: value })}
+                        testID="cycle-period"
+                    />
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.row}>
+                    <Text style={styles.rowLabel}>{t("cycle.cycleLabel")}</Text>
+                    <Stepper
+                        value={cycleLength}
+                        min={15}
+                        max={90}
+                        unit={t("cycle.days")}
+                        onChange={(value) => set({ cycleLength: value })}
+                        testID="cycle-length"
+                    />
+                </View>
             </View>
 
-            <View style={styles.fieldGroup}>
-                <FieldLabel>{t("cycle.periodLabel")}</FieldLabel>
-                <Stepper
-                    value={periodLength}
-                    min={1}
-                    max={15}
-                    unit={t("cycle.days")}
-                    onChange={(value) => set({ periodLength: value })}
-                    testID="cycle-period"
-                />
+            <View style={styles.note}>
+                <Lightbulb size={18} color={theme.colors.link} strokeWidth={2.2} />
+                <Text style={styles.noteText}>{t("cycle.help")}</Text>
             </View>
-
-            <View style={styles.fieldGroup}>
-                <FieldLabel>{t("cycle.cycleLabel")}</FieldLabel>
-                <Stepper
-                    value={cycleLength}
-                    min={15}
-                    max={90}
-                    unit={t("cycle.days")}
-                    onChange={(value) => set({ cycleLength: value })}
-                    testID="cycle-length"
-                />
-            </View>
-
-            <HelpText>{t("cycle.help")}</HelpText>
         </OnboardingScreen>
     );
 }

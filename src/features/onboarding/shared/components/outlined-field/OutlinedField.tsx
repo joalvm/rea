@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { TextInput } from "react-native";
 
+import { useTheme } from "@/theme/useTheme";
+
 import { useOutlinedFieldStyles } from "./OutlinedFieldStyle";
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
 };
 
 export function OutlinedField({ value, onChangeText, placeholder, testID, accessibilityLabel }: Props) {
+    const theme = useTheme();
     const styles = useOutlinedFieldStyles();
     const [focused, setFocused] = useState(false);
 
@@ -20,7 +23,7 @@ export function OutlinedField({ value, onChangeText, placeholder, testID, access
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
-            placeholderTextColor="#9AA0A6"
+            placeholderTextColor={theme.colors.placeholder}
             testID={testID}
             accessibilityLabel={accessibilityLabel ?? placeholder}
             onFocus={() => setFocused(true)}

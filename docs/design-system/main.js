@@ -56,6 +56,7 @@ function renderChrome() {
         ["icons", "./icons.html", "Iconos"],
         ["space", "./space.html", "Forma y espacio"],
         ["components", "./components.html", "Componentes"],
+        ["onboarding", "./screens/onboarding.html", "Onboarding"],
         ["hero", "./hero.html", "Hero"],
         ["calendar", "./calendar.html", "Calendario"],
     ];

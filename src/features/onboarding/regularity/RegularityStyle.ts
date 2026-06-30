@@ -1,16 +1,10 @@
 import { createStyles } from "@/theme/createStyles";
 
-export const useRegularityStyles = createStyles(() => ({
+export const useRegularityStyles = createStyles((theme) => ({
     header: {
         gap: 4,
     },
-    grid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        rowGap: 10,
-    },
-    cardWrap: {
-        width: "48%",
+    list: {
+        gap: theme.spacing.sm,
     },
 }));

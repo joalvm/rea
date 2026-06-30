@@ -1,3 +1,4 @@
+import { UserRound } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useOnboardingStore } from "../shared/stores/useOnboardingStore";
@@ -7,13 +8,12 @@ import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { HelpText } from "../shared/components/help-text/HelpText";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { OutlinedField } from "../shared/components/outlined-field/OutlinedField";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
+import { WheelGroup } from "../shared/components/wheel-group/WheelGroup";
 import { WheelPicker } from "../shared/components/wheel-picker/WheelPicker";
 import { useProfileStyles } from "./ProfileStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
@@ -22,7 +22,7 @@ const BIRTH_YEAR_OPTIONS = Array.from({ length: MAX_BIRTH_YEAR - MIN_BIRTH_YEAR 
 );
 
 /** Paso 2: nombre + año de nacimiento. Año siempre con valor (rueda); CTA pide nombre. */
-export default function ProfileScreen({ onBack, onPush }: Props) {
+export default function ProfileScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const { t: tValidation } = useTranslation("validation");
@@ -50,16 +50,11 @@ export default function ProfileScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.18}
             step={2}
-            total={10}
-            onBack={onBack}
+            total={9}
             cta={{ label: tCommon("action.continue"), onPress: submit, disabled: name.trim().length === 0 }}
         >
-            <View style={styles.header}>
-                <ScreenTitle>{t("profile.title")}</ScreenTitle>
-                <ScreenLead>{t("profile.lead")}</ScreenLead>
-            </View>
+            <ScreenHeader Icon={UserRound} title={t("profile.title")} lead={t("profile.lead")} />
 
             <View style={styles.fieldGroup}>
                 <FieldLabel>{t("profile.nameLabel")}</FieldLabel>
@@ -73,12 +68,14 @@ export default function ProfileScreen({ onBack, onPush }: Props) {
 
             <View style={styles.fieldGroup}>
                 <FieldLabel>{t("profile.yearLabel")}</FieldLabel>
-                <WheelPicker
-                    items={BIRTH_YEAR_OPTIONS}
-                    valueIndex={yearIndex}
-                    onChange={(index) => set({ birthYear: MIN_BIRTH_YEAR + index })}
-                    testID="profile-year"
-                />
+                <WheelGroup>
+                    <WheelPicker
+                        items={BIRTH_YEAR_OPTIONS}
+                        valueIndex={yearIndex}
+                        onChange={(index) => set({ birthYear: MIN_BIRTH_YEAR + index })}
+                        testID="profile-year"
+                    />
+                </WheelGroup>
                 <HelpText>{t("profile.yearHelp")}</HelpText>
             </View>
         </OnboardingScreen>

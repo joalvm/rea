@@ -1,3 +1,4 @@
+import { BellRing } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
@@ -8,22 +9,21 @@ import { reminderSchema } from "@/shared/schemas/reminder/reminderSchema";
 
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SegmentedControl } from "../shared/components/segmented-control/SegmentedControl";
 import { ToggleRow } from "../shared/components/toggle-row/ToggleRow";
+import { WheelGroup } from "../shared/components/wheel-group/WheelGroup";
 import { WheelPicker } from "../shared/components/wheel-picker/WheelPicker";
 import { useNotificationsStyles } from "./NotificationsStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
 const HOURS = hourLabels(0, 23);
 
 /** Paso 9: recordatorios suaves (toggle + ventana horaria + intervalo). */
-export default function NotificationsScreen({ onBack, onPush }: Props) {
+export default function NotificationsScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const { t: tValidation } = useTranslation("validation");
@@ -60,17 +60,12 @@ export default function NotificationsScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.88}
-            step={9}
-            total={10}
-            onBack={onBack}
+            step={8}
+            total={9}
             cta={{ label: tCommon("action.continue"), onPress: submit }}
             secondaryCta={{ label: tCommon("action.notNow"), onPress: submit }}
         >
-            <View style={styles.header}>
-                <ScreenTitle>{t("notifications.title")}</ScreenTitle>
-                <ScreenLead>{t("notifications.lead")}</ScreenLead>
-            </View>
+            <ScreenHeader Icon={BellRing} title={t("notifications.title")} lead={t("notifications.lead")} />
 
             <ToggleRow
                 title={t("notifications.enableTitle")}
@@ -84,7 +79,7 @@ export default function NotificationsScreen({ onBack, onPush }: Props) {
                 <>
                     <View style={styles.fieldGroup}>
                         <FieldLabel>{t("notifications.windowLabel")}</FieldLabel>
-                        <View style={styles.timeRow}>
+                        <WheelGroup>
                             <View style={styles.timeColumn}>
                                 <WheelPicker
                                     items={HOURS}
@@ -105,7 +100,7 @@ export default function NotificationsScreen({ onBack, onPush }: Props) {
                                     testID="notifications-window-end"
                                 />
                             </View>
-                        </View>
+                        </WheelGroup>
                     </View>
 
                     <View style={styles.fieldGroup}>

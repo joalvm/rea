@@ -1,44 +1,39 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useStepperStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography } = theme;
 
     return {
+        // − valor + compacto, sin contenedor. Botones = cuadro de tinte celeste.
         container: {
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between",
-            gap: spacing.sm,
-            borderWidth: borderWidth.thick,
-            borderColor: colors.borderStrong,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            padding: spacing.xs + 2,
+            gap: spacing.md,
         },
         button: {
-            width: sizing.controlSm,
-            height: sizing.controlSm,
-            borderRadius: radius.md,
-            borderWidth: borderWidth.thick,
-            borderColor: colors.borderStrong,
-            backgroundColor: colors.surface,
+            width: 44,
+            height: 44,
+            borderRadius: radius.lg,
+            backgroundColor: colors.primaryTint,
             alignItems: "center",
             justifyContent: "center",
         },
         buttonPressed: {
-            opacity: 0.6,
+            opacity: theme.state.pressedOpacity,
+            transform: [{ scale: theme.state.pressedScale }],
         },
         buttonDisabled: {
-            opacity: 0.4,
+            opacity: theme.state.disabledOpacity,
         },
         valueWrap: {
+            minWidth: 52,
             alignItems: "center",
         },
         value: {
             fontFamily: typography.families.heading,
-            fontSize: typography.sizes.h2 + 4,
+            fontSize: typography.sizes.h2,
             color: colors.text,
-            lineHeight: typography.sizes.h2 + 6,
+            lineHeight: typography.sizes.h2 + 4,
             textAlign: "center",
         },
         unit: {
@@ -46,7 +41,7 @@ export const useStepperStyles = createStyles((theme) => {
             fontSize: typography.sizes.overline,
             color: colors.textMuted,
             textAlign: "center",
-            marginTop: 2,
+            marginTop: 1,
         },
     };
 });

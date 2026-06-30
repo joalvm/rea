@@ -1,14 +1,13 @@
-import { Activity, Baby, Heart, ShieldCheck } from "lucide-react-native";
+import { Activity, Baby, Compass, Heart, ShieldCheck } from "lucide-react-native";
 import type { LucideIcon } from "lucide-react-native";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import Animated, { FadeIn } from "react-native-reanimated";
 import { isPregnancyMode, type ReproductiveMode } from "@/db/enums/reproductiveMode";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SelectableCard } from "../shared/components/selectable-card/SelectableCard";
 import { useIntentStyles } from "./IntentStyle";
 
@@ -29,7 +28,6 @@ const MODIFIERS: readonly {
 ];
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
@@ -41,12 +39,21 @@ type Props = {
  * (vuelve a `tracking_only`). La selección se guarda como un único
  * `reproductive_mode`.
  */
-export default function IntentScreen({ onBack, onPush }: Props) {
+export default function IntentScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const styles = useIntentStyles();
     const intent = useOnboardingStore((state) => state.draft.intent);
     const setIntent = useOnboardingStore((state) => state.setIntent);
+
+    // "Seguir mi ciclo" es el maestro por defecto. Si la usuaria aún no eligió nada,
+    // dejamos marcado el ciclo (modo neutral) para que la pantalla no nazca vacía y
+    // los modificadores se muestren de entrada (sin aparecer/desaparecer).
+    useEffect(() => {
+        if (!intent) {
+            setIntent({ reproductiveMode: "tracking_only" });
+        }
+    }, [intent, setIntent]);
 
     const mode = intent?.reproductiveMode ?? null;
     const master: MasterKey | null = mode ? (isPregnancyMode(mode) ? "pregnancy" : "cycle") : null;
@@ -79,16 +86,11 @@ export default function IntentScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.3}
             step={3}
-            total={10}
-            onBack={onBack}
+            total={9}
             cta={{ label: tCommon("action.continue"), onPress: submit, disabled: !intent }}
         >
-            <View style={styles.header}>
-                <ScreenTitle>{t("intent.title")}</ScreenTitle>
-                <ScreenLead>{t("intent.lead")}</ScreenLead>
-            </View>
+            <ScreenHeader Icon={Compass} title={t("intent.title")} lead={t("intent.lead")} />
 
             <View style={styles.masters}>
                 {MASTERS.map(({ key, Icon }) => (
@@ -105,7 +107,7 @@ export default function IntentScreen({ onBack, onPush }: Props) {
             </View>
 
             {showModifiers ? (
-                <Animated.View entering={FadeIn.duration(220)} style={styles.modifiers}>
+                <View style={styles.modifiers}>
                     <Text style={styles.modifierLabel}>{t("intent.modifierLabel")}</Text>
                     <Text style={styles.modifierHint}>{t("intent.modifierHint")}</Text>
                     <View style={styles.modifierList}>
@@ -121,7 +123,7 @@ export default function IntentScreen({ onBack, onPush }: Props) {
                             />
                         ))}
                     </View>
-                </Animated.View>
+                </View>
             ) : null}
         </OnboardingScreen>
     );

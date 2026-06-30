@@ -6,5 +6,5 @@ import PregnancySetupScreen from "@/features/onboarding/pregnancy-setup/Pregnanc
 export default function PregnancySetupRoute() {
     const router = useRouter();
 
-    return <PregnancySetupScreen onBack={() => router.back()} onPush={(href) => router.push(href as Href)} />;
+    return <PregnancySetupScreen onPush={(href) => router.push(href as Href)} />;
 }

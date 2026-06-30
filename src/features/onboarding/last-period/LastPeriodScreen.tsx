@@ -1,3 +1,4 @@
+import { Droplet } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { getMonthLabels } from "@/modules/l10n/getMonthLabels";
@@ -8,18 +9,16 @@ import { type YMD, isoToYMD, todayYMD, ymdToISO } from "../shared/utils/onboardi
 import { DateWheel } from "../shared/components/date-wheel/DateWheel";
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { ToggleRow } from "../shared/components/toggle-row/ToggleRow";
 import { useLastPeriodStyles } from "./LastPeriodStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
 /** Paso 6: inicio del último periodo (modos de seguimiento de ciclo) + toggle "aún continúa". */
-export default function LastPeriodScreen({ onBack, onPush }: Props) {
+export default function LastPeriodScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const { t: tValidation } = useTranslation("validation");
@@ -58,17 +57,8 @@ export default function LastPeriodScreen({ onBack, onPush }: Props) {
     };
 
     return (
-        <OnboardingScreen
-            progress={0.68}
-            step={6}
-            total={10}
-            onBack={onBack}
-            cta={{ label: tCommon("action.continue"), onPress: submit }}
-        >
-            <View style={styles.header}>
-                <ScreenTitle>{t("lastPeriod.title")}</ScreenTitle>
-                <ScreenLead>{t("lastPeriod.lead")}</ScreenLead>
-            </View>
+        <OnboardingScreen step={6} total={9} cta={{ label: tCommon("action.continue"), onPress: submit }}>
+            <ScreenHeader Icon={Droplet} title={t("lastPeriod.title")} lead={t("lastPeriod.lead")} />
 
             <DateWheel
                 value={start}

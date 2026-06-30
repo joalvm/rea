@@ -37,10 +37,10 @@ export function WheelPicker({ items, valueIndex, onChange, testID }: Props) {
     };
 
     return (
-        <View style={styles.wheel} testID={testID}>
-            <View style={styles.band} pointerEvents="none" />
+        <View style={styles.column} testID={testID}>
             <ScrollView
                 ref={scrollRef}
+                style={styles.scroll}
                 showsVerticalScrollIndicator={false}
                 snapToInterval={WHEEL_ITEM_HEIGHT}
                 decelerationRate="fast"

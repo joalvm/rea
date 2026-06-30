@@ -1,3 +1,4 @@
+import { Baby } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 
@@ -12,18 +13,16 @@ import { DateWheel } from "../shared/components/date-wheel/DateWheel";
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { HelpText } from "../shared/components/help-text/HelpText";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
-import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
-import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
+import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { ToggleRow } from "../shared/components/toggle-row/ToggleRow";
 import { usePregnancySetupStyles } from "./PregnancySetupStyle";
 
 type Props = {
-    onBack: () => void;
     onPush: (href: string) => void;
 };
 
 /** Paso (solo pregnancy): FUM + fecha probable de parto opcional. Tono teal. */
-export default function PregnancySetupScreen({ onBack, onPush }: Props) {
+export default function PregnancySetupScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
     const { t: tValidation } = useTranslation("validation");
@@ -62,17 +61,17 @@ export default function PregnancySetupScreen({ onBack, onPush }: Props) {
 
     return (
         <OnboardingScreen
-            progress={0.7}
             step={4}
-            total={6}
+            total={9}
             accent={accent}
-            onBack={onBack}
             cta={{ label: tCommon("action.continue"), onPress: submit }}
         >
-            <View style={styles.header}>
-                <ScreenTitle accent={accent}>{t("pregnancySetup.title")}</ScreenTitle>
-                <ScreenLead>{t("pregnancySetup.lead")}</ScreenLead>
-            </View>
+            <ScreenHeader
+                Icon={Baby}
+                title={t("pregnancySetup.title")}
+                lead={t("pregnancySetup.lead")}
+                accent={accent}
+            />
 
             <View style={styles.fieldGroup}>
                 <FieldLabel>{t("pregnancySetup.lmpLabel")}</FieldLabel>
