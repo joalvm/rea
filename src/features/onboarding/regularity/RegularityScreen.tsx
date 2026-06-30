@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react-native";
 import { Activity, CalendarCheck, CalendarRange, HelpCircle, Waves } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 
 import type { Regularity } from "@/db/enums/reproductiveMode";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
@@ -11,6 +11,7 @@ import { getRegularitySelection } from "@/features/onboarding/shared/utils/getRe
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SelectableCard } from "../shared/components/selectable-card/SelectableCard";
+import { regularitySchema } from "./schemas/regularitySchema";
 import { useRegularityStyles } from "./RegularityStyle";
 
 type Props = {
@@ -34,6 +35,7 @@ const OPTIONS: readonly Option[] = [
 export default function RegularityScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
+    const { t: tValidation } = useTranslation("validation");
     const styles = useRegularityStyles();
     const intent = useOnboardingStore((state) => state.draft.intent);
     const regularity = useOnboardingStore((state) => state.draft.regularity);
@@ -49,6 +51,13 @@ export default function RegularityScreen({ onPush }: Props) {
     const submit = () => {
         if (!intent) {
             onPush("/(onboarding)/intent");
+            return;
+        }
+
+        const result = regularitySchema.safeParse({ regularity });
+
+        if (!result.success) {
+            Alert.alert(tValidation("onboarding.invalidRegularity"));
             return;
         }
 

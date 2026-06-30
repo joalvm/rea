@@ -34,15 +34,16 @@ export default function PregnancySetupScreen({ onPush }: Props) {
     const due = useOnboardingStore((state) => state.draft.pregnancyDueDate);
     const set = useOnboardingStore((state) => state.set);
 
-    const lmpParts: YMD = lmp ? isoToYMD(lmp) : todayYMD();
+    const today = todayYMD();
+    const lmpParts: YMD = lmp ? isoToYMD(lmp) : today;
     const knowDue = due !== null;
     const fallbackDueDate = estimateDueDate(lmpParts);
     const dueParts: YMD = due ? isoToYMD(due) : isoToYMD(fallbackDueDate);
 
     const monthLabels = getMonthLabels();
 
-    const minYear = new Date().getFullYear() - 1;
-    const maxYear = new Date().getFullYear();
+    const minYear = today.year - 1;
+    const maxYear = today.year;
 
     const submit = () => {
         const result = pregnancySchema.safeParse({
@@ -51,7 +52,10 @@ export default function PregnancySetupScreen({ onPush }: Props) {
         });
 
         if (!result.success) {
-            Alert.alert(tValidation("onboarding.invalidPregnancyDueDate"));
+            const code = result.error.issues[0]?.message;
+            const messageKey =
+                code === "lmpInFuture" ? "onboarding.invalidPregnancyLmpFuture" : "onboarding.invalidPregnancyDueDate";
+            Alert.alert(tValidation(messageKey));
             return;
         }
 
@@ -80,6 +84,7 @@ export default function PregnancySetupScreen({ onPush }: Props) {
                     monthLabels={monthLabels}
                     minYear={minYear}
                     maxYear={maxYear}
+                    max={today}
                     onChange={(value) => set({ pregnancyLmp: ymdToISO(value) })}
                     testID="pregnancy-lmp"
                 />

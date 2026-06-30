@@ -27,8 +27,9 @@ export default function LastPeriodScreen({ onPush }: Props) {
     const intent = useOnboardingStore((state) => state.draft.intent);
     const set = useOnboardingStore((state) => state.set);
 
-    const start: YMD = draft.lastPeriodStart ? isoToYMD(draft.lastPeriodStart) : todayYMD();
-    const end: YMD = draft.lastPeriodEnd ? isoToYMD(draft.lastPeriodEnd) : todayYMD();
+    const today = todayYMD();
+    const start: YMD = draft.lastPeriodStart ? isoToYMD(draft.lastPeriodStart) : today;
+    const end: YMD = draft.lastPeriodEnd ? isoToYMD(draft.lastPeriodEnd) : today;
 
     const monthLabels = getMonthLabels();
 
@@ -40,7 +41,12 @@ export default function LastPeriodScreen({ onPush }: Props) {
         });
 
         if (!result.success) {
-            Alert.alert(tValidation("onboarding.invalidLastPeriodRange"));
+            const code = result.error.issues[0]?.message;
+            const messageKey =
+                code === "startInFuture" || code === "endInFuture"
+                    ? "onboarding.invalidLastPeriodFuture"
+                    : "onboarding.invalidLastPeriodRange";
+            Alert.alert(tValidation(messageKey));
             return;
         }
 
@@ -63,8 +69,9 @@ export default function LastPeriodScreen({ onPush }: Props) {
             <DateWheel
                 value={start}
                 monthLabels={monthLabels}
-                minYear={new Date().getFullYear() - 5}
-                maxYear={new Date().getFullYear()}
+                minYear={today.year - 5}
+                maxYear={today.year}
+                max={today}
                 onChange={(value) => set({ lastPeriodStart: ymdToISO(value) })}
                 testID="last-period-start"
             />
@@ -83,8 +90,9 @@ export default function LastPeriodScreen({ onPush }: Props) {
                     <DateWheel
                         value={end}
                         monthLabels={monthLabels}
-                        minYear={new Date().getFullYear() - 5}
-                        maxYear={new Date().getFullYear()}
+                        minYear={today.year - 5}
+                        maxYear={today.year}
+                        max={today}
                         onChange={(value) => set({ lastPeriodEnd: ymdToISO(value) })}
                         testID="last-period-end"
                     />

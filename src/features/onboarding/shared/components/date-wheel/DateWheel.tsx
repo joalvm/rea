@@ -17,6 +17,8 @@ type Props = {
     monthLabels: readonly string[];
     minYear: number;
     maxYear: number;
+    /** Límite superior seleccionable (inclusive). Bloquea meses/días futuros. */
+    max?: DateParts;
     testID?: string;
 };
 
@@ -32,13 +34,37 @@ function range(from: number, to: number, format: (value: number) => string = (va
     return items;
 }
 
-export function DateWheel({ value, onChange, monthLabels, minYear, maxYear, testID }: Props) {
+/** Mayor mes seleccionable para `year`, respetando `max`. */
+function monthCeiling(year: number, max?: DateParts) {
+    return max && year >= max.year ? max.month : 12;
+}
+
+/** Mayor día seleccionable para `year`/`month`, respetando longitud de mes y `max`. */
+function dayCeiling(year: number, month: number, max?: DateParts) {
+    const monthDays = daysInMonth(year, month);
+    if (max && year >= max.year && month >= max.month) {
+        return Math.min(monthDays, max.day);
+    }
+    return monthDays;
+}
+
+/** Recorta una fecha a los topes de mes/día vigentes (al cambiar año o mes). */
+function clampParts(value: DateParts, max?: DateParts): DateParts {
+    const month = Math.min(value.month, monthCeiling(value.year, max));
+    const day = Math.min(value.day, dayCeiling(value.year, month, max));
+    return { year: value.year, month, day };
+}
+
+export function DateWheel({ value, onChange, monthLabels, minYear, maxYear, max, testID }: Props) {
     const styles = useDateWheelStyles();
 
-    const maxDay = daysInMonth(value.year, value.month);
-    const day = Math.min(value.day, maxDay);
-    const dayItems = useMemo(() => range(1, 31, (n) => String(n).padStart(2, "0")), []);
-    const monthItems = useMemo(() => monthLabels.slice(0, 12), [monthLabels]);
+    const monthMax = monthCeiling(value.year, max);
+    const month = Math.min(value.month, monthMax);
+    const dayMax = dayCeiling(value.year, month, max);
+    const day = Math.min(value.day, dayMax);
+
+    const dayItems = useMemo(() => range(1, dayMax, (n) => String(n).padStart(2, "0")), [dayMax]);
+    const monthItems = useMemo(() => monthLabels.slice(0, monthMax), [monthLabels, monthMax]);
     const yearItems = useMemo(() => range(minYear, maxYear), [minYear, maxYear]);
 
     return (
@@ -47,33 +73,21 @@ export function DateWheel({ value, onChange, monthLabels, minYear, maxYear, test
                 <WheelPicker
                     items={dayItems}
                     valueIndex={day - 1}
-                    onChange={(index) => onChange({ ...value, day: index + 1 })}
+                    onChange={(index) => onChange(clampParts({ ...value, day: index + 1 }, max))}
                 />
             </View>
             <View style={styles.month}>
                 <WheelPicker
                     items={monthItems}
-                    valueIndex={value.month - 1}
-                    onChange={(index) =>
-                        onChange({
-                            ...value,
-                            month: index + 1,
-                            day: Math.min(value.day, daysInMonth(value.year, index + 1)),
-                        })
-                    }
+                    valueIndex={month - 1}
+                    onChange={(index) => onChange(clampParts({ ...value, month: index + 1 }, max))}
                 />
             </View>
             <View style={styles.year}>
                 <WheelPicker
                     items={yearItems}
                     valueIndex={value.year - minYear}
-                    onChange={(index) =>
-                        onChange({
-                            ...value,
-                            year: minYear + index,
-                            day: Math.min(value.day, daysInMonth(minYear + index, value.month)),
-                        })
-                    }
+                    onChange={(index) => onChange(clampParts({ ...value, year: minYear + index }, max))}
                 />
             </View>
         </WheelGroup>

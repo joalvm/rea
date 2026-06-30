@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { isoDateSchema } from "@/shared/schemas/date/isoDateSchema";
+import { todayYMD, ymdToISO } from "../../shared/utils/onboardingDate";
 
 export const lastPeriodSchema = z
     .object({
@@ -27,6 +28,14 @@ export const lastPeriodSchema = z
             path: ["lastPeriodEnd"],
         },
     )
+    .refine((value) => value.lastPeriodStart == null || value.lastPeriodStart <= ymdToISO(todayYMD()), {
+        error: "startInFuture",
+        path: ["lastPeriodStart"],
+    })
+    .refine((value) => value.lastPeriodEnd == null || value.lastPeriodEnd <= ymdToISO(todayYMD()), {
+        error: "endInFuture",
+        path: ["lastPeriodEnd"],
+    })
     .transform((value) => ({
         lastPeriodEnd: value.lastPeriodStart == null || value.lastPeriodOngoing ? null : value.lastPeriodEnd,
         lastPeriodOngoing: value.lastPeriodOngoing,

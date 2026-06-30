@@ -1,6 +1,6 @@
 import { ShieldCheck, TriangleAlert } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 import { useTheme } from "@/theme/useTheme";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
@@ -8,6 +8,7 @@ import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboa
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SegmentedControl } from "../shared/components/segmented-control/SegmentedControl";
+import { contraceptionSchema } from "./schemas/contraceptionSchema";
 import { useContraceptionStyles } from "./ContraceptionStyle";
 
 type Props = {
@@ -18,17 +19,25 @@ type Props = {
 export default function ContraceptionScreen({ onPush }: Props) {
     const { t } = useTranslation("onboarding");
     const { t: tCommon } = useTranslation("common");
+    const { t: tValidation } = useTranslation("validation");
     const theme = useTheme();
     const styles = useContraceptionStyles();
     const hormonal = useOnboardingStore((state) => state.draft.hormonalContraception);
     const set = useOnboardingStore((state) => state.set);
 
+    const submit = () => {
+        const result = contraceptionSchema.safeParse({ hormonalContraception: hormonal });
+
+        if (!result.success) {
+            Alert.alert(tValidation("onboarding.invalidContraception"));
+            return;
+        }
+
+        onPush("/(onboarding)/notifications");
+    };
+
     return (
-        <OnboardingScreen
-            step={7}
-            total={9}
-            cta={{ label: tCommon("action.continue"), onPress: () => onPush("/(onboarding)/notifications") }}
-        >
+        <OnboardingScreen step={7} total={9} cta={{ label: tCommon("action.continue"), onPress: submit }}>
             <ScreenHeader Icon={ShieldCheck} title={t("contraception.title")} lead={t("contraception.lead")} />
 
             <SegmentedControl
