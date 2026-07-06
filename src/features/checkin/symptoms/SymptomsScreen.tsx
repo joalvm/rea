@@ -6,7 +6,7 @@ type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 4: síntomas del catálogo con intensidad → checkin_symptoms. Ver README. */
+/** Check-in paso 4: síntomas del catálogo con intensidad → checkin_symptoms.   */
 export default function SymptomsScreen({ onContinue }: Props) {
     const styles = useSymptomsStyles();
 

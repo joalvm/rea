@@ -6,7 +6,7 @@ type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 1: sangrado y periodo. Puede crear/actualizar period_runs. Ver README. */
+/** Check-in paso 1: sangrado y periodo. Puede crear/actualizar period_runs.   */
 export default function BleedingScreen({ onContinue }: Props) {
     const styles = useBleedingStyles();
 

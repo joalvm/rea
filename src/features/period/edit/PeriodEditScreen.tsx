@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { usePeriodEditStyles } from "./PeriodEditStyle";
 
-/** Edición de un periodo (period_runs): fechas, excluir, marcar spotting. Ver README. */
+/** Edición de un periodo (period_runs): fechas, excluir, marcar spotting.   */
 export default function PeriodEditScreen() {
     const styles = usePeriodEditStyles();
 

@@ -6,7 +6,7 @@ type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 6: medicamentos tomados → checkin_medications. Ver README. */
+/** Check-in paso 6: medicamentos tomados → checkin_medications.   */
 export default function MedicationsScreen({ onContinue }: Props) {
     const styles = useMedicationsStyles();
 

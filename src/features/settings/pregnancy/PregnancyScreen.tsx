@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { usePregnancyStyles } from "./PregnancyStyle";
 
-/** Configuración: modo embarazo (pregnancy_episodes). Pausa predicciones. Ver README. */
+/** Configuración: modo embarazo (pregnancy_episodes). Pausa predicciones.   */
 export default function PregnancyScreen() {
     const styles = usePregnancyStyles();
 

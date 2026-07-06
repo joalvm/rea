@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useDiaryStyles } from "./DiaryStyle";
 
-/** Tab Diario: timeline de check-ins del día + resumen + mini-gráficos. Ver README. */
+/** Tab Diario: timeline de check-ins del día + resumen + mini-gráficos.   */
 export default function DiaryScreen() {
     const styles = useDiaryStyles();
 

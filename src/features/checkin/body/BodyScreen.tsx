@@ -6,7 +6,7 @@ type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 3: dolor y cuerpo. Ver README. */
+/** Check-in paso 3: dolor y cuerpo.   */
 export default function BodyScreen({ onContinue }: Props) {
     const styles = useBodyStyles();
 

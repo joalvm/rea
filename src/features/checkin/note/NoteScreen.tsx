@@ -6,7 +6,7 @@ type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 7: nota libre (checkins.note). Ver README. */
+/** Check-in paso 7: nota libre (checkins.note).   */
 export default function NoteScreen({ onContinue }: Props) {
     const styles = useNoteStyles();
 

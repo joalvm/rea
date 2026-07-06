@@ -6,7 +6,7 @@ type Props = {
     id: string;
 };
 
-/** Detalle de una pieza de contenido + su fuente (content_items + content_sources). Ver README. */
+/** Detalle de una pieza de contenido + su fuente (content_items + content_sources).   */
 export default function ContentDetailScreen({ id }: Props) {
     const styles = useContentDetailStyles();
 

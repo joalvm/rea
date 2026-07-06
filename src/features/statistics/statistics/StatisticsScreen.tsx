@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useStatisticsStyles } from "./StatisticsStyle";
 
-/** Tab Estadísticas (segmentada): resumen del ciclo, fases, síntomas, etc. Ver README. */
+/** Tab Estadísticas (segmentada): resumen del ciclo, fases, síntomas, etc.   */
 export default function StatisticsScreen() {
     const styles = useStatisticsStyles();
 

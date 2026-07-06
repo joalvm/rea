@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useCycleProfileStyles } from "./CycleProfileStyle";
 
-/** Configuración: contexto reproductivo versionado (reproductive_intent_history). Ver README. */
+/** Configuración: contexto reproductivo versionado (reproductive_intent_history).   */
 export default function CycleProfileScreen() {
     const styles = useCycleProfileStyles();
 

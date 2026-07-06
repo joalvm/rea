@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useSettingsNotificationsStyles } from "./SettingsNotificationsStyle";
 
-/** Configuración: recordatorios (user_profile.reminder_*). Ver README. */
+/** Configuración: recordatorios (user_profile.reminder_*).   */
 export default function SettingsNotificationsScreen() {
     const styles = useSettingsNotificationsStyles();
 

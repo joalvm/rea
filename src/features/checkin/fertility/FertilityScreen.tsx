@@ -8,7 +8,7 @@ type Props = {
 
 /**
  * Check-in paso 5 (CONDICIONAL): fertilidad y sexualidad.
- * Solo si trying_to_conceive y sin anticoncepción hormonal. Ver README.
+ * Solo si trying_to_conceive y sin anticoncepción hormonal.
  */
 export default function FertilityScreen({ onContinue }: Props) {
     const styles = useFertilityStyles();

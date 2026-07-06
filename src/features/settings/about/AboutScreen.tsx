@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useAboutStyles } from "./AboutStyle";
 
-/** Configuración: acerca de Rea + disclaimer. Ver README. */
+/** Configuración: acerca de Rea + disclaimer.   */
 export default function AboutScreen() {
     const styles = useAboutStyles();
 

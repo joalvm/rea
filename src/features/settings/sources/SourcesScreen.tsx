@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useSourcesStyles } from "./SourcesStyle";
 
-/** Configuración: fuentes revisadas del contenido (content_sources). Ver README. */
+/** Configuración: fuentes revisadas del contenido (content_sources).   */
 export default function SourcesScreen() {
     const styles = useSourcesStyles();
 

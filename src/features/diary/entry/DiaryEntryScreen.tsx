@@ -7,7 +7,7 @@ type Props = {
     onStartCheckin: () => void;
 };
 
-/** Detalle de día (diary/[date]): lectura del día + acceso a registrar. Ver README. */
+/** Detalle de día (diary/[date]): lectura del día + acceso a registrar.   */
 export default function DiaryEntryScreen({ date, onStartCheckin }: Props) {
     const styles = useDiaryEntryStyles();
 

@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { useMedicationsManagerStyles } from "./MedicationsManagerStyle";
 
-/** Configuración: catálogo personal de medicamentos (medication_catalog). Ver README. */
+/** Configuración: catálogo personal de medicamentos (medication_catalog).   */
 export default function MedicationsManagerScreen() {
     const styles = useMedicationsManagerStyles();
 

@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { usePeriodConfirmStyles } from "./PeriodConfirmStyle";
 
-/** Confirmación de periodo inferido por sangrado (source bleeding_inferred). Ver README. */
+/** Confirmación de periodo inferido por sangrado (source bleeding_inferred).   */
 export default function PeriodConfirmScreen() {
     const styles = usePeriodConfirmStyles();
 

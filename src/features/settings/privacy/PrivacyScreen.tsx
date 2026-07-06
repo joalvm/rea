@@ -2,7 +2,7 @@ import { ScrollView, Text } from "react-native";
 
 import { usePrivacyStyles } from "./PrivacyStyle";
 
-/** Configuración: centro de privacidad (export/import/borrar/bloqueo). Ver README. */
+/** Configuración: centro de privacidad (export/import/borrar/bloqueo).   */
 export default function PrivacyScreen() {
     const styles = usePrivacyStyles();
 

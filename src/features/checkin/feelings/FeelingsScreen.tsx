@@ -6,7 +6,7 @@ type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 2: estado emocional. Ver README. */
+/** Check-in paso 2: estado emocional.   */
 export default function FeelingsScreen({ onContinue }: Props) {
     const styles = useFeelingsStyles();
 
