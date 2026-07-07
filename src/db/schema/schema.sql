@@ -1,5 +1,5 @@
 -- ============================================================================
--- REA - Esquema SQLite v1 (ARCHIVO MAESTRO)
+-- REA - Esquema SQLite v3 (ARCHIVO MAESTRO)
 -- Contrato local-first para datos normalizados de seguimiento menstrual,
 -- intento de embarazo (TTC) y embarazo.
 --
@@ -74,10 +74,17 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
                                    'tracking_ttc',             -- Buscando embarazo: ventana fértil, tests, BBT.
                                    'pregnancy_tracking'        -- Embarazo en curso.
                                )),
-    regularity                 TEXT NOT NULL CHECK (regularity IN ('regular', 'variable', 'irregular')),
-    hormonal_contraception     INTEGER NOT NULL CHECK (hormonal_contraception IN (0, 1)),
-    declared_cycle_length      INTEGER NOT NULL CHECK (declared_cycle_length BETWEEN 15 AND 90),
-    declared_period_length     INTEGER NOT NULL CHECK (declared_period_length BETWEEN 1 AND 15),
+    -- Base del ciclo declarada. NULL en pregnancy_tracking (nunca se inventa un
+    -- ciclo que la usuaria no declaró); obligatoria en los demás modos (ver CHECK).
+    regularity                 TEXT CHECK (regularity IS NULL OR regularity IN ('regular', 'variable', 'irregular')),
+    declared_cycle_length      INTEGER CHECK (declared_cycle_length IS NULL OR declared_cycle_length BETWEEN 15 AND 90),
+    declared_period_length     INTEGER CHECK (declared_period_length IS NULL OR declared_period_length BETWEEN 1 AND 15),
+    -- Método anticonceptivo declarado; NULL = prefirió no decirlo. `none` es una
+    -- elección explícita distinta de "no dijo".
+    contraception_method       TEXT CHECK (contraception_method IS NULL OR contraception_method IN (
+                                   'none', 'pill', 'hormonal_iud', 'copper_iud', 'implant',
+                                   'injection', 'ring', 'patch', 'barrier', 'other'
+                               )),
     created_at                 TEXT NOT NULL,
     updated_at                 TEXT NOT NULL,
     deleted_at                 TEXT,
@@ -86,8 +93,18 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
     CHECK (effective_from LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to >= effective_from),
+    -- Embarazo -> ciclo NULL; modos de ciclo -> ciclo obligatorio.
+    CHECK (
+        (reproductive_mode = 'pregnancy_tracking'
+            AND regularity IS NULL AND declared_cycle_length IS NULL AND declared_period_length IS NULL)
+        OR
+        (reproductive_mode != 'pregnancy_tracking'
+            AND regularity IS NOT NULL AND declared_cycle_length IS NOT NULL AND declared_period_length IS NOT NULL)
+    ),
     -- TTC y anticoncepción hormonal son excluyentes.
-    CHECK (NOT (reproductive_mode = 'tracking_ttc' AND hormonal_contraception = 1)),
+    CHECK (NOT (reproductive_mode = 'tracking_ttc' AND contraception_method IN (
+        'pill', 'hormonal_iud', 'implant', 'injection', 'ring', 'patch'
+    ))),
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
 ) STRICT;
 
@@ -133,6 +150,7 @@ CREATE TABLE IF NOT EXISTS pregnancy_episodes (
     user_id         TEXT NOT NULL,
     lmp_date        TEXT NOT NULL,             -- Fecha de Última Menstruación (FUM). Base matemática para calcular semanas.
     due_date        TEXT,                      -- Fecha probable de parto (FPP). Calculada con regla de Naegele (LMP + 280 días).
+    dating_basis    TEXT NOT NULL DEFAULT 'lmp' CHECK (dating_basis IN ('lmp', 'due_date', 'ultrasound')), -- Qué dato declaró realmente la usuaria; el otro se deriva.
     end_date        TEXT,                      -- NULL mientras el embarazo está en curso.
     outcome         TEXT CHECK (outcome IN ('birth', 'loss', 'other') OR outcome IS NULL), -- Desenlace.
     outcome_details TEXT,                      -- Notas del desenlace (ej. "Parto vaginal", "Aborto espontáneo a las 8 sem").
@@ -481,8 +499,8 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 ) STRICT;
 
 INSERT OR IGNORE INTO schema_migrations(version, name, applied_at)
-VALUES (2, 'schema_v2_reproductive_mode', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
+VALUES (3, 'schema_v3_onboarding_truth', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
 
 COMMIT;
 
-PRAGMA user_version = 2;
+PRAGMA user_version = 3;

@@ -1,15 +1,13 @@
-import type { YMD } from "../../shared/utils/onboardingDate";
-import { ymdToISO } from "../../shared/utils/onboardingDate";
+import { addDaysToISO, type YMD, ymdToISO } from "../../shared/utils/onboardingDate";
 
 const PREGNANCY_GESTATION_DAYS = 280;
 
+/** Regla de Naegele: FPP estimada = FUM + 280 días. */
 export function estimateDueDate(lmp: YMD): string {
-    const date = new Date(Date.UTC(lmp.year, lmp.month - 1, lmp.day));
-    date.setUTCDate(date.getUTCDate() + PREGNANCY_GESTATION_DAYS);
+    return addDaysToISO(ymdToISO(lmp), PREGNANCY_GESTATION_DAYS);
+}
 
-    return ymdToISO({
-        day: date.getUTCDate(),
-        month: date.getUTCMonth() + 1,
-        year: date.getUTCFullYear(),
-    });
+/** Inversa de la regla de Naegele: FUM estimada = FPP − 280 días. */
+export function estimateLmpFromDueDate(due: YMD): string {
+    return addDaysToISO(ymdToISO(due), -PREGNANCY_GESTATION_DAYS);
 }

@@ -1,4 +1,5 @@
-import type { Regularity, ReproductiveMode } from "@/db/enums/reproductiveMode";
+import type { DatingBasis } from "@/db/enums/pregnancyEpisode";
+import type { ContraceptionMethod, Regularity, ReproductiveMode } from "@/db/enums/reproductiveMode";
 import { defaultReminderSettings } from "@/shared/schemas/reminder/reminderDefaults";
 
 import { profileSchema } from "../../profile/schemas/profileSchema";
@@ -33,10 +34,14 @@ export type OnboardingDraft = {
     periodLength: number;
     regularity: Regularity;
     regularitySelection: RegularitySelection | null;
-    hormonalContraception: boolean;
-    /** YYYY-MM-DD de la FUM del embarazo. */
+    /** Método anticonceptivo declarado; `null` = prefirió no decirlo (nunca se asume). */
+    contraceptionMethod: ContraceptionMethod | null;
+    /** YYYY-MM-DD de la FUM del embarazo (declarada o derivada de la FPP). */
     pregnancyLmp: string | null;
+    /** YYYY-MM-DD de la FPP del embarazo (declarada o derivada de la FUM). */
     pregnancyDueDate: string | null;
+    /** Qué dato declaró realmente la usuaria: FUM o FPP. El otro se deriva. */
+    pregnancyDatingBasis: DatingBasis;
     remindersEnabled: boolean;
     reminderWindowStart: string;
     reminderWindowEnd: string;
@@ -54,9 +59,10 @@ export const INITIAL_ONBOARDING_DRAFT: OnboardingDraft = {
     periodLength: 5,
     regularity: "regular",
     regularitySelection: null,
-    hormonalContraception: false,
+    contraceptionMethod: null,
     pregnancyLmp: null,
     pregnancyDueDate: null,
+    pregnancyDatingBasis: "lmp",
     remindersEnabled: defaultReminderSettings.remindersEnabled,
     reminderWindowStart: defaultReminderSettings.reminderWindowStart,
     reminderWindowEnd: defaultReminderSettings.reminderWindowEnd,

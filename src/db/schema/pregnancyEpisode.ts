@@ -1,7 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
-import { pregnancyOutcomeValues } from "@/db/enums/pregnancyEpisode";
+import { datingBasisValues, pregnancyOutcomeValues } from "@/db/enums/pregnancyEpisode";
 
 import { profile } from "./profile";
 
@@ -12,6 +12,8 @@ import { profile } from "./profile";
  * - `profileId`: Perfil propietario. En SQLite conserva la columna legacy `user_id`.
  * - `lmpDate`: Fecha de última menstruación usada como base del embarazo.
  * - `dueDate`: Fecha probable de parto, si se conoce.
+ * - `datingBasis`: Qué dato declaró realmente la usuaria (`lmp` o `due_date`); el otro
+ *   se deriva. Procedencia honesta de la semana gestacional mostrada.
  * - `endDate`: Fecha local de fin, si el episodio ya cerró.
  * - `outcome`: Desenlace del episodio (`birth`, `loss`, `other`), solo al cerrar.
  * - `outcomeDetails`: Nota opcional de contexto del desenlace.
@@ -30,6 +32,7 @@ export const pregnancyEpisode = sqliteTable(
             .references(() => profile.id, { onDelete: "cascade" }),
         lmpDate: text("lmp_date").notNull(),
         dueDate: text("due_date"),
+        datingBasis: text("dating_basis", { enum: datingBasisValues }).notNull().default("lmp"),
         endDate: text("end_date"),
         outcome: text("outcome", { enum: pregnancyOutcomeValues }),
         outcomeDetails: text("outcome_details"),
@@ -42,6 +45,7 @@ export const pregnancyEpisode = sqliteTable(
         uniqueIndex("uq_pregnancy_single_ongoing")
             .on(table.profileId)
             .where(sql`${table.endDate} IS NULL AND ${table.deletedAt} IS NULL`),
+        check("pregnancy_dating_basis_check", sql`${table.datingBasis} IN ('lmp', 'due_date', 'ultrasound')`),
         check(
             "pregnancy_outcome_check",
             sql`${table.outcome} IN ('birth', 'loss', 'other') OR ${table.outcome} IS NULL`,

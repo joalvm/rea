@@ -9,7 +9,7 @@ const defaultReproductiveIntentHistory: InsertReproductiveIntentHistory = {
     effectiveFrom: "2026-01-01",
     reproductiveMode: "tracking_only",
     regularity: "regular",
-    hormonalContraception: false,
+    contraceptionMethod: "none",
     declaredCycleLength: 28,
     declaredPeriodLength: 5,
     createdAt: "2026-01-01T00:00:00Z",

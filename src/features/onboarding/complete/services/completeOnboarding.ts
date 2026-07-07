@@ -22,6 +22,9 @@ export async function completeOnboarding(database: Database, draft: OnboardingDr
     const profileId = uuid();
     const mode = draft.intent?.reproductiveMode ?? "tracking_only";
     const pregnancy = isPregnancyMode(mode);
+    // TTC nunca pregunta el método (siempre "none": excluyente con hormonal por CHECK);
+    // embarazo no aplica (NULL, no hay ciclo que declarar).
+    const contraceptionMethod = pregnancy ? null : mode === "tracking_ttc" ? "none" : draft.contraceptionMethod;
 
     try {
         await database.transaction(async (tx) => {
@@ -49,10 +52,10 @@ export async function completeOnboarding(database: Database, draft: OnboardingDr
                 profileId,
                 effectiveFrom: today,
                 reproductiveMode: mode,
-                regularity: pregnancy ? "irregular" : draft.regularity,
-                hormonalContraception: pregnancy ? false : draft.hormonalContraception,
-                declaredCycleLength: pregnancy ? 28 : draft.cycleLength,
-                declaredPeriodLength: pregnancy ? 5 : draft.periodLength,
+                regularity: pregnancy ? null : draft.regularity,
+                contraceptionMethod,
+                declaredCycleLength: pregnancy ? null : draft.cycleLength,
+                declaredPeriodLength: pregnancy ? null : draft.periodLength,
                 createdAt: now,
                 updatedAt: now,
             });
@@ -63,6 +66,7 @@ export async function completeOnboarding(database: Database, draft: OnboardingDr
                     profileId,
                     lmpDate: draft.pregnancyLmp,
                     dueDate: draft.pregnancyDueDate ?? undefined,
+                    datingBasis: draft.pregnancyDatingBasis,
                     createdAt: now,
                     updatedAt: now,
                 });

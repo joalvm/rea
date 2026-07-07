@@ -10,6 +10,7 @@ describe("Esquema de pregnancyEpisode", () => {
             "user_id",
             "lmp_date",
             "due_date",
+            "dating_basis",
             "end_date",
             "outcome",
             "outcome_details",
@@ -24,6 +25,7 @@ describe("Esquema de pregnancyEpisode", () => {
         expect(pregnancyEpisode.version.default).toBe(1);
         expect(indexNames(pregnancyEpisode)).toEqual(["uq_pregnancy_single_ongoing"]);
         expect(checkNames(pregnancyEpisode)).toEqual([
+            "pregnancy_dating_basis_check",
             "pregnancy_outcome_check",
             "pregnancy_lmp_date_check",
             "pregnancy_end_date_check",

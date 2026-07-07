@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-/** Uso de anticoncepción hormonal. Decisión binaria explícita. */
+import { contraceptionMethodValues } from "@/db/enums/reproductiveMode";
+
+/** Método anticonceptivo declarado. `null` = prefirió no decirlo, elección de primera clase. */
 export const contraceptionSchema = z.object({
-    hormonalContraception: z.boolean(),
+    contraceptionMethod: z.enum(contraceptionMethodValues).nullable(),
 });

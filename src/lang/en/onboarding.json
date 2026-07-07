@@ -4,7 +4,7 @@
         "tagline": "your cycle, in calm",
         "title": "Welcome to Rea",
         "body": "An intimate space to get to know your cycle at your own pace. What you log stays on your phone, only for you.",
-        "deviceChip": "Data on your device"
+        "deviceChip": "On your phone, no accounts or ads"
     },
     "profile": {
         "title": "Tell me about you",
@@ -83,19 +83,34 @@
         }
     },
     "contraception": {
-        "title": "Are you on hormonal contraception?",
-        "lead": "Pill, hormonal IUD, implant, injection… It changes how Rea reads your cycle.",
-        "no": "No",
-        "yes": "Yes",
-        "warning": "If you are, Rea logs symptoms and bleeding but won't mark fertile days as natural."
+        "title": "Do you use any contraceptive method?",
+        "lead": "It helps us read your cycle better. You can skip this if you'd rather not say.",
+        "preferNotToSay": "Prefer not to say",
+        "method": {
+            "none": "None",
+            "pill": "Pill",
+            "hormonal_iud": "Hormonal IUD",
+            "copper_iud": "Copper IUD",
+            "implant": "Implant",
+            "injection": "Injection",
+            "ring": "Vaginal ring",
+            "patch": "Patch",
+            "barrier": "Condom / barrier",
+            "other": "Other"
+        },
+        "warning": "With a hormonal method, Rea logs symptoms and bleeding but won't mark fertile days as natural."
     },
     "pregnancySetup": {
         "title": "Your pregnancy",
-        "lead": "The date of your last period helps estimate gestational age.",
+        "lead": "Tell us whichever date you have: your last period or your due date.",
+        "basis": {
+            "lmp": "I know my last period",
+            "dueDate": "I know my due date"
+        },
         "lmpLabel": "When was your last period?",
-        "dueToggleTitle": "I know the estimated due date",
         "dueLabel": "Estimated due date",
-        "help": "Without this date, Rea estimates via Naegele's rule (LMP + 280 days)."
+        "derivedDueDate": "Your due date would be around {{date}}.",
+        "derivedLmp": "Your last period would have started around {{date}}."
     },
     "notifications": {
         "title": "Gentle reminders",

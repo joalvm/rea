@@ -21,6 +21,23 @@ describe("Integración del esquema de pregnancyEpisode", () => {
 
         expect(rows).toHaveLength(1);
         expect(rows[0]?.profileId).toBe(profileSeed.id);
+        expect(rows[0]?.datingBasis).toBe("lmp");
+    });
+
+    it("acepta dating_basis='due_date' cuando el ancla declarada es la FPP", async () => {
+        await seedProfile(context.database);
+        await seedPregnancyEpisode(context.database, {
+            id: "pregnancy-due-date-basis",
+            datingBasis: "due_date",
+            dueDate: "2026-11-17",
+        });
+
+        const rows = await context.database.db
+            .select()
+            .from(pregnancyEpisode)
+            .where(eq(pregnancyEpisode.id, "pregnancy-due-date-basis"));
+
+        expect(rows[0]?.datingBasis).toBe("due_date");
     });
 
     it("rechaza filas huérfanas y combinaciones inválidas del ciclo de vida", async () => {
@@ -45,6 +62,13 @@ describe("Integración del esquema de pregnancyEpisode", () => {
             seedPregnancyEpisode(context.database, {
                 id: "pregnancy-open-with-outcome",
                 outcome: "birth",
+            }),
+        ).rejects.toThrow();
+
+        await expect(
+            seedPregnancyEpisode(context.database, {
+                id: "pregnancy-invalid-dating-basis",
+                datingBasis: "guess" as never,
             }),
         ).rejects.toThrow();
     });

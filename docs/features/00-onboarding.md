@@ -52,7 +52,7 @@ FPP (se la dio su médica), no su última regla.
 
 ## Fases
 
-### [ ] Fase 1: Verdad en los datos
+### [x] Fase 1: Verdad en los datos
 
 - **Objetivo:** el onboarding nunca escribe lo que la usuaria no declaró.
 - **Cambios:** sobre esquema v3 — `completeOnboarding` inserta NULL en campos de ciclo
@@ -77,7 +77,7 @@ FPP (se la dio su médica), no su última regla.
 - **Cierre:** QA en dispositivo — conceder y denegar dejan estados coherentes; nunca se
   pide dos veces seguidas.
 
-### [ ] Fase 3: Anclaje de embarazo y copy de privacidad
+### [x] Fase 3: Anclaje de embarazo y copy de privacidad
 
 - **Objetivo:** la semana gestacional nace de un dato que la usuaria realmente conoce.
 - **Cambios:** `pregnancy-setup` con selector FUM/FPP (validación: FPP futura razonable,
@@ -87,6 +87,10 @@ FPP (se la dio su médica), no su última regla.
   episodio); preguntar ambas fechas.
 - **Cierre:** completar con FPP produce `lmp` derivada y `dating_basis='due_date'`
   correctos (test); QA visual de los dos caminos.
+- **Nota de implementación:** la línea de privacidad en welcome se dejó sin la palabra
+  "cifrados" — el plan 15 (cifrado en reposo) todavía no está construido, y afirmarlo
+  antes de tiempo repetiría exactamente el pecado de A2 (prometer algo que el build no
+  cumple). Actualizar esa línea cuando el plan 15 cierre.
 
 ## Riesgos y preguntas abiertas
 

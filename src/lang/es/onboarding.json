@@ -4,7 +4,7 @@
         "tagline": "tu ciclo, en calma",
         "title": "Bienvenida a Rea",
         "body": "Un espacio íntimo para conocer tu ciclo a tu ritmo. Lo que registres se queda en tu teléfono, solo para ti.",
-        "deviceChip": "Datos en tu dispositivo"
+        "deviceChip": "En tu teléfono, sin cuentas ni anuncios"
     },
     "profile": {
         "title": "Cuéntame de ti",
@@ -83,19 +83,34 @@
         }
     },
     "contraception": {
-        "title": "¿Usas anticoncepción hormonal?",
-        "lead": "Pastilla, DIU hormonal, implante, inyección… Cambia cómo Rea lee tu ciclo.",
-        "no": "No",
-        "yes": "Sí",
-        "warning": "Si la usas, Rea registra síntomas y sangrados, pero no marcará días fértiles como naturales."
+        "title": "¿Usas algún método anticonceptivo?",
+        "lead": "Nos ayuda a leer mejor tu ciclo. Puedes no responder si prefieres.",
+        "preferNotToSay": "Prefiero no decirlo",
+        "method": {
+            "none": "Ninguno",
+            "pill": "Píldora",
+            "hormonal_iud": "DIU hormonal",
+            "copper_iud": "DIU de cobre",
+            "implant": "Implante",
+            "injection": "Inyección",
+            "ring": "Anillo vaginal",
+            "patch": "Parche",
+            "barrier": "Preservativo / barrera",
+            "other": "Otro"
+        },
+        "warning": "Con un método hormonal, Rea registra síntomas y sangrados, pero no marcará días fértiles como naturales."
     },
     "pregnancySetup": {
         "title": "Tu embarazo",
-        "lead": "La fecha de tu última regla sirve para estimar la edad gestacional.",
+        "lead": "Cuéntanos el dato que tengas: tu última regla o tu fecha probable de parto.",
+        "basis": {
+            "lmp": "Sé mi última regla",
+            "dueDate": "Sé mi fecha probable de parto"
+        },
         "lmpLabel": "¿Cuándo fue tu última regla?",
-        "dueToggleTitle": "Conozco la fecha probable de parto",
         "dueLabel": "Fecha probable de parto",
-        "help": "Sin esta fecha, Rea estima por regla de Naegele (FUM + 280 días)."
+        "derivedDueDate": "Tu fecha probable de parto sería aprox. el {{date}}.",
+        "derivedLmp": "Tu última regla habría sido aprox. el {{date}}."
     },
     "notifications": {
         "title": "Recordatorios suaves",

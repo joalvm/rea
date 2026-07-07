@@ -29,6 +29,41 @@ export const reproductiveModeFilterValues = [...reproductiveModeValues, "all"] a
 export const regularityValues = ["regular", "variable", "irregular"] as const;
 
 /**
+ * Métodos anticonceptivos reconocidos. `none` es una elección explícita (no usa
+ * ninguno); la ausencia de dato ("prefiero no decirlo") se modela con NULL en
+ * columna y con `null` en el draft, nunca con `none`.
+ */
+export const contraceptionMethodValues = [
+    "none",
+    "pill",
+    "hormonal_iud",
+    "copper_iud",
+    "implant",
+    "injection",
+    "ring",
+    "patch",
+    "barrier",
+    "other",
+] as const;
+
+/**
+ * Subconjunto de `contraceptionMethodValues` que suprime la ventana fértil natural
+ * por vía hormonal. Excluyente con `tracking_ttc` (ver CHECK de la tabla).
+ */
+export const hormonalContraceptionMethods = ["pill", "hormonal_iud", "implant", "injection", "ring", "patch"] as const;
+
+/**
+ * Unión literal de los métodos anticonceptivos admitidos.
+ * Importar este tipo cuando un contrato necesite aceptar uno de los valores de `contraceptionMethodValues`.
+ */
+export type ContraceptionMethod = (typeof contraceptionMethodValues)[number];
+
+/** ¿El método declarado es de base hormonal? Útil para derivar supresión de ventana fértil. */
+export function isHormonalContraceptionMethod(method: ContraceptionMethod | null): boolean {
+    return method != null && (hormonalContraceptionMethods as readonly string[]).includes(method);
+}
+
+/**
  * Unión literal de los modos de seguimiento reproductivo principales de la app.
  * Importar este tipo cuando un contrato necesite aceptar uno de los valores de `reproductiveModeValues`.
  */

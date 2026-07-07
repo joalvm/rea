@@ -72,65 +72,98 @@ describe("Integración de completeOnboarding", () => {
         expect(pregnancies).toHaveLength(0);
     });
 
-    it("persiste tracking_avoid_pregnancy sin tramo de periodo cuando no se proporciona ninguno", async () => {
+    it("persiste tracking_avoid_pregnancy con el método anticonceptivo declarado", async () => {
         await completeOnboarding(
             context.database.db as unknown as Database,
             buildDraft({
                 intent: intent({ reproductiveMode: "tracking_avoid_pregnancy" }),
                 lastPeriodStart: null,
                 lastPeriodEnd: null,
+                contraceptionMethod: "pill",
             }),
         );
 
         const intents = await context.database.db.select().from(reproductiveIntentHistory);
         expect(intents[0]?.reproductiveMode).toBe("tracking_avoid_pregnancy");
-        expect(intents[0]?.hormonalContraception).toBe(false);
+        expect(intents[0]?.contraceptionMethod).toBe("pill");
 
         const runs = await context.database.db.select().from(periodRun);
         expect(runs).toHaveLength(0);
     });
 
-    it("persiste tracking_ttc forzando anticoncepción hormonal en false", async () => {
+    it("persiste tracking_avoid_pregnancy con NULL cuando prefiere no decir el método", async () => {
+        await completeOnboarding(
+            context.database.db as unknown as Database,
+            buildDraft({
+                intent: intent({ reproductiveMode: "tracking_avoid_pregnancy" }),
+                contraceptionMethod: null,
+            }),
+        );
+
+        const intents = await context.database.db.select().from(reproductiveIntentHistory);
+        expect(intents[0]?.contraceptionMethod).toBeNull();
+    });
+
+    it("persiste tracking_ttc forzando contraception_method='none' sin importar el borrador", async () => {
         await completeOnboarding(
             context.database.db as unknown as Database,
             buildDraft({
                 intent: intent({ reproductiveMode: "tracking_ttc" }),
-                hormonalContraception: false,
+                contraceptionMethod: "pill",
             }),
         );
 
         const intents = await context.database.db.select().from(reproductiveIntentHistory);
         expect(intents[0]?.reproductiveMode).toBe("tracking_ttc");
+        expect(intents[0]?.contraceptionMethod).toBe("none");
     });
 
-    it("persiste pregnancy_tracking con valores por defecto neutros y un episodio abierto", async () => {
+    it("persiste pregnancy_tracking sin inventar datos de ciclo (NULL) y con un episodio abierto", async () => {
         await completeOnboarding(
             context.database.db as unknown as Database,
             buildDraft({
                 intent: intent({ reproductiveMode: "pregnancy_tracking" }),
                 regularity: "regular",
-                hormonalContraception: true,
+                contraceptionMethod: "pill",
                 cycleLength: 21,
                 periodLength: 3,
                 pregnancyLmp: "2026-02-10",
                 pregnancyDueDate: null,
+                pregnancyDatingBasis: "lmp",
             }),
         );
 
         const intents = await context.database.db.select().from(reproductiveIntentHistory);
         expect(intents[0]?.reproductiveMode).toBe("pregnancy_tracking");
-        expect(intents[0]?.regularity).toBe("irregular");
-        expect(intents[0]?.hormonalContraception).toBe(false);
-        expect(intents[0]?.declaredCycleLength).toBe(28);
-        expect(intents[0]?.declaredPeriodLength).toBe(5);
+        expect(intents[0]?.regularity).toBeNull();
+        expect(intents[0]?.contraceptionMethod).toBeNull();
+        expect(intents[0]?.declaredCycleLength).toBeNull();
+        expect(intents[0]?.declaredPeriodLength).toBeNull();
 
         const pregnancies = await context.database.db.select().from(pregnancyEpisode);
         expect(pregnancies).toHaveLength(1);
         expect(pregnancies[0]?.lmpDate).toBe("2026-02-10");
+        expect(pregnancies[0]?.datingBasis).toBe("lmp");
         expect(pregnancies[0]?.endDate).toBeNull();
 
         const runs = await context.database.db.select().from(periodRun);
         expect(runs).toHaveLength(0);
+    });
+
+    it("persiste pregnancy_tracking anclado por FPP con dating_basis='due_date'", async () => {
+        await completeOnboarding(
+            context.database.db as unknown as Database,
+            buildDraft({
+                intent: intent({ reproductiveMode: "pregnancy_tracking" }),
+                pregnancyLmp: "2026-02-10",
+                pregnancyDueDate: "2026-11-17",
+                pregnancyDatingBasis: "due_date",
+            }),
+        );
+
+        const pregnancies = await context.database.db.select().from(pregnancyEpisode);
+        expect(pregnancies[0]?.datingBasis).toBe("due_date");
+        expect(pregnancies[0]?.dueDate).toBe("2026-11-17");
     });
 
     it("revierte todo cuando se viola una restricción CHECK", async () => {
@@ -138,8 +171,8 @@ describe("Integración de completeOnboarding", () => {
             completeOnboarding(
                 context.database.db as unknown as Database,
                 buildDraft({
-                    intent: intent({ reproductiveMode: "tracking_ttc" }),
-                    hormonalContraception: true,
+                    intent: intent({ reproductiveMode: "tracking_only" }),
+                    cycleLength: 999,
                 }),
             ),
         ).rejects.toThrow();

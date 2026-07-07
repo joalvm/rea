@@ -1,7 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { check, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
-import { regularityValues, reproductiveModeValues } from "@/db/enums/reproductiveMode";
+import { contraceptionMethodValues, regularityValues, reproductiveModeValues } from "@/db/enums/reproductiveMode";
 
 import { profile } from "./profile";
 
@@ -13,10 +13,12 @@ import { profile } from "./profile";
  * - `effectiveFrom`: Fecha local desde la que aplica este estado.
  * - `effectiveTo`: Fecha local hasta la que aplica este estado, si ya fue cerrado.
  * - `reproductiveMode`: Modo de seguimiento vigente (combina tipo + intención en un único eje).
- * - `regularity`: Regularidad declarada del ciclo.
- * - `hormonalContraception`: Indica uso declarado de anticoncepción hormonal.
- * - `declaredCycleLength`: Longitud declarada del ciclo, entre 15 y 90 días.
- * - `declaredPeriodLength`: Duración declarada del periodo, entre 1 y 15 días.
+ * - `regularity`, `declaredCycleLength`, `declaredPeriodLength`: Base del ciclo declarada.
+ *   NULL en `pregnancy_tracking` (no inventamos un ciclo que la usuaria no declaró);
+ *   obligatorios en los demás modos.
+ * - `contraceptionMethod`: Método anticonceptivo declarado, o NULL si prefirió no decirlo.
+ *   `none` es una elección explícita distinta de "no dijo". Excluyente con `tracking_ttc`
+ *   para métodos hormonales.
  * - `createdAt`, `updatedAt`, `deletedAt`: Auditoría local y borrado lógico.
  * - `version`: Versión optimista del registro.
  *
@@ -34,10 +36,10 @@ export const reproductiveIntentHistory = sqliteTable(
         effectiveFrom: text("effective_from").notNull(),
         effectiveTo: text("effective_to"),
         reproductiveMode: text("reproductive_mode", { enum: reproductiveModeValues }).notNull(),
-        regularity: text("regularity", { enum: regularityValues }).notNull(),
-        hormonalContraception: integer("hormonal_contraception", { mode: "boolean" }).notNull(),
-        declaredCycleLength: integer("declared_cycle_length").notNull(),
-        declaredPeriodLength: integer("declared_period_length").notNull(),
+        regularity: text("regularity", { enum: regularityValues }),
+        contraceptionMethod: text("contraception_method", { enum: contraceptionMethodValues }),
+        declaredCycleLength: integer("declared_cycle_length"),
+        declaredPeriodLength: integer("declared_period_length"),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         deletedAt: text("deleted_at"),
@@ -51,14 +53,42 @@ export const reproductiveIntentHistory = sqliteTable(
             "reproductive_mode_check",
             sql`${table.reproductiveMode} IN ('tracking_only', 'tracking_avoid_pregnancy', 'tracking_ttc', 'pregnancy_tracking')`,
         ),
-        check("regularity_check", sql`${table.regularity} IN ('regular', 'variable', 'irregular')`),
-        check("hormonal_contraception_check", sql`${table.hormonalContraception} IN (0, 1)`),
+        check(
+            "regularity_check",
+            sql`${table.regularity} IS NULL OR ${table.regularity} IN ('regular', 'variable', 'irregular')`,
+        ),
+        check(
+            "contraception_method_check",
+            sql`${table.contraceptionMethod} IS NULL OR ${table.contraceptionMethod} IN (
+                'none', 'pill', 'hormonal_iud', 'copper_iud', 'implant', 'injection', 'ring', 'patch', 'barrier', 'other'
+            )`,
+        ),
         check(
             "ttc_hormonal_contraception_exclusion_check",
-            sql`NOT (${table.reproductiveMode} = 'tracking_ttc' AND ${table.hormonalContraception} = 1)`,
+            sql`NOT (${table.reproductiveMode} = 'tracking_ttc' AND ${table.contraceptionMethod} IN (
+                'pill', 'hormonal_iud', 'implant', 'injection', 'ring', 'patch'
+            ))`,
         ),
-        check("declared_cycle_length_check", sql`${table.declaredCycleLength} BETWEEN 15 AND 90`),
-        check("declared_period_length_check", sql`${table.declaredPeriodLength} BETWEEN 1 AND 15`),
+        check(
+            "declared_cycle_length_check",
+            sql`${table.declaredCycleLength} IS NULL OR ${table.declaredCycleLength} BETWEEN 15 AND 90`,
+        ),
+        check(
+            "declared_period_length_check",
+            sql`${table.declaredPeriodLength} IS NULL OR ${table.declaredPeriodLength} BETWEEN 1 AND 15`,
+        ),
+        check(
+            "cycle_fields_pregnancy_nullability_check",
+            sql`(${table.reproductiveMode} = 'pregnancy_tracking'
+                AND ${table.regularity} IS NULL
+                AND ${table.declaredCycleLength} IS NULL
+                AND ${table.declaredPeriodLength} IS NULL)
+            OR
+            (${table.reproductiveMode} != 'pregnancy_tracking'
+                AND ${table.regularity} IS NOT NULL
+                AND ${table.declaredCycleLength} IS NOT NULL
+                AND ${table.declaredPeriodLength} IS NOT NULL)`,
+        ),
         check("effective_from_format_check", sql`${table.effectiveFrom} LIKE '____-__-__'`),
         check("effective_to_format_check", sql`${table.effectiveTo} IS NULL OR ${table.effectiveTo} LIKE '____-__-__'`),
         check(

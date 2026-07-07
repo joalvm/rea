@@ -30,6 +30,15 @@ export function compareYmd(left: YMD, right: YMD): number {
     return ymdToISO(left).localeCompare(ymdToISO(right));
 }
 
+/** Suma (o resta, con `days` negativo) días a una fecha ISO, en UTC para evitar saltos por huso horario. */
+export function addDaysToISO(iso: string, days: number): string {
+    const { year, month, day } = isoToYMD(iso);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    date.setUTCDate(date.getUTCDate() + days);
+
+    return ymdToISO({ day: date.getUTCDate(), month: date.getUTCMonth() + 1, year: date.getUTCFullYear() });
+}
+
 /** Lista de horas "HH:00" entre `from` y `to` inclusive. */
 export function hourLabels(from: number, to: number): string[] {
     const items: string[] = [];

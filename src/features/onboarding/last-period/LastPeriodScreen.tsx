@@ -57,8 +57,10 @@ export default function LastPeriodScreen({ onPush }: Props) {
             return;
         }
 
+        // TTC guarda "none" sin preguntar (excluyente con hormonal); los demás
+        // modos de ciclo sí declaran su método anticonceptivo.
         onPush(
-            intent.reproductiveMode === "tracking_only" ? "/(onboarding)/contraception" : "/(onboarding)/notifications",
+            intent.reproductiveMode === "tracking_ttc" ? "/(onboarding)/notifications" : "/(onboarding)/contraception",
         );
     };
 

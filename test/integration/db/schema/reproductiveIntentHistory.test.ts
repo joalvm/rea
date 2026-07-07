@@ -74,7 +74,82 @@ describe("Integración del esquema de reproductiveIntentHistory", () => {
                 id: "reproductive-intent-ttc-hormonal",
                 effectiveFrom: "2026-02-01",
                 reproductiveMode: "tracking_ttc",
-                hormonalContraception: true,
+                contraceptionMethod: "pill",
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("rechaza un método anticonceptivo fuera del catálogo reconocido", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-unknown-method",
+                effectiveFrom: "2026-02-01",
+                contraceptionMethod: "voodoo" as never,
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("acepta contraception_method NULL como 'prefiero no decirlo'", async () => {
+        await seedProfile(context.database);
+
+        await seedReproductiveIntentHistory(context.database, {
+            id: "reproductive-intent-contraception-null",
+            effectiveFrom: "2026-02-01",
+            contraceptionMethod: null,
+        });
+
+        const rows = await context.database.db
+            .select()
+            .from(reproductiveIntentHistory)
+            .where(eq(reproductiveIntentHistory.id, "reproductive-intent-contraception-null"));
+
+        expect(rows[0]?.contraceptionMethod).toBeNull();
+    });
+
+    it("rechaza pregnancy_tracking cuando declara campos de ciclo", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-pregnancy-with-cycle",
+                effectiveFrom: "2026-02-01",
+                reproductiveMode: "pregnancy_tracking",
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("acepta pregnancy_tracking solo con campos de ciclo NULL", async () => {
+        await seedProfile(context.database);
+
+        await seedReproductiveIntentHistory(context.database, {
+            id: "reproductive-intent-pregnancy-null-cycle",
+            effectiveFrom: "2026-02-01",
+            reproductiveMode: "pregnancy_tracking",
+            regularity: null,
+            contraceptionMethod: null,
+            declaredCycleLength: null,
+            declaredPeriodLength: null,
+        });
+
+        const rows = await context.database.db
+            .select()
+            .from(reproductiveIntentHistory)
+            .where(eq(reproductiveIntentHistory.id, "reproductive-intent-pregnancy-null-cycle"));
+
+        expect(rows[0]?.regularity).toBeNull();
+        expect(rows[0]?.declaredCycleLength).toBeNull();
+    });
+
+    it("rechaza un modo de ciclo cuando falta declarar la base del ciclo", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-cycle-missing-fields",
+                effectiveFrom: "2026-02-01",
+                regularity: null,
             }),
         ).rejects.toThrow();
     });
