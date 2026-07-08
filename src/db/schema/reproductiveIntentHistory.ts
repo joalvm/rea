@@ -40,6 +40,7 @@ export const reproductiveIntentHistory = sqliteTable(
         contraceptionMethod: text("contraception_method", { enum: contraceptionMethodValues }),
         declaredCycleLength: integer("declared_cycle_length"),
         declaredPeriodLength: integer("declared_period_length"),
+        breastfeeding: integer("breastfeeding", { mode: "boolean" }),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         deletedAt: text("deleted_at"),
@@ -88,6 +89,11 @@ export const reproductiveIntentHistory = sqliteTable(
                 AND ${table.regularity} IS NOT NULL
                 AND ${table.declaredCycleLength} IS NOT NULL
                 AND ${table.declaredPeriodLength} IS NOT NULL)`,
+        ),
+        check("breastfeeding_check", sql`${table.breastfeeding} IS NULL OR ${table.breastfeeding} IN (0, 1)`),
+        check(
+            "breastfeeding_pregnancy_exclusion_check",
+            sql`${table.breastfeeding} IS NULL OR ${table.reproductiveMode} != 'pregnancy_tracking'`,
         ),
         check("effective_from_format_check", sql`${table.effectiveFrom} LIKE '____-__-__'`),
         check("effective_to_format_check", sql`${table.effectiveTo} IS NULL OR ${table.effectiveTo} LIKE '____-__-__'`),

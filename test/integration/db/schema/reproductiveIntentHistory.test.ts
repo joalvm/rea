@@ -154,6 +154,40 @@ describe("Integración del esquema de reproductiveIntentHistory", () => {
         ).rejects.toThrow();
     });
 
+    it("rechaza breastfeeding declarado junto con pregnancy_tracking", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedReproductiveIntentHistory(context.database, {
+                id: "reproductive-intent-pregnancy-breastfeeding",
+                effectiveFrom: "2026-02-01",
+                reproductiveMode: "pregnancy_tracking",
+                regularity: null,
+                contraceptionMethod: null,
+                declaredCycleLength: null,
+                declaredPeriodLength: null,
+                breastfeeding: true,
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("acepta breastfeeding declarado fuera de pregnancy_tracking", async () => {
+        await seedProfile(context.database);
+
+        await seedReproductiveIntentHistory(context.database, {
+            id: "reproductive-intent-breastfeeding",
+            effectiveFrom: "2026-02-01",
+            breastfeeding: true,
+        });
+
+        const rows = await context.database.db
+            .select()
+            .from(reproductiveIntentHistory)
+            .where(eq(reproductiveIntentHistory.id, "reproductive-intent-breastfeeding"));
+
+        expect(rows[0]?.breastfeeding).toBe(true);
+    });
+
     it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedReproductiveIntentHistory(context.database);

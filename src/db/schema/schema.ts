@@ -7,6 +7,7 @@ export { contentItem, contentItemRelations } from "./contentItem";
 export { contentRule, contentRuleRelations } from "./contentRule";
 export { contentSource } from "./contentSource";
 export { cyclePrediction, cyclePredictionRelations } from "./cyclePrediction";
+export { cycleRecord, cycleRecordRelations } from "./cycleRecord";
 export { dailySummary, dailySummaryRelations } from "./dailySummary";
 export { intercourseLog, intercourseLogRelations } from "./intercourseLog";
 export { medicationCatalog, medicationCatalogRelations } from "./medicationCatalog";

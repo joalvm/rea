@@ -55,6 +55,20 @@ describe("Integración del esquema de dailySummary", () => {
                 maxSymptomIntensity: 7,
             }),
         ).rejects.toThrow();
+
+        await expect(
+            seedDailySummary(context.database, {
+                localDate: "2026-06-05",
+                cycleDay: 0,
+            }),
+        ).rejects.toThrow();
+
+        await expect(
+            seedDailySummary(context.database, {
+                localDate: "2026-06-06",
+                checkinCount: -1,
+            }),
+        ).rejects.toThrow();
     });
 
     it("elimina en cascada cuando se elimina el perfil propietario", async () => {

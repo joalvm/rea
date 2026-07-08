@@ -47,6 +47,8 @@ export const dailySummary = sqliteTable(
         estimatedPhase: text("estimated_phase", { enum: estimatedPhaseValues }).notNull().default("unknown"),
         phaseSource: text("phase_source", { enum: phaseSourceValues }).notNull().default("unknown"),
         phaseConfidence: text("phase_confidence", { enum: confidenceLevelValues }).notNull().default("low"),
+        cycleDay: integer("cycle_day"),
+        checkinCount: integer("checkin_count").notNull().default(0),
         updatedAt: text("updated_at").notNull(),
     },
     (table) => [
@@ -81,6 +83,8 @@ export const dailySummary = sqliteTable(
         check("daily_summary_phase_source_check", sql`${table.phaseSource} IN ('observed', 'estimated', 'unknown')`),
         check("daily_summary_phase_confidence_check", sql`${table.phaseConfidence} IN ('low', 'medium', 'high')`),
         check("daily_summary_local_date_format_check", sql`${table.localDate} LIKE '____-__-__'`),
+        check("daily_summary_cycle_day_check", sql`${table.cycleDay} IS NULL OR ${table.cycleDay} >= 1`),
+        check("daily_summary_checkin_count_check", sql`${table.checkinCount} >= 0`),
     ],
 );
 

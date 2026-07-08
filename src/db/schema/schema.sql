@@ -1,5 +1,5 @@
 -- ============================================================================
--- REA - Esquema SQLite v3 (ARCHIVO MAESTRO)
+-- REA - Esquema SQLite v4 (ARCHIVO MAESTRO)
 -- Contrato local-first para datos normalizados de seguimiento menstrual,
 -- intento de embarazo (TTC) y embarazo.
 --
@@ -85,6 +85,9 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
                                    'none', 'pill', 'hormonal_iud', 'copper_iud', 'implant',
                                    'injection', 'ring', 'patch', 'barrier', 'other'
                                )),
+    -- Lactancia: suprime solo la ventana fértil (no la ovulación) mientras el
+    -- seguimiento posparto está activo. NULL si no aplica o no se declaró.
+    breastfeeding              INTEGER CHECK (breastfeeding IS NULL OR breastfeeding IN (0, 1)),
     created_at                 TEXT NOT NULL,
     updated_at                 TEXT NOT NULL,
     deleted_at                 TEXT,
@@ -93,6 +96,7 @@ CREATE TABLE IF NOT EXISTS reproductive_intent_history (
     CHECK (effective_from LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to LIKE '____-__-__'),
     CHECK (effective_to IS NULL OR effective_to >= effective_from),
+    CHECK (breastfeeding IS NULL OR reproductive_mode != 'pregnancy_tracking'),
     -- Embarazo -> ciclo NULL; modos de ciclo -> ciclo obligatorio.
     CHECK (
         (reproductive_mode = 'pregnancy_tracking'
@@ -371,6 +375,8 @@ CREATE TABLE IF NOT EXISTS daily_summary (
                                     CHECK (phase_source IN ('observed', 'estimated', 'unknown')),
     phase_confidence            TEXT NOT NULL DEFAULT 'low'
                                     CHECK (phase_confidence IN ('low', 'medium', 'high')),
+    cycle_day                   INTEGER CHECK (cycle_day IS NULL OR cycle_day >= 1), -- Día del ciclo; sin tope: el retraso honesto puede seguir creciendo.
+    checkin_count               INTEGER NOT NULL DEFAULT 0 CHECK (checkin_count >= 0), -- Cuenta todos los check-ins del día, incluso excluidos de promedios.
     updated_at                  TEXT NOT NULL,
 
     PRIMARY KEY (user_id, local_date),
@@ -391,13 +397,63 @@ CREATE TABLE IF NOT EXISTS cycle_predictions (
     calculation_date     TEXT NOT NULL,    -- Día en que se ejecutó el algoritmo.
     predicted_next_start TEXT NOT NULL,    -- Próxima regla estimada.
     predicted_ovulation  TEXT,             -- Ovulación estimada.
+    predicted_fertile_start TEXT,          -- Inicio de ventana fértil estimada. NULL si suprimida (hormonal) o no calculable.
+    predicted_fertile_end   TEXT,          -- Fin de ventana fértil estimada. Ambos NULL o ambos presentes.
+    predicted_period_length INTEGER,       -- Duración de sangrado esperada (mediana histórica).
     cycle_length_used    INTEGER NOT NULL, -- Media móvil usada (ej. 28).
     luteal_phase_used    INTEGER NOT NULL DEFAULT 14, -- Fase lútea asumida (14 por defecto, ajustable si hay BBT).
     confidence           TEXT NOT NULL CHECK (confidence IN ('low', 'medium', 'high')),
 
     PRIMARY KEY (user_id, calculation_date),
+    CHECK (predicted_fertile_start IS NULL OR predicted_fertile_start LIKE '____-__-__'),
+    CHECK (predicted_fertile_end IS NULL OR predicted_fertile_end LIKE '____-__-__'),
+    CHECK (
+        (predicted_fertile_start IS NULL AND predicted_fertile_end IS NULL)
+        OR (predicted_fertile_start IS NOT NULL AND predicted_fertile_end IS NOT NULL
+            AND predicted_fertile_end >= predicted_fertile_start)
+    ),
+    CHECK (predicted_period_length IS NULL OR predicted_period_length BETWEEN 1 AND 15),
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
 ) STRICT;
+
+-- ----------------------------------------------------------------------------
+-- CICLOS CERRADOS (READ MODEL: Historia de ciclos con predicción vs realidad)
+-- Una fila por ciclo cerrado. La escribe únicamente el motor (src/domain/engine),
+-- nunca la UI. Sin deleted_at: es historia derivada, reescrita in-place por el
+-- motor ante ediciones retroactivas, no un registro que la usuaria borre.
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS cycle_records (
+    id                     TEXT PRIMARY KEY NOT NULL, -- UUIDv7.
+    user_id                TEXT NOT NULL,
+    start_date             TEXT NOT NULL,             -- Inicio del ciclo (= inicio de regla).
+    end_date               TEXT NOT NULL,             -- Día anterior al siguiente inicio.
+    cycle_length           INTEGER NOT NULL,          -- Días entre inicios consecutivos.
+    period_length          INTEGER,                   -- Duración del sangrado observado.
+    ovulation_date         TEXT,                       -- Ovulación estimada, o NULL si no hay evidencia.
+    ovulation_basis        TEXT CHECK (ovulation_basis IN ('bbt', 'opk', 'mucus', 'calendar') OR ovulation_basis IS NULL),
+    luteal_length          INTEGER,                    -- Días entre ovulación e inicio del siguiente ciclo.
+    predicted_start        TEXT,                       -- Predicción vigente antes de que el ciclo real empezara.
+    prediction_error_days  INTEGER,                    -- Real − predicho, para medir precisión.
+    is_valid               INTEGER NOT NULL DEFAULT 1 CHECK (is_valid IN (0, 1)), -- Validez de dominio (15-90 días); fuera de rango igual se guarda.
+    excluded_reason        TEXT,
+    created_at             TEXT NOT NULL,
+    updated_at             TEXT NOT NULL,
+    version                INTEGER NOT NULL DEFAULT 1,
+
+    CHECK (start_date LIKE '____-__-__'),
+    CHECK (end_date LIKE '____-__-__'),
+    CHECK (end_date >= start_date),
+    CHECK (cycle_length > 0),
+    CHECK (period_length IS NULL OR period_length BETWEEN 1 AND 60),
+    CHECK (ovulation_date IS NULL OR ovulation_date LIKE '____-__-__'),
+    CHECK (ovulation_date IS NULL OR ovulation_date BETWEEN start_date AND end_date),
+    CHECK (luteal_length IS NULL OR luteal_length BETWEEN 1 AND 40),
+    CHECK (predicted_start IS NULL OR predicted_start LIKE '____-__-__'),
+    FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
+) STRICT;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_cycle_records_user_start_date
+ON cycle_records(user_id, start_date);
 
 -- ----------------------------------------------------------------------------
 -- MOTOR DE CONTENIDO (Tips, Educación, Recomendaciones)
@@ -499,8 +555,8 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 ) STRICT;
 
 INSERT OR IGNORE INTO schema_migrations(version, name, applied_at)
-VALUES (3, 'schema_v3_onboarding_truth', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
+VALUES (4, 'schema_v4_cycle_engine', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
 
 COMMIT;
 
-PRAGMA user_version = 3;
+PRAGMA user_version = 4;

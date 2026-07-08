@@ -27,6 +27,13 @@ export function primaryKeyColumns(table: SQLiteTable) {
     return getTableConfig(table).primaryKeys.map((key) => key.columns.map((column) => column.name));
 }
 
+export function uniqueConstraints(table: SQLiteTable) {
+    return getTableConfig(table).uniqueConstraints.map((uniqueConstraint) => ({
+        name: uniqueConstraint.getName(),
+        columns: uniqueConstraint.columns.map((column) => column.name),
+    }));
+}
+
 export function foreignKeys(table: SQLiteTable): ForeignKeyExpectation[] {
     return getTableConfig(table).foreignKeys.map((foreignKey) => {
         const reference = foreignKey.reference();

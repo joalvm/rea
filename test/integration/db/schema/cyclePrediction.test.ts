@@ -41,6 +41,29 @@ describe("Integración del esquema de cyclePrediction", () => {
         await expect(seedCyclePrediction(context.database)).rejects.toThrow();
     });
 
+    it("rechaza ventana fértil con solo un extremo presente", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedCyclePrediction(context.database, {
+                calculationDate: "2026-06-21",
+                predictedFertileStart: "2026-06-16",
+                predictedFertileEnd: null,
+            }),
+        ).rejects.toThrow();
+    });
+
+    it("rechaza predicted_period_length fuera de rango", async () => {
+        await seedProfile(context.database);
+
+        await expect(
+            seedCyclePrediction(context.database, {
+                calculationDate: "2026-06-22",
+                predictedPeriodLength: 20,
+            }),
+        ).rejects.toThrow();
+    });
+
     it("elimina en cascada cuando se elimina el perfil propietario", async () => {
         await seedProfile(context.database);
         await seedCyclePrediction(context.database);

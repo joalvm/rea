@@ -28,6 +28,8 @@ describe("Esquema de dailySummary", () => {
             "estimated_phase",
             "phase_source",
             "phase_confidence",
+            "cycle_day",
+            "checkin_count",
             "updated_at",
         ]);
     });
@@ -45,6 +47,8 @@ describe("Esquema de dailySummary", () => {
         expect(checkNames(dailySummary)).toContain("daily_summary_had_intercourse_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_estimated_phase_check");
         expect(checkNames(dailySummary)).toContain("daily_summary_phase_confidence_check");
+        expect(checkNames(dailySummary)).toContain("daily_summary_cycle_day_check");
+        expect(checkNames(dailySummary)).toContain("daily_summary_checkin_count_check");
         expect(foreignKeys(dailySummary)).toEqual([
             { columns: ["user_id"], foreignColumns: ["id"], foreignTable: "user_profile", onDelete: "cascade" },
             {

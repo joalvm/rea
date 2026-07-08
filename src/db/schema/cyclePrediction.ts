@@ -19,6 +19,9 @@ export const cyclePrediction = sqliteTable(
         calculationDate: text("calculation_date").notNull(),
         predictedNextStart: text("predicted_next_start").notNull(),
         predictedOvulation: text("predicted_ovulation"),
+        predictedFertileStart: text("predicted_fertile_start"),
+        predictedFertileEnd: text("predicted_fertile_end"),
+        predictedPeriodLength: integer("predicted_period_length"),
         cycleLengthUsed: integer("cycle_length_used").notNull(),
         lutealPhaseUsed: integer("luteal_phase_used").notNull().default(14),
         confidence: text("confidence", { enum: confidenceLevelValues }).notNull(),
@@ -26,6 +29,24 @@ export const cyclePrediction = sqliteTable(
     (table) => [
         primaryKey({ columns: [table.profileId, table.calculationDate] }),
         check("cycle_predictions_confidence_check", sql`${table.confidence} IN ('low', 'medium', 'high')`),
+        check(
+            "cycle_predictions_fertile_start_format_check",
+            sql`${table.predictedFertileStart} IS NULL OR ${table.predictedFertileStart} LIKE '____-__-__'`,
+        ),
+        check(
+            "cycle_predictions_fertile_end_format_check",
+            sql`${table.predictedFertileEnd} IS NULL OR ${table.predictedFertileEnd} LIKE '____-__-__'`,
+        ),
+        check(
+            "cycle_predictions_fertile_window_pairing_check",
+            sql`(${table.predictedFertileStart} IS NULL AND ${table.predictedFertileEnd} IS NULL)
+                OR (${table.predictedFertileStart} IS NOT NULL AND ${table.predictedFertileEnd} IS NOT NULL
+                    AND ${table.predictedFertileEnd} >= ${table.predictedFertileStart})`,
+        ),
+        check(
+            "cycle_predictions_period_length_check",
+            sql`${table.predictedPeriodLength} IS NULL OR ${table.predictedPeriodLength} BETWEEN 1 AND 15`,
+        ),
     ],
 );
 
