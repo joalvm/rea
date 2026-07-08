@@ -1,7 +1,9 @@
 # 01 · Motor de ciclo
 
-> **Hito:** M1 · **Depende de:** esquema v3 (`cycle_records`, bordes de ventana fértil)
-> · **Estado:** ❌ no existe. Es la pieza que desbloquea todo lo demás.
+> **Hito:** M1 · **Depende de:** esquema v4 (`cycle_records`, bordes de ventana fértil)
+> · **Estado:** ✅ Fases 1-4 implementadas en `src/domain/` (dominio puro, proyector,
+> orquestador, read hooks). Disparadores documentados en `recalculate.ts`; ningún
+> feature los invoca todavía (check-in/periodo/embarazo son pantallas placeholder).
 
 ## Contexto
 
@@ -67,7 +69,7 @@ features lo invocan tras cada escritura relevante.
 
 ## Fases
 
-### [ ] Fase 1: Dominio puro
+### [x] Fase 1: Dominio puro
 
 - **Objetivo:** el algoritmo completo como funciones puras.
 - **Cambios:** `src/domain/cycle/` — `deriveCycles`, `cycleStats` (mediana/σ/ventana),
@@ -78,7 +80,7 @@ features lo invocan tras cada escritura relevante.
 - **Cierre:** suite unit con los fixtures; cada regla numérica de "Decisiones base"
   tiene su test con nombre legible.
 
-### [ ] Fase 2: Proyector de `daily_summary`
+### [x] Fase 2: Proyector de `daily_summary`
 
 - **Objetivo:** un row por día, correcto e idempotente.
 - **Cambios:** `src/domain/projection/` — `projectRange(hechos, rango)` produce filas
@@ -89,7 +91,7 @@ features lo invocan tras cada escritura relevante.
 - **Cierre:** doble corrida = filas idénticas (test de idempotencia); tests de borde
   (día de cambio de modo, día de inicio inferido).
 
-### [ ] Fase 3: Orquestador y disparadores
+### [x] Fase 3: Orquestador y disparadores
 
 - **Objetivo:** los hechos disparan recálculo; las proyecciones persisten.
 - **Cambios:** `src/domain/engine/` — `recalculate(db, changedRange)` en transacción:
@@ -102,7 +104,7 @@ features lo invocan tras cada escritura relevante.
   produce `cycle_records` con errores de predicción correctos y `daily_summary`
   coherente; editar un periodo antiguo repara todo el rango.
 
-### [ ] Fase 4: Read hooks
+### [x] Fase 4: Read hooks
 
 - **Objetivo:** las superficies leen el motor de forma reactiva y uniforme.
 - **Cambios:** hooks base con `useLiveQuery`: `useTodaySummary`, `useDailySummary(range)`,

@@ -27,6 +27,7 @@ src/
   components/     # UI genérica theme-aware, sin dominio
   shared/         # utils/hooks/types puros, sin UI
   db/             # client.ts, schema.ts, migrations/, DatabaseProvider.tsx
+  domain/         # dominio puro: motor de ciclo, proyecciones; única excepción a features-based
   theme/          # 
   store/          # store(s) global(es) Zustand (sesión, prefs, flags)
   modules/        # i18n/, l10n/, config/
@@ -66,6 +67,17 @@ assets/
 - `schema.ts`: tablas (STRICT), FKs, índices, read models. Drizzle soporta STRICT nativamente.
 - `migrations/`: salida de drizzle-kit. `DatabaseProvider.tsx`: inicializa y migra al arrancar.
 
+### `domain/` — dominio puro (excepción)
+
+- Única capa fuera de `features/` con lógica de negocio: dominio puro compartido
+  entre features (p. ej. el motor de ciclo), no un feature en sí.
+- Funciones puras (`(hechos, hoy) → resultado`, sin I/O) en la raíz de cada
+  subcarpeta de dominio; un orquestador delgado (`engine/`) es el único punto
+  que persiste, siempre en transacción.
+- Un tipo por archivo bajo `types/`, igual que en el resto del proyecto.
+- Los hooks de lectura de `domain/hooks/` son la única capa de dominio que
+  puede usar `useLiveQuery`/`useDatabase`; el resto no toca la base de datos.
+
 ### Acceso a datos — regla de oro
 
 - **Lecturas** → read hooks con `useLiveQuery`, colocados en el feature (`useUserProfile.ts`). La UI consume el hook y reacciona sola a los cambios.
@@ -95,11 +107,12 @@ assets/
 
 ```
 app/         → todo (ensambla la aplicación)
-features/    → components, shared, db, theme, store, modules ; NO otro feature
+features/    → components, shared, db, theme, store, modules, domain ; NO otro feature
 subfeature   → raíz de su feature (store, shared/) + globales ; NO otra subfeature ; NO otro feature
 components/  → shared, theme ; NO features, NO db
 shared/      → shared ; NO features, components, db
 db/          → shared
+domain/      → db, shared ; NO features, NO app, NO components
 theme/       → shared
 store/       → db, shared
 modules/i18n → shared, modules/config
@@ -146,6 +159,7 @@ modules/config, lang/ → nadie
 - Dejar `components`, `hooks`, `types`, `utils` o `services` como archivos sueltos en la raíz del feature o subfeature.
 - `*.types.ts`, barrels, nombres comodín.
 - Lógica en `lang/`; recursos JSON dentro de `modules/i18n`.
+- `domain/` importando de `features/`, `app/` o `components/`.
 
 ## Checklist
 
