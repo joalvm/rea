@@ -130,7 +130,8 @@ function isWithinRange(date: string, start: string, end: string | null): boolean
     return date >= start && (end === null || date <= end);
 }
 
-function findActiveIntent(intentHistory: ReproductiveIntentFact[], date: string): ReproductiveIntentFact | null {
+/** Exportada: la reutiliza el orquestador (Fase 3) para resolver el modo vigente hoy. */
+export function findActiveIntent(intentHistory: ReproductiveIntentFact[], date: string): ReproductiveIntentFact | null {
     return intentHistory
         .filter((intent) => isWithinRange(date, intent.effectiveFrom, intent.effectiveTo))
         .reduce<ReproductiveIntentFact | null>((latest, candidate) => {
