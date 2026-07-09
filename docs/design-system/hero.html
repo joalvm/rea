@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Hero por fases</title>
+        <meta
+            name="description"
+            content="Hero mobile de Rea: anatomia, uso, contenido y variantes visuales por fase del ciclo."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body data-page="hero" data-title="Hero">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
+
+                <section class="section" id="hero-base">
+                    <div class="eyebrow">Hero · Base</div>
+                    <h2>Estado principal del ciclo</h2>
+                    <p class="lead">
+                        El hero vive en Home y abre el resumen principal de Rea. Debe explicar fase, dia, siguiente
+                        accion y confiabilidad con una lectura tranquila. No diagnostica; orienta y ayuda a registrar
+                        mejor.
+                    </p>
+                    <div class="grid cols-2 mt-18">
+                        <figure class="mobile-artifact hero-artifact wide">
+                            <figcaption class="artifact-label">Hero base</figcaption>
+                            <div class="phase-hero ph-follicular">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="week-strip">
+                                        <div class="week-day"><span>L</span><strong>17</strong></div>
+                                        <div class="week-day"><span>M</span><strong>18</strong></div>
+                                        <div class="week-day"><span>M</span><strong>19</strong></div>
+                                        <div class="week-day"><span>J</span><strong>20</strong></div>
+                                        <div class="week-day on"><span>V</span><strong>21</strong></div>
+                                        <div class="week-day"><span>S</span><strong>22</strong></div>
+                                        <div class="week-day"><span>D</span><strong>23</strong></div>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="heart" aria-hidden="true"></i>Fase folicular
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>12</strong></div>
+                                    <p class="phase-message">
+                                        Tu energia suele subir estos dias. Registra como te sientes para afinar el
+                                        patron.
+                                    </p>
+                                    <div class="hero-stats">
+                                        <div class="hero-stat"><span>Proximo periodo</span><b>En 16 dias</b></div>
+                                        <i class="hero-divider"></i>
+                                        <div class="hero-stat">
+                                            <span>Prediccion</span>
+                                            <span
+                                                class="confidence-badge confidence-medium"
+                                                aria-label="Confianza media"
+                                            >
+                                                <span class="confidence-bars" aria-hidden="true">
+                                                    <i></i><i></i><i></i>
+                                                </span>
+                                                <span>Media</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span class="hero-cta"
+                                        ><i class="icon sm" data-lucide="smile" aria-hidden="true"></i>Registrar
+                                        hoy</span
+                                    >
+                                </div>
+                            </div>
+                        </figure>
+                        <div class="panel">
+                            <h3 class="flush-top">Anatomia</h3>
+                            <ul class="rule-list">
+                                <li>Logo oficial Rea centrado y en color de la fase activa.</li>
+                                <li>Cabecera limpia: el hero no usa icono superior ni accion de Settings.</li>
+                                <li>Semana visible solo cuando aporta orientacion temporal.</li>
+                                <li>Fase con icono y etiqueta; el color no comunica solo.</li>
+                                <li>Dia de ciclo como dato dominante y de lectura inmediata.</li>
+                                <li>Confiabilidad en badge compacto con barras; no como bloque de texto dominante.</li>
+                                <li>Mensaje breve, humano y sin afirmaciones medicas.</li>
+                                <li>Maximo dos datos secundarios antes de la accion principal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="hero-reglas">
+                    <div class="eyebrow">01 · Uso</div>
+                    <h2>Reglas del componente</h2>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Cuando usarlo</h3>
+                            <p>Home, cuando la usuaria necesita entender rapidamente su estado del ciclo.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Cuando evitarlo</h3>
+                            <p>Hoy, Settings, edicion precisa o flujos donde el foco no es el resumen del ciclo.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Contenido</h3>
+                            <p>
+                                Fase, dia, accion y badge de confiabilidad. Si faltan datos, usar el estado Sin estimar.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="hero-fases">
+                    <div class="eyebrow">02 · Variantes</div>
+                    <h2>Hero por fases</h2>
+                    <p class="lead">
+                        Las variantes comparten estructura y cambian tokens de fase, icono, copy y datos secundarios. El
+                        cambio de tema conserva la misma anatomia.
+                    </p>
+                    <div class="hero-variant-grid">
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Sin estimar</figcaption>
+                            <div class="phase-hero hero-only ph-unknown">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="info" aria-hidden="true"></i>Sin estimar
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>--</strong></div>
+                                    <p class="phase-message">Rea necesita mas registros para reconocer tu patron.</p>
+                                    <span class="hero-cta">Registrar ciclo</span>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Menstrual</figcaption>
+                            <div class="phase-hero hero-only ph-menstrual">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="droplet" aria-hidden="true"></i>Fase menstrual
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>2</strong></div>
+                                    <p class="phase-message">
+                                        Registra flujo y molestias con una lectura clara y calmada.
+                                    </p>
+                                    <div class="hero-stats">
+                                        <div class="hero-stat"><span>Duracion</span><b>2 de 5 dias</b></div>
+                                        <i class="hero-divider"></i>
+                                        <div class="hero-stat">
+                                            <span>Prediccion</span>
+                                            <span class="confidence-badge confidence-high" aria-label="Confianza alta">
+                                                <span class="confidence-bars" aria-hidden="true">
+                                                    <i></i><i></i><i></i>
+                                                </span>
+                                                <span>Alta</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Folicular</figcaption>
+                            <div class="phase-hero hero-only ph-follicular">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="heart" aria-hidden="true"></i>Fase folicular
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>9</strong></div>
+                                    <p class="phase-message">
+                                        El tono debe sentirse liviano, optimista y facil de leer.
+                                    </p>
+                                    <span class="hero-cta">Registrar hoy</span>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Fertil</figcaption>
+                            <div class="phase-hero hero-only ph-fertile">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="sparkles" aria-hidden="true"></i>Ventana fertil
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>13</strong></div>
+                                    <p class="phase-message">
+                                        Usar lenguaje de estimacion; la interfaz no promete certeza.
+                                    </p>
+                                    <div class="hero-stats">
+                                        <div class="hero-stat"><span>Ventana</span><b>5 dias</b></div>
+                                        <i class="hero-divider"></i>
+                                        <div class="hero-stat">
+                                            <span>Prediccion</span>
+                                            <span
+                                                class="confidence-badge confidence-medium"
+                                                aria-label="Confianza media"
+                                            >
+                                                <span class="confidence-bars" aria-hidden="true">
+                                                    <i></i><i></i><i></i>
+                                                </span>
+                                                <span>Media</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Ovulacion</figcaption>
+                            <div class="phase-hero hero-only ph-ovulation">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="activity" aria-hidden="true"></i>Ovulacion
+                                        estimada
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>14</strong></div>
+                                    <p class="phase-message">
+                                        El pico visual debe ser visible sin convertirse en alerta.
+                                    </p>
+                                    <span class="hero-cta">Ver calendario</span>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Lutea</figcaption>
+                            <div class="phase-hero hero-only ph-luteal">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="moon" aria-hidden="true"></i>Fase lutea
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Dia</span><strong>24</strong></div>
+                                    <p class="phase-message">
+                                        Bajar intensidad y priorizar cuidado, claridad y descanso.
+                                    </p>
+                                    <div class="hero-stats">
+                                        <div class="hero-stat"><span>Proximo periodo</span><b>En 4 dias</b></div>
+                                        <i class="hero-divider"></i>
+                                        <div class="hero-stat">
+                                            <span>Prediccion</span>
+                                            <span
+                                                class="confidence-badge confidence-medium"
+                                                aria-label="Confianza media"
+                                            >
+                                                <span class="confidence-bars" aria-hidden="true">
+                                                    <i></i><i></i><i></i>
+                                                </span>
+                                                <span>Media</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <figure class="mobile-artifact hero-artifact">
+                            <figcaption class="artifact-label">Embarazo</figcaption>
+                            <div class="phase-hero hero-only ph-pregnancy">
+                                <div class="phase-hero-content">
+                                    <div class="phase-hero-top">
+                                        <span class="logo-asset logo-horizontal" role="img" aria-label="Rea"></span>
+                                    </div>
+                                    <div class="phase-label">
+                                        <i class="icon sm" data-lucide="shield" aria-hidden="true"></i>Modo embarazo
+                                    </div>
+                                    <div class="cycle-day"><span class="day-word">Modo</span><strong>Rea</strong></div>
+                                    <p class="phase-message">
+                                        Estado especial separado de predicciones menstruales activas.
+                                    </p>
+                                    <span class="hero-cta">Actualizar contexto</span>
+                                </div>
+                            </div>
+                        </figure>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest" defer></script>
+        <script src="./main.js" defer></script>
+    </body>
+</html>

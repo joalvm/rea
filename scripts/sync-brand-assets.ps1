@@ -34,7 +34,7 @@ if (-not $PSBoundParameters.ContainsKey("ReferenceDir")) {
     $ReferenceDir = Join-Path $root "references\branding"
 }
 if (-not $PSBoundParameters.ContainsKey("OutputDir")) {
-    $OutputDir = Join-Path $root "assets\branding"
+    $OutputDir = Join-Path $root "assets\images"
 }
 
 $script:PotraceVersion = "1.16"

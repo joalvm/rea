@@ -22,7 +22,7 @@ Un buen plan no impresiona. Un buen plan aclara.
 
 Esta skill sirve para estructurar trabajo una vez que la idea ya pasó filtro inicial de conveniencia.
 
-- si todavía no está claro si la idea conviene, usar primero `grounded-critical-thinking`;
+- si todavía no está claro si la idea conviene, usar primero `grounded-professional-thinking`;
 - esta skill ordena cambio, no decide por sí sola si el cambio debe existir.
 
 ## Regla principal

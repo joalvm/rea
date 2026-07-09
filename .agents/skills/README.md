@@ -13,13 +13,15 @@ Skills pequeñas, directas y reutilizables. Una skill por capacidad.
     - Reglas de carpetas, capas, imports, ubicacion de archivos y colocacion de props/tipos para Rea
 - `standards-rea-code-style`
     - Reglas de exports, comentarios, props inline, tipado y componentizacion para Rea
+- `standards-rea-testing`
+    - Estándar del repo para estrategia, arquitectura y escritura de tests: unit, integration, stores, services, UI, i18n, DB y e2e
 
 ## Planning
 
 - `grounded-plan-building`
     - Cómo estructurar trabajo por fases una vez que la idea ya merece avanzar
-- `grounded-critical-thinking`
-    - Cómo evaluar ideas y planes con criterio antes de comprometer estructura o trabajo
+- `grounded-professional-thinking`
+    - Cómo evaluar ideas y planes con criterio profesional
 
 ## Regla clave actual
 

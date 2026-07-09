@@ -1,112 +1,174 @@
 ---
 name: standards-rea-code-structure
-description: "Use when deciding where a file belongs in Rea, creating folders or files, organizing screens, features, ui, modules, and types, or reviewing imports and file ownership. Triggers: estructura, carpetas, archivos, ui plano, no barrels, modules por carpeta, imports directos, types por ambito, props junto al componente, no props en .types."
+description: "Convenciones de estructura para un proyecto Expo / React Native / TypeScript con Expo Router y SQLite. Úsala al decidir dónde va un archivo o carpeta, cómo nombrarlo, al crear un feature o subfeature, organizar rutas, stores, acceso a datos, theming o i18n, y al revisar imports o límites entre capas. Aplícala siempre que aparezca: estructura, carpetas, dónde poner, feature-based, ruta, route group, _layout, screen, store, schema, migración, query, mutación, useLiveQuery, lectura/escritura, theme, tokens, i18n, lang, imports, no barrels — aunque no se pida de forma explícita."
 ---
 
-# Rea File Structure
-
-## Objetivo
-
-Definir donde vive cada archivo en Rea. Esta skill no habla de migraciones. Solo fija estructura, capas y reglas de ubicacion.
+# Estructura Feature-Based · Expo Router + Drizzle
 
 ## Mantra
 
-Orden y claridad. Cada archivo debe tener dueño claro.
+Un feature es un dominio de negocio autocontenido. Las capas fluyen en una sola dirección. `app/` es solo el router. La base de datos es la fuente de verdad: se **lee con live queries**, se **escribe con mutaciones**; el store nunca la cachea.
 
-## Reglas duras
+## Stack fijo
 
-- No barrels nunca.
-- No `index.ts` para re-exportar.
-- `ui/` es plano. Solo archivos.
-- `modules/` se separa por carpetas de contexto: `cycle/`, `storage/`, `notifications/`.
-- Dentro de cada modulo solo crear subcarpetas si hay 2 o mas archivos del mismo tipo o un subdominio claro.
-- Alias del repo: `@/` para `src/` y `@assets/` para `assets/`.
-- Tipos compartidos van a `src/types/`.
-- Props de componentes React viven en mismo archivo que su dueño.
-- Orden obligatorio en componentes React: definicion de `Props` primero, componente despues.
-- `import` va antes que `require`. Ambos viven arriba del archivo.
-- No dejar interfaces, tipos o constantes por encima de un asset importado.
-- No crear `*.types.ts` para guardar solo props de un componente.
-- Tipos locales no-props compartidos por varios archivos del mismo ambito pueden vivir en `*.types.ts`.
-- Si un archivo de tipos local queda con solo `FooProps`, ese tipo debe volver al archivo del componente.
-- `modules/` no importa de `screens/`, `features/` ni `ui/`.
-- No usar nombres comodin como `helpers.ts`, `utils.ts`, `common.ts` o `misc.ts` sin apellido de responsabilidad.
+- **Lenguaje**: TypeScript.
+- **Router**: Expo Router (file-based). `app/` y `src/app/` son **solo rutas**.
+- **Datos**: Drizzle + `expo-sqlite`. Schema en TS, migraciones con drizzle-kit. Conexión con `enableChangeListener: true`.
+- **Estado**: Zustand para estado efímero/flujo; persistencia con MMKV.
+- **i18n**: i18next; recursos JSON en `lang/`.
+- **Alias**: `@/` → `src/`, `@assets/` → `assets/`.
 
-## Capas
-
-### `app/`
-
-- Shell global, bootstrap, listeners, controladores de escenas y modales.
-- Componentes propios de shell como escenas o wrappers viven aqui, no en `screens/`.
-- Tipos locales de shell solo salen a `app-shell.types.ts` si los comparten 2 o mas archivos del ambito y no son props de componente.
-
-### `screens/`
-
-- Entry point de cada pantalla.
-- Componentes, hooks, utils y tipos exclusivos de esa pantalla.
-- Props de screen y de sus subcomponentes quedan en cada archivo `.tsx`, no en `*.types.ts`.
-
-### `features/`
-
-- UI y logica de dominio reutilizable entre pantallas.
-- Props de modales, filas, cards y bloques visuales de feature quedan en archivo duenio.
-
-### `ui/`
-
-- Componentes visuales compartidos y neutrales al dominio.
-- Debe quedar plano.
-- Cada componente define sus props en mismo archivo.
-
-### `modules/`
-
-- Logica de negocio, datos, calculos, notificaciones, almacenamiento.
-- Repositorios, servicios y helpers puros.
-- Si modulo exporta componentes React puntuales, sus props siguen misma regla: inline en archivo duenio.
-
-### `types/`
-
-- Tipos compartidos entre varios ambitos.
-- Separar por agregado de dominio.
-
-## Regla de ubicacion
-
-- Si algo renderiza UI generica compartida, va a `ui/`.
-- Si algo renderiza UI de negocio reusable, va a `features/`.
-- Si algo solo sirve a una pantalla, vive dentro de esa pantalla.
-- Si algo no toca React, evaluar `modules/` o `utils/` del ambito.
-- Si import sale 3 o mas niveles del ambito, evaluar alias antes de dejar `../../../`.
-- Assets de `assets/` deben entrar por `@assets/` cuando el repo ya tenga alias disponible.
-- Si tipo solo describe props de un componente, no merece `*.types.ts`; vive junto al componente.
-- Si tipo local lo usan varios archivos del mismo ambito y no es props, evaluar `*.types.ts` del ambito.
-- Si archivo mezcla demasiadas responsabilidades, dividir por dueño real.
-
-## Estructura base
+## Estructura
 
 ```text
 src/
-  app/
-  ui/
-  features/
-  screens/
-  modules/
-  types/
-  theme.ts
+  app/            # Expo Router: SOLO rutas. _layout, grupos (group)
+  features/       # dominios: screens, components, hooks, stores, mutaciones, types
+  components/     # UI genérica theme-aware, sin dominio
+  shared/         # utils/hooks/types puros, sin UI
+  db/             # client.ts, schema.ts, migrations/, DatabaseProvider.tsx
+  domain/         # dominio puro: motor de ciclo, proyecciones; única excepción a features-based
+  theme/          # 
+  store/          # store(s) global(es) Zustand (sesión, prefs, flags)
+  modules/        # i18n/, l10n/, config/
+  lang/           # SOLO JSON: <idioma>/ y <idioma-REGIÓN>/
+assets/
 ```
+
+## Capas
+
+### `app/` — rutas
+
+- **Solo rutas de Expo Router.** Nada de stores, lógica ni componentes sueltos: Expo Router intenta tratar cualquier archivo aquí como ruta.
+- `app/_layout.tsx`: providers (DatabaseProvider, i18n, ThemeProvider) y guardas de navegación. Sustituye al antiguo `App.tsx`.
+- Cada ruta importa su screen desde el feature; no contiene lógica de dominio:
+  `app/(group)/thing.tsx` → `export { default } from '@/features/thing/ThingScreen'`.
+- Los nombres de archivo de ruta siguen la URL; agruparlas se hace con route groups `(group)`.
+
+### `features/`
+
+- Cada carpeta es un dominio autocontenido: `auth/`, `profile/`, `settings/`.
+- La raíz del feature se reserva para el dueño visual del feature: `XScreen.tsx` y, si existe estilo propio del screen, `XStyle.ts` hermano.
+- Todo lo demás vive en su carpeta de responsabilidad: `components/`, `hooks/` (incluye read hooks de live query), `types/`, `utils/`, `stores/`, `mutations/`, `services/`.
+- No dejar componentes, hooks, tipos, utilidades o helpers sueltos en la raíz del feature.
+- **No importa de otro feature.** Lo compartido sube a `shared/` o `components/`.
+
+#### Subfeatures
+
+- Un feature con varias rutas relacionadas se divide en subfeatures: una subcarpeta por conjunto de rutas.
+- Cada subfeature replica la misma regla: raíz reservada para `XScreen.tsx` y su `XStyle.ts` hermano cuando aplique; el resto en carpetas por tipo (`components/`, `hooks/`, `types/`, `utils/`, etc.).
+- **Un solo nivel de anidamiento.** Si una subfeature pediría sub-subfeatures, es un feature propio.
+- **Regla fractal**: un hermano nunca importa a otro hermano. Lo común entre subfeatures sube al `shared/` del feature (`features/<name>/shared/`), que solo se crea si es estrictamente necesario.
+- El estado compartido entre subfeatures vive en el store del feature, no en una subfeature.
+
+### `db/` — Drizzle
+
+- `client.ts`: `openDatabaseSync(name, { enableChangeListener: true })` + `drizzle()`.
+- `schema.ts`: tablas (STRICT), FKs, índices, read models. Drizzle soporta STRICT nativamente.
+- `migrations/`: salida de drizzle-kit. `DatabaseProvider.tsx`: inicializa y migra al arrancar.
+
+### `domain/` — dominio puro (excepción)
+
+- Única capa fuera de `features/` con lógica de negocio: dominio puro compartido
+  entre features (p. ej. el motor de ciclo), no un feature en sí.
+- Funciones puras (`(hechos, hoy) → resultado`, sin I/O) en la raíz de cada
+  subcarpeta de dominio; un orquestador delgado (`engine/`) es el único punto
+  que persiste, siempre en transacción.
+- Un tipo por archivo bajo `types/`, igual que en el resto del proyecto.
+- Los hooks de lectura de `domain/hooks/` son la única capa de dominio que
+  puede usar `useLiveQuery`/`useDatabase`; el resto no toca la base de datos.
+
+### Acceso a datos — regla de oro
+
+- **Lecturas** → read hooks con `useLiveQuery`, colocados en el feature (`useUserProfile.ts`). La UI consume el hook y reacciona sola a los cambios.
+- **Escrituras** → mutaciones (transacciones) en el feature; el store puede orquestarlas.
+- **El store NUNCA cachea datos de la base de datos.** Guarda estado efímero/flujo y orquesta escrituras.
+
+### `components/`
+
+- UI genérica neutral al dominio, theme-aware: `Button`, `Card`. Cada uno en su carpeta con `*Style.ts` hermano.
+
+### `shared/`
+
+- utils/hooks/types puros, sin UI ni dominio.
+
+### `theme/` — 
+
+### `store/`
+
+- Store(s) global(es): sesión, preferencias, flags de aplicación. Persistencia MMKV. No cachea la base de datos.
+
+### `modules/` y `lang/`
+
+- `modules/i18n`, `modules/l10n`, `modules/config`: toda la lógica de internacionalización y configuración.
+- `lang/`: **solo JSON**. El idioma base es estándar; las variantes regionales solo contienen overrides.
+
+## Reglas de importación
+
+```
+app/         → todo (ensambla la aplicación)
+features/    → components, shared, db, theme, store, modules, domain ; NO otro feature
+subfeature   → raíz de su feature (store, shared/) + globales ; NO otra subfeature ; NO otro feature
+components/  → shared, theme ; NO features, NO db
+shared/      → shared ; NO features, components, db
+db/          → shared
+domain/      → db, shared ; NO features, NO app, NO components
+theme/       → shared
+store/       → db, shared
+modules/i18n → shared, modules/config
+modules/l10n → shared, modules/i18n
+modules/config, lang/ → nadie
+```
+
+## Nomenclatura
+
+| Tipo | Convención | Ejemplo |
+|------|-----------|---------|
+| Componente React | PascalCase | `Button.tsx` |
+| Screen de feature o subfeature | Nombre del concepto + `Screen` | `ProfileScreen.tsx`, `CycleProfileScreen.tsx` |
+| Ruta Expo Router | lowercase/kebab por URL | `reset-password.tsx`, `_layout.tsx`, `(group)/` |
+| Archivo de estilos del screen | Mismo concepto del screen + `Style` | `ProfileStyle.ts`, `CycleProfileStyle.ts` |
+| Store Zustand | PascalCase + `Store` | `AuthStore.ts` |
+| Hook | camelCase, prefijo `use` | `useAuth.ts` |
+| Read hook (live query) | camelCase, prefijo `use` | `useUserProfile.ts` |
+| Mutación DB | camelCase, verbo + entidad | `createUser.ts` |
+| Tipo/Interface | PascalCase, archivo propio | `AuthPayload.ts` |
+| Feature / subfeature folder | kebab-case | `user-profile/` |
+| JSON lang | kebab-case | `common.json` |
+
+## Reglas duras
+
+- No barrels (`index.ts` que re-exporta). Rompe Fast Refresh.
+- Un tipo por archivo con nombre de responsabilidad. No `*.types.ts`.
+- Props en el mismo archivo del componente.
+- En la raíz de un feature o subfeature solo viven `XScreen.tsx` y su `XStyle.ts` hermano cuando exista.
+- Componentes, hooks, tipos, utilidades, stores, mutaciones y servicios van en carpetas propias por tipo; no en archivos sueltos de la raíz.
+- Estilos en `*Style.ts` hermano del dueño visual correspondiente (salvo componentes triviales dentro de `components/`).
+- Sin nombres comodín (`utils.ts`, `helpers.ts`, `common.ts`): cada archivo lleva su responsabilidad (`formatDate.ts`).
+- Un hermano no importa de otro hermano (features y subfeatures): lo común sube.
+- No crear carpetas de capa vacías: si aún no existe más de una pieza de un tipo, igual respeta la carpeta del tipo cuando esa pieza no sea el screen dueño.
+- `app/` solo rutas. `lang/` solo JSON.
 
 ## Antipatrones
 
-- `src/ui/Button/Button.tsx` para un unico archivo.
-- `calendar.types.ts` o `settings.types.ts` usados solo para `FooProps`.
-- `OnboardingScreen.tsx` o `CheckInModal.tsx` importando props de un `*.types.ts` hermano.
-- tipos grandes de dominio compartido metidos dentro de un `.tsx`.
-- helpers de dominio dentro de componente visual.
-- modulo plano gigante con veinte archivos sin carpetas de contexto.
+- Poner store, componentes o lógica en `app/` (Expo Router los trataría como rutas).
+- Lógica de dominio en el archivo de ruta en vez de importar el screen del feature.
+- UI o hook importando `db` directo: debe usar un read hook (`useLiveQuery`).
+- Store cacheando lecturas de la base de datos: usa live query.
+- Feature importando de otro feature, o subfeature importando de otra subfeature.
+- Dejar `components`, `hooks`, `types`, `utils` o `services` como archivos sueltos en la raíz del feature o subfeature.
+- `*.types.ts`, barrels, nombres comodín.
+- Lógica en `lang/`; recursos JSON dentro de `modules/i18n`.
+- `domain/` importando de `features/`, `app/` o `components/`.
 
-## Checklist rapido
+## Checklist
 
-- archivo tiene dueño claro
-- capa coincide con responsabilidad
-- no hay barrel
-- imports son directos
-- props React viven en mismo archivo que componente
-- `*.types.ts` solo guarda tipos compartidos reales, no props aisladas
+- [ ] El archivo tiene dueño claro: app (ruta) / feature / subfeature / components / shared / db / theme / store / modules.
+- [ ] `app/` solo contiene rutas; providers y guardas en `_layout`.
+- [ ] Lecturas vía read hook (`useLiveQuery`); escrituras vía mutación en transacción.
+- [ ] El store no cachea la base de datos; solo estado efímero/flujo.no theme.
+- [ ] La raíz del feature o subfeature solo contiene `XScreen.tsx` y, si aplica, `XStyle.ts`.
+- [ ] Componentes, hooks, tipos, utilidades, servicios y stores viven en carpetas propias por tipo.
+- [ ] Sin barrels, sin `*.types.ts`, sin nombres comodín.
+- [ ] Ningún hermano importa de otro hermano; lo común está en `shared/`.
+- [ ] `lang/` solo JSON.

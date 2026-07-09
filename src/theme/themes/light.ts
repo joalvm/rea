@@ -1,0 +1,146 @@
+import { aqua, ink, mist, phase, status } from "../tokens/colors";
+import { shadowsLight } from "../tokens/elevation";
+import { duration, easing } from "../tokens/motion";
+import { borderWidth, radius } from "../tokens/radii";
+import { sizing, space } from "../tokens/spacing";
+import { state } from "../tokens/state";
+import { typography } from "../tokens/typography";
+import type { Theme } from "../types/Theme";
+
+/** Tema claro completo (referencia estable que consume `getTheme`). */
+export const lightTheme: Theme = {
+    mode: "light",
+    colors: {
+        background: mist[0],
+        surface: mist[50],
+        surfaceAlt: mist[100],
+        surfaceSunken: "#DDEEF4",
+        surfaceGlass: "rgba(255,255,255,0.78)",
+        overlay: "rgba(7,26,34,0.46)",
+
+        border: mist[200],
+        borderStrong: mist[300],
+        divider: "rgba(7,26,34,0.07)",
+
+        text: ink.base,
+        textSecondary: ink.secondary,
+        textMuted: ink.muted,
+        textInverse: ink.inverse,
+        placeholder: mist[400],
+
+        icon: mist[500],
+        iconStrong: mist[700],
+
+        primary: aqua[300],
+        primaryPressed: aqua[400],
+        primaryTint: aqua[100],
+        primarySubtle: aqua[50],
+        onPrimary: ink.onBrand,
+        link: aqua[700],
+        focusRing: aqua[400],
+
+        success: status.success.accent,
+        successText: status.success.text,
+        successSurface: status.success.surface,
+        warning: status.warning.accent,
+        warningText: status.warning.text,
+        warningSurface: status.warning.surface,
+        danger: status.danger.accent,
+        dangerText: status.danger.text,
+        dangerSurface: status.danger.surface,
+
+        tabBarActive: aqua[700],
+        tabBarInactive: mist[500],
+        tabBarBackground: "rgba(255,255,255,0.94)",
+        tabBarBorder: mist[200],
+
+        skeleton: mist[100],
+    },
+    phases: {
+        unknown: {
+            surface: phase.unknown.surface,
+            accent: phase.unknown.accent,
+            accentSubtle: "rgba(38,188,235,0.22)",
+            onSurface: phase.unknown.text,
+            onSurfaceMuted: phase.unknown.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.unknown.text,
+            solid: phase.unknown.text,
+            onSolid: mist[0],
+        },
+        menstrual: {
+            surface: phase.menstrual.surface,
+            accent: phase.menstrual.accent,
+            accentSubtle: "rgba(239,63,120,0.20)",
+            onSurface: phase.menstrual.text,
+            onSurfaceMuted: phase.menstrual.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.menstrual.text,
+            solid: phase.menstrual.text,
+            onSolid: mist[0],
+        },
+        follicular: {
+            surface: phase.follicular.surface,
+            accent: phase.follicular.accent,
+            accentSubtle: "rgba(55,201,137,0.20)",
+            onSurface: phase.follicular.text,
+            onSurfaceMuted: phase.follicular.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.follicular.text,
+            solid: phase.follicular.text,
+            onSolid: mist[0],
+        },
+        fertile_window: {
+            surface: phase.fertileWindow.surface,
+            accent: phase.fertileWindow.accent,
+            accentSubtle: "rgba(248,182,51,0.22)",
+            onSurface: phase.fertileWindow.text,
+            onSurfaceMuted: phase.fertileWindow.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.fertileWindow.text,
+            solid: phase.fertileWindow.text,
+            onSolid: mist[0],
+        },
+        estimated_ovulation: {
+            surface: phase.estimatedOvulation.surface,
+            accent: phase.estimatedOvulation.accent,
+            accentSubtle: "rgba(255,118,92,0.22)",
+            onSurface: phase.estimatedOvulation.text,
+            onSurfaceMuted: phase.estimatedOvulation.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.estimatedOvulation.text,
+            solid: phase.estimatedOvulation.text,
+            onSolid: mist[0],
+        },
+        luteal: {
+            surface: phase.luteal.surface,
+            accent: phase.luteal.accent,
+            accentSubtle: "rgba(143,120,242,0.22)",
+            onSurface: phase.luteal.text,
+            onSurfaceMuted: phase.luteal.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.luteal.text,
+            solid: phase.luteal.text,
+            onSolid: mist[0],
+        },
+        pregnancy: {
+            surface: phase.pregnancy.surface,
+            accent: phase.pregnancy.accent,
+            accentSubtle: "rgba(67,200,188,0.20)",
+            onSurface: phase.pregnancy.text,
+            onSurfaceMuted: phase.pregnancy.muted,
+            elevatedSurface: "rgba(255,255,255,0.62)",
+            onElevatedSurface: phase.pregnancy.text,
+            solid: phase.pregnancy.text,
+            onSolid: mist[0],
+        },
+    },
+    spacing: space,
+    radius,
+    borderWidth,
+    sizing,
+    typography,
+    shadows: shadowsLight,
+    motion: { duration, easing },
+    state,
+};

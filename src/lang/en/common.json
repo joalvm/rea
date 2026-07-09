@@ -1,0 +1,16 @@
+{
+    "action": {
+        "back": "Back",
+        "continue": "Continue",
+        "notNow": "Not now",
+        "start": "Start",
+        "startApp": "Start using Rea"
+    },
+    "feedback": {
+        "success": "Success"
+    },
+    "accessibility": {
+        "decrease": "Decrease",
+        "increase": "Increase"
+    }
+}

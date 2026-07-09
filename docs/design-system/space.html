@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Forma y espacio mobile</title>
+        <meta name="description" content="Sistema mobile de forma, espaciado, radios, bordes y tacto para Rea." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body data-page="space" data-title="Forma y espacio">
+        <a class="skip-link" href="#contenido">Saltar al contenido</a>
+        <div class="layout">
+            <aside class="sidebar" id="siteSidebar"></aside>
+            <main class="main" id="contenido">
+                <div class="topbar" id="siteTopbar"></div>
+
+                <section class="section" id="principio-espacio">
+                    <div class="eyebrow">Forma · Base</div>
+                    <h2>Suavidad con sombra-susurro</h2>
+                    <p class="lead">
+                        Rea usa una escala 4pt, radios generosos y bordes sutiles. La profundidad se apoya en
+                        superficie, borde fino, tamano, color contextual y agrupacion; la sombra es un susurro (<code
+                            >shadows[1]</code
+                        >
+                        tarjetas, <code>[2]</code> CTA/hojas) que solo redondea, nunca dramatiza.
+                    </p>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Pantalla</h3>
+                            <p>
+                                El contenido mobile es edge-to-edge. Cada componente define su propio padding interno.
+                            </p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Tacto</h3>
+                            <p>Minimo 44pt. Controles comunes usan 40, 48 o 56 segun importancia.</p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Safe area</h3>
+                            <p>App bar y tab bar respetan notch, home indicator y gesto inferior del sistema.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="escala-espacio">
+                    <div class="eyebrow">01 · Espaciado</div>
+                    <h2>Escala base 4</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel">
+                            <h3 class="flush-top">Tokens</h3>
+                            <div class="space-row">
+                                <code>xs · 4</code><span class="space-bar space-xs"></span
+                                ><span class="small">4px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>sm · 8</code><span class="space-bar space-sm"></span
+                                ><span class="small">8px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>md · 12</code><span class="space-bar space-md"></span
+                                ><span class="small">12px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>lg · 16</code><span class="space-bar space-lg"></span
+                                ><span class="small">16px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>xl · 20</code><span class="space-bar space-xl"></span
+                                ><span class="small">20px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>2xl · 24</code><span class="space-bar space-2xl"></span
+                                ><span class="small">24px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>3xl · 32</code><span class="space-bar space-3xl"></span
+                                ><span class="small">32px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>4xl · 40</code><span class="space-bar space-4xl"></span
+                                ><span class="small">40px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>5xl · 48</code><span class="space-bar space-5xl"></span
+                                ><span class="small">48px</span>
+                            </div>
+                            <div class="space-row">
+                                <code>6xl · 64</code><span class="space-bar space-6xl"></span
+                                ><span class="small">64px</span>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <h3 class="flush-top">Uso mobile</h3>
+                            <ul class="rule-list">
+                                <li><code>4-8</code> separa icono/texto o elementos muy relacionados.</li>
+                                <li><code>12-16</code> es ritmo normal dentro de controles y listas.</li>
+                                <li><code>20-24</code> separa grupos dentro de una seccion.</li>
+                                <li><code>32-48</code> separa secciones mayores o bloques de decision.</li>
+                                <li>
+                                    <code>64</code> se reserva para respiracion superior/inferior de pantallas clave.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="forma">
+                    <div class="eyebrow">02 · Forma</div>
+                    <h2>Radios y bordes</h2>
+                    <div class="grid cols-2 mt-18">
+                        <div class="panel">
+                            <h3 class="flush-top">Radios</h3>
+                            <div class="radius-grid">
+                                <div class="radius-box radius-sm">sm 8</div>
+                                <div class="radius-box radius-md">md 12</div>
+                                <div class="radius-box radius-lg">lg 16</div>
+                                <div class="radius-box radius-xl">xl 20</div>
+                                <div class="radius-box radius-2xl">2xl 28</div>
+                                <div class="radius-box radius-3xl">3xl 36</div>
+                                <div class="radius-box radius-pill">pill</div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <h3 class="flush-top">Asignacion</h3>
+                            <ul class="rule-list">
+                                <li><code>8-12</code> para panels de documentacion, campos internos y chips densos.</li>
+                                <li><code>16-20</code> para inputs, list rows, metric cards y step tiles.</li>
+                                <li><code>28-36</code> para sheets, calendario y contenedores expresivos.</li>
+                                <li><code>pill</code> para botones, tabs, switches y chips seleccionables.</li>
+                            </ul>
+                            <p class="note">
+                                Borde normal <code>1px</code>, borde fuerte <code>2px</code>. Hairline solo para
+                                divisores de lista.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="layout-mobile">
+                    <div class="eyebrow">03 · Contenedores mobile</div>
+                    <h2>Espacio segun tarea</h2>
+                    <p class="lead">
+                        Rea no define una plantilla unica para todas las vistas. Cada pantalla usa la estructura que
+                        corresponda a su objetivo, manteniendo los mismos tokens de espacio, radios y tacto.
+                    </p>
+                    <div class="grid cols-3 mt-18">
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Full width</h3>
+                            <p>
+                                Hero, calendario y tab bar pueden ocupar todo el ancho disponible. Su respiracion vive
+                                dentro del componente.
+                            </p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Contenido denso</h3>
+                            <p>
+                                Listas, formularios y metricas usan padding interno propio para conservar lectura y
+                                targets tactiles.
+                            </p>
+                        </div>
+                        <div class="panel spec-card">
+                            <h3 class="flush-top">Superposiciones</h3>
+                            <p>
+                                Bottom sheets y dialogs respetan safe area, conservan contexto y se elevan con
+                                sombra-susurro (<code>shadows[2]</code>), nunca con un drama de profundidad.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>Elemento</th>
+                                    <th>Espacio</th>
+                                    <th>Criterio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>App bar</td>
+                                    <td><code>16px</code> horizontal + safe area superior</td>
+                                    <td>Debe separar controles sin crear un marco artificial.</td>
+                                </tr>
+                                <tr>
+                                    <td>Hero</td>
+                                    <td><code>18-24px</code> interno</td>
+                                    <td>El borde inferior curvo pertenece al componente, no a la pantalla.</td>
+                                </tr>
+                                <tr>
+                                    <td>Calendario</td>
+                                    <td><code>14-16px</code> interno</td>
+                                    <td>La grilla se mantiene compacta y tactil en 375px.</td>
+                                </tr>
+                                <tr>
+                                    <td>Lista</td>
+                                    <td><code>14-16px</code> por fila</td>
+                                    <td>Separar filas por hairline y agrupacion, no por sombra.</td>
+                                </tr>
+                                <tr>
+                                    <td>Formulario</td>
+                                    <td><code>16-24px</code> entre grupos</td>
+                                    <td>Inputs y ayudas deben leerse sin competir con la accion principal.</td>
+                                </tr>
+                                <tr>
+                                    <td>Tab bar</td>
+                                    <td><code>60px</code> nominal + safe area inferior</td>
+                                    <td>El borde superior define separacion; no se usa elevacion.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest" defer></script>
+        <script src="./main.js" defer></script>
+    </body>
+</html>

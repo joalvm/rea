@@ -1,0 +1,133 @@
+{
+    "welcome": {
+        "wordmark": "Rea",
+        "tagline": "your cycle, in calm",
+        "title": "Welcome to Rea",
+        "body": "An intimate space to get to know your cycle at your own pace. What you log stays on your phone, only for you.",
+        "deviceChip": "On your phone, no accounts or ads"
+    },
+    "profile": {
+        "title": "Tell me about you",
+        "lead": "This is enough to tailor what you'll see. Nothing more.",
+        "nameLabel": "What should I call you?",
+        "namePlaceholder": "Your name",
+        "yearLabel": "Year of birth",
+        "yearHelp": "We only store the year."
+    },
+    "intent": {
+        "title": "What are you looking for in Rea?",
+        "lead": "You can change this anytime.",
+        "modifierLabel": "Looking for something specific?",
+        "modifierHint": "Optional: pick none to just learn your cycle.",
+        "master": {
+            "cycle": {
+                "title": "Track my cycle",
+                "subtitle": "Understand your body and anticipate your days."
+            },
+            "pregnancy": {
+                "title": "Track my pregnancy",
+                "subtitle": "Care for this stage step by step."
+            }
+        },
+        "track": {
+            "title": "Know my cycle",
+            "subtitle": "Understand my body and anticipate it."
+        },
+        "avoid": {
+            "title": "Avoid pregnancy",
+            "subtitle": "Educational, not contraceptive"
+        },
+        "ttc": {
+            "title": "Try to conceive",
+            "subtitle": "Recognize my fertile days."
+        },
+        "preg": {
+            "title": "I'm pregnant",
+            "subtitle": "Care for this stage step by step."
+        }
+    },
+    "lastPeriod": {
+        "title": "Your last period",
+        "lead": "When did your last period start? It's the starting point for your predictions.",
+        "ongoingTitle": "I'm still on my period",
+        "ongoingSubtitle": "The bleeding hasn't ended yet.",
+        "endDateTitle": "When did it end?",
+        "endDateHelp": "The last day you bled."
+    },
+    "cycle": {
+        "title": "Your cycle length",
+        "lead": "It's a starting point; Rea will refine it with every log.",
+        "periodLabel": "Days of bleeding",
+        "cycleLabel": "Days between periods",
+        "days": "days",
+        "help": "Not sure? Leave 5 and 28; we'll adjust together."
+    },
+    "regularity": {
+        "title": "How regular is your cycle?",
+        "lead": "No pressure: pick what looks most like you.",
+        "regular": {
+            "title": "Regular",
+            "subtitle": "Almost always arrives when I expect it."
+        },
+        "variable": {
+            "title": "Variable",
+            "subtitle": "Sometimes early, sometimes late."
+        },
+        "irregular": {
+            "title": "Irregular",
+            "subtitle": "Changes a lot from month to month."
+        },
+        "unsure": {
+            "title": "I don't know yet",
+            "subtitle": "I'll find out over time."
+        }
+    },
+    "contraception": {
+        "title": "Do you use any contraceptive method?",
+        "lead": "It helps us read your cycle better. You can skip this if you'd rather not say.",
+        "preferNotToSay": "Prefer not to say",
+        "method": {
+            "none": "None",
+            "pill": "Pill",
+            "hormonal_iud": "Hormonal IUD",
+            "copper_iud": "Copper IUD",
+            "implant": "Implant",
+            "injection": "Injection",
+            "ring": "Vaginal ring",
+            "patch": "Patch",
+            "barrier": "Condom / barrier",
+            "other": "Other"
+        },
+        "warning": "With a hormonal method, Rea logs symptoms and bleeding but won't mark fertile days as natural."
+    },
+    "pregnancySetup": {
+        "title": "Your pregnancy",
+        "lead": "Tell us whichever date you have: your last period or your due date.",
+        "basis": {
+            "lmp": "I know my last period",
+            "dueDate": "I know my due date"
+        },
+        "lmpLabel": "When was your last period?",
+        "dueLabel": "Estimated due date",
+        "derivedDueDate": "Your due date would be around {{date}}.",
+        "derivedLmp": "Your last period would have started around {{date}}."
+    },
+    "notifications": {
+        "title": "Gentle reminders",
+        "lead": "We check in on you, without overwhelming. You decide when.",
+        "enableTitle": "Enable reminders",
+        "enableSubtitle": "We'll notify you within the window you choose.",
+        "windowLabel": "Window",
+        "intervalLabel": "How often",
+        "interval3h": "3 h",
+        "interval6h": "6 h",
+        "interval12h": "12 h"
+    },
+    "complete": {
+        "wordmark": "Rea",
+        "tagline": "all set",
+        "title": "Thank you for letting us join you",
+        "lead": "From here, Rea learns with you.",
+        "disclaimer": "Rea does not diagnose and is not a contraceptive method. Its estimates are based on what you log."
+    }
+}
