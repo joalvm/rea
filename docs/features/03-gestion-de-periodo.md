@@ -1,7 +1,10 @@
 # 03 · Gestión de periodo (rachas)
 
-> **Hito:** M1 · **Depende de:** 01 (motor) · **Estado:** 🔲 stubs
-> (`period/confirm`, `period/edit`).
+> **Hito:** M1 · **Depende de:** 01 (motor) · **Estado:** 🚧 Fase 1 implementada en
+> `src/domain/period/` (reconciliación pura + validación de solapes/fusión). Fases 2-3
+> (mutaciones y pantallas `period/confirm`/`period/edit`) pendientes — la Fase 2 necesita
+> el mockup `docs/design-system/screens/period.html` antes de tocar UI (regla del
+> proyecto).
 
 ## Contexto
 
@@ -41,7 +44,7 @@ inicios ni cierres, y hacer trivial corregir el pasado.
 
 ## Fases
 
-### [ ] Fase 1: Dominio de reconciliación
+### [x] Fase 1: Dominio de reconciliación
 
 - **Objetivo:** decidir qué proponer, como funciones puras.
 - **Cambios:** `src/domain/period/` — `reconcilePeriodState(hechos, hoy)` devuelve la

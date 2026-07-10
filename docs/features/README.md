@@ -7,24 +7,27 @@ que describen está cerrado salvo los principios del [README](../README.md) raí
 
 ## Índice
 
-| #   | Plan                                                   | Hito principal | Qué resuelve                                                             |
-| --- | ------------------------------------------------------ | -------------- | ------------------------------------------------------------------------ |
-| 00  | [Onboarding — ajustes](00-onboarding.md)               | M1             | Deja de escribir datos falsos; permiso JIT; anticoncepción por método    |
-| 01  | [Motor de ciclo](01-motor-de-ciclo.md)                 | M1             | Predicción honesta, proyección diaria, historial de ciclos y precisión   |
-| 02  | [Check-in](02-check-in.md)                             | M2             | Captura diaria <60 s, adaptada al modo, con test de embarazo en todos    |
-| 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
-| 04  | [Hoy](04-hoy.md)                                       | M3             | La pantalla que responde "¿dónde estoy y qué viene?"                     |
-| 05  | [Calendario](05-calendario.md)                         | M3             | Vista de mes con observado ≠ estimado y detalle de día                   |
-| 06  | [Diario](06-diario.md)                                 | M2             | Editar, borrar y excluir registros; higiene estadística                  |
-| 07  | [Estadísticas](07-estadisticas.md)                     | M4             | Cada dato capturado devuelto como aprendizaje, con gates de datos        |
-| 08  | [Fertilidad y TTC](08-fertilidad-ttc.md)               | M5             | BBT, OPK, timing; modo evitar con marco conservador                      |
-| 09  | [Embarazo](09-embarazo.md)                             | M3 + M6        | Semana a semana; desenlaces dignos; posparto sin predicciones falsas     |
-| 10  | [Transiciones de modo](10-transiciones-de-modo.md)     | M3 + M5        | Cambiar de intención sin perder datos; puente test+ desde cualquier modo |
-| 11  | [Contenido](11-contenido.md)                           | M3 + M6-M7     | Tips con fuente, reglas contextuales, corpus editorial                   |
-| 12  | [Notificaciones](12-notificaciones.md)                 | M2 + M4        | Recordatorios locales, discretos, idempotentes                           |
-| 13  | [Ajustes](13-ajustes.md)                               | transversal    | Configuración; re-anclaje de perfil; borrar todo                         |
-| 14  | [Backup y exportación](14-backup-y-exportacion.md)     | M7             | Sacar y restaurar los datos sin nube                                     |
-| 15  | [Privacidad verificable](15-privacidad-verificable.md) | **M1**         | Cifrado en reposo + cero-red impuesto por build, no por costumbre        |
+`Estado` refleja siempre el encabezado del plan (✅ hecho / 🚧 en progreso / 🔲 no
+iniciado / ❌ ausente, deuda declarada). Ver práctica de actualización más abajo.
+
+| #   | Plan                                                   | Hito principal | Estado | Qué resuelve                                                             |
+| --- | ------------------------------------------------------ | -------------- | :----: | ------------------------------------------------------------------------ |
+| 00  | [Onboarding — ajustes](00-onboarding.md)               | M1             |   ✅   | Deja de escribir datos falsos; permiso JIT; anticoncepción por método    |
+| 01  | [Motor de ciclo](01-motor-de-ciclo.md)                 | M1             |   ✅   | Predicción honesta, proyección diaria, historial de ciclos y precisión   |
+| 02  | [Check-in](02-check-in.md)                             | M2             |   🔲   | Captura diaria <60 s, adaptada al modo, con test de embarazo en todos    |
+| 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             |   🚧   | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
+| 04  | [Hoy](04-hoy.md)                                       | M3             |   🔲   | La pantalla que responde "¿dónde estoy y qué viene?"                     |
+| 05  | [Calendario](05-calendario.md)                         | M3             |   🔲   | Vista de mes con observado ≠ estimado y detalle de día                   |
+| 06  | [Diario](06-diario.md)                                 | M2             |   🔲   | Editar, borrar y excluir registros; higiene estadística                  |
+| 07  | [Estadísticas](07-estadisticas.md)                     | M4             |   🔲   | Cada dato capturado devuelto como aprendizaje, con gates de datos        |
+| 08  | [Fertilidad y TTC](08-fertilidad-ttc.md)               | M5             |   🔲   | BBT, OPK, timing; modo evitar con marco conservador                      |
+| 09  | [Embarazo](09-embarazo.md)                             | M3 + M6        |   🔲   | Semana a semana; desenlaces dignos; posparto sin predicciones falsas     |
+| 10  | [Transiciones de modo](10-transiciones-de-modo.md)     | M3 + M5        |   🔲   | Cambiar de intención sin perder datos; puente test+ desde cualquier modo |
+| 11  | [Contenido](11-contenido.md)                           | M3 + M6-M7     |   🔲   | Tips con fuente, reglas contextuales, corpus editorial                   |
+| 12  | [Notificaciones](12-notificaciones.md)                 | M2 + M4        |   ❌   | Recordatorios locales, discretos, idempotentes                           |
+| 13  | [Ajustes](13-ajustes.md)                               | transversal    |   🔲   | Configuración; re-anclaje de perfil; borrar todo                         |
+| 14  | [Backup y exportación](14-backup-y-exportacion.md)     | M7             |   ❌   | Sacar y restaurar los datos sin nube                                     |
+| 15  | [Privacidad verificable](15-privacidad-verificable.md) | **M1**         |   ❌   | Cifrado en reposo + cero-red impuesto por build, no por costumbre        |
 
 ## Arquitectura de información (propuesta abierta)
 
@@ -71,7 +74,7 @@ detalle de día (deep-linkable desde notificaciones).
 | Hito      | Contenido                                                                                                                    | Planes                                            |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | **M0 ✅** | Fundaciones: DB v2, i18n/l10n, theme, onboarding                                                                             | —                                                 |
-| **M1**    | **Confianza**: esquema v3 + cifrado en reposo + cero-red en CI + motor de ciclo + gestión de periodo + ajustes de onboarding | 15 · 01 · 03 · 00                                 |
+| **M1**    | **Confianza**: esquema v3 + cifrado en reposo + cero-red en CI + motor de ciclo + gestión de periodo + ajustes de onboarding | 15 · 01 ✅ · 03 🚧 · 00 ✅                        |
 | **M2**    | **Captura**: check-in por modos + diario + recordatorio diario                                                               | 02 · 06 · 12 (fase 1)                             |
 | **M3**    | **Superficies**: Hoy + calendario + semana de embarazo + corpus mínimo de embarazo + puente test+ → embarazo                 | 04 · 05 · 09 (fase 1) · 11 (fase 1) · 10 (fase 1) |
 | **M4**    | **Comprensión**: estadísticas con gates + notificaciones predictivas                                                         | 07 · 12 (fase 2)                                  |
@@ -101,6 +104,11 @@ M2 porque no depende de predicciones.
 6. **Estados vacíos que enseñan**: cuando faltan datos para una estadística o
    predicción, la pantalla dice qué falta y cuánto ("2 de 3 ciclos para tu curva"),
    nunca un espacio en blanco.
+7. **Los checks se marcan al completar, en el mismo commit que el código.** Cada fase de
+   cada plan lleva su casilla (`[ ]` → `[x]`) y el encabezado del plan actualiza su
+   `Estado`. Al cerrar cualquier fase, el índice de este README (tabla de arriba y fila
+   de hito en el roadmap) se actualiza en el mismo commit — nunca queda una fase hecha
+   sin marcar, ni un plan terminado con `Estado: 🔲`.
 
 ## Fuera de alcance (v1)
 
