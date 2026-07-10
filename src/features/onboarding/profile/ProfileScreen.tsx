@@ -4,13 +4,14 @@ import { Alert, View } from "react-native";
 import { useOnboardingStore } from "../shared/stores/useOnboardingStore";
 import { profileSchema, DEFAULT_BIRTH_YEAR, MAX_BIRTH_YEAR, MIN_BIRTH_YEAR } from "./schemas/profileSchema";
 
+import { WheelGroup } from "@/components/wheel-group/WheelGroup";
+import { WheelPicker } from "@/components/wheel-picker/WheelPicker";
+
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { HelpText } from "../shared/components/help-text/HelpText";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { OutlinedField } from "../shared/components/outlined-field/OutlinedField";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
-import { WheelGroup } from "../shared/components/wheel-group/WheelGroup";
-import { WheelPicker } from "../shared/components/wheel-picker/WheelPicker";
 import { useProfileStyles } from "./ProfileStyle";
 
 type Props = {

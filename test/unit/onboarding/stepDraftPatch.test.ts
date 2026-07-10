@@ -5,7 +5,7 @@ import { getRegularitySelection } from "@/features/onboarding/shared/utils/getRe
 import { lastPeriodSchema } from "@/features/onboarding/last-period/schemas/lastPeriodSchema";
 import { estimateDueDate, estimateLmpFromDueDate } from "@/features/onboarding/pregnancy-setup/utils/estimateDueDate";
 import { pregnancySchema } from "@/features/onboarding/pregnancy-setup/schemas/pregnancySchema";
-import { addDaysToISO, todayYMD, ymdToISO } from "@/features/onboarding/shared/utils/onboardingDate";
+import { addDaysToISO, todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
 describe("Parches de pasos del onboarding", () => {
     it("sincroniza el último periodo visible aunque la usuaria no toque la rueda", () => {

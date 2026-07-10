@@ -46,6 +46,7 @@ function RootNavigator() {
                 <Stack.Screen name="checkin" />
                 <Stack.Screen name="diary/[date]" options={{ headerShown: true, title: "Registro del día" }} />
                 <Stack.Screen name="period/edit" options={{ headerShown: true, title: "Editar periodo" }} />
+                <Stack.Screen name="period/edit/[id]" options={{ headerShown: true, title: "Editar regla" }} />
                 <Stack.Screen name="period/confirm" options={{ headerShown: true, title: "Confirmar periodo" }} />
                 <Stack.Screen name="content/[id]" options={{ headerShown: true, title: "Contenido" }} />
                 <Stack.Screen name="settings/cycle-profile" options={{ headerShown: true, title: "Mi contexto" }} />

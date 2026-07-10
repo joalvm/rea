@@ -2,5 +2,8 @@
     "onboarding": {
         "complete": "We couldn't complete onboarding. Please try again."
     },
+    "period": {
+        "mutation": "We couldn't save the change. Please try again."
+    },
     "settings": {}
 }

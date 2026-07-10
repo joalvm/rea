@@ -3,17 +3,18 @@ import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
 import { INITIAL_ONBOARDING_DRAFT } from "@/features/onboarding/shared/types/OnboardingDraft";
-import { hourLabels } from "@/features/onboarding/shared/utils/onboardingDate";
+import { hourLabels } from "@/shared/utils/ymd";
 import { getReminderHourIndex } from "@/shared/schemas/reminder/getReminderHourIndex";
 import { reminderSchema } from "@/shared/schemas/reminder/reminderSchema";
+
+import { ToggleRow } from "@/components/toggle-row/ToggleRow";
+import { WheelGroup } from "@/components/wheel-group/WheelGroup";
+import { WheelPicker } from "@/components/wheel-picker/WheelPicker";
 
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
 import { SegmentedControl } from "../shared/components/segmented-control/SegmentedControl";
-import { ToggleRow } from "../shared/components/toggle-row/ToggleRow";
-import { WheelGroup } from "../shared/components/wheel-group/WheelGroup";
-import { WheelPicker } from "../shared/components/wheel-picker/WheelPicker";
 import { useNotificationsStyles } from "./NotificationsStyle";
 
 type Props = {

@@ -1,7 +1,7 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const usePeriodConfirmStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography, sizing } = theme;
 
     return {
         screen: {
@@ -16,6 +16,15 @@ export const usePeriodConfirmStyles = createStyles((theme) => {
             paddingHorizontal: spacing["2xl"],
             paddingVertical: spacing["4xl"],
         },
+        iconWrap: {
+            width: 84,
+            height: 84,
+            borderRadius: 999,
+            backgroundColor: colors.primaryTint,
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: spacing.sm,
+        },
         title: {
             ...typography.variant.h1,
             color: colors.text,
@@ -27,57 +36,41 @@ export const usePeriodConfirmStyles = createStyles((theme) => {
             textAlign: "center",
             maxWidth: sizing.readableMaxWidth,
         },
-        links: {
+        note: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: spacing.sm,
+            alignSelf: "stretch",
+            borderRadius: radius.lg,
+            backgroundColor: colors.primarySubtle,
+            padding: spacing.lg,
+            marginTop: spacing.sm,
+        },
+        noteWarning: {
+            backgroundColor: colors.warningSurface,
+        },
+        noteText: {
+            ...typography.variant.footnote,
+            color: colors.link,
+            flex: 1,
+            lineHeight: 18,
+        },
+        noteWarningText: {
+            color: colors.warningText,
+        },
+        actions: {
             alignSelf: "stretch",
             gap: spacing.sm,
-            marginTop: spacing.sm,
+            marginTop: spacing.xl,
         },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
-            color: colors.textMuted,
-        },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
+        dismiss: {
             alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
+            marginTop: spacing.xs,
         },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
+        dismissText: {
             ...typography.variant.subhead,
-            color: colors.link,
+            fontFamily: typography.families.heading,
+            color: colors.textMuted,
         },
     };
 });

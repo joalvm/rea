@@ -1,0 +1,63 @@
+{
+    "confirm": {
+        "start": {
+            "title": "¿Empezó tu regla el {{date}}?",
+            "lead": "Registraste sangrado esos días. Dinos qué fue para ajustar tu ciclo.",
+            "evidence": "Sangrado alto registrado: {{range}}.",
+            "confirm": "Sí, fue mi regla",
+            "spotting": "Fue solo manchado",
+            "dismiss": "No contar"
+        },
+        "close": {
+            "title": "¿Terminó tu regla?",
+            "lead": "No registras sangrado desde hace unos días. Tu último día fue el {{date}}.",
+            "hint": "El manchado de cola no cuenta: la fecha de cierre es el último día de sangrado real.",
+            "confirm": "Sí, terminó el {{date}}",
+            "dismiss": "No, sigue"
+        },
+        "merge": {
+            "title": "¿Fue la misma regla?",
+            "lead": "Tu última regla cerró el {{previousEndDate}} y hay sangrado de nuevo el {{newStartDate}} — solo {{gapDays}} días de pausa.",
+            "hint": "Una pausa corta dentro de la misma regla es común. Si unes, se guarda como una sola racha.",
+            "confirm": "Sí, es la misma",
+            "dismiss": "No, es una regla nueva"
+        },
+        "empty": {
+            "title": "Nada que confirmar",
+            "lead": "No hay ninguna propuesta pendiente en este momento.",
+            "back": "Volver"
+        }
+    },
+    "edit": {
+        "list": {
+            "title": "Tus reglas",
+            "lead": "Toca una para corregir fechas o marcarla como excluida.",
+            "empty": "Todavía no registras ninguna regla.",
+            "statusOpen": "Activa",
+            "statusClosed": "Cerrada",
+            "statusExcluded": "Excluida",
+            "sourceConfirmed": "Confirmado",
+            "sourceInferred": "Inferido",
+            "sourceMixed": "Confirmado y ajustado",
+            "excludedHint": "No cuenta para tus predicciones",
+            "ongoingRange": "Desde {{startDate}}"
+        },
+        "detail": {
+            "title": "Editar regla",
+            "lead": "Cambia las fechas o marca este episodio como excluido.",
+            "startLabel": "Inicio",
+            "endLabel": "Fin",
+            "excludeTitle": "Excluir del cálculo",
+            "excludeSubtitle": "No cuenta para tu ciclo ni tus estadísticas.",
+            "excludeWarning": "Esta racha ya no se usa para tu predicción ni tus estadísticas. Sigue visible en tu historial.",
+            "save": "Guardar cambios",
+            "delete": "Eliminar esta regla",
+            "deleteConfirmTitle": "¿Eliminar esta regla?",
+            "deleteConfirmBody": "Se borra de tu historial y se recalculan tus predicciones.",
+            "deleteConfirmAction": "Eliminar",
+            "cancel": "Cancelar",
+            "overlapError": "Esas fechas se cruzan con otra regla registrada.",
+            "rangeError": "El fin no puede ser antes del inicio."
+        }
+    }
+}

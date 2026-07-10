@@ -1,4 +1,4 @@
-import { addDaysToISO, type YMD, ymdToISO } from "../../shared/utils/onboardingDate";
+import { addDaysToISO, type YMD, ymdToISO } from "@/shared/utils/ymd";
 
 const PREGNANCY_GESTATION_DAYS = 280;
 

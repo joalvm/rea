@@ -3,7 +3,8 @@ import type { ReactNode } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { PrimaryButton } from "../primary-button/PrimaryButton";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
+
 import { StepDots } from "../step-dots/StepDots";
 import { useOnboardingScreenStyles } from "./OnboardingScreenStyle";
 

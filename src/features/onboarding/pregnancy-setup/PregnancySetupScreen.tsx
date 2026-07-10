@@ -8,9 +8,10 @@ import { useTheme } from "@/theme/useTheme";
 import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
 import { estimateDueDate, estimateLmpFromDueDate } from "@/features/onboarding/pregnancy-setup/utils/estimateDueDate";
 import { pregnancySchema } from "@/features/onboarding/pregnancy-setup/schemas/pregnancySchema";
-import { type YMD, isoToYMD, todayYMD, ymdToISO } from "@/features/onboarding/shared/utils/onboardingDate";
+import { type YMD, isoToYMD, todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
-import { DateWheel } from "../shared/components/date-wheel/DateWheel";
+import { DateWheel } from "@/components/date-wheel/DateWheel";
+
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { HelpText } from "../shared/components/help-text/HelpText";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";

@@ -1,7 +1,7 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const usePeriodEditStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography, shadows, borderWidth } = theme;
 
     return {
         screen: {
@@ -10,74 +10,77 @@ export const usePeriodEditStyles = createStyles((theme) => {
         },
         container: {
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
             gap: spacing.md,
             paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
+            paddingVertical: spacing.xl,
         },
         title: {
             ...typography.variant.h1,
             color: colors.text,
-            textAlign: "center",
         },
         description: {
             ...typography.variant.body,
             color: colors.textSecondary,
-            textAlign: "center",
-            maxWidth: sizing.readableMaxWidth,
         },
-        links: {
-            alignSelf: "stretch",
+        emptyText: {
+            ...typography.variant.body,
+            color: colors.textMuted,
+            marginTop: spacing.xl,
+            textAlign: "center",
+        },
+        list: {
             gap: spacing.sm,
             marginTop: spacing.sm,
         },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
+        row: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: spacing.sm,
+            padding: spacing.lg,
             borderRadius: radius.lg,
             backgroundColor: colors.surface,
             borderWidth: borderWidth.thin,
             borderColor: colors.border,
             ...shadows[1],
         },
-        linkLabel: {
+        rowDate: {
             ...typography.variant.title,
             color: colors.text,
         },
-        linkHint: {
+        rowSource: {
             ...typography.variant.footnote,
             color: colors.textMuted,
+            marginTop: 2,
         },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
+        rowSourceExcluded: {
+            color: colors.dangerText,
+        },
+        badge: {
+            paddingVertical: 5,
+            paddingHorizontal: 10,
             borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
         },
-        pressed: {
-            opacity: 0.85,
+        badgeText: {
+            ...typography.variant.caption,
         },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
+        badgeOpen: {
+            backgroundColor: colors.primaryTint,
         },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
+        badgeOpenText: {
             color: colors.link,
+        },
+        badgeClosed: {
+            backgroundColor: colors.surfaceSunken,
+        },
+        badgeClosedText: {
+            color: colors.textMuted,
+        },
+        badgeExcluded: {
+            backgroundColor: colors.dangerSurface,
+        },
+        badgeExcludedText: {
+            color: colors.dangerText,
         },
     };
 });

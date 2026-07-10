@@ -4,13 +4,13 @@ import { Alert, View } from "react-native";
 import { getMonthLabels } from "@/modules/l10n/getMonthLabels";
 import { useOnboardingStore } from "../shared/stores/useOnboardingStore";
 import { lastPeriodSchema } from "./schemas/lastPeriodSchema";
-import { type YMD, isoToYMD, todayYMD, ymdToISO } from "../shared/utils/onboardingDate";
+import { type YMD, isoToYMD, todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
-import { DateWheel } from "../shared/components/date-wheel/DateWheel";
+import { DateWheel } from "@/components/date-wheel/DateWheel";
+import { ToggleRow } from "@/components/toggle-row/ToggleRow";
 import { FieldLabel } from "../shared/components/field-label/FieldLabel";
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
-import { ToggleRow } from "../shared/components/toggle-row/ToggleRow";
 import { useLastPeriodStyles } from "./LastPeriodStyle";
 
 type Props = {

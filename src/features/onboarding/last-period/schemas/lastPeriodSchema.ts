@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { isoDateSchema } from "@/shared/schemas/date/isoDateSchema";
-import { todayYMD, ymdToISO } from "../../shared/utils/onboardingDate";
+import { todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
 export const lastPeriodSchema = z
     .object({

@@ -1,0 +1,63 @@
+{
+    "confirm": {
+        "start": {
+            "title": "Did your period start on {{date}}?",
+            "lead": "You logged bleeding those days. Tell us what it was to adjust your cycle.",
+            "evidence": "Heavy bleeding logged: {{range}}.",
+            "confirm": "Yes, it was my period",
+            "spotting": "It was just spotting",
+            "dismiss": "Don't count it"
+        },
+        "close": {
+            "title": "Did your period end?",
+            "lead": "You haven't logged bleeding for a few days. Your last day was {{date}}.",
+            "hint": "Trailing spotting doesn't count: the closing date is the last day of real bleeding.",
+            "confirm": "Yes, it ended on {{date}}",
+            "dismiss": "No, it's still going"
+        },
+        "merge": {
+            "title": "Was it the same period?",
+            "lead": "Your last period ended on {{previousEndDate}} and there's bleeding again on {{newStartDate}} — only {{gapDays}} days of pause.",
+            "hint": "A short pause within the same period is common. If you merge them, they're saved as a single episode.",
+            "confirm": "Yes, it's the same",
+            "dismiss": "No, it's a new period"
+        },
+        "empty": {
+            "title": "Nothing to confirm",
+            "lead": "There's no pending proposal right now.",
+            "back": "Go back"
+        }
+    },
+    "edit": {
+        "list": {
+            "title": "Your periods",
+            "lead": "Tap one to correct dates or mark it as excluded.",
+            "empty": "You haven't logged any periods yet.",
+            "statusOpen": "Active",
+            "statusClosed": "Closed",
+            "statusExcluded": "Excluded",
+            "sourceConfirmed": "Confirmed",
+            "sourceInferred": "Inferred",
+            "sourceMixed": "Confirmed and adjusted",
+            "excludedHint": "Doesn't count toward your predictions",
+            "ongoingRange": "Since {{startDate}}"
+        },
+        "detail": {
+            "title": "Edit period",
+            "lead": "Change the dates or mark this episode as excluded.",
+            "startLabel": "Start",
+            "endLabel": "End",
+            "excludeTitle": "Exclude from calculations",
+            "excludeSubtitle": "Doesn't count toward your cycle or your stats.",
+            "excludeWarning": "This period is no longer used for your prediction or your stats. It stays visible in your history.",
+            "save": "Save changes",
+            "delete": "Delete this period",
+            "deleteConfirmTitle": "Delete this period?",
+            "deleteConfirmBody": "It's removed from your history and your predictions are recalculated.",
+            "deleteConfirmAction": "Delete",
+            "cancel": "Cancel",
+            "overlapError": "Those dates overlap with another logged period.",
+            "rangeError": "The end can't be before the start."
+        }
+    }
+}

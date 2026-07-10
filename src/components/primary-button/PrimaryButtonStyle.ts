@@ -55,5 +55,29 @@ export const usePrimaryButtonStyles = createStyles((theme) => {
             fontFamily: typography.families.heading,
             color: colors.textMuted,
         },
+        // CTA terciario = relleno tenue tintado de marca, entre `primary` y `secondary`.
+        // Para la opción intermedia de una elección de tres vías (p. ej. "fue solo manchado").
+        ghost: {
+            minHeight: theme.sizing.controlLg,
+            borderRadius: radius.pill,
+            backgroundColor: colors.primaryTint,
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            gap: spacing.sm,
+            paddingHorizontal: spacing.xl,
+        },
+        ghostText: {
+            fontFamily: typography.families.heading,
+            fontSize: typography.sizes.title,
+            lineHeight: typography.sizes.title + 4,
+            color: colors.link,
+        },
+        ghostPressed: {
+            opacity: theme.state.pressedOpacity,
+        },
+        ghostDisabled: {
+            opacity: theme.state.disabledOpacity,
+        },
     };
 });

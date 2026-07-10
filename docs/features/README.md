@@ -15,7 +15,7 @@ iniciado / ❌ ausente, deuda declarada). Ver práctica de actualización más a
 | 00  | [Onboarding — ajustes](00-onboarding.md)               | M1             |   ✅   | Deja de escribir datos falsos; permiso JIT; anticoncepción por método    |
 | 01  | [Motor de ciclo](01-motor-de-ciclo.md)                 | M1             |   ✅   | Predicción honesta, proyección diaria, historial de ciclos y precisión   |
 | 02  | [Check-in](02-check-in.md)                             | M2             |   🔲   | Captura diaria <60 s, adaptada al modo, con test de embarazo en todos    |
-| 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             |   🚧   | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
+| 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             |   ✅   | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
 | 04  | [Hoy](04-hoy.md)                                       | M3             |   🔲   | La pantalla que responde "¿dónde estoy y qué viene?"                     |
 | 05  | [Calendario](05-calendario.md)                         | M3             |   🔲   | Vista de mes con observado ≠ estimado y detalle de día                   |
 | 06  | [Diario](06-diario.md)                                 | M2             |   🔲   | Editar, borrar y excluir registros; higiene estadística                  |
@@ -74,7 +74,7 @@ detalle de día (deep-linkable desde notificaciones).
 | Hito      | Contenido                                                                                                                    | Planes                                            |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | **M0 ✅** | Fundaciones: DB v2, i18n/l10n, theme, onboarding                                                                             | —                                                 |
-| **M1**    | **Confianza**: esquema v3 + cifrado en reposo + cero-red en CI + motor de ciclo + gestión de periodo + ajustes de onboarding | 15 · 01 ✅ · 03 🚧 · 00 ✅                        |
+| **M1**    | **Confianza**: esquema v3 + cifrado en reposo + cero-red en CI + motor de ciclo + gestión de periodo + ajustes de onboarding | 15 · 01 ✅ · 03 ✅ · 00 ✅                        |
 | **M2**    | **Captura**: check-in por modos + diario + recordatorio diario                                                               | 02 · 06 · 12 (fase 1)                             |
 | **M3**    | **Superficies**: Hoy + calendario + semana de embarazo + corpus mínimo de embarazo + puente test+ → embarazo                 | 04 · 05 · 09 (fase 1) · 11 (fase 1) · 10 (fase 1) |
 | **M4**    | **Comprensión**: estadísticas con gates + notificaciones predictivas                                                         | 07 · 12 (fase 2)                                  |

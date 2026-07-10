@@ -1,10 +1,11 @@
 # 03 · Gestión de periodo (rachas)
 
-> **Hito:** M1 · **Depende de:** 01 (motor) · **Estado:** 🚧 Fase 1 implementada en
-> `src/domain/period/` (reconciliación pura + validación de solapes/fusión). Fases 2-3
-> (mutaciones y pantallas `period/confirm`/`period/edit`) pendientes — la Fase 2 necesita
-> el mockup `docs/design-system/screens/period.html` antes de tocar UI (regla del
-> proyecto).
+> **Hito:** M1 · **Depende de:** 01 (motor) · **Estado:** ✅ Completo. Fase 1
+> (`src/domain/period/`, reconciliación pura), Fase 2 (mutaciones `startPeriodRun` /
+> `closePeriodRun` / `mergePeriodRuns` + pantalla `period/confirm`, mockup
+> `docs/design-system/screens/period.html` aprobado) y Fase 3 (`updatePeriodRun` /
+> `deletePeriodRun` + editor `period/edit` → `period/edit/[id]`) implementadas con
+> cobertura de test (dominio + integración).
 
 ## Contexto
 
@@ -54,7 +55,7 @@ inicios ni cierres, y hacer trivial corregir el pasado.
 - **Cierre:** tests unit de cada regla (inferencia, inactividad, fusión, spotting de
   cola) con fixtures.
 
-### [ ] Fase 2: Mutaciones + confirmación
+### [x] Fase 2: Mutaciones + confirmación
 
 - **Objetivo:** abrir, cerrar y confirmar rachas desde la app.
 - **Cambios:** mutaciones `startPeriodRun` / `closePeriodRun` / `mergePeriodRuns` en
@@ -66,7 +67,7 @@ inicios ni cierres, y hacer trivial corregir el pasado.
   propuesta y confirmarla abre racha con `source='bleeding_inferred'`; prompt de
   inactividad cierra con `end_date` del último sangrado real.
 
-### [ ] Fase 3: Editor de historial
+### [x] Fase 3: Editor de historial
 
 - **Objetivo:** corregir el pasado sin miedo.
 - **Cambios:** pantalla `period/edit` — lista de rachas, editar fechas con validación de

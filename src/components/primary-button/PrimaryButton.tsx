@@ -12,7 +12,7 @@ const PRESS_LOCK_MS = 800;
 type Props = {
     label: string;
     onPress: () => void;
-    variant?: "primary" | "secondary";
+    variant?: "primary" | "secondary" | "ghost";
     disabled?: boolean;
     accent?: string;
     Icon?: LucideIcon;
@@ -52,6 +52,27 @@ export function PrimaryButton({ label, onPress, variant = "primary", disabled, a
                 ]}
             >
                 <Text style={styles.secondaryText}>{label}</Text>
+            </Pressable>
+        );
+    }
+
+    if (variant === "ghost") {
+        return (
+            <Pressable
+                onPress={handlePress}
+                disabled={disabled}
+                testID={testID}
+                accessibilityRole="button"
+                accessibilityLabel={label}
+                accessibilityState={{ disabled: !!disabled }}
+                style={({ pressed }) => [
+                    styles.ghost,
+                    pressed && styles.ghostPressed,
+                    disabled && styles.ghostDisabled,
+                ]}
+            >
+                {Icon ? <Icon size={20} color={theme.colors.link} strokeWidth={2.4} /> : null}
+                <Text style={styles.ghostText}>{label}</Text>
             </Pressable>
         );
     }

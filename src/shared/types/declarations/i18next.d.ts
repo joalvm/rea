@@ -3,6 +3,7 @@ import "i18next";
 import type common from "@/lang/es/common.json";
 import type exception from "@/lang/es/exception.json";
 import type onboarding from "@/lang/es/onboarding.json";
+import type period from "@/lang/es/period.json";
 import type preview from "@/lang/es/preview.json";
 import type validation from "@/lang/es/validation.json";
 
@@ -18,6 +19,7 @@ declare module "i18next" {
             exception: typeof exception;
             preview: typeof preview;
             onboarding: typeof onboarding;
+            period: typeof period;
             validation: typeof validation;
         };
         returnNull: false;

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { isoDateSchema } from "@/shared/schemas/date/isoDateSchema";
-import { addDaysToISO, todayYMD, ymdToISO } from "@/features/onboarding/shared/utils/onboardingDate";
+import { addDaysToISO, todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
 /** Anclajes editables desde onboarding. La datación por ecografía no se captura aquí (plan 09). */
 export const pregnancyDatingBasisValues = ["lmp", "due_date"] as const;
