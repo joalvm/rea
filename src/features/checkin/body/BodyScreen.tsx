@@ -1,28 +1,29 @@
-import { Pressable, ScrollView, Text } from "react-native";
+import { Thermometer } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 
+import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
+import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useBodyStyles } from "./BodyStyle";
 
 type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 3: dolor y cuerpo.   */
+/**
+ * Check-in paso 3: cuerpo (BBT, moco, cervical, libido, peso, náuseas…).
+ * Stub navegable — el contenido por modo se construye en Fase 3.
+ */
 export default function BodyScreen({ onContinue }: Props) {
-    const styles = useBodyStyles();
+    const { t } = useTranslation("checkIn");
+    const { t: tCommon } = useTranslation("common");
+    useBodyStyles();
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{"Dolor y cuerpo"}</Text>
-            <Text style={styles.description}>
-                {"Dolor (0-5) y si te impidió hacer algo (interferencia 0-3), sensibilidad mamaria (0-5) y PMS (0-5)."}
-            </Text>
+        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+            <CheckinHeader Icon={Thermometer} title={t("steps.body")} lead={t("body.pain.title")} />
 
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onContinue}
-            >
-                <Text style={styles.primaryText}>{"Continuar"}</Text>
-            </Pressable>
-        </ScrollView>
+            <SectionTitle hint={t("body.bbt.hint")}>{t("body.bbt.title")}</SectionTitle>
+        </CheckinScreen>
     );
 }

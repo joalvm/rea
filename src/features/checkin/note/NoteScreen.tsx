@@ -1,28 +1,40 @@
-import { Pressable, ScrollView, Text } from "react-native";
+import { FileText } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
+import { TextInput } from "react-native";
 
+import { useTheme } from "@/theme/useTheme";
+import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
+import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { useNoteStyles } from "./NoteStyle";
+
+import { useCheckinStore } from "../shared/stores/useCheckinStore";
 
 type Props = {
     onContinue: () => void;
 };
 
-/** Check-in paso 7: nota libre (checkins.note).   */
+/** Check-in paso 7: nota libre (checkins.note). */
 export default function NoteScreen({ onContinue }: Props) {
+    const { t: tCheckin } = useTranslation("checkIn");
+    const { t: tCommon } = useTranslation("common");
+    const theme = useTheme();
     const styles = useNoteStyles();
+    const note = useCheckinStore((state) => state.draft.note);
+    const set = useCheckinStore((state) => state.set);
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{"Una nota para hoy"}</Text>
-            <Text style={styles.description}>
-                {"Algo que quieras recordar de este momento. Opcional y en tono de diario."}
-            </Text>
+        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+            <CheckinHeader Icon={FileText} title={tCheckin("note.title")} lead={tCheckin("note.hint")} />
 
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onContinue}
-            >
-                <Text style={styles.primaryText}>{"Continuar"}</Text>
-            </Pressable>
-        </ScrollView>
+            <TextInput
+                style={styles.input}
+                value={note ?? ""}
+                onChangeText={(text) => set({ note: text.length > 0 ? text : null })}
+                placeholder={tCheckin("note.placeholder")}
+                placeholderTextColor={theme.colors.placeholder}
+                multiline
+                textAlignVertical="top"
+            />
+        </CheckinScreen>
     );
 }

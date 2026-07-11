@@ -1,83 +1,37 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useCheckinIntroStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography, sizing } = theme;
 
     return {
-        screen: {
-            flex: 1,
-            backgroundColor: colors.background,
-        },
-        container: {
-            flexGrow: 1,
-            justifyContent: "center",
+        heroWrap: {
             alignItems: "center",
             gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
+            paddingVertical: spacing.xl,
+        },
+        heroBlob: {
+            width: 80,
+            height: 80,
+            borderRadius: radius.xl,
+            backgroundColor: colors.primaryTint,
+            alignItems: "center",
+            justifyContent: "center",
         },
         title: {
             ...typography.variant.h1,
+            fontFamily: typography.families.heading,
             color: colors.text,
             textAlign: "center",
         },
-        description: {
+        lead: {
             ...typography.variant.body,
             color: colors.textSecondary,
             textAlign: "center",
             maxWidth: sizing.readableMaxWidth,
         },
-        links: {
-            alignSelf: "stretch",
+        options: {
             gap: spacing.sm,
-            marginTop: spacing.sm,
-        },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
-            color: colors.textMuted,
-        },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
-        },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
+            marginTop: spacing.md,
         },
     };
 });

@@ -1,5 +1,9 @@
-import { Pressable, ScrollView, Text } from "react-native";
+import { Heart } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 
+import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
+import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useFertilityStyles } from "./FertilityStyle";
 
 type Props = {
@@ -7,27 +11,19 @@ type Props = {
 };
 
 /**
- * Check-in paso 5 (CONDICIONAL): fertilidad y sexualidad.
- * Solo si trying_to_conceive y sin anticoncepción hormonal.
+ * Check-in paso 5: fertilidad y tests (OPK, test de embarazo, relaciones).
+ * Stub navegable — el contenido por modo se construye en Fase 3.
  */
 export default function FertilityScreen({ onContinue }: Props) {
-    const styles = useFertilityStyles();
+    const { t } = useTranslation("checkIn");
+    const { t: tCommon } = useTranslation("common");
+    useFertilityStyles();
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{"Fertilidad"}</Text>
-            <Text style={styles.description}>
-                {
-                    "Moco cervical (0-4), libido (0-4) y registrar relación (intercourse_log). Copy de señales, nunca de certeza."
-                }
-            </Text>
+        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+            <CheckinHeader Icon={Heart} title={t("fertility.title")} lead={t("fertility.pregnancyTest.hint")} />
 
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onContinue}
-            >
-                <Text style={styles.primaryText}>{"Continuar"}</Text>
-            </Pressable>
-        </ScrollView>
+            <SectionTitle>{t("fertility.pregnancyTest.title")}</SectionTitle>
+        </CheckinScreen>
     );
 }

@@ -1,7 +1,7 @@
 # 02 · Check-in (captura diaria)
 
 > **Hito:** M2 · **Depende de:** 01 (motor), 03 (señal de periodo), esquema v3 ·
-> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fases 2-4 pendientes.
+> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fase 2 ✅ (wizard funcional). Fases 3-4 pendientes.
 
 ## Contexto
 
@@ -74,7 +74,7 @@ Objetivo de producto: **registrar un día normal toma menos de 60 segundos**, y 
 - **Cierre:** mockup aprobado visualmente; seeder testeado (cada síntoma tiene label
   es/en resoluble).
 
-### [ ] Fase 2: Wizard funcional
+### [x] Fase 2: Wizard funcional
 
 - **Objetivo:** registrar de verdad, con guardado atómico.
 - **Cambios:** draft efímero en Zustand; navegación de pasos por modo; guardado

@@ -1,83 +1,43 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useReviewStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, typography, borderWidth } = theme;
 
     return {
-        screen: {
-            flex: 1,
-            backgroundColor: colors.background,
-        },
-        container: {
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
-        },
-        title: {
-            ...typography.variant.h1,
-            color: colors.text,
-            textAlign: "center",
-        },
-        description: {
-            ...typography.variant.body,
-            color: colors.textSecondary,
-            textAlign: "center",
-            maxWidth: sizing.readableMaxWidth,
-        },
-        links: {
-            alignSelf: "stretch",
+        summary: {
             gap: spacing.sm,
-            marginTop: spacing.sm,
         },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
+        editHint: {
+            ...typography.variant.caption,
             color: colors.textMuted,
+            marginBottom: spacing.xs,
         },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
+        row: {
             flexDirection: "row",
-            gap: spacing.sm,
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: spacing.md,
+            paddingVertical: spacing.md,
+            borderTopWidth: borderWidth.hairline,
+            borderTopColor: colors.divider,
         },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
+        rowLabel: {
             ...typography.variant.subhead,
-            color: colors.link,
+            fontFamily: typography.families.heading,
+            color: colors.textMuted,
+            flexShrink: 0,
+        },
+        rowValue: {
+            ...typography.variant.body,
+            color: colors.text,
+            textAlign: "right",
+            flex: 1,
+        },
+        empty: {
+            ...typography.variant.body,
+            color: colors.textMuted,
+            textAlign: "center",
+            paddingVertical: spacing.xl,
         },
     };
 });

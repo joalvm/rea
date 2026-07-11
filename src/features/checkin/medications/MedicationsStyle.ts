@@ -1,83 +1,78 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useMedicationsStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography, borderWidth } = theme;
 
     return {
-        screen: {
-            flex: 1,
-            backgroundColor: colors.background,
-        },
-        container: {
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
-        },
-        title: {
-            ...typography.variant.h1,
-            color: colors.text,
-            textAlign: "center",
-        },
-        description: {
-            ...typography.variant.body,
-            color: colors.textSecondary,
-            textAlign: "center",
-            maxWidth: sizing.readableMaxWidth,
-        },
-        links: {
-            alignSelf: "stretch",
-            gap: spacing.sm,
-            marginTop: spacing.sm,
-        },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
-            color: colors.textMuted,
-        },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
+        addRow: {
             flexDirection: "row",
             gap: spacing.sm,
+            alignItems: "center",
         },
-        pressed: {
-            opacity: 0.85,
+        nameInput: {
+            flex: 1,
+            minHeight: 44,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.border,
+            borderRadius: radius.md,
+            paddingHorizontal: spacing.lg,
+            paddingVertical: spacing.sm,
+            fontFamily: typography.families.sans,
+            fontSize: typography.sizes.body,
+            color: colors.text,
+            backgroundColor: colors.surface,
         },
-        primary: {
+        doseInput: {
+            borderWidth: borderWidth.thin,
+            borderColor: colors.border,
+            borderRadius: radius.md,
+            paddingHorizontal: spacing.lg,
+            paddingVertical: spacing.sm,
+            fontFamily: typography.families.sans,
+            fontSize: typography.sizes.body,
+            color: colors.text,
+            backgroundColor: colors.surface,
+            marginBottom: spacing.sm,
+        },
+        addBtn: {
+            width: 44,
+            height: 44,
+            borderRadius: radius.md,
             backgroundColor: colors.primary,
-            ...shadows[2],
+            alignItems: "center",
+            justifyContent: "center",
         },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
+        addBtnDisabled: {
+            backgroundColor: colors.border,
         },
-        secondary: {
-            backgroundColor: "transparent",
+        medList: {
+            gap: spacing.md,
+            marginTop: spacing.sm,
         },
-        secondaryText: {
+        medCard: {
+            gap: spacing.sm,
+            padding: spacing.md,
+            borderRadius: radius.lg,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.border,
+            backgroundColor: colors.surface,
+        },
+        medHead: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+        },
+        medNameWrap: {
+            flexDirection: "row",
+            alignItems: "center",
+            gap: spacing.sm,
+            flex: 1,
+        },
+        medName: {
             ...typography.variant.subhead,
-            color: colors.link,
+            fontFamily: typography.families.heading,
+            color: colors.text,
+            flex: 1,
         },
     };
 });

@@ -1,83 +1,52 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useSymptomsStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, typography } = theme;
 
     return {
-        screen: {
-            flex: 1,
-            backgroundColor: colors.background,
-        },
-        container: {
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
-        },
-        title: {
-            ...typography.variant.h1,
-            color: colors.text,
-            textAlign: "center",
-        },
-        description: {
-            ...typography.variant.body,
-            color: colors.textSecondary,
-            textAlign: "center",
-            maxWidth: sizing.readableMaxWidth,
-        },
-        links: {
-            alignSelf: "stretch",
+        group: {
             gap: spacing.sm,
-            marginTop: spacing.sm,
         },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
+        chipsWrap: {
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: spacing.sm,
         },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
+        empty: {
+            ...typography.variant.body,
             color: colors.textMuted,
+            textAlign: "center",
+            paddingVertical: spacing.xl,
         },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
+        intensityWrap: {
+            gap: spacing.sm,
+            marginTop: spacing.xs,
+            paddingHorizontal: spacing.md,
+            paddingVertical: spacing.sm,
+            backgroundColor: colors.surfaceAlt,
+            borderRadius: spacing.md,
+        },
+        intensityRow: {
+            flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
+            gap: spacing.sm,
+        },
+        intensityLabel: {
+            ...typography.variant.subhead,
+            color: colors.text,
+            flex: 1,
+        },
+        intensityDots: {
             flexDirection: "row",
             gap: spacing.sm,
         },
-        pressed: {
-            opacity: 0.85,
+        intensityDot: {
+            fontSize: typography.sizes.body,
+            color: colors.border,
         },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
+        intensityDotOn: {
+            color: colors.primary,
         },
     };
 });

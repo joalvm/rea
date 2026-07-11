@@ -5,5 +5,8 @@
     "period": {
         "mutation": "We couldn't save the change. Please try again."
     },
-    "settings": {}
+    "settings": {},
+    "checkin": {
+        "save": "We couldn't save your check-in. Please try again."
+    }
 }

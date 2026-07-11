@@ -2,6 +2,7 @@
     "action": {
         "back": "Volver",
         "continue": "Continuar",
+        "save": "Guardar",
         "notNow": "Ahora no",
         "start": "Empezar",
         "startApp": "Empezar a usar Rea"
