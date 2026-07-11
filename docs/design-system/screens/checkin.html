@@ -259,7 +259,7 @@
             .body {
                 flex: 1;
                 overflow-y: auto;
-                padding: 18px 22px 0;
+                padding: 14px 18px 0;
                 display: flex;
                 flex-direction: column;
             }
@@ -267,18 +267,18 @@
                 justify-content: center;
                 align-items: center;
                 text-align: center;
-                padding-bottom: 18px;
+                padding: 18px 22px;
             }
             .title {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 22px;
+                font-size: 21px;
                 color: var(--ink);
                 letter-spacing: -0.3px;
                 line-height: 1.2;
             }
             .lead {
-                font-size: 14px;
+                font-size: 13.5px;
                 color: var(--ink3);
                 line-height: 1.5;
                 margin-top: 6px;
@@ -289,16 +289,17 @@
 
             /* --- Buttons --- */
             .btn {
-                height: 56px;
+                height: 54px;
                 border-radius: 999px;
                 background: var(--celeste);
                 color: var(--btn-text);
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 16.5px;
+                font-size: 16px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                gap: 8px;
                 box-shadow: var(--sh-btn);
             }
             .btn.block {
@@ -321,13 +322,13 @@
                 border: 1px solid var(--line);
             }
 
-            /* --- Segmented control (mode picker, period signal) --- */
+            /* --- Segmented control (categorical exclusive: period signal, sleep, test) --- */
             .seg {
                 display: flex;
                 background: var(--c50);
                 border-radius: 14px;
                 padding: 4px;
-                margin-top: 12px;
+                margin-top: 10px;
                 gap: 4px;
             }
             .phone.dark .seg {
@@ -338,10 +339,18 @@
                 text-align: center;
                 font-family: "Quicksand";
                 font-weight: 600;
-                font-size: 13px;
+                font-size: 12.5px;
                 color: var(--ink3);
-                padding: 10px 6px;
+                padding: 10px 4px;
                 border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+            }
+            .seg .opt svg {
+                width: 18px;
+                height: 18px;
             }
             .seg .opt.on {
                 background: #fff;
@@ -353,69 +362,102 @@
                 color: var(--ink);
             }
 
-            /* --- Scale pills (0-N intensity) --- */
-            .scale {
-                display: flex;
-                gap: 6px;
+            /* --- Choice cards (icon + human label + hint) — REPLACES numeric scale --- */
+            .choice-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
                 margin-top: 12px;
-                flex-wrap: wrap;
             }
-            .pill {
-                flex: 1;
-                min-width: 52px;
-                text-align: center;
-                font-family: "Quicksand";
-                font-weight: 700;
-                font-size: 12.5px;
-                padding: 12px 4px 10px;
-                border-radius: 14px;
+            .choice-grid.three {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .choice-card {
                 border: 1.5px solid var(--line);
-                color: var(--ink3);
+                border-radius: 16px;
                 background: #fff;
-                line-height: 1.2;
+                padding: 12px 8px 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+                text-align: center;
+                min-height: 88px;
+                justify-content: flex-start;
             }
-            .phone.dark .pill {
+            .phone.dark .choice-card {
                 background: #0b2034;
                 border-color: var(--line);
-                color: var(--ink3);
             }
-            .pill .n {
-                display: block;
-                font-size: 18px;
-                color: var(--ink2);
-                margin-bottom: 2px;
-            }
-            .phone.dark .pill .n {
-                color: var(--ink4);
-            }
-            .pill.on {
+            .choice-card.on {
                 border-color: var(--celeste-400);
                 background: var(--c50);
-                color: var(--celeste-deep);
+                border-width: 2px;
+                padding: 11px 7px 9px;
             }
-            .phone.dark .pill.on {
+            .phone.dark .choice-card.on {
                 background: #0e3447;
-                color: var(--celeste);
                 border-color: var(--celeste-400);
             }
-            .pill.on .n {
-                color: var(--celeste-500);
+            .choice-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 12px;
+                background: var(--c100);
+                color: var(--celeste-deep);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
             }
+            .choice-icon svg {
+                width: 22px;
+                height: 22px;
+            }
+            .phone.dark .choice-icon {
+                background: #11506b;
+                color: var(--celeste);
+            }
+            .choice-card.on .choice-icon {
+                background: var(--celeste);
+                color: var(--btn-text);
+            }
+            .phone.dark .choice-card.on .choice-icon {
+                background: var(--celeste);
+                color: var(--btn-text);
+            }
+            .choice-card strong {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 13.5px;
+                color: var(--ink);
+                line-height: 1.2;
+            }
+            .choice-card small {
+                font-size: 10.5px;
+                color: var(--ink4);
+                line-height: 1.3;
+                margin-top: -1px;
+            }
+
             .label {
                 font-family: "Quicksand";
                 font-weight: 700;
                 font-size: 13px;
                 color: var(--ink2);
-                margin: 16px 0 4px;
+                margin: 16px 0 2px;
                 letter-spacing: 0.2px;
             }
+            .label.first {
+                margin-top: 4px;
+            }
             .hint {
-                font-size: 13px;
+                font-size: 12.5px;
                 color: var(--ink4);
                 line-height: 1.45;
             }
 
-            /* --- Symptom chips --- */
+            /* --- Symptom chips (multi-select, not a scale) --- */
             .symp-group {
                 font-family: "Quicksand";
                 font-weight: 700;
@@ -423,27 +465,35 @@
                 text-transform: uppercase;
                 letter-spacing: 1.3px;
                 color: var(--ink4);
-                margin: 18px 0 8px;
+                margin: 16px 0 8px;
             }
             .symp-row {
                 display: flex;
                 flex-wrap: wrap;
-                gap: 8px;
+                gap: 7px;
             }
             .schip {
                 font-family: "Quicksand";
                 font-weight: 600;
-                font-size: 13px;
-                padding: 9px 14px;
+                font-size: 12.5px;
+                padding: 8px 12px;
                 border-radius: 999px;
                 border: 1.5px solid var(--line);
                 color: var(--ink2);
                 background: #fff;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
             }
             .phone.dark .schip {
                 background: #0b2034;
                 border-color: var(--line);
                 color: var(--ink2);
+            }
+            .schip svg {
+                width: 14px;
+                height: 14px;
+                color: var(--ink4);
             }
             .schip.on {
                 border-color: var(--celeste-400);
@@ -454,22 +504,33 @@
                 background: #0e3447;
                 color: var(--celeste);
             }
-            .schip.on .lvl {
-                display: inline-block;
-                margin-left: 6px;
-                font-size: 11px;
+            .schip.on svg {
                 color: var(--celeste-500);
             }
+            .schip .lvl {
+                display: inline-flex;
+                gap: 2px;
+                margin-left: 2px;
+            }
+            .schip .lvl i {
+                width: 5px;
+                height: 5px;
+                border-radius: 999px;
+                background: var(--celeste-500);
+                display: inline-block;
+            }
 
-            /* --- Quick options --- */
             .quick-title {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 12px;
+                font-size: 11.5px;
                 text-transform: uppercase;
                 letter-spacing: 1.3px;
                 color: var(--celeste-deep);
-                margin-bottom: 8px;
+                margin: 4px 0 8px;
+            }
+            .phone.dark .quick-title {
+                color: var(--celeste);
             }
 
             /* --- Medication card --- */
@@ -484,6 +545,30 @@
                 background: #0b2034;
                 border-color: var(--line);
             }
+            .med-head {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .med-head .mi {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                background: var(--c100);
+                color: var(--celeste-deep);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .phone.dark .med-head .mi {
+                background: #11506b;
+                color: var(--celeste);
+            }
+            .med-head .mi svg {
+                width: 18px;
+                height: 18px;
+            }
             .med-name {
                 font-family: "Quicksand";
                 font-weight: 700;
@@ -491,25 +576,33 @@
                 color: var(--ink);
             }
             .med-dose {
-                font-size: 13px;
+                font-size: 12.5px;
                 color: var(--ink3);
-                margin-top: 2px;
+                margin-top: 1px;
             }
             .med-relief {
-                display: flex;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
                 gap: 6px;
-                margin-top: 10px;
+                margin-top: 12px;
             }
             .med-relief .r {
-                flex: 1;
                 text-align: center;
                 font-family: "Quicksand";
                 font-weight: 600;
-                font-size: 12px;
-                padding: 8px;
+                font-size: 11.5px;
+                padding: 9px 4px;
                 border-radius: 10px;
                 border: 1.5px solid var(--line);
                 color: var(--ink3);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+            }
+            .med-relief .r svg {
+                width: 18px;
+                height: 18px;
             }
             .med-relief .r.on {
                 border-color: var(--mint);
@@ -526,9 +619,17 @@
                 color: var(--celeste-deep);
                 margin-top: 14px;
                 text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
             }
             .phone.dark .add-link {
                 color: var(--celeste);
+            }
+            .add-link svg {
+                width: 16px;
+                height: 16px;
             }
 
             /* --- Note textarea mock --- */
@@ -551,20 +652,28 @@
 
             /* --- Review summary --- */
             .rev-section {
-                margin-top: 14px;
+                margin-top: 12px;
             }
             .rev-head {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 13px;
+                font-size: 12.5px;
                 color: var(--ink3);
                 text-transform: uppercase;
                 letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .rev-head svg {
+                width: 14px;
+                height: 14px;
+                color: var(--celeste-deep);
             }
             .rev-val {
-                font-size: 14px;
+                font-size: 13.5px;
                 color: var(--ink);
-                margin-top: 4px;
+                margin-top: 3px;
                 line-height: 1.5;
             }
             .rev-chips {
@@ -576,67 +685,108 @@
             .rev-chips .rc {
                 font-family: "Quicksand";
                 font-weight: 600;
-                font-size: 12px;
+                font-size: 11.5px;
                 padding: 5px 10px;
                 border-radius: 999px;
                 background: var(--c50);
                 color: var(--celeste-deep);
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .rev-chips .rc svg {
+                width: 12px;
+                height: 12px;
             }
             .phone.dark .rev-chips .rc {
                 background: #0e3447;
                 color: var(--celeste);
             }
 
-            /* --- Test positive card --- */
+            /* --- Test positive card (neutral) --- */
             .test-card {
                 background: var(--c50);
                 border: 1.5px solid var(--c200);
                 border-radius: 20px;
-                padding: 24px 20px;
-                margin: 16px 0;
+                padding: 20px 18px;
+                margin: 14px 0;
                 text-align: center;
             }
             .phone.dark .test-card {
                 background: #0e3447;
                 border-color: #11506b;
             }
+            .test-card .test-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 16px;
+                background: #fff;
+                color: var(--ink2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 10px;
+            }
+            .phone.dark .test-card .test-icon {
+                background: #0a2336;
+                color: var(--ink2);
+            }
+            .test-card .test-icon svg {
+                width: 26px;
+                height: 26px;
+            }
             .test-card .test-title {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 19px;
+                font-size: 18px;
                 color: var(--ink);
                 line-height: 1.25;
             }
             .test-card .test-lead {
-                font-size: 14px;
+                font-size: 13.5px;
                 color: var(--ink3);
-                margin-top: 8px;
+                margin-top: 7px;
                 line-height: 1.5;
             }
             .test-card .test-hint {
-                font-size: 12.5px;
+                font-size: 12px;
                 color: var(--ink4);
-                margin-top: 16px;
+                margin-top: 14px;
             }
 
-            /* --- BBT input mock --- */
+            /* --- BBT / weight value display --- */
             .bbt-row {
                 display: flex;
                 align-items: baseline;
                 gap: 6px;
-                margin-top: 10px;
+                margin-top: 8px;
             }
             .bbt-val {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 36px;
+                font-size: 34px;
                 color: var(--ink);
             }
             .bbt-unit {
                 font-family: "Quicksand";
                 font-weight: 600;
-                font-size: 18px;
+                font-size: 17px;
                 color: var(--ink3);
+            }
+            .bbt-time {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                font-family: "Quicksand";
+                font-weight: 600;
+                font-size: 13px;
+                color: var(--ink2);
+                margin-top: 6px;
+            }
+            .bbt-time svg {
+                width: 14px;
+                height: 14px;
+                color: var(--celeste-deep);
             }
 
             /* --- Intercourse toggle --- */
@@ -644,13 +794,23 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 14px 0;
+                padding: 13px 0;
                 border-bottom: 1px solid var(--line);
+            }
+            .toggle-row .tr-left {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .toggle-row .tr-left svg {
+                width: 18px;
+                height: 18px;
+                color: var(--ink3);
             }
             .toggle-row .tr-label {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 15px;
+                font-size: 14.5px;
                 color: var(--ink);
             }
             .toggle {
@@ -685,7 +845,7 @@
                 background: #fff;
                 border: 1.5px solid var(--line);
                 border-radius: 18px;
-                padding: 16px;
+                padding: 15px;
                 margin-top: 12px;
                 display: flex;
                 align-items: center;
@@ -707,34 +867,47 @@
                 height: 44px;
                 border-radius: 14px;
                 background: var(--c100);
+                color: var(--celeste-deep);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 22px;
                 flex-shrink: 0;
+            }
+            .phone.dark .mode-icon {
+                background: #11506b;
+                color: var(--celeste);
+            }
+            .mode-card.on .mode-icon {
+                background: var(--celeste);
+                color: var(--btn-text);
+            }
+            .mode-icon svg {
+                width: 22px;
+                height: 22px;
             }
             .mode-card .mt {
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 16px;
+                font-size: 15.5px;
                 color: var(--ink);
             }
             .mode-card .mh {
-                font-size: 13px;
+                font-size: 12.5px;
                 color: var(--ink3);
                 margin-top: 2px;
             }
 
             .mode-badge {
                 position: absolute;
-                top: 18px;
-                right: 22px;
+                top: 16px;
+                right: 18px;
+                z-index: 2;
                 font-family: "Quicksand";
                 font-weight: 700;
-                font-size: 10px;
+                font-size: 9.5px;
                 text-transform: uppercase;
                 letter-spacing: 1px;
-                padding: 4px 10px;
+                padding: 4px 9px;
                 border-radius: 999px;
             }
             .mode-badge.tracking {
@@ -754,6 +927,26 @@
                 color: var(--rose-t);
             }
 
+            .intro-hero {
+                width: 80px;
+                height: 80px;
+                border-radius: 26px;
+                background: linear-gradient(150deg, var(--c200), var(--c100));
+                color: var(--celeste-deep);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 14px;
+            }
+            .phone.dark .intro-hero {
+                background: linear-gradient(150deg, #11506b, #0e3447);
+                color: var(--celeste);
+            }
+            .intro-hero svg {
+                width: 40px;
+                height: 40px;
+            }
+
             .footnote {
                 text-align: center;
                 color: var(--ink4);
@@ -767,12 +960,13 @@
         <div class="page">
             <div class="lead-hero">
                 <div class="eyebrow">Plan 02 · Check-in · Fase 1</div>
-                <h1>Wizard de captura diaria — todos los pasos, 4 modos, ambos temas</h1>
+                <h1>Wizard de captura diaria — iconos, no números</h1>
                 <p>
-                    El check-in es el corazón de captura de Rea: todo lo que la app sabe nace aquí. Este mockup cubre
-                    los 8 pasos del wizard, adaptados por modo reproductivo, en tema claro y oscuro. Regla rectora:
-                    registrar un día normal tarda &lt;60 s; un día "nada que reportar" &lt;15 s. Todo es opcional,
-                    "Guardar" está siempre disponible, y lo que no aplica al modo no aparece.
+                    El check-in es el corazón de captura de Rea. Regla rectora del design-system (icons.html §03-04):
+                    la usuaria nunca debe depender de números para saber qué marca. Cada escala graduable usa
+                    <strong>tarjetas con icono + etiqueta humana + descripción</strong> (.choice-card). Los valores
+                    numéricos viven solo en data. Modos reproductivos adaptan los pasos; registrar un día normal tarda
+                    &lt;60 s, un día vacío &lt;15 s. Todo opcional, "Guardar" siempre disponible.
                 </p>
                 <div class="legend">
                     <span class="chip tracking">tracking_only</span>
@@ -783,41 +977,40 @@
             </div>
 
             <!-- ============ INTRO ============ -->
-            <div class="section-label">Intro · selección de modo de registro</div>
+            <div class="section-label">Intro · selección de velocidad de registro</div>
             <p class="section-sub">
-                La primera pantalla pregunta "¿cómo te sientes?" y ofrece tres velocidades. El modo rápido prioriza los
-                quick-options; "nada que reportar" guarda un check-in vacío en un toque. El modo activo de la usuaria
-                se muestra como contexto (badge), no como pregunta.
+                La primera pantalla pregunta "¿cómo te sientes?" y ofrece tres velocidades. El modo activo de la
+                usuaria se muestra como badge de contexto (no como pregunta).
             </p>
             <div class="grid">
                 <div class="cell">
                     <div class="phone">
                         <div class="sb"><span>9:41</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="phead">
-                            <div class="back">←</div>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body center">
-                            <div style="font-size: 48px; margin-bottom: 12px">🌊</div>
+                            <div class="intro-hero"><i data-lucide="waves"></i></div>
                             <div class="title">¿Cómo te sientes hoy?</div>
                             <div class="lead">Registra tu día. Tarda menos de un minuto.</div>
-                            <div style="width: 100%; margin-top: 20px">
+                            <div style="width: 100%; margin-top: 18px">
                                 <div class="mode-card on">
-                                    <div class="mode-icon">⚡</div>
+                                    <div class="mode-icon"><i data-lucide="zap"></i></div>
                                     <div>
                                         <div class="mt">Registro rápido</div>
                                         <div class="mh">Lo esencial en segundos</div>
                                     </div>
                                 </div>
                                 <div class="mode-card">
-                                    <div class="mode-icon">📝</div>
+                                    <div class="mode-icon"><i data-lucide="clipboard-list"></i></div>
                                     <div>
                                         <div class="mt">Registro completo</div>
                                         <div class="mh">Todo lo que quieres apuntar</div>
                                     </div>
                                 </div>
                                 <div class="mode-card">
-                                    <div class="mode-icon">🌱</div>
+                                    <div class="mode-icon"><i data-lucide="leaf"></i></div>
                                     <div>
                                         <div class="mt">Nada que reportar</div>
                                         <div class="mh">Guarda un día tranquilo sin detalles</div>
@@ -827,16 +1020,15 @@
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
                     </div>
-                    <div class="cap">Intro — tema claro<br /><span class="sub">3 velocidades de registro</span></div>
+                    <div class="cap">Intro — tema claro<br /><span class="sub">3 velocidades, icono por velocidad</span></div>
                 </div>
             </div>
 
             <!-- ============ BLEEDING ============ -->
             <div class="section-label">Paso 1 · Sangrado + señal de periodo</div>
             <p class="section-sub">
-                Escala 0-4 + coágulos 0-3. La señal de periodo ("me bajó / sigue / terminó") delega en el plan 03:
-                nunca crea una racha directamente, dispara la propuesta de reconciliación. Presente en los 3 modos de
-                ciclo; en embarazo no aparece (el sangrado es síntoma de alerta, no de regla).
+                Escala de flujo y coágulos con tarjetas icono+etiqueta. La señal de periodo ("me bajó / sigue /
+                terminó") delega en plan 03. Presente en los 3 modos de ciclo; en embarazo no aparece.
             </p>
             <div class="grid">
                 <div class="cell">
@@ -844,32 +1036,61 @@
                         <div class="sb"><span>9:42</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 12%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Sangrado</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="droplet" style="width:16px;height:16px;vertical-align:-2px"></i> Sangrado</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">¿Cuánto sangrado tienes?</div>
-                            <div class="lead">Elige el nivel de ahora mismo. Si no hay, marca nada.</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">0</span>Nada</div>
-                                <div class="pill"><span class="n">1</span>Manchado</div>
-                                <div class="pill on"><span class="n">2</span>Ligero</div>
-                                <div class="pill"><span class="n">3</span>Moderado</div>
-                                <div class="pill"><span class="n">4</span>Abundante</div>
+                            <div class="lead">Elige el nivel de ahora mismo.</div>
+                            <div class="label first">Flujo</div>
+                            <div class="choice-grid">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="circle-off"></i></span>
+                                    <strong>Nada</strong>
+                                    <small>Sin sangrado</small>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="droplet"></i></span>
+                                    <strong>Manchado</strong>
+                                    <small>Ocasional, leve</small>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="droplets"></i></span>
+                                    <strong>Ligero</strong>
+                                    <small>Cambio regular</small>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="cloud-drizzle"></i></span>
+                                    <strong>Moderado</strong>
+                                    <small>Flujo constante</small>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="cloud-rain"></i></span>
+                                    <strong>Abundante</strong>
+                                    <small>Intenso, cambio frecuente</small>
+                                </div>
                             </div>
                             <div class="label">¿Coágulos?</div>
-                            <div class="scale">
-                                <div class="pill on"><span class="n">0</span>No</div>
-                                <div class="pill"><span class="n">1</span>Pequeños</div>
-                                <div class="pill"><span class="n">2</span>Medianos</div>
-                                <div class="pill"><span class="n">3</span>Grandes</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="minus"></i></span>
+                                    <strong>No</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="circle-dot"></i></span>
+                                    <strong>Pequeños</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="grip"></i></span>
+                                    <strong>Medianos</strong>
+                                </div>
                             </div>
                             <div class="label">Tu regla</div>
                             <div class="seg">
-                                <div class="opt on">Me bajó hoy</div>
-                                <div class="opt">Sigue</div>
-                                <div class="opt">Terminó</div>
+                                <div class="opt on"><i data-lucide="droplet"></i>Me bajó</div>
+                                <div class="opt"><i data-lucide="waves"></i>Sigue</div>
+                                <div class="opt"><i data-lucide="check"></i>Terminó</div>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
@@ -882,28 +1103,43 @@
                         <div class="sb"><span>9:42</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 12%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
                             <span class="ptitle">Sangrado</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">¿Cuánto sangrado tienes?</div>
-                            <div class="lead">Elige el nivel de ahora mismo. Si no hay, marca nada.</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">0</span>Nada</div>
-                                <div class="pill"><span class="n">1</span>Manchado</div>
-                                <div class="pill on"><span class="n">3</span>Moderado</div>
-                                <div class="pill"><span class="n">4</span>Abundante</div>
+                            <div class="lead">Elige el nivel de ahora mismo.</div>
+                            <div class="label first">Flujo</div>
+                            <div class="choice-grid">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="droplet"></i></span>
+                                    <strong>Manchado</strong>
+                                    <small>Ocasional</small>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="cloud-drizzle"></i></span>
+                                    <strong>Moderado</strong>
+                                    <small>Flujo constante</small>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="cloud-rain"></i></span>
+                                    <strong>Abundante</strong>
+                                    <small>Cambio frecuente</small>
+                                </div>
                             </div>
                             <div class="label">¿Coágulos?</div>
-                            <div class="scale">
-                                <div class="pill on"><span class="n">2</span>Medianos</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="grip"></i></span>
+                                    <strong>Medianos</strong>
+                                </div>
                             </div>
                             <div class="label">Tu regla</div>
                             <div class="seg">
-                                <div class="opt">Me bajó hoy</div>
-                                <div class="opt on">Sigue</div>
-                                <div class="opt">Terminó</div>
+                                <div class="opt"><i data-lucide="droplet"></i>Me bajó</div>
+                                <div class="opt on"><i data-lucide="waves"></i>Sigue</div>
+                                <div class="opt"><i data-lucide="check"></i>Terminó</div>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
@@ -915,8 +1151,9 @@
             <!-- ============ FEELINGS ============ -->
             <div class="section-label">Paso 2 · Ánimo y cuerpo (todos los modos)</div>
             <p class="section-sub">
-                Ánimo (1-5), energía (1-5), estrés (0-5), sueño (cualitativo). El mismo set en los 4 modos — es la
-                capa emocional que alimenta las curvas por día de ciclo (plan 07).
+                Ánimo (caras), energía (batería), estrés (escala humana de icons.html §04), sueño (categórico). El
+                mismo set en los 4 modos. Ejemplo canónico del design-system: registrar estado debe sentirse como
+                elegir un estado reconocible, no completar una escala abstracta.
             </p>
             <div class="grid">
                 <div class="cell">
@@ -924,52 +1161,92 @@
                         <div class="sb"><span>9:43</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 25%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Ánimo y cuerpo</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="smile" style="width:16px;height:16px;vertical-align:-2px"></i> Ánimo y cuerpo</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
-                            <div class="label">¿Qué tal tu ánimo?</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">1</span>Muy bajo</div>
-                                <div class="pill"><span class="n">2</span>Bajo</div>
-                                <div class="pill on"><span class="n">3</span>Normal</div>
-                                <div class="pill"><span class="n">4</span>Bien</div>
-                                <div class="pill"><span class="n">5</span>Genial</div>
+                            <div class="label first">¿Qué tal tu ánimo?</div>
+                            <div class="choice-grid">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="frown"></i></span>
+                                    <strong>Muy bajo</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="meh"></i></span>
+                                    <strong>Bajo</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="smile"></i></span>
+                                    <strong>Normal</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="smile-plus"></i></span>
+                                    <strong>Bien</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="laugh"></i></span>
+                                    <strong>Genial</strong>
+                                </div>
                             </div>
                             <div class="label">¿Cómo está tu energía?</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">1</span>Agotada</div>
-                                <div class="pill on"><span class="n">2</span>Cansada</div>
-                                <div class="pill"><span class="n">3</span>Normal</div>
-                                <div class="pill"><span class="n">4</span>Activa</div>
+                            <div class="choice-grid">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="battery-low"></i></span>
+                                    <strong>Agotada</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="battery-medium"></i></span>
+                                    <strong>Cansada</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="battery-full"></i></span>
+                                    <strong>Normal</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="battery-charging"></i></span>
+                                    <strong>Activa</strong>
+                                </div>
                             </div>
                             <div class="label">¿Y tu nivel de estrés?</div>
-                            <div class="scale">
-                                <div class="pill on"><span class="n">2</span>Poco</div>
-                                <div class="pill"><span class="n">3</span>Algo</div>
-                                <div class="pill"><span class="n">4</span>Bastante</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="leaf"></i></span>
+                                    <strong>Calma</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="cloud"></i></span>
+                                    <strong>Leve</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="waves"></i></span>
+                                    <strong>Tensión</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="flame"></i></span>
+                                    <strong>Alta</strong>
+                                </div>
                             </div>
                             <div class="label">¿Cómo dormiste?</div>
                             <div class="seg">
-                                <div class="opt">Mal</div>
-                                <div class="opt">Regular</div>
-                                <div class="opt on">Bien</div>
-                                <div class="opt">Muy bien</div>
+                                <div class="opt"><i data-lucide="cloud-moon"></i>Mal</div>
+                                <div class="opt"><i data-lucide="moon"></i>Regular</div>
+                                <div class="opt on"><i data-lucide="moon-star"></i>Bien</div>
+                                <div class="opt"><i data-lucide="sun"></i>Muy bien</div>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
                     </div>
-                    <div class="cap">Ánimo y cuerpo<br /><span class="sub">4 sliders · todos los modos</span></div>
+                    <div class="cap">Ánimo y cuerpo<br /><span class="sub">caras + batería + escala humana + sueño</span></div>
                 </div>
             </div>
 
             <!-- ============ SYMPTOMS ============ -->
             <div class="section-label">Paso 3 · Síntomas — filtrado por modo</div>
             <p class="section-sub">
-                El catálogo se filtra por <code>applicable_mode</code>. Arriba siempre los <code>is_quick_option</code>.
-                Tocar selecciona (intensidad por defecto 2); tocar de nuevo sube la intensidad. En modo embarazo
-                aparecen síntomas propios (acidez, Braxton Hicks, ciática…) que en otros modos no se ven.
+                El catálogo se filtra por <code>applicable_mode</code>. Chips multi-select (no son escala). Arriba
+                siempre los <code>is_quick_option</code>. Tocar selecciona; tocar de nuevo sube intensidad (puntos).
+                En embarazo aparecen síntomas propios (acidez, Braxton Hicks, ciática…).
             </p>
             <div class="grid">
                 <div class="cell">
@@ -978,36 +1255,36 @@
                         <div class="sb"><span>9:44</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 37%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Síntomas</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="sparkles" style="width:16px;height:16px;vertical-align:-2px"></i> Síntomas</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">¿Tienes algún síntoma?</div>
-                            <div class="lead">Toca los que tengas. La intensidad se ajusta al tocar.</div>
+                            <div class="lead">Toca los que tengas. La intensidad sube al tocar de nuevo.</div>
                             <div class="quick-title">Lo más común</div>
                             <div class="symp-row">
-                                <div class="schip on">Cólicos <span class="lvl">●●●</span></div>
-                                <div class="schip">Migraña</div>
-                                <div class="schip on">Hinchazón <span class="lvl">●●</span></div>
-                                <div class="schip">Acné</div>
-                                <div class="schip">Insomnio</div>
+                                <span class="schip on"><i data-lucide="circle-dot"></i>Cólicos<span class="lvl"><i></i><i></i><i></i></span></span>
+                                <span class="schip"><i data-lucide="zap"></i>Migraña</span>
+                                <span class="schip on"><i data-lucide="droplets"></i>Hinchazón<span class="lvl"><i></i><i></i></span></span>
+                                <span class="schip"><i data-lucide="circle"></i>Acné</span>
+                                <span class="schip"><i data-lucide="moon"></i>Insomnio</span>
                             </div>
                             <div class="symp-group">Dolor</div>
                             <div class="symp-row">
-                                <div class="schip">Dolor pélvico</div>
-                                <div class="schip">Espalda baja</div>
-                                <div class="schip">Cabeza</div>
+                                <span class="schip"><i data-lucide="activity"></i>Pélvico</span>
+                                <span class="schip"><i data-lucide="activity"></i>Espalda</span>
+                                <span class="schip"><i data-lucide="activity"></i>Cabeza</span>
                             </div>
                             <div class="symp-group">Ánimo</div>
                             <div class="symp-row">
-                                <div class="schip on">Irritabilidad <span class="lvl">●●</span></div>
-                                <div class="schip">Ansiedad</div>
+                                <span class="schip on"><i data-lucide="flame"></i>Irritabilidad<span class="lvl"><i></i><i></i></span></span>
+                                <span class="schip"><i data-lucide="cloud"></i>Ansiedad</span>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
                     </div>
-                    <div class="cap">Síntomas — tracking_only<br /><span class="sub">catálogo general, sin fértiles ni embarazo</span></div>
+                    <div class="cap">Síntomas — tracking_only<br /><span class="sub">catálogo general, chips con icono</span></div>
                 </div>
 
                 <div class="cell">
@@ -1016,32 +1293,32 @@
                         <div class="sb"><span>9:44</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 37%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
                             <span class="ptitle">Síntomas</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">¿Tienes algún síntoma?</div>
-                            <div class="lead">Toca los que tengas. La intensidad se ajusta al tocar.</div>
+                            <div class="lead">Toca los que tengas.</div>
                             <div class="quick-title">Lo más común (embarazo)</div>
                             <div class="symp-row">
-                                <div class="schip on">Náuseas <span class="lvl">●●●</span></div>
-                                <div class="schip on">Acidez <span class="lvl">●●</span></div>
-                                <div class="schip">Ganas de orinar</div>
-                                <div class="schip">Cansancio</div>
+                                <span class="schip on"><i data-lucide="waves"></i>Náuseas<span class="lvl"><i></i><i></i><i></i></span></span>
+                                <span class="schip on"><i data-lucide="flame"></i>Acidez<span class="lvl"><i></i><i></i></span></span>
+                                <span class="schip"><i data-lucide="droplet"></i>Ganas de orinar</span>
+                                <span class="schip"><i data-lucide="battery-low"></i>Cansancio</span>
                             </div>
                             <div class="symp-group">Propios del embarazo</div>
                             <div class="symp-row">
-                                <div class="schip">Braxton Hicks</div>
-                                <div class="schip">Ciática</div>
-                                <div class="schip">Presión pélvica</div>
-                                <div class="schip">Dolor ligamento redondo</div>
-                                <div class="schip">Falta de aliento</div>
-                                <div class="schip">Calambres piernas</div>
+                                <span class="schip"><i data-lucide="activity"></i>Braxton Hicks</span>
+                                <span class="schip"><i data-lucide="move"></i>Ciática</span>
+                                <span class="schip"><i data-lucide="arrow-down-to-line"></i>Presión pélvica</span>
+                                <span class="schip"><i data-lucide="activity"></i>Ligamento redondo</span>
+                                <span class="schip"><i data-lucide="wind"></i>Falta de aliento</span>
+                                <span class="schip"><i data-lucide="activity"></i>Calambres piernas</span>
                             </div>
                             <div class="symp-group">Digestivo</div>
                             <div class="symp-row">
-                                <div class="schip on">Estreñimiento <span class="lvl">●</span></div>
+                                <span class="schip on"><i data-lucide="circle"></i>Estreñimiento<span class="lvl"><i></i></span></span>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
@@ -1053,9 +1330,8 @@
             <!-- ============ BODY by mode ============ -->
             <div class="section-label">Paso 4 · Cuerpo — diverge por modo</div>
             <p class="section-sub">
-                Aquí es donde el wizard se adapta más. Tracking: moco/libido/peso opcionales. Avoid/TTC: BBT destacada
-                (con hora de toma), posición cervical solo en TTC. Embarazo: náuseas, movimiento fetal, peso — sin
-                moco ni cervical.
+                Tracking: moco/libido opcionales. Avoid/TTC: BBT destacada (con hora de toma), posición cervical solo
+                en TTC. Embarazo: náuseas, movimiento fetal, peso — sin moco ni cervical.
             </p>
             <div class="grid">
                 <div class="cell">
@@ -1064,35 +1340,66 @@
                         <div class="sb"><span>9:45</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 50%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Cuerpo</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="thermometer" style="width:16px;height:16px;vertical-align:-2px"></i> Cuerpo</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
-                            <div class="label">Temperatura basal (al despertar)</div>
+                            <div class="label first">Temperatura basal (al despertar)</div>
                             <div class="hint">Solo vale tomada al despertar, antes de levantarte.</div>
                             <div class="bbt-row">
                                 <span class="bbt-val">36.5</span>
                                 <span class="bbt-unit">°C</span>
                             </div>
-                            <div class="label">Hora de la toma</div>
-                            <div class="hint" style="color: var(--ink2)">07:12</div>
+                            <div class="bbt-time"><i data-lucide="clock"></i>07:12</div>
                             <div class="label">Moco cervical</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">0</span>Seco</div>
-                                <div class="pill"><span class="n">1</span>Pegajoso</div>
-                                <div class="pill"><span class="n">2</span>Cremoso</div>
-                                <div class="pill"><span class="n">3</span>Acuoso</div>
-                                <div class="pill on"><span class="n">4</span>Clara</div>
+                            <div class="choice-grid">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="circle-off"></i></span>
+                                    <strong>Seco</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="droplet"></i></span>
+                                    <strong>Pegajoso</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="droplets"></i></span>
+                                    <strong>Cremoso</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="waves"></i></span>
+                                    <strong>Acuoso</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="sparkles"></i></span>
+                                    <strong>Clara</strong>
+                                </div>
                             </div>
                             <div class="label">Posición cervical</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">0</span>Baja</div>
-                                <div class="pill on"><span class="n">2</span>Alta</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="chevron-down"></i></span>
+                                    <strong>Baja</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="chevron-up"></i></span>
+                                    <strong>Alta</strong>
+                                </div>
                             </div>
                             <div class="label">Libido</div>
-                            <div class="scale">
-                                <div class="pill on"><span class="n">3</span>Alta</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="heart-crack"></i></span>
+                                    <strong>Baja</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="heart"></i></span>
+                                    <strong>Media</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="heart-pulse"></i></span>
+                                    <strong>Alta</strong>
+                                </div>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
@@ -1106,21 +1413,36 @@
                         <div class="sb"><span>9:45</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 50%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
                             <span class="ptitle">Cuerpo</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
-                            <div class="label">Náuseas</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">0</span>Ninguna</div>
-                                <div class="pill on"><span class="n">2</span>Con vómito</div>
-                                <div class="pill"><span class="n">3</span>Todo el día</div>
+                            <div class="label first">Náuseas</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="smile"></i></span>
+                                    <strong>Ninguna</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="waves"></i></span>
+                                    <strong>Con vómito</strong>
+                                </div>
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="clock"></i></span>
+                                    <strong>Todo el día</strong>
+                                </div>
                             </div>
                             <div class="label">Movimiento fetal</div>
-                            <div class="scale">
-                                <div class="pill"><span class="n">0</span>No siento</div>
-                                <div class="pill on"><span class="n">2</span>Notable</div>
+                            <div class="choice-grid three">
+                                <div class="choice-card">
+                                    <span class="choice-icon"><i data-lucide="circle-off"></i></span>
+                                    <strong>No siento</strong>
+                                </div>
+                                <div class="choice-card on">
+                                    <span class="choice-icon"><i data-lucide="baby"></i></span>
+                                    <strong>Notable</strong>
+                                </div>
                             </div>
                             <div class="label">Peso (opcional)</div>
                             <div class="hint">Opcional y sin juicio.</div>
@@ -1138,9 +1460,9 @@
             <!-- ============ FERTILITY & TESTS ============ -->
             <div class="section-label">Paso 5 · Fertilidad y tests — test de embarazo en TODOS los modos</div>
             <p class="section-sub">
-                Auditoría A6: el test de embarazo se captura en los 3 modos de ciclo (no solo TTC). Un positivo en
-                modo <strong>evitar</strong> puede no ser buena noticia → tarjeta neutra, sin celebración. OPK solo en
-                TTC. Relaciones presente en todos los modos.
+                Auditoría A6: el test de embarazo se captura en los 3 modos de ciclo. Un positivo en modo
+                <strong>evitar</strong> puede no ser buena noticia → tarjeta neutra, sin celebración. OPK solo en TTC.
+                Relaciones presente en todos los modos.
             </p>
             <div class="grid">
                 <div class="cell">
@@ -1149,26 +1471,26 @@
                         <div class="sb"><span>9:46</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 62%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Fertilidad y tests</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="heart" style="width:16px;height:16px;vertical-align:-2px"></i> Fertilidad</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">Fertilidad y tests</div>
-                            <div class="label">Test de embarazo</div>
+                            <div class="label first">Test de embarazo</div>
                             <div class="lead" style="margin-top: 0">Si te hiciste uno, marca el resultado.</div>
                             <div class="seg">
-                                <div class="opt">Negativo</div>
-                                <div class="opt on">Positivo</div>
-                                <div class="opt">No válido</div>
+                                <div class="opt"><i data-lucide="x"></i>Negativo</div>
+                                <div class="opt on"><i data-lucide="plus"></i>Positivo</div>
+                                <div class="opt"><i data-lucide="help-circle"></i>No válido</div>
                             </div>
                             <div class="test-card">
-                                <div style="font-size: 32px; margin-bottom: 8px">🤍</div>
+                                <div class="test-icon"><i data-lucide="heart"></i></div>
                                 <div class="test-title">Tu test dio positivo</div>
                                 <div class="test-lead">
                                     Es un momento importante. No hay prisa por decidir nada ahora.
                                 </div>
-                                <div style="margin-top: 16px">
+                                <div style="margin-top: 14px">
                                     <div class="btn block">Activar modo embarazo</div>
                                     <div class="btn ghost">Seguir como estoy</div>
                                 </div>
@@ -1176,17 +1498,23 @@
                             </div>
                             <div class="label">Relaciones</div>
                             <div class="toggle-row">
-                                <span class="tr-label">Hoy sí</span>
+                                <div class="tr-left">
+                                    <i data-lucide="heart"></i>
+                                    <span class="tr-label">Hoy sí</span>
+                                </div>
                                 <div class="toggle"><div class="knob"></div></div>
                             </div>
                             <div class="toggle-row">
-                                <span class="tr-label">Con protección</span>
+                                <div class="tr-left">
+                                    <i data-lucide="shield-check"></i>
+                                    <span class="tr-label">Con protección</span>
+                                </div>
                                 <div class="toggle"><div class="knob"></div></div>
                             </div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
                     </div>
-                    <div class="cap">Fertilidad — modo evitar<br /><span class="sub">test positivo → tarjeta NEUTRA, no fiesta</span></div>
+                    <div class="cap">Fertilidad — modo evitar<br /><span class="sub">test positivo → tarjeta NEUTRA</span></div>
                 </div>
 
                 <div class="cell">
@@ -1195,31 +1523,37 @@
                         <div class="sb"><span>9:46</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 62%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Fertilidad y tests</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle">Fertilidad</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">Fertilidad y tests</div>
-                            <div class="label">Test de ovulación (OPK)</div>
+                            <div class="label first">Test de ovulación (OPK)</div>
                             <div class="seg">
-                                <div class="opt">Negativo</div>
-                                <div class="opt on">Pico</div>
-                                <div class="opt">No válido</div>
+                                <div class="opt"><i data-lucide="x"></i>Negativo</div>
+                                <div class="opt on"><i data-lucide="trending-up"></i>Pico</div>
+                                <div class="opt"><i data-lucide="help-circle"></i>No válido</div>
                             </div>
                             <div class="label">Test de embarazo</div>
                             <div class="seg">
-                                <div class="opt on">Negativo</div>
-                                <div class="opt">Positivo</div>
-                                <div class="opt">No válido</div>
+                                <div class="opt on"><i data-lucide="x"></i>Negativo</div>
+                                <div class="opt"><i data-lucide="plus"></i>Positivo</div>
+                                <div class="opt"><i data-lucide="help-circle"></i>No válido</div>
                             </div>
                             <div class="label">Relaciones</div>
                             <div class="toggle-row">
-                                <span class="tr-label">Hoy sí</span>
+                                <div class="tr-left">
+                                    <i data-lucide="heart"></i>
+                                    <span class="tr-label">Hoy sí</span>
+                                </div>
                                 <div class="toggle"><div class="knob"></div></div>
                             </div>
                             <div class="toggle-row">
-                                <span class="tr-label">Con protección</span>
+                                <div class="tr-left">
+                                    <i data-lucide="shield-check"></i>
+                                    <span class="tr-label">Con protección</span>
+                                </div>
                                 <div class="toggle off"><div class="knob"></div></div>
                             </div>
                         </div>
@@ -1230,11 +1564,10 @@
             </div>
 
             <!-- ============ MEDICATIONS ============ -->
-            <div class="section-label">Paso 6 · Medicamentos — con aviso de seguridad en embarazo</div>
+            <div class="section-label">Paso 6 · Medicamentos — alivio con iconos, aviso de seguridad en embarazo</div>
             <p class="section-sub">
-                Catálogo personal por usuaria + dosis opcional + alivio (0-2). En modo embarazo, los medicamentos
-                muestran su <code>pregnancy_safety</code>: aviso neutro si <code>caution</code>, nada si
-                <code>unknown</code>.
+                Catálogo personal por usuaria + dosis opcional + alivio (iconos: no/algo/sí). En modo embarazo, los
+                medicamentos muestran su <code>pregnancy_safety</code>: aviso neutro si <code>caution</code>.
             </p>
             <div class="grid">
                 <div class="cell">
@@ -1242,38 +1575,48 @@
                         <div class="sb"><span>9:47</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 75%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Medicamentos</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="pill" style="width:16px;height:16px;vertical-align:-2px"></i> Medicamentos</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">Medicamentos</div>
                             <div class="lead">Lo que tomaste hoy. Si te alivió, márcalo.</div>
                             <div class="med-card">
-                                <div class="med-name">Ibuprofeno</div>
-                                <div class="med-dose">400 mg</div>
-                                <div class="label" style="margin: 10px 0 4px; font-size: 12px">¿Te alivió?</div>
+                                <div class="med-head">
+                                    <div class="mi"><i data-lucide="pill"></i></div>
+                                    <div>
+                                        <div class="med-name">Ibuprofeno</div>
+                                        <div class="med-dose">400 mg</div>
+                                    </div>
+                                </div>
+                                <div class="label" style="margin: 12px 0 0; font-size: 11.5px">¿Te alivió?</div>
                                 <div class="med-relief">
-                                    <div class="r">No</div>
-                                    <div class="r on">Algo</div>
-                                    <div class="r">Sí, mucho</div>
+                                    <div class="r"><i data-lucide="frown"></i>No</div>
+                                    <div class="r on"><i data-lucide="meh"></i>Algo</div>
+                                    <div class="r"><i data-lucide="smile"></i>Mucho</div>
                                 </div>
                             </div>
                             <div class="med-card">
-                                <div class="med-name">Paracetamol</div>
-                                <div class="med-dose">500 mg</div>
-                                <div class="label" style="margin: 10px 0 4px; font-size: 12px">¿Te alivió?</div>
+                                <div class="med-head">
+                                    <div class="mi"><i data-lucide="pill"></i></div>
+                                    <div>
+                                        <div class="med-name">Paracetamol</div>
+                                        <div class="med-dose">500 mg</div>
+                                    </div>
+                                </div>
+                                <div class="label" style="margin: 12px 0 0; font-size: 11.5px">¿Te alivió?</div>
                                 <div class="med-relief">
-                                    <div class="r">No</div>
-                                    <div class="r">Algo</div>
-                                    <div class="r on">Sí, mucho</div>
+                                    <div class="r"><i data-lucide="frown"></i>No</div>
+                                    <div class="r"><i data-lucide="meh"></i>Algo</div>
+                                    <div class="r on"><i data-lucide="smile"></i>Mucho</div>
                                 </div>
                             </div>
-                            <div class="add-link">+ Añadir medicamento</div>
+                            <div class="add-link"><i data-lucide="plus"></i>Añadir medicamento</div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
                     </div>
-                    <div class="cap">Medicamentos — general<br /><span class="sub">catálogo + dosis + alivio</span></div>
+                    <div class="cap">Medicamentos — general<br /><span class="sub">catálogo + dosis + alivio con iconos</span></div>
                 </div>
 
                 <div class="cell">
@@ -1282,36 +1625,50 @@
                         <div class="sb"><span>9:47</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 75%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
                             <span class="ptitle">Medicamentos</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
                             <div class="title">Medicamentos</div>
                             <div class="med-card" style="border-color: var(--amber); background: var(--amber-s)">
-                                <div class="med-name">Ibuprofeno</div>
-                                <div class="med-dose">400 mg</div>
+                                <div class="med-head">
+                                    <div class="mi" style="background: #fff; color: var(--amber-t)"><i data-lucide="triangle-alert"></i></div>
+                                    <div>
+                                        <div class="med-name">Ibuprofeno</div>
+                                        <div class="med-dose">400 mg</div>
+                                    </div>
+                                </div>
                                 <div style="
-                                    font-size: 12.5px;
+                                    font-size: 12px;
                                     color: var(--amber-t);
-                                    margin-top: 8px;
+                                    margin-top: 10px;
                                     line-height: 1.45;
                                     font-weight: 600;
+                                    display: flex;
+                                    gap: 6px;
+                                    align-items: flex-start;
                                 ">
-                                    ⚠️ Usa con precaución en embarazo. Consulta a tu médico.
+                                    <i data-lucide="triangle-alert" style="width:14px;height:14px;flex-shrink:0;margin-top:1px"></i>
+                                    <span>Usa con precaución en embarazo. Consulta a tu médico.</span>
                                 </div>
                             </div>
                             <div class="med-card">
-                                <div class="med-name">Paracetamol</div>
-                                <div class="med-dose">500 mg</div>
-                                <div class="label" style="margin: 10px 0 4px; font-size: 12px">¿Te alivió?</div>
+                                <div class="med-head">
+                                    <div class="mi"><i data-lucide="pill"></i></div>
+                                    <div>
+                                        <div class="med-name">Paracetamol</div>
+                                        <div class="med-dose">500 mg</div>
+                                    </div>
+                                </div>
+                                <div class="label" style="margin: 12px 0 0; font-size: 11.5px">¿Te alivió?</div>
                                 <div class="med-relief">
-                                    <div class="r">No</div>
-                                    <div class="r">Algo</div>
-                                    <div class="r on">Sí, mucho</div>
+                                    <div class="r"><i data-lucide="frown"></i>No</div>
+                                    <div class="r"><i data-lucide="meh"></i>Algo</div>
+                                    <div class="r on"><i data-lucide="smile"></i>Mucho</div>
                                 </div>
                             </div>
-                            <div class="add-link">+ Añadir medicamento</div>
+                            <div class="add-link"><i data-lucide="plus"></i>Añadir medicamento</div>
                         </div>
                         <div class="foot"><div class="btn block">Continuar</div></div>
                     </div>
@@ -1323,8 +1680,7 @@
             <div class="section-label">Pasos 7-8 · Nota + Revisión</div>
             <p class="section-sub">
                 La nota es texto libre, jamás analizada. La revisión es el resumen atómico antes de guardar — cada
-                sección es editable de un toque. "Guardar" ejecuta la transacción (checkin + síntomas + medicamentos +
-                relaciones + señal de periodo) y dispara la reproyección del motor.
+                sección con su icono de paso. "Guardar" ejecuta la transacción y dispara la reproyección del motor.
             </p>
             <div class="grid">
                 <div class="cell">
@@ -1332,8 +1688,8 @@
                         <div class="sb"><span>9:48</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 87%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Nota</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="file-text" style="width:16px;height:16px;vertical-align:-2px"></i> Nota</span>
                             <span class="save-link">Guardar</span>
                         </div>
                         <div class="body">
@@ -1354,48 +1710,53 @@
                         <div class="sb"><span>9:48</span><span class="dots">●●● 5G ▮</span></div>
                         <div class="progress"><div class="fill" style="width: 100%"></div></div>
                         <div class="phead">
-                            <div class="back">←</div>
-                            <span class="ptitle">Revisar</span>
+                            <div class="back"><i data-lucide="arrow-left"></i></div>
+                            <span class="ptitle"><i data-lucide="check-check" style="width:16px;height:16px;vertical-align:-2px"></i> Revisar</span>
                             <span class="save-link"></span>
                         </div>
                         <div class="body">
                             <div class="title">Revisar y guardar</div>
                             <div class="lead">Un vistazo rápido antes de guardar tu día.</div>
                             <div class="rev-section">
-                                <div class="rev-head">Sangrado</div>
+                                <div class="rev-head"><i data-lucide="droplet"></i>Sangrado</div>
                                 <div class="rev-val">Ligero · Coágulos: no · <strong>Me bajó hoy</strong></div>
                             </div>
                             <div class="rev-section">
-                                <div class="rev-head">Ánimo</div>
+                                <div class="rev-head"><i data-lucide="smile"></i>Ánimo</div>
                                 <div class="rev-val">Normal · Cansada · Estrés bajo · Dormí bien</div>
                             </div>
                             <div class="rev-section">
-                                <div class="rev-head">Síntomas</div>
+                                <div class="rev-head"><i data-lucide="sparkles"></i>Síntomas</div>
                                 <div class="rev-chips">
-                                    <span class="rc">Cólicos ●●●</span>
-                                    <span class="rc">Hinchazón ●●</span>
-                                    <span class="rc">Irritabilidad ●●</span>
+                                    <span class="rc"><i data-lucide="circle-dot"></i>Cólicos ●●●</span>
+                                    <span class="rc"><i data-lucide="droplets"></i>Hinchazón ●●</span>
+                                    <span class="rc"><i data-lucide="flame"></i>Irritabilidad ●●</span>
                                 </div>
                             </div>
                             <div class="rev-section">
-                                <div class="rev-head">Medicamentos</div>
+                                <div class="rev-head"><i data-lucide="pill"></i>Medicamentos</div>
                                 <div class="rev-val">Ibuprofeno 400mg (alivió algo)</div>
                             </div>
                             <div class="rev-section">
-                                <div class="rev-head">Nota</div>
+                                <div class="rev-head"><i data-lucide="file-text"></i>Nota</div>
                                 <div class="rev-val" style="color: var(--ink3)">Día tranquilo. Salí a caminar…</div>
                             </div>
                         </div>
-                        <div class="foot"><div class="btn block">Guardar</div></div>
+                        <div class="foot"><div class="btn block"><i data-lucide="check"></i>Guardar</div></div>
                     </div>
-                    <div class="cap">Revisión<br /><span class="sub">guardado transaccional + reproyección</span></div>
+                    <div class="cap">Revisión<br /><span class="sub">cada sección con icono de su paso</span></div>
                 </div>
             </div>
 
             <div class="footnote">
-                Mockup de diseño — plan 02, Fase 1. La regla es: cada paso que ves aquí se muestra solo si aplica al
-                modo activo. Lo que no aplica, no se deshabilita: desaparece.
+                Mockup de diseño — plan 02, Fase 1. Regla del design-system: ningún número como identidad de captura.
+                Cada escala usa tarjetas con icono + etiqueta humana; el valor numérico vive solo en data. Lo que no
+                aplica al modo no se deshabilita: desaparece.
             </div>
         </div>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <script>
+            lucide.createIcons();
+        </script>
     </body>
 </html>
