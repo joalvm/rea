@@ -12,6 +12,7 @@ const defaultSymptomCatalog: InsertSymptomCatalog = {
     symptomKey: defaultRuntimeSymptom.symptomKey,
     groupKey: defaultRuntimeSymptom.groupKey,
     labelKey: defaultRuntimeSymptom.labelKey,
+    applicableMode: defaultRuntimeSymptom.applicableMode,
     uiPriority: defaultRuntimeSymptom.uiPriority,
     isQuickOption: defaultRuntimeSymptom.isQuickOption,
     isActive: defaultRuntimeSymptom.isActive,

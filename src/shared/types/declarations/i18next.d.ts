@@ -1,5 +1,6 @@
 import "i18next";
 
+import type checkIn from "@/lang/es/checkIn.json";
 import type common from "@/lang/es/common.json";
 import type exception from "@/lang/es/exception.json";
 import type onboarding from "@/lang/es/onboarding.json";
@@ -16,6 +17,7 @@ declare module "i18next" {
     interface CustomTypeOptions {
         resources: {
             common: typeof common;
+            checkIn: typeof checkIn;
             exception: typeof exception;
             preview: typeof preview;
             onboarding: typeof onboarding;

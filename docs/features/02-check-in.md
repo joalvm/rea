@@ -1,7 +1,7 @@
 # 02 · Check-in (captura diaria)
 
 > **Hito:** M2 · **Depende de:** 01 (motor), 03 (señal de periodo), esquema v3 ·
-> **Estado:** 🔲 stubs (9 rutas en `src/app/checkin/`).
+> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fases 2-4 pendientes.
 
 ## Contexto
 
@@ -63,7 +63,7 @@ Objetivo de producto: **registrar un día normal toma menos de 60 segundos**, y 
 
 ## Fases
 
-### [ ] Fase 1: Diseño + cimientos de catálogo
+### [x] Fase 1: Diseño + cimientos de catálogo
 
 - **Objetivo:** mockup aprobado y catálogo/i18n listos antes de una línea de RN.
 - **Cambios:** `docs/design-system/screens/checkin.html` (todos los pasos, ambos temas,

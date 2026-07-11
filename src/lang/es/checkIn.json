@@ -1,0 +1,333 @@
+{
+    "intro": {
+        "title": "¿Cómo te sientes hoy?",
+        "lead": "Registra tu día. Tarda menos de un minuto.",
+        "quick": "Registro rápido",
+        "quickHint": "Lo esencial en segundos",
+        "complete": "Registro completo",
+        "completeHint": "Todo lo que quieres apuntar",
+        "nothingToReport": "Nada que reportar",
+        "nothingHint": "Guarda un día tranquilo sin detalles"
+    },
+    "steps": {
+        "bleeding": "Sangrado",
+        "feelings": "Ánimo y cuerpo",
+        "body": "Cuerpo",
+        "symptoms": "Síntomas",
+        "fertility": "Fertilidad y tests",
+        "medications": "Medicamentos",
+        "note": "Nota",
+        "review": "Revisar"
+    },
+    "progress": {
+        "saveAnytime": "Puedes guardar cuando quieras",
+        "step": "Paso {{current}} de {{total}}"
+    },
+    "bleeding": {
+        "title": "¿Cuánto sangrado tienes?",
+        "hint": "Elige el nivel de ahora mismo. Si no hay, marca nada.",
+        "level": {
+            "0": "Nada",
+            "1": "Manchado",
+            "2": "Ligero",
+            "3": "Moderado",
+            "4": "Abundante"
+        },
+        "clots": {
+            "title": "¿Coágulos?",
+            "level": {
+                "0": "No",
+                "1": "Pequeños",
+                "2": "Medianos",
+                "3": "Grandes"
+            }
+        },
+        "periodSignal": {
+            "title": "Tu regla",
+            "started": "Me bajó hoy",
+            "ongoing": "Sigue",
+            "ended": "Terminó"
+        }
+    },
+    "feelings": {
+        "mood": {
+            "title": "¿Qué tal tu ánimo?",
+            "level": {
+                "1": "Muy bajo",
+                "2": "Bajo",
+                "3": "Normal",
+                "4": "Bien",
+                "5": "Genial"
+            }
+        },
+        "energy": {
+            "title": "¿Cómo está tu energía?",
+            "level": {
+                "1": "Agotada",
+                "2": "Cansada",
+                "3": "Normal",
+                "4": "Activa",
+                "5": "Muy activa"
+            }
+        },
+        "stress": {
+            "title": "¿Y tu nivel de estrés?",
+            "level": {
+                "0": "Nada",
+                "1": "Muy poco",
+                "2": "Poco",
+                "3": "Algo",
+                "4": "Bastante",
+                "5": "Mucho"
+            }
+        },
+        "sleep": {
+            "title": "¿Cómo dormiste?",
+            "hint": "Tu descanso influye en cómo te sientes.",
+            "level": {
+                "poor": "Mal",
+                "fair": "Regular",
+                "good": "Bien",
+                "great": "Muy bien"
+            }
+        }
+    },
+    "body": {
+        "mucus": {
+            "title": "Moco cervical",
+            "level": {
+                "0": "Seco",
+                "1": "Pegajoso",
+                "2": "Cremoso",
+                "3": "Acuoso",
+                "4": "Claras de huevo"
+            }
+        },
+        "bbt": {
+            "title": "Temperatura basal",
+            "hint": "Solo vale tomada al despertar, antes de levantarte.",
+            "timeLabel": "Hora de la toma",
+            "unit": "°C"
+        },
+        "libido": {
+            "title": "Libido",
+            "level": {
+                "0": "Ninguna",
+                "1": "Baja",
+                "2": "Normal",
+                "3": "Alta",
+                "4": "Muy alta"
+            }
+        },
+        "weight": {
+            "title": "Peso",
+            "hint": "Opcional y sin juicio.",
+            "unit": "kg"
+        },
+        "cervix": {
+            "title": "Posición cervical",
+            "level": {
+                "0": "Baja",
+                "1": "Media",
+                "2": "Alta"
+            }
+        },
+        "pain": {
+            "title": "Dolor",
+            "level": {
+                "0": "Ninguno",
+                "1": "Leve",
+                "2": "Molesto",
+                "3": "Moderado",
+                "4": "Fuerte",
+                "5": "Insoportable"
+            }
+        },
+        "interference": {
+            "title": "¿Te interfiere el día?",
+            "level": {
+                "0": "Para nada",
+                "1": "Un poco",
+                "2": "Bastante",
+                "3": "No puedo con lo mío"
+            }
+        },
+        "breastTenderness": {
+            "title": "Sensibilidad en los senos",
+            "level": {
+                "0": "Ninguna",
+                "1": "Leve",
+                "2": "Algo",
+                "3": "Notable",
+                "4": "Bastante",
+                "5": "Mucha"
+            }
+        },
+        "pms": {
+            "title": "Síndrome premenstrual",
+            "level": {
+                "0": "Nada",
+                "1": "Leve",
+                "2": "Algo",
+                "3": "Notable",
+                "4": "Bastante",
+                "5": "Mucho"
+            }
+        },
+        "morningSickness": {
+            "title": "Náuseas",
+            "level": {
+                "0": "Ninguna",
+                "1": "Leves",
+                "2": "Con vómito",
+                "3": "Todo el día"
+            }
+        },
+        "fetalMovement": {
+            "title": "Movimiento fetal",
+            "level": {
+                "0": "No siento",
+                "1": "Leve",
+                "2": "Notable",
+                "3": "Muy activo"
+            }
+        }
+    },
+    "symptomStep": {
+        "title": "¿Tienes algún síntoma?",
+        "hint": "Toca los que tengas. La intensidad se ajusta al tocar.",
+        "searchPlaceholder": "Buscar síntoma…",
+        "intensity": {
+            "1": "Leve",
+            "2": "Moderado",
+            "3": "Notable",
+            "4": "Fuerte",
+            "5": "Muy fuerte"
+        },
+        "selectedCount_one": "{{count}} seleccionado",
+        "selectedCount_other": "{{count}} seleccionados",
+        "empty": "Nada por aquí. Si tienes un síntoma que no ves, anótalo en la nota.",
+        "quickTitle": "Lo más común"
+    },
+    "symptomGroups": {
+        "pain": "Dolor",
+        "digestive": "Digestivo",
+        "skin": "Piel",
+        "sleep": "Sueño",
+        "mood": "Ánimo",
+        "energy": "Energía",
+        "bleeding": "Sangrado",
+        "body": "Cuerpo",
+        "sexual_health": "Salud sexual",
+        "other": "Otro"
+    },
+    "symptoms": {
+        "cramps": "Cólicos",
+        "pelvicPain": "Dolor pélvico",
+        "lowerBackPain": "Dolor de espalda baja",
+        "headache": "Dolor de cabeza",
+        "migraine": "Migraña",
+        "bloating": "Hinchazón",
+        "nausea": "Náuseas",
+        "diarrhea": "Diarrea",
+        "constipation": "Estreñimiento",
+        "acne": "Acné",
+        "cravings": "Antojos",
+        "fatigue": "Cansancio",
+        "insomnia": "Insomnio",
+        "sleepiness": "Somnolencia",
+        "breastTenderness": "Sensibilidad en los senos",
+        "breastSwelling": "Hinchazón de senos",
+        "moodSwings": "Cambios de ánimo",
+        "irritability": "Irritabilidad",
+        "anxiety": "Ansiedad",
+        "sadness": "Tristeza",
+        "brainFog": "Niebla mental",
+        "dizziness": "Mareo",
+        "ovulationPain": "Dolor de ovulación",
+        "spotting": "Manchado",
+        "heavyBleeding": "Sangrado abundante",
+        "clots": "Coágulos",
+        "hotFlashes": "Sofocos",
+        "chills": "Escalofríos",
+        "vulvarDiscomfort": "Molestia vulvar",
+        "vaginalDryness": "Sequedad vaginal",
+        "heartburn": "Acidez",
+        "ankleSwelling": "Hinchazón de tobillos",
+        "braxtonHicks": "Contracciones de Braxton Hicks",
+        "pelvicPressure": "Presión pélvica",
+        "sciatica": "Ciática",
+        "roundLigamentPain": "Dolor del ligamento redondo",
+        "frequentUrination": "Ganas frecuentes de orinar",
+        "shortnessOfBreath": "Falta de aliento",
+        "legCramps": "Calambres en las piernas",
+        "sensitiveSmell": "Sensibilidad a los olores"
+    },
+    "fertility": {
+        "title": "Fertilidad y tests",
+        "pregnancyTest": {
+            "title": "Test de embarazo",
+            "hint": "Si te hiciste uno, marca el resultado.",
+            "negative": "Negativo",
+            "positive": "Positivo",
+            "invalid": "No válido"
+        },
+        "opk": {
+            "title": "Test de ovulación (OPK)",
+            "negative": "Negativo",
+            "positive": "Pico",
+            "invalid": "No válido"
+        },
+        "intercourse": {
+            "title": "Relaciones",
+            "had": "Hoy sí",
+            "protected": "Con protección"
+        }
+    },
+    "medications": {
+        "title": "Medicamentos",
+        "hint": "Lo que tomaste hoy. Si te alivió, márcalo.",
+        "add": "Añadir medicamento",
+        "placeholder": "Ej. Ibuprofeno",
+        "doseLabel": "Dosis",
+        "dosePlaceholder": "Ej. 400 mg",
+        "relief": {
+            "title": "¿Te alivió?",
+            "0": "No",
+            "1": "Algo",
+            "2": "Sí, mucho"
+        },
+        "empty": "Ninguno hoy.",
+        "pregnancySafety": {
+            "caution": "Usa con precaución en embarazo. Consulta a tu médico.",
+            "unknown": "Se desconoce su seguridad en embarazo."
+        }
+    },
+    "note": {
+        "title": "Algo más para hoy",
+        "hint": "Lo que quieras apuntar. Esta nota es solo tuya; no la analizamos.",
+        "placeholder": "Escribe una nota…"
+    },
+    "review": {
+        "title": "Revisar y guardar",
+        "hint": "Un vistazo rápido antes de guardar tu día.",
+        "empty": "No anotaste nada. Puedes guardar igual.",
+        "editHint": "Toca cualquier paso para editarlo.",
+        "save": "Guardar",
+        "sectionBleeding": "Sangrado",
+        "sectionFeelings": "Ánimo",
+        "sectionBody": "Cuerpo",
+        "sectionSymptoms": "Síntomas",
+        "sectionFertility": "Fertilidad",
+        "sectionMedications": "Medicamentos",
+        "sectionNote": "Nota",
+        "savedToast": "Listo, día guardado"
+    },
+    "testPositive": {
+        "title": "Tu test dio positivo",
+        "lead": "Es un momento importante. No hay prisa por decidir nada ahora.",
+        "activatePregnancy": "Activar modo embarazo",
+        "stayAsIs": "Seguir como estoy",
+        "hint": "Puedes cambiar de modo cuando quieras en ajustes."
+    }
+}

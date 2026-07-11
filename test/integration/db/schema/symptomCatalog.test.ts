@@ -92,4 +92,27 @@ describe("Integración del esquema de symptomCatalog", () => {
             symptomCatalogSeedRows[0]?.labelKey,
         );
     });
+
+    it("cada síntoma del catálogo resuelve su labelKey y populate applicable_mode", async () => {
+        await seedRuntimeSymptomCatalog({
+            execAsync(source) {
+                return context.database.client.executeMultiple(source);
+            },
+        });
+
+        const rows = await context.database.db.select().from(symptomCatalog);
+
+        // Todos tienen applicable_mode explícito (no queda con el default opaco)
+        for (const row of rows) {
+            expect(row.applicableMode).toBeTruthy();
+            expect(row.labelKey).toMatch(/^checkIn:symptoms\.\w+$/);
+        }
+
+        // Los síntomas de embarazo solo aplican a pregnancy_tracking
+        const pregnancyOnly = rows.filter((row) => row.applicableMode === "pregnancy_tracking");
+        expect(pregnancyOnly.length).toBeGreaterThanOrEqual(10);
+        expect(pregnancyOnly.map((row) => row.symptomKey)).toContain("heartburn");
+        expect(pregnancyOnly.map((row) => row.symptomKey)).toContain("braxton_hicks");
+        expect(pregnancyOnly.map((row) => row.symptomKey)).toContain("sciatica");
+    });
 });

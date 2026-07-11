@@ -1,0 +1,333 @@
+{
+    "intro": {
+        "title": "How do you feel today?",
+        "lead": "Log your day. Takes less than a minute.",
+        "quick": "Quick check-in",
+        "quickHint": "The essentials in seconds",
+        "complete": "Full check-in",
+        "completeHint": "Everything you want to note",
+        "nothingToReport": "Nothing to report",
+        "nothingHint": "Save a quiet day with no details"
+    },
+    "steps": {
+        "bleeding": "Bleeding",
+        "feelings": "Mood & body",
+        "body": "Body",
+        "symptoms": "Symptoms",
+        "fertility": "Fertility & tests",
+        "medications": "Medications",
+        "note": "Note",
+        "review": "Review"
+    },
+    "progress": {
+        "saveAnytime": "You can save whenever you want",
+        "step": "Step {{current}} of {{total}}"
+    },
+    "bleeding": {
+        "title": "How much bleeding?",
+        "hint": "Pick the level right now. If there's none, choose none.",
+        "level": {
+            "0": "None",
+            "1": "Spotting",
+            "2": "Light",
+            "3": "Moderate",
+            "4": "Heavy"
+        },
+        "clots": {
+            "title": "Clots?",
+            "level": {
+                "0": "No",
+                "1": "Small",
+                "2": "Medium",
+                "3": "Large"
+            }
+        },
+        "periodSignal": {
+            "title": "Your period",
+            "started": "Started today",
+            "ongoing": "Still going",
+            "ended": "Ended"
+        }
+    },
+    "feelings": {
+        "mood": {
+            "title": "How's your mood?",
+            "level": {
+                "1": "Very low",
+                "2": "Low",
+                "3": "Normal",
+                "4": "Good",
+                "5": "Great"
+            }
+        },
+        "energy": {
+            "title": "How's your energy?",
+            "level": {
+                "1": "Exhausted",
+                "2": "Tired",
+                "3": "Normal",
+                "4": "Active",
+                "5": "Very active"
+            }
+        },
+        "stress": {
+            "title": "And your stress level?",
+            "level": {
+                "0": "None",
+                "1": "Very little",
+                "2": "Little",
+                "3": "Some",
+                "4": "Quite a bit",
+                "5": "A lot"
+            }
+        },
+        "sleep": {
+            "title": "How did you sleep?",
+            "hint": "Your rest affects how you feel.",
+            "level": {
+                "poor": "Poorly",
+                "fair": "Fair",
+                "good": "Well",
+                "great": "Very well"
+            }
+        }
+    },
+    "body": {
+        "mucus": {
+            "title": "Cervical mucus",
+            "level": {
+                "0": "Dry",
+                "1": "Sticky",
+                "2": "Creamy",
+                "3": "Watery",
+                "4": "Egg white"
+            }
+        },
+        "bbt": {
+            "title": "Basal body temperature",
+            "hint": "Only counts taken upon waking, before getting up.",
+            "timeLabel": "Time taken",
+            "unit": "°C"
+        },
+        "libido": {
+            "title": "Libido",
+            "level": {
+                "0": "None",
+                "1": "Low",
+                "2": "Normal",
+                "3": "High",
+                "4": "Very high"
+            }
+        },
+        "weight": {
+            "title": "Weight",
+            "hint": "Optional and judgment-free.",
+            "unit": "kg"
+        },
+        "cervix": {
+            "title": "Cervical position",
+            "level": {
+                "0": "Low",
+                "1": "Medium",
+                "2": "High"
+            }
+        },
+        "pain": {
+            "title": "Pain",
+            "level": {
+                "0": "None",
+                "1": "Mild",
+                "2": "Bothersome",
+                "3": "Moderate",
+                "4": "Strong",
+                "5": "Unbearable"
+            }
+        },
+        "interference": {
+            "title": "Does it interfere with your day?",
+            "level": {
+                "0": "Not at all",
+                "1": "A little",
+                "2": "Quite a bit",
+                "3": "Can't do my thing"
+            }
+        },
+        "breastTenderness": {
+            "title": "Breast tenderness",
+            "level": {
+                "0": "None",
+                "1": "Mild",
+                "2": "Some",
+                "3": "Noticeable",
+                "4": "Quite a bit",
+                "5": "A lot"
+            }
+        },
+        "pms": {
+            "title": "PMS",
+            "level": {
+                "0": "None",
+                "1": "Mild",
+                "2": "Some",
+                "3": "Noticeable",
+                "4": "Quite a bit",
+                "5": "A lot"
+            }
+        },
+        "morningSickness": {
+            "title": "Nausea",
+            "level": {
+                "0": "None",
+                "1": "Mild",
+                "2": "With vomiting",
+                "3": "All day"
+            }
+        },
+        "fetalMovement": {
+            "title": "Fetal movement",
+            "level": {
+                "0": "Don't feel any",
+                "1": "Mild",
+                "2": "Noticeable",
+                "3": "Very active"
+            }
+        }
+    },
+    "symptomStep": {
+        "title": "Any symptoms?",
+        "hint": "Tap the ones you have. Intensity adjusts on tap.",
+        "searchPlaceholder": "Search symptom…",
+        "intensity": {
+            "1": "Mild",
+            "2": "Moderate",
+            "3": "Noticeable",
+            "4": "Strong",
+            "5": "Very strong"
+        },
+        "selectedCount_one": "{{count}} selected",
+        "selectedCount_other": "{{count}} selected",
+        "empty": "Nothing here. If you have a symptom you don't see, note it down.",
+        "quickTitle": "Most common"
+    },
+    "symptomGroups": {
+        "pain": "Pain",
+        "digestive": "Digestive",
+        "skin": "Skin",
+        "sleep": "Sleep",
+        "mood": "Mood",
+        "energy": "Energy",
+        "bleeding": "Bleeding",
+        "body": "Body",
+        "sexual_health": "Sexual health",
+        "other": "Other"
+    },
+    "symptoms": {
+        "cramps": "Cramps",
+        "pelvicPain": "Pelvic pain",
+        "lowerBackPain": "Lower back pain",
+        "headache": "Headache",
+        "migraine": "Migraine",
+        "bloating": "Bloating",
+        "nausea": "Nausea",
+        "diarrhea": "Diarrhea",
+        "constipation": "Constipation",
+        "acne": "Acne",
+        "cravings": "Cravings",
+        "fatigue": "Fatigue",
+        "insomnia": "Insomnia",
+        "sleepiness": "Sleepiness",
+        "breastTenderness": "Breast tenderness",
+        "breastSwelling": "Breast swelling",
+        "moodSwings": "Mood swings",
+        "irritability": "Irritability",
+        "anxiety": "Anxiety",
+        "sadness": "Sadness",
+        "brainFog": "Brain fog",
+        "dizziness": "Dizziness",
+        "ovulationPain": "Ovulation pain",
+        "spotting": "Spotting",
+        "heavyBleeding": "Heavy bleeding",
+        "clots": "Clots",
+        "hotFlashes": "Hot flashes",
+        "chills": "Chills",
+        "vulvarDiscomfort": "Vulvar discomfort",
+        "vaginalDryness": "Vaginal dryness",
+        "heartburn": "Heartburn",
+        "ankleSwelling": "Ankle swelling",
+        "braxtonHicks": "Braxton Hicks contractions",
+        "pelvicPressure": "Pelvic pressure",
+        "sciatica": "Sciatica",
+        "roundLigamentPain": "Round ligament pain",
+        "frequentUrination": "Frequent urination",
+        "shortnessOfBreath": "Shortness of breath",
+        "legCramps": "Leg cramps",
+        "sensitiveSmell": "Smell sensitivity"
+    },
+    "fertility": {
+        "title": "Fertility & tests",
+        "pregnancyTest": {
+            "title": "Pregnancy test",
+            "hint": "If you took one, mark the result.",
+            "negative": "Negative",
+            "positive": "Positive",
+            "invalid": "Invalid"
+        },
+        "opk": {
+            "title": "Ovulation test (OPK)",
+            "negative": "Negative",
+            "positive": "Peak",
+            "invalid": "Invalid"
+        },
+        "intercourse": {
+            "title": "Intercourse",
+            "had": "Yes today",
+            "protected": "With protection"
+        }
+    },
+    "medications": {
+        "title": "Medications",
+        "hint": "What you took today. If it helped, mark it.",
+        "add": "Add medication",
+        "placeholder": "e.g. Ibuprofen",
+        "doseLabel": "Dose",
+        "dosePlaceholder": "e.g. 400 mg",
+        "relief": {
+            "title": "Did it help?",
+            "0": "No",
+            "1": "Somewhat",
+            "2": "Yes, a lot"
+        },
+        "empty": "None today.",
+        "pregnancySafety": {
+            "caution": "Use with caution during pregnancy. Check with your doctor.",
+            "unknown": "Safety during pregnancy is unknown."
+        }
+    },
+    "note": {
+        "title": "Anything else for today",
+        "hint": "Whatever you want to note. This note is yours alone; we don't analyze it.",
+        "placeholder": "Write a note…"
+    },
+    "review": {
+        "title": "Review and save",
+        "hint": "A quick look before saving your day.",
+        "empty": "You didn't note anything. You can save anyway.",
+        "editHint": "Tap any step to edit it.",
+        "save": "Save",
+        "sectionBleeding": "Bleeding",
+        "sectionFeelings": "Mood",
+        "sectionBody": "Body",
+        "sectionSymptoms": "Symptoms",
+        "sectionFertility": "Fertility",
+        "sectionMedications": "Medications",
+        "sectionNote": "Note",
+        "savedToast": "Done, day saved"
+    },
+    "testPositive": {
+        "title": "Your test was positive",
+        "lead": "This is a big moment. There's no rush to decide anything right now.",
+        "activatePregnancy": "Activate pregnancy mode",
+        "stayAsIs": "Stay as I am",
+        "hint": "You can switch modes any time in settings."
+    }
+}

@@ -1,0 +1,1401 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Rea · Check-in (plan 02, Fase 1)</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --celeste: #7cd9f9;
+                --celeste-400: #45c8f1;
+                --celeste-500: #18aedd;
+                --celeste-deep: #076583;
+                --celeste-700: #0a4f68;
+                --c50: #f0fcff;
+                --c100: #ddf7fe;
+                --c200: #b9eefc;
+                --ink: #102631;
+                --ink2: #2c4e5b;
+                --ink3: #4f7482;
+                --ink4: #79aabd;
+                --btn-text: #06323f;
+                --bg: #fbfeff;
+                --line: #e2eef2;
+                --field: #cde2ea;
+                --amber: #ffd166;
+                --amber-s: #fff4d6;
+                --amber-t: #7a4b00;
+                --rose: #ff9cb6;
+                --rose-s: #ffedf2;
+                --rose-t: #b23a5c;
+                --mint: #7fe0c2;
+                --mint-s: #e3f9f1;
+                --mint-t: #1d6b54;
+                --lilac: #b6a7ff;
+                --sh: 0 2px 8px rgba(16, 55, 75, 0.05);
+                --sh-btn: 0 3px 10px rgba(24, 174, 221, 0.22);
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: "Nunito Sans", sans-serif;
+                background: #eaf6fb;
+                color: var(--ink);
+                padding: 40px 24px 80px;
+                -webkit-font-smoothing: antialiased;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            .q {
+                font-family: "Quicksand", sans-serif;
+            }
+            .page {
+                max-width: 1280px;
+                margin: 0 auto;
+            }
+            .lead-hero {
+                margin-bottom: 32px;
+            }
+            .lead-hero .eyebrow {
+                font-family: "Quicksand";
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                font-size: 12px;
+                color: var(--celeste-deep);
+            }
+            .lead-hero h1 {
+                font-size: 30px;
+                font-weight: 700;
+                color: var(--ink);
+                margin: 8px 0 10px;
+                letter-spacing: -0.5px;
+            }
+            .lead-hero p {
+                font-size: 15.5px;
+                color: var(--ink3);
+                max-width: 780px;
+                line-height: 1.55;
+            }
+            .legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin: 20px 0 8px;
+            }
+            .chip {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 12px;
+                padding: 6px 12px;
+                border-radius: 999px;
+                background: var(--c100);
+                color: var(--celeste-deep);
+            }
+            .chip.tracking {
+                background: var(--c100);
+                color: var(--celeste-deep);
+            }
+            .chip.avoid {
+                background: var(--amber-s);
+                color: var(--amber-t);
+            }
+            .chip.ttc {
+                background: var(--mint-s);
+                color: var(--mint-t);
+            }
+            .chip.pregnancy {
+                background: var(--rose-s);
+                color: var(--rose-t);
+            }
+            .section-label {
+                font-family: "Quicksand";
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1.6px;
+                font-size: 13px;
+                color: var(--celeste-deep);
+                margin: 48px 0 4px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid var(--c200);
+            }
+            .section-sub {
+                font-size: 14px;
+                color: var(--ink3);
+                margin: 8px 0 20px;
+                line-height: 1.5;
+            }
+            .grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 34px;
+                justify-content: center;
+                align-items: flex-start;
+            }
+
+            /* --- Phone frame --- */
+            .phone {
+                width: 340px;
+                height: 724px;
+                background: var(--bg);
+                border-radius: 42px;
+                box-shadow: 0 16px 44px rgba(16, 55, 75, 0.13);
+                overflow: hidden;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid #fff;
+            }
+            .phone.dark {
+                --bg: #07182a;
+                --ink: #e9f4ff;
+                --ink2: #a6cce6;
+                --ink3: #7aa0c2;
+                --ink4: #5e89a8;
+                --line: #1d3a45;
+                --field: #28567a;
+                --c50: #0a2f3e;
+                --c100: #0e3447;
+                --c200: #11506b;
+                --sh: 0 2px 10px rgba(0, 0, 0, 0.28);
+            }
+            .cap {
+                font-family: "Quicksand";
+                font-weight: 700;
+                text-align: center;
+                margin-top: 14px;
+                color: var(--ink2);
+                font-size: 13px;
+            }
+            .cap .sub {
+                font-weight: 500;
+                color: var(--ink4);
+                font-size: 12px;
+            }
+            .cell {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .sb {
+                height: 34px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 26px 0;
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--ink3);
+                font-family: "Quicksand";
+            }
+            .sb .dots {
+                display: flex;
+                gap: 4px;
+                align-items: center;
+                font-size: 11px;
+                color: var(--ink4);
+            }
+            .phead {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 22px 0;
+                min-height: 40px;
+            }
+            .phead .ptitle {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 16px;
+                color: var(--ink2);
+            }
+            .back {
+                width: 40px;
+                height: 40px;
+                border-radius: 999px;
+                background: #fff;
+                border: 1px solid var(--line);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--ink2);
+                font-size: 20px;
+            }
+            .phone.dark .back {
+                background: #0e2740;
+                border-color: #1d3a45;
+            }
+            .save-link {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 14px;
+                color: var(--celeste-deep);
+            }
+            .phone.dark .save-link {
+                color: var(--celeste);
+            }
+            .progress {
+                height: 4px;
+                background: var(--line);
+                border-radius: 999px;
+                margin: 6px 22px 0;
+                overflow: hidden;
+            }
+            .progress .fill {
+                height: 100%;
+                background: var(--celeste-400);
+                border-radius: 999px;
+            }
+            .body {
+                flex: 1;
+                overflow-y: auto;
+                padding: 18px 22px 0;
+                display: flex;
+                flex-direction: column;
+            }
+            .body.center {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding-bottom: 18px;
+            }
+            .title {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 22px;
+                color: var(--ink);
+                letter-spacing: -0.3px;
+                line-height: 1.2;
+            }
+            .lead {
+                font-size: 14px;
+                color: var(--ink3);
+                line-height: 1.5;
+                margin-top: 6px;
+            }
+            .foot {
+                padding: 10px 22px 22px;
+            }
+
+            /* --- Buttons --- */
+            .btn {
+                height: 56px;
+                border-radius: 999px;
+                background: var(--celeste);
+                color: var(--btn-text);
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 16.5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: var(--sh-btn);
+            }
+            .btn.block {
+                width: 100%;
+            }
+            .btn.ghost {
+                background: var(--c100);
+                color: var(--celeste-deep);
+                box-shadow: none;
+                margin-top: 10px;
+            }
+            .phone.dark .btn.ghost {
+                background: #11506b;
+                color: var(--celeste);
+            }
+            .btn.muted {
+                background: transparent;
+                color: var(--ink3);
+                box-shadow: none;
+                border: 1px solid var(--line);
+            }
+
+            /* --- Segmented control (mode picker, period signal) --- */
+            .seg {
+                display: flex;
+                background: var(--c50);
+                border-radius: 14px;
+                padding: 4px;
+                margin-top: 12px;
+                gap: 4px;
+            }
+            .phone.dark .seg {
+                background: #0a2336;
+            }
+            .seg .opt {
+                flex: 1;
+                text-align: center;
+                font-family: "Quicksand";
+                font-weight: 600;
+                font-size: 13px;
+                color: var(--ink3);
+                padding: 10px 6px;
+                border-radius: 10px;
+            }
+            .seg .opt.on {
+                background: #fff;
+                color: var(--ink);
+                box-shadow: var(--sh);
+            }
+            .phone.dark .seg .opt.on {
+                background: #11506b;
+                color: var(--ink);
+            }
+
+            /* --- Scale pills (0-N intensity) --- */
+            .scale {
+                display: flex;
+                gap: 6px;
+                margin-top: 12px;
+                flex-wrap: wrap;
+            }
+            .pill {
+                flex: 1;
+                min-width: 52px;
+                text-align: center;
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 12.5px;
+                padding: 12px 4px 10px;
+                border-radius: 14px;
+                border: 1.5px solid var(--line);
+                color: var(--ink3);
+                background: #fff;
+                line-height: 1.2;
+            }
+            .phone.dark .pill {
+                background: #0b2034;
+                border-color: var(--line);
+                color: var(--ink3);
+            }
+            .pill .n {
+                display: block;
+                font-size: 18px;
+                color: var(--ink2);
+                margin-bottom: 2px;
+            }
+            .phone.dark .pill .n {
+                color: var(--ink4);
+            }
+            .pill.on {
+                border-color: var(--celeste-400);
+                background: var(--c50);
+                color: var(--celeste-deep);
+            }
+            .phone.dark .pill.on {
+                background: #0e3447;
+                color: var(--celeste);
+                border-color: var(--celeste-400);
+            }
+            .pill.on .n {
+                color: var(--celeste-500);
+            }
+            .label {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 13px;
+                color: var(--ink2);
+                margin: 16px 0 4px;
+                letter-spacing: 0.2px;
+            }
+            .hint {
+                font-size: 13px;
+                color: var(--ink4);
+                line-height: 1.45;
+            }
+
+            /* --- Symptom chips --- */
+            .symp-group {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1.3px;
+                color: var(--ink4);
+                margin: 18px 0 8px;
+            }
+            .symp-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .schip {
+                font-family: "Quicksand";
+                font-weight: 600;
+                font-size: 13px;
+                padding: 9px 14px;
+                border-radius: 999px;
+                border: 1.5px solid var(--line);
+                color: var(--ink2);
+                background: #fff;
+            }
+            .phone.dark .schip {
+                background: #0b2034;
+                border-color: var(--line);
+                color: var(--ink2);
+            }
+            .schip.on {
+                border-color: var(--celeste-400);
+                background: var(--c50);
+                color: var(--celeste-deep);
+            }
+            .phone.dark .schip.on {
+                background: #0e3447;
+                color: var(--celeste);
+            }
+            .schip.on .lvl {
+                display: inline-block;
+                margin-left: 6px;
+                font-size: 11px;
+                color: var(--celeste-500);
+            }
+
+            /* --- Quick options --- */
+            .quick-title {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1.3px;
+                color: var(--celeste-deep);
+                margin-bottom: 8px;
+            }
+
+            /* --- Medication card --- */
+            .med-card {
+                background: #fff;
+                border: 1px solid var(--line);
+                border-radius: 16px;
+                padding: 14px;
+                margin-top: 10px;
+            }
+            .phone.dark .med-card {
+                background: #0b2034;
+                border-color: var(--line);
+            }
+            .med-name {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 15px;
+                color: var(--ink);
+            }
+            .med-dose {
+                font-size: 13px;
+                color: var(--ink3);
+                margin-top: 2px;
+            }
+            .med-relief {
+                display: flex;
+                gap: 6px;
+                margin-top: 10px;
+            }
+            .med-relief .r {
+                flex: 1;
+                text-align: center;
+                font-family: "Quicksand";
+                font-weight: 600;
+                font-size: 12px;
+                padding: 8px;
+                border-radius: 10px;
+                border: 1.5px solid var(--line);
+                color: var(--ink3);
+            }
+            .med-relief .r.on {
+                border-color: var(--mint);
+                background: var(--mint-s);
+                color: var(--mint-t);
+            }
+            .phone.dark .med-relief .r.on {
+                background: #0e3a2e;
+            }
+            .add-link {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 14px;
+                color: var(--celeste-deep);
+                margin-top: 14px;
+                text-align: center;
+            }
+            .phone.dark .add-link {
+                color: var(--celeste);
+            }
+
+            /* --- Note textarea mock --- */
+            .note-field {
+                background: #fff;
+                border: 1.5px solid var(--line);
+                border-radius: 16px;
+                padding: 14px;
+                margin-top: 12px;
+                min-height: 120px;
+                font-size: 14px;
+                color: var(--ink4);
+                line-height: 1.5;
+            }
+            .phone.dark .note-field {
+                background: #0b2034;
+                border-color: var(--line);
+                color: var(--ink4);
+            }
+
+            /* --- Review summary --- */
+            .rev-section {
+                margin-top: 14px;
+            }
+            .rev-head {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 13px;
+                color: var(--ink3);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .rev-val {
+                font-size: 14px;
+                color: var(--ink);
+                margin-top: 4px;
+                line-height: 1.5;
+            }
+            .rev-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-top: 4px;
+            }
+            .rev-chips .rc {
+                font-family: "Quicksand";
+                font-weight: 600;
+                font-size: 12px;
+                padding: 5px 10px;
+                border-radius: 999px;
+                background: var(--c50);
+                color: var(--celeste-deep);
+            }
+            .phone.dark .rev-chips .rc {
+                background: #0e3447;
+                color: var(--celeste);
+            }
+
+            /* --- Test positive card --- */
+            .test-card {
+                background: var(--c50);
+                border: 1.5px solid var(--c200);
+                border-radius: 20px;
+                padding: 24px 20px;
+                margin: 16px 0;
+                text-align: center;
+            }
+            .phone.dark .test-card {
+                background: #0e3447;
+                border-color: #11506b;
+            }
+            .test-card .test-title {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 19px;
+                color: var(--ink);
+                line-height: 1.25;
+            }
+            .test-card .test-lead {
+                font-size: 14px;
+                color: var(--ink3);
+                margin-top: 8px;
+                line-height: 1.5;
+            }
+            .test-card .test-hint {
+                font-size: 12.5px;
+                color: var(--ink4);
+                margin-top: 16px;
+            }
+
+            /* --- BBT input mock --- */
+            .bbt-row {
+                display: flex;
+                align-items: baseline;
+                gap: 6px;
+                margin-top: 10px;
+            }
+            .bbt-val {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 36px;
+                color: var(--ink);
+            }
+            .bbt-unit {
+                font-family: "Quicksand";
+                font-weight: 600;
+                font-size: 18px;
+                color: var(--ink3);
+            }
+
+            /* --- Intercourse toggle --- */
+            .toggle-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid var(--line);
+            }
+            .toggle-row .tr-label {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 15px;
+                color: var(--ink);
+            }
+            .toggle {
+                width: 48px;
+                height: 28px;
+                border-radius: 999px;
+                background: var(--celeste);
+                position: relative;
+                flex-shrink: 0;
+            }
+            .toggle.off {
+                background: var(--field);
+            }
+            .toggle .knob {
+                position: absolute;
+                top: 3px;
+                right: 3px;
+                width: 22px;
+                height: 22px;
+                border-radius: 999px;
+                background: #fff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+            .toggle.off .knob {
+                right: auto;
+                left: 3px;
+            }
+
+            /* --- Intro mode cards --- */
+            .mode-card {
+                width: 100%;
+                background: #fff;
+                border: 1.5px solid var(--line);
+                border-radius: 18px;
+                padding: 16px;
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            .phone.dark .mode-card {
+                background: #0b2034;
+                border-color: var(--line);
+            }
+            .mode-card.on {
+                border-color: var(--celeste-400);
+                background: var(--c50);
+            }
+            .phone.dark .mode-card.on {
+                background: #0e3447;
+            }
+            .mode-icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 14px;
+                background: var(--c100);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                flex-shrink: 0;
+            }
+            .mode-card .mt {
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 16px;
+                color: var(--ink);
+            }
+            .mode-card .mh {
+                font-size: 13px;
+                color: var(--ink3);
+                margin-top: 2px;
+            }
+
+            .mode-badge {
+                position: absolute;
+                top: 18px;
+                right: 22px;
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                padding: 4px 10px;
+                border-radius: 999px;
+            }
+            .mode-badge.tracking {
+                background: var(--c100);
+                color: var(--celeste-deep);
+            }
+            .mode-badge.avoid {
+                background: var(--amber-s);
+                color: var(--amber-t);
+            }
+            .mode-badge.ttc {
+                background: var(--mint-s);
+                color: var(--mint-t);
+            }
+            .mode-badge.pregnancy {
+                background: var(--rose-s);
+                color: var(--rose-t);
+            }
+
+            .footnote {
+                text-align: center;
+                color: var(--ink4);
+                font-size: 13px;
+                margin: 40px 0;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <div class="lead-hero">
+                <div class="eyebrow">Plan 02 · Check-in · Fase 1</div>
+                <h1>Wizard de captura diaria — todos los pasos, 4 modos, ambos temas</h1>
+                <p>
+                    El check-in es el corazón de captura de Rea: todo lo que la app sabe nace aquí. Este mockup cubre
+                    los 8 pasos del wizard, adaptados por modo reproductivo, en tema claro y oscuro. Regla rectora:
+                    registrar un día normal tarda &lt;60 s; un día "nada que reportar" &lt;15 s. Todo es opcional,
+                    "Guardar" está siempre disponible, y lo que no aplica al modo no aparece.
+                </p>
+                <div class="legend">
+                    <span class="chip tracking">tracking_only</span>
+                    <span class="chip avoid">avoid (anticonceptivo)</span>
+                    <span class="chip ttc">ttc (buscar embarazo)</span>
+                    <span class="chip pregnancy">pregnancy (embarazo)</span>
+                </div>
+            </div>
+
+            <!-- ============ INTRO ============ -->
+            <div class="section-label">Intro · selección de modo de registro</div>
+            <p class="section-sub">
+                La primera pantalla pregunta "¿cómo te sientes?" y ofrece tres velocidades. El modo rápido prioriza los
+                quick-options; "nada que reportar" guarda un check-in vacío en un toque. El modo activo de la usuaria
+                se muestra como contexto (badge), no como pregunta.
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <div class="sb"><span>9:41</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body center">
+                            <div style="font-size: 48px; margin-bottom: 12px">🌊</div>
+                            <div class="title">¿Cómo te sientes hoy?</div>
+                            <div class="lead">Registra tu día. Tarda menos de un minuto.</div>
+                            <div style="width: 100%; margin-top: 20px">
+                                <div class="mode-card on">
+                                    <div class="mode-icon">⚡</div>
+                                    <div>
+                                        <div class="mt">Registro rápido</div>
+                                        <div class="mh">Lo esencial en segundos</div>
+                                    </div>
+                                </div>
+                                <div class="mode-card">
+                                    <div class="mode-icon">📝</div>
+                                    <div>
+                                        <div class="mt">Registro completo</div>
+                                        <div class="mh">Todo lo que quieres apuntar</div>
+                                    </div>
+                                </div>
+                                <div class="mode-card">
+                                    <div class="mode-icon">🌱</div>
+                                    <div>
+                                        <div class="mt">Nada que reportar</div>
+                                        <div class="mh">Guarda un día tranquilo sin detalles</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Intro — tema claro<br /><span class="sub">3 velocidades de registro</span></div>
+                </div>
+            </div>
+
+            <!-- ============ BLEEDING ============ -->
+            <div class="section-label">Paso 1 · Sangrado + señal de periodo</div>
+            <p class="section-sub">
+                Escala 0-4 + coágulos 0-3. La señal de periodo ("me bajó / sigue / terminó") delega en el plan 03:
+                nunca crea una racha directamente, dispara la propuesta de reconciliación. Presente en los 3 modos de
+                ciclo; en embarazo no aparece (el sangrado es síntoma de alerta, no de regla).
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <div class="sb"><span>9:42</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 12%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Sangrado</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">¿Cuánto sangrado tienes?</div>
+                            <div class="lead">Elige el nivel de ahora mismo. Si no hay, marca nada.</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">0</span>Nada</div>
+                                <div class="pill"><span class="n">1</span>Manchado</div>
+                                <div class="pill on"><span class="n">2</span>Ligero</div>
+                                <div class="pill"><span class="n">3</span>Moderado</div>
+                                <div class="pill"><span class="n">4</span>Abundante</div>
+                            </div>
+                            <div class="label">¿Coágulos?</div>
+                            <div class="scale">
+                                <div class="pill on"><span class="n">0</span>No</div>
+                                <div class="pill"><span class="n">1</span>Pequeños</div>
+                                <div class="pill"><span class="n">2</span>Medianos</div>
+                                <div class="pill"><span class="n">3</span>Grandes</div>
+                            </div>
+                            <div class="label">Tu regla</div>
+                            <div class="seg">
+                                <div class="opt on">Me bajó hoy</div>
+                                <div class="opt">Sigue</div>
+                                <div class="opt">Terminó</div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Sangrado — tracking_only<br /><span class="sub">señal "me bajó hoy" activa</span></div>
+                </div>
+
+                <div class="cell">
+                    <div class="phone dark">
+                        <div class="sb"><span>9:42</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 12%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Sangrado</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">¿Cuánto sangrado tienes?</div>
+                            <div class="lead">Elige el nivel de ahora mismo. Si no hay, marca nada.</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">0</span>Nada</div>
+                                <div class="pill"><span class="n">1</span>Manchado</div>
+                                <div class="pill on"><span class="n">3</span>Moderado</div>
+                                <div class="pill"><span class="n">4</span>Abundante</div>
+                            </div>
+                            <div class="label">¿Coágulos?</div>
+                            <div class="scale">
+                                <div class="pill on"><span class="n">2</span>Medianos</div>
+                            </div>
+                            <div class="label">Tu regla</div>
+                            <div class="seg">
+                                <div class="opt">Me bajó hoy</div>
+                                <div class="opt on">Sigue</div>
+                                <div class="opt">Terminó</div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Sangrado — tema oscuro<br /><span class="sub">mismo paso, dark mode</span></div>
+                </div>
+            </div>
+
+            <!-- ============ FEELINGS ============ -->
+            <div class="section-label">Paso 2 · Ánimo y cuerpo (todos los modos)</div>
+            <p class="section-sub">
+                Ánimo (1-5), energía (1-5), estrés (0-5), sueño (cualitativo). El mismo set en los 4 modos — es la
+                capa emocional que alimenta las curvas por día de ciclo (plan 07).
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <div class="sb"><span>9:43</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 25%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Ánimo y cuerpo</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="label">¿Qué tal tu ánimo?</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">1</span>Muy bajo</div>
+                                <div class="pill"><span class="n">2</span>Bajo</div>
+                                <div class="pill on"><span class="n">3</span>Normal</div>
+                                <div class="pill"><span class="n">4</span>Bien</div>
+                                <div class="pill"><span class="n">5</span>Genial</div>
+                            </div>
+                            <div class="label">¿Cómo está tu energía?</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">1</span>Agotada</div>
+                                <div class="pill on"><span class="n">2</span>Cansada</div>
+                                <div class="pill"><span class="n">3</span>Normal</div>
+                                <div class="pill"><span class="n">4</span>Activa</div>
+                            </div>
+                            <div class="label">¿Y tu nivel de estrés?</div>
+                            <div class="scale">
+                                <div class="pill on"><span class="n">2</span>Poco</div>
+                                <div class="pill"><span class="n">3</span>Algo</div>
+                                <div class="pill"><span class="n">4</span>Bastante</div>
+                            </div>
+                            <div class="label">¿Cómo dormiste?</div>
+                            <div class="seg">
+                                <div class="opt">Mal</div>
+                                <div class="opt">Regular</div>
+                                <div class="opt on">Bien</div>
+                                <div class="opt">Muy bien</div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Ánimo y cuerpo<br /><span class="sub">4 sliders · todos los modos</span></div>
+                </div>
+            </div>
+
+            <!-- ============ SYMPTOMS ============ -->
+            <div class="section-label">Paso 3 · Síntomas — filtrado por modo</div>
+            <p class="section-sub">
+                El catálogo se filtra por <code>applicable_mode</code>. Arriba siempre los <code>is_quick_option</code>.
+                Tocar selecciona (intensidad por defecto 2); tocar de nuevo sube la intensidad. En modo embarazo
+                aparecen síntomas propios (acidez, Braxton Hicks, ciática…) que en otros modos no se ven.
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <span class="mode-badge tracking">tracking</span>
+                        <div class="sb"><span>9:44</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 37%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Síntomas</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">¿Tienes algún síntoma?</div>
+                            <div class="lead">Toca los que tengas. La intensidad se ajusta al tocar.</div>
+                            <div class="quick-title">Lo más común</div>
+                            <div class="symp-row">
+                                <div class="schip on">Cólicos <span class="lvl">●●●</span></div>
+                                <div class="schip">Migraña</div>
+                                <div class="schip on">Hinchazón <span class="lvl">●●</span></div>
+                                <div class="schip">Acné</div>
+                                <div class="schip">Insomnio</div>
+                            </div>
+                            <div class="symp-group">Dolor</div>
+                            <div class="symp-row">
+                                <div class="schip">Dolor pélvico</div>
+                                <div class="schip">Espalda baja</div>
+                                <div class="schip">Cabeza</div>
+                            </div>
+                            <div class="symp-group">Ánimo</div>
+                            <div class="symp-row">
+                                <div class="schip on">Irritabilidad <span class="lvl">●●</span></div>
+                                <div class="schip">Ansiedad</div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Síntomas — tracking_only<br /><span class="sub">catálogo general, sin fértiles ni embarazo</span></div>
+                </div>
+
+                <div class="cell">
+                    <div class="phone">
+                        <span class="mode-badge pregnancy">embarazo</span>
+                        <div class="sb"><span>9:44</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 37%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Síntomas</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">¿Tienes algún síntoma?</div>
+                            <div class="lead">Toca los que tengas. La intensidad se ajusta al tocar.</div>
+                            <div class="quick-title">Lo más común (embarazo)</div>
+                            <div class="symp-row">
+                                <div class="schip on">Náuseas <span class="lvl">●●●</span></div>
+                                <div class="schip on">Acidez <span class="lvl">●●</span></div>
+                                <div class="schip">Ganas de orinar</div>
+                                <div class="schip">Cansancio</div>
+                            </div>
+                            <div class="symp-group">Propios del embarazo</div>
+                            <div class="symp-row">
+                                <div class="schip">Braxton Hicks</div>
+                                <div class="schip">Ciática</div>
+                                <div class="schip">Presión pélvica</div>
+                                <div class="schip">Dolor ligamento redondo</div>
+                                <div class="schip">Falta de aliento</div>
+                                <div class="schip">Calambres piernas</div>
+                            </div>
+                            <div class="symp-group">Digestivo</div>
+                            <div class="symp-row">
+                                <div class="schip on">Estreñimiento <span class="lvl">●</span></div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Síntomas — pregnancy<br /><span class="sub">10 síntomas de embarazo exclusivos</span></div>
+                </div>
+            </div>
+
+            <!-- ============ BODY by mode ============ -->
+            <div class="section-label">Paso 4 · Cuerpo — diverge por modo</div>
+            <p class="section-sub">
+                Aquí es donde el wizard se adapta más. Tracking: moco/libido/peso opcionales. Avoid/TTC: BBT destacada
+                (con hora de toma), posición cervical solo en TTC. Embarazo: náuseas, movimiento fetal, peso — sin
+                moco ni cervical.
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <span class="mode-badge ttc">ttc</span>
+                        <div class="sb"><span>9:45</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 50%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Cuerpo</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="label">Temperatura basal (al despertar)</div>
+                            <div class="hint">Solo vale tomada al despertar, antes de levantarte.</div>
+                            <div class="bbt-row">
+                                <span class="bbt-val">36.5</span>
+                                <span class="bbt-unit">°C</span>
+                            </div>
+                            <div class="label">Hora de la toma</div>
+                            <div class="hint" style="color: var(--ink2)">07:12</div>
+                            <div class="label">Moco cervical</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">0</span>Seco</div>
+                                <div class="pill"><span class="n">1</span>Pegajoso</div>
+                                <div class="pill"><span class="n">2</span>Cremoso</div>
+                                <div class="pill"><span class="n">3</span>Acuoso</div>
+                                <div class="pill on"><span class="n">4</span>Clara</div>
+                            </div>
+                            <div class="label">Posición cervical</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">0</span>Baja</div>
+                                <div class="pill on"><span class="n">2</span>Alta</div>
+                            </div>
+                            <div class="label">Libido</div>
+                            <div class="scale">
+                                <div class="pill on"><span class="n">3</span>Alta</div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Cuerpo — TTC<br /><span class="sub">BBT + hora, cervical, moco, libido</span></div>
+                </div>
+
+                <div class="cell">
+                    <div class="phone">
+                        <span class="mode-badge pregnancy">embarazo</span>
+                        <div class="sb"><span>9:45</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 50%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Cuerpo</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="label">Náuseas</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">0</span>Ninguna</div>
+                                <div class="pill on"><span class="n">2</span>Con vómito</div>
+                                <div class="pill"><span class="n">3</span>Todo el día</div>
+                            </div>
+                            <div class="label">Movimiento fetal</div>
+                            <div class="scale">
+                                <div class="pill"><span class="n">0</span>No siento</div>
+                                <div class="pill on"><span class="n">2</span>Notable</div>
+                            </div>
+                            <div class="label">Peso (opcional)</div>
+                            <div class="hint">Opcional y sin juicio.</div>
+                            <div class="bbt-row">
+                                <span class="bbt-val" style="font-size: 28px">64.2</span>
+                                <span class="bbt-unit">kg</span>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Cuerpo — embarazo<br /><span class="sub">náuseas, movimiento fetal, peso</span></div>
+                </div>
+            </div>
+
+            <!-- ============ FERTILITY & TESTS ============ -->
+            <div class="section-label">Paso 5 · Fertilidad y tests — test de embarazo en TODOS los modos</div>
+            <p class="section-sub">
+                Auditoría A6: el test de embarazo se captura en los 3 modos de ciclo (no solo TTC). Un positivo en
+                modo <strong>evitar</strong> puede no ser buena noticia → tarjeta neutra, sin celebración. OPK solo en
+                TTC. Relaciones presente en todos los modos.
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <span class="mode-badge avoid">evitar</span>
+                        <div class="sb"><span>9:46</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 62%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Fertilidad y tests</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">Fertilidad y tests</div>
+                            <div class="label">Test de embarazo</div>
+                            <div class="lead" style="margin-top: 0">Si te hiciste uno, marca el resultado.</div>
+                            <div class="seg">
+                                <div class="opt">Negativo</div>
+                                <div class="opt on">Positivo</div>
+                                <div class="opt">No válido</div>
+                            </div>
+                            <div class="test-card">
+                                <div style="font-size: 32px; margin-bottom: 8px">🤍</div>
+                                <div class="test-title">Tu test dio positivo</div>
+                                <div class="test-lead">
+                                    Es un momento importante. No hay prisa por decidir nada ahora.
+                                </div>
+                                <div style="margin-top: 16px">
+                                    <div class="btn block">Activar modo embarazo</div>
+                                    <div class="btn ghost">Seguir como estoy</div>
+                                </div>
+                                <div class="test-hint">Puedes cambiar de modo cuando quieras en ajustes.</div>
+                            </div>
+                            <div class="label">Relaciones</div>
+                            <div class="toggle-row">
+                                <span class="tr-label">Hoy sí</span>
+                                <div class="toggle"><div class="knob"></div></div>
+                            </div>
+                            <div class="toggle-row">
+                                <span class="tr-label">Con protección</span>
+                                <div class="toggle"><div class="knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Fertilidad — modo evitar<br /><span class="sub">test positivo → tarjeta NEUTRA, no fiesta</span></div>
+                </div>
+
+                <div class="cell">
+                    <div class="phone dark">
+                        <span class="mode-badge ttc">ttc</span>
+                        <div class="sb"><span>9:46</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 62%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Fertilidad y tests</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">Fertilidad y tests</div>
+                            <div class="label">Test de ovulación (OPK)</div>
+                            <div class="seg">
+                                <div class="opt">Negativo</div>
+                                <div class="opt on">Pico</div>
+                                <div class="opt">No válido</div>
+                            </div>
+                            <div class="label">Test de embarazo</div>
+                            <div class="seg">
+                                <div class="opt on">Negativo</div>
+                                <div class="opt">Positivo</div>
+                                <div class="opt">No válido</div>
+                            </div>
+                            <div class="label">Relaciones</div>
+                            <div class="toggle-row">
+                                <span class="tr-label">Hoy sí</span>
+                                <div class="toggle"><div class="knob"></div></div>
+                            </div>
+                            <div class="toggle-row">
+                                <span class="tr-label">Con protección</span>
+                                <div class="toggle off"><div class="knob"></div></div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Fertilidad — TTC, oscuro<br /><span class="sub">OPK + test embarazo + relaciones</span></div>
+                </div>
+            </div>
+
+            <!-- ============ MEDICATIONS ============ -->
+            <div class="section-label">Paso 6 · Medicamentos — con aviso de seguridad en embarazo</div>
+            <p class="section-sub">
+                Catálogo personal por usuaria + dosis opcional + alivio (0-2). En modo embarazo, los medicamentos
+                muestran su <code>pregnancy_safety</code>: aviso neutro si <code>caution</code>, nada si
+                <code>unknown</code>.
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <div class="sb"><span>9:47</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 75%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Medicamentos</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">Medicamentos</div>
+                            <div class="lead">Lo que tomaste hoy. Si te alivió, márcalo.</div>
+                            <div class="med-card">
+                                <div class="med-name">Ibuprofeno</div>
+                                <div class="med-dose">400 mg</div>
+                                <div class="label" style="margin: 10px 0 4px; font-size: 12px">¿Te alivió?</div>
+                                <div class="med-relief">
+                                    <div class="r">No</div>
+                                    <div class="r on">Algo</div>
+                                    <div class="r">Sí, mucho</div>
+                                </div>
+                            </div>
+                            <div class="med-card">
+                                <div class="med-name">Paracetamol</div>
+                                <div class="med-dose">500 mg</div>
+                                <div class="label" style="margin: 10px 0 4px; font-size: 12px">¿Te alivió?</div>
+                                <div class="med-relief">
+                                    <div class="r">No</div>
+                                    <div class="r">Algo</div>
+                                    <div class="r on">Sí, mucho</div>
+                                </div>
+                            </div>
+                            <div class="add-link">+ Añadir medicamento</div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Medicamentos — general<br /><span class="sub">catálogo + dosis + alivio</span></div>
+                </div>
+
+                <div class="cell">
+                    <div class="phone">
+                        <span class="mode-badge pregnancy">embarazo</span>
+                        <div class="sb"><span>9:47</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 75%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Medicamentos</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">Medicamentos</div>
+                            <div class="med-card" style="border-color: var(--amber); background: var(--amber-s)">
+                                <div class="med-name">Ibuprofeno</div>
+                                <div class="med-dose">400 mg</div>
+                                <div style="
+                                    font-size: 12.5px;
+                                    color: var(--amber-t);
+                                    margin-top: 8px;
+                                    line-height: 1.45;
+                                    font-weight: 600;
+                                ">
+                                    ⚠️ Usa con precaución en embarazo. Consulta a tu médico.
+                                </div>
+                            </div>
+                            <div class="med-card">
+                                <div class="med-name">Paracetamol</div>
+                                <div class="med-dose">500 mg</div>
+                                <div class="label" style="margin: 10px 0 4px; font-size: 12px">¿Te alivió?</div>
+                                <div class="med-relief">
+                                    <div class="r">No</div>
+                                    <div class="r">Algo</div>
+                                    <div class="r on">Sí, mucho</div>
+                                </div>
+                            </div>
+                            <div class="add-link">+ Añadir medicamento</div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Medicamentos — embarazo<br /><span class="sub">aviso pregnancy_safety = caution</span></div>
+                </div>
+            </div>
+
+            <!-- ============ NOTE + REVIEW ============ -->
+            <div class="section-label">Pasos 7-8 · Nota + Revisión</div>
+            <p class="section-sub">
+                La nota es texto libre, jamás analizada. La revisión es el resumen atómico antes de guardar — cada
+                sección es editable de un toque. "Guardar" ejecuta la transacción (checkin + síntomas + medicamentos +
+                relaciones + señal de periodo) y dispara la reproyección del motor.
+            </p>
+            <div class="grid">
+                <div class="cell">
+                    <div class="phone">
+                        <div class="sb"><span>9:48</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 87%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Nota</span>
+                            <span class="save-link">Guardar</span>
+                        </div>
+                        <div class="body">
+                            <div class="title">Algo más para hoy</div>
+                            <div class="lead">Lo que quieras apuntar. Esta nota es solo tuya; no la analizamos.</div>
+                            <div class="note-field">
+                                Día tranquilo. Salí a caminar con mi hermana, me sentí bien. El cólico bajó por la
+                                tarde…
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Continuar</div></div>
+                    </div>
+                    <div class="cap">Nota<br /><span class="sub">texto libre, privado</span></div>
+                </div>
+
+                <div class="cell">
+                    <div class="phone">
+                        <div class="sb"><span>9:48</span><span class="dots">●●● 5G ▮</span></div>
+                        <div class="progress"><div class="fill" style="width: 100%"></div></div>
+                        <div class="phead">
+                            <div class="back">←</div>
+                            <span class="ptitle">Revisar</span>
+                            <span class="save-link"></span>
+                        </div>
+                        <div class="body">
+                            <div class="title">Revisar y guardar</div>
+                            <div class="lead">Un vistazo rápido antes de guardar tu día.</div>
+                            <div class="rev-section">
+                                <div class="rev-head">Sangrado</div>
+                                <div class="rev-val">Ligero · Coágulos: no · <strong>Me bajó hoy</strong></div>
+                            </div>
+                            <div class="rev-section">
+                                <div class="rev-head">Ánimo</div>
+                                <div class="rev-val">Normal · Cansada · Estrés bajo · Dormí bien</div>
+                            </div>
+                            <div class="rev-section">
+                                <div class="rev-head">Síntomas</div>
+                                <div class="rev-chips">
+                                    <span class="rc">Cólicos ●●●</span>
+                                    <span class="rc">Hinchazón ●●</span>
+                                    <span class="rc">Irritabilidad ●●</span>
+                                </div>
+                            </div>
+                            <div class="rev-section">
+                                <div class="rev-head">Medicamentos</div>
+                                <div class="rev-val">Ibuprofeno 400mg (alivió algo)</div>
+                            </div>
+                            <div class="rev-section">
+                                <div class="rev-head">Nota</div>
+                                <div class="rev-val" style="color: var(--ink3)">Día tranquilo. Salí a caminar…</div>
+                            </div>
+                        </div>
+                        <div class="foot"><div class="btn block">Guardar</div></div>
+                    </div>
+                    <div class="cap">Revisión<br /><span class="sub">guardado transaccional + reproyección</span></div>
+                </div>
+            </div>
+
+            <div class="footnote">
+                Mockup de diseño — plan 02, Fase 1. La regla es: cada paso que ves aquí se muestra solo si aplica al
+                modo activo. Lo que no aplica, no se deshabilita: desaparece.
+            </div>
+        </div>
+    </body>
+</html>
