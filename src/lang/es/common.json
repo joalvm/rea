@@ -5,10 +5,12 @@
         "save": "Guardar",
         "notNow": "Ahora no",
         "start": "Empezar",
-        "startApp": "Empezar a usar Rea"
+        "startApp": "Empezar a usar Rea",
+        "ok": "OK"
     },
     "feedback": {
-        "success": "Éxito"
+        "success": "Éxito",
+        "comingSoon": "Próximamente"
     },
     "accessibility": {
         "decrease": "Disminuir",

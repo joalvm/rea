@@ -46,6 +46,9 @@ export const checkin = sqliteTable(
         periodStatusSignal: text("period_status_signal", { enum: periodStatusSignalValues }),
         cervicalPosition: integer("cervical_position"),
         basalBodyTempC: real("basal_body_temp_c"),
+        basalBodyTempTime: text("basal_body_temp_time"),
+        libido: integer("libido"),
+        weightKg: real("weight_kg"),
         opkResult: text("opk_result", { enum: qualitativeTestResultValues }),
         pregnancyTestResult: text("pregnancy_test_result", { enum: qualitativeTestResultValues }),
         morningSickness: integer("morning_sickness"),
@@ -84,6 +87,12 @@ export const checkin = sqliteTable(
             "checkin_basal_body_temp_c_check",
             sql`${table.basalBodyTempC} IS NULL OR (${table.basalBodyTempC} BETWEEN 35.0 AND 38.0)`,
         ),
+        check(
+            "checkin_basal_body_temp_time_check",
+            sql`${table.basalBodyTempTime} IS NULL OR (${table.basalBodyTempTime} LIKE '__:__')`,
+        ),
+        check("checkin_libido_check", sql`${table.libido} IS NULL OR (${table.libido} BETWEEN 0 AND 4)`),
+        check("checkin_weight_kg_check", sql`${table.weightKg} IS NULL OR (${table.weightKg} BETWEEN 30.0 AND 250.0)`),
         check(
             "checkin_opk_result_check",
             sql`${table.opkResult} IN ('negative', 'positive', 'invalid') OR ${table.opkResult} IS NULL`,

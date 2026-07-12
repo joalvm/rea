@@ -4,6 +4,7 @@ import type { Database } from "@/db/client";
 import { checkin } from "@/db/schema/checkin";
 import { checkinMedication } from "@/db/schema/checkinMedication";
 import { checkinSymptom } from "@/db/schema/checkinSymptom";
+import { intercourseLog } from "@/db/schema/intercourseLog";
 import { medicationCatalog } from "@/db/schema/medicationCatalog";
 import uuid from "@/db/utils/uuid";
 import { recalculate } from "@/domain/engine/recalculate";
@@ -22,12 +23,16 @@ function normalizeMedicationName(name: string): string {
 
 /**
  * Persiste un check-in completo en una sola transacción (fila `checkins` +
- * síntomas + medicamentos) y dispara el recálculo del motor desde la fecha
- * local del registro. Los medicamentos con nombre escrito a mano se materializan
- * (o reutilizan) en `medication_catalog` dentro de la misma transacción.
+ * síntomas + medicamentos + relaciones) y dispara el recálculo del motor desde
+ * la fecha local del registro. Los medicamentos con nombre escrito a mano se
+ * materializan (o reutilizan) en `medication_catalog` dentro de la misma
+ * transacción.
  *
  * La señal de periodo (`periodStatusSignal`) se persiste como auditoría; la
  * apertura/cierre de rachas vive en el plan 03 y no se invoca aquí.
+ *
+ * Las relaciones sexuales se guardan como evento first-class en
+ * `intercourse_log` (separado de `checkins`) cuando el draft lo declara.
  *
  * Devuelve el id del check-in creado, o `null` si el borrador no tenía nada
  * que persistir (día "nada que reportar").
@@ -50,6 +55,16 @@ export async function createCheckin(database: Database, params: CreateCheckinPar
                 mood: draft.mood ?? undefined,
                 energy: draft.energy ?? undefined,
                 stressLevel: draft.stressLevel ?? undefined,
+                cervicalMucus: draft.cervicalMucus ?? undefined,
+                cervicalPosition: draft.cervicalPosition ?? undefined,
+                basalBodyTempC: draft.basalBodyTempC ?? undefined,
+                basalBodyTempTime: draft.basalBodyTempTime ?? undefined,
+                libido: draft.libido ?? undefined,
+                weightKg: draft.weightKg ?? undefined,
+                morningSickness: draft.morningSickness ?? undefined,
+                fetalMovement: draft.fetalMovement ?? undefined,
+                opkResult: draft.opkResult ?? undefined,
+                pregnancyTestResult: draft.pregnancyTestResult ?? undefined,
                 note: draft.note ?? undefined,
                 createdAt: now,
                 updatedAt: now,
@@ -103,6 +118,20 @@ export async function createCheckin(database: Database, params: CreateCheckinPar
                     takenAt: now,
                     relief: med.relief ?? undefined,
                     doseNote: med.doseNote ?? undefined,
+                    createdAt: now,
+                    updatedAt: now,
+                });
+            }
+
+            // Relaciones: entidad first-class separada de `checkins`.
+            // Se inserta solo si la usuaria declaró el evento (`intercourse !== null`).
+            if (draft.intercourse !== null) {
+                await tx.insert(intercourseLog).values({
+                    id: uuid(),
+                    profileId,
+                    occurredAt: now,
+                    localDate: draft.localDate,
+                    isProtected: draft.intercourse.isProtected,
                     createdAt: now,
                     updatedAt: now,
                 });

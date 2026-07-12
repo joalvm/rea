@@ -1,4 +1,4 @@
-import type { PeriodStatusSignal } from "@/db/enums/checkin";
+import type { PeriodStatusSignal, QualitativeTestResult } from "@/db/enums/checkin";
 
 /** Síntoma seleccionado en el paso de síntomas. `intensity` 1–5. */
 export type DraftSymptom = {
@@ -18,6 +18,12 @@ export type DraftMedication = {
     doseNote?: string;
 };
 
+/** Evento de relaciones registrado en el paso de fertilidad. */
+export type DraftIntercourse = {
+    /** `true` si hubo protección, `false` si no, `null` si no se especifica. */
+    isProtected: boolean | null;
+};
+
 /**
  * Borrador efímero del check-in (no cachea DB). Cada paso lee y escribe aquí; la
  * persistencia real ocurre en una sola transacción al guardar
@@ -34,10 +40,26 @@ export type CheckinDraft = {
     clots: number | null;
     periodStatusSignal: PeriodStatusSignal | null;
 
-    // Ánimo y cuerpo (Fase 2: ánimo/energía/estrés)
+    // Ánimo y cuerpo (ánimo/energía/estrés)
     mood: number | null;
     energy: number | null;
     stressLevel: number | null;
+
+    // Cuerpo (Fase 3): moco, cervix, BBT con hora, libido, peso, náuseas, movimiento
+    cervicalMucus: number | null;
+    cervicalPosition: number | null;
+    basalBodyTempC: number | null;
+    /** Hora de la toma de BBT en `HH:MM` (solo válida al despertar). */
+    basalBodyTempTime: string | null;
+    libido: number | null;
+    weightKg: number | null;
+    morningSickness: number | null;
+    fetalMovement: number | null;
+
+    // Fertilidad (Fase 3): OPK, test de embarazo, relaciones
+    opkResult: QualitativeTestResult | null;
+    pregnancyTestResult: QualitativeTestResult | null;
+    intercourse: DraftIntercourse | null;
 
     // Síntomas + medicamentos
     symptoms: DraftSymptom[];
@@ -64,6 +86,17 @@ export const INITIAL_CHECKIN_DRAFT: CheckinDraft = {
     mood: null,
     energy: null,
     stressLevel: null,
+    cervicalMucus: null,
+    cervicalPosition: null,
+    basalBodyTempC: null,
+    basalBodyTempTime: null,
+    libido: null,
+    weightKg: null,
+    morningSickness: null,
+    fetalMovement: null,
+    opkResult: null,
+    pregnancyTestResult: null,
+    intercourse: null,
     symptoms: [],
     medications: [],
     note: null,
@@ -82,6 +115,16 @@ export function hasCheckinContent(draft: CheckinDraft): boolean {
         draft.mood !== null ||
         draft.energy !== null ||
         draft.stressLevel !== null ||
+        draft.cervicalMucus !== null ||
+        draft.cervicalPosition !== null ||
+        draft.basalBodyTempC !== null ||
+        draft.libido !== null ||
+        draft.weightKg !== null ||
+        draft.morningSickness !== null ||
+        draft.fetalMovement !== null ||
+        draft.opkResult !== null ||
+        draft.pregnancyTestResult !== null ||
+        draft.intercourse !== null ||
         draft.symptoms.length > 0 ||
         draft.medications.length > 0 ||
         (draft.note !== null && draft.note.trim().length > 0)

@@ -22,6 +22,9 @@ describe("Esquema de checkin", () => {
             "period_status_signal",
             "cervical_position",
             "basal_body_temp_c",
+            "basal_body_temp_time",
+            "libido",
+            "weight_kg",
             "opk_result",
             "pregnancy_test_result",
             "morning_sickness",
@@ -41,6 +44,9 @@ describe("Esquema de checkin", () => {
         expect(checkNames(checkin)).toContain("checkin_period_status_signal_check");
         expect(checkNames(checkin)).toContain("checkin_cervical_position_check");
         expect(checkNames(checkin)).toContain("checkin_basal_body_temp_c_check");
+        expect(checkNames(checkin)).toContain("checkin_basal_body_temp_time_check");
+        expect(checkNames(checkin)).toContain("checkin_libido_check");
+        expect(checkNames(checkin)).toContain("checkin_weight_kg_check");
         expect(checkNames(checkin)).toContain("checkin_opk_result_check");
         expect(checkNames(checkin)).toContain("checkin_pregnancy_test_result_check");
         expect(checkNames(checkin)).toContain("checkin_morning_sickness_check");

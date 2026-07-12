@@ -1,7 +1,7 @@
 # 02 · Check-in (captura diaria)
 
 > **Hito:** M2 · **Depende de:** 01 (motor), 03 (señal de periodo), esquema v3 ·
-> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fase 2 ✅ (wizard funcional). Fases 3-4 pendientes.
+> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fase 2 ✅ (wizard funcional). Fase 3 ✅ (cuerpo, fertilidad y puente de test). Fase 4 pendiente.
 
 ## Contexto
 
@@ -85,7 +85,7 @@ Objetivo de producto: **registrar un día normal toma menos de 60 segundos**, y 
 - **Cierre:** test de integración — guardar un check-in completo escribe todas las
   tablas y dispara reproyección del día; guardar vacío no crea basura.
 
-### [ ] Fase 3: Cuerpo, fertilidad y el puente de test
+### [x] Fase 3: Cuerpo, fertilidad y el puente de test
 
 - **Objetivo:** las señales especializadas, por modo, con el puente cuidadoso.
 - **Cambios:** pasos cuerpo/fertilidad completos según la tabla (BBT con hora, cervical

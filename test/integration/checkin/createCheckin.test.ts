@@ -6,6 +6,7 @@ import { checkin } from "@/db/schema/checkin";
 import { checkinMedication } from "@/db/schema/checkinMedication";
 import { checkinSymptom } from "@/db/schema/checkinSymptom";
 import { dailySummary } from "@/db/schema/dailySummary";
+import { intercourseLog } from "@/db/schema/intercourseLog";
 import { medicationCatalog } from "@/db/schema/medicationCatalog";
 import { createCheckin } from "@/features/checkin/shared/services/createCheckin";
 import { INITIAL_CHECKIN_DRAFT, type CheckinDraft } from "@/features/checkin/shared/types/CheckinDraft";
@@ -183,5 +184,104 @@ describe("Integración de createCheckin", () => {
             .from(medicationCatalog)
             .where(eq(medicationCatalog.profileId, profileSeed.id));
         expect(catalogRows).toHaveLength(1);
+    });
+
+    it("persiste campos de cuerpo y fertilidad (Fase 3)", async () => {
+        const db = context.database.db as unknown as Database;
+        await seedProfile(context.database);
+        await seedReproductiveIntentHistory(context.database);
+
+        const id = await createCheckin(db, {
+            profileId: profileSeed.id,
+            draft: buildDraft({
+                cervicalMucus: 3,
+                cervicalPosition: 2,
+                basalBodyTempC: 36.5,
+                basalBodyTempTime: "07:12",
+                libido: 2,
+                weightKg: 64.2,
+                morningSickness: 1,
+                fetalMovement: 2,
+                opkResult: "positive",
+                pregnancyTestResult: "negative",
+            }),
+        });
+
+        expect(id).not.toBeNull();
+
+        const rows = await db.select().from(checkin).where(eq(checkin.id, id!));
+        expect(rows).toHaveLength(1);
+        const row = rows[0];
+        expect(row?.cervicalMucus).toBe(3);
+        expect(row?.cervicalPosition).toBe(2);
+        expect(row?.basalBodyTempC).toBe(36.5);
+        expect(row?.basalBodyTempTime).toBe("07:12");
+        expect(row?.libido).toBe(2);
+        expect(row?.weightKg).toBe(64.2);
+        expect(row?.morningSickness).toBe(1);
+        expect(row?.fetalMovement).toBe(2);
+        expect(row?.opkResult).toBe("positive");
+        expect(row?.pregnancyTestResult).toBe("negative");
+    });
+
+    it("crea una fila en intercourse_log cuando el draft declara relaciones", async () => {
+        const db = context.database.db as unknown as Database;
+        await seedProfile(context.database);
+        await seedReproductiveIntentHistory(context.database);
+
+        const id = await createCheckin(db, {
+            profileId: profileSeed.id,
+            draft: buildDraft({
+                mood: 3,
+                intercourse: { isProtected: true },
+            }),
+        });
+
+        expect(id).not.toBeNull();
+
+        const events = await db
+            .select()
+            .from(intercourseLog)
+            .where(eq(intercourseLog.profileId, profileSeed.id));
+        expect(events).toHaveLength(1);
+        expect(events[0]?.isProtected).toBe(true);
+        expect(events[0]?.localDate).toBe("2026-06-02");
+    });
+
+    it("no crea fila en intercourse_log cuando el draft no declara relaciones", async () => {
+        const db = context.database.db as unknown as Database;
+        await seedProfile(context.database);
+        await seedReproductiveIntentHistory(context.database);
+
+        const id = await createCheckin(db, {
+            profileId: profileSeed.id,
+            draft: buildDraft({ mood: 3 }),
+        });
+
+        expect(id).not.toBeNull();
+
+        const events = await db
+            .select()
+            .from(intercourseLog)
+            .where(eq(intercourseLog.profileId, profileSeed.id));
+        expect(events).toHaveLength(0);
+    });
+
+    it("acepta test de embarazo positivo y lo persiste (puente plan 10)", async () => {
+        const db = context.database.db as unknown as Database;
+        await seedProfile(context.database);
+        await seedReproductiveIntentHistory(context.database);
+
+        const id = await createCheckin(db, {
+            profileId: profileSeed.id,
+            draft: buildDraft({
+                pregnancyTestResult: "positive",
+            }),
+        });
+
+        expect(id).not.toBeNull();
+
+        const rows = await db.select().from(checkin).where(eq(checkin.id, id!));
+        expect(rows[0]?.pregnancyTestResult).toBe("positive");
     });
 });

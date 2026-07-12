@@ -1,8 +1,10 @@
 import { Check } from "lucide-react-native";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Text, View } from "react-native";
 
 import { useReviewStyles } from "./ReviewStyle";
+import { PositiveTestCard } from "@/features/checkin/shared/components/positive-test-card/PositiveTestCard";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { useCompleteCheckin } from "@/features/checkin/shared/hooks/useCompleteCheckin";
@@ -14,8 +16,11 @@ type Props = {
 
 /**
  * Check-in paso final: resumen y guardado. Persiste el check-in (+ síntomas,
- * medicación) en una transacción y dispara el recálculo del motor. Cada sección
- * muestra el resumen del borrador; "Guardar" está siempre disponible.
+ * medicación, relaciones) en una transacción y dispara el recálculo del motor.
+ * Cada sección muestra el resumen del borrador; "Guardar" está siempre disponible.
+ *
+ * Si el test de embarazo dio positivo, tras guardar se muestra la tarjeta neutra
+ * `PositiveTestCard` (puente al plan 10, aún en stub) en lugar del toast simple.
  */
 export default function ReviewScreen({ onSaved }: Props) {
     const { t } = useTranslation("checkIn");
@@ -23,13 +28,25 @@ export default function ReviewScreen({ onSaved }: Props) {
     const styles = useReviewStyles();
     const draft = useCheckinStore((state) => state.draft);
     const { submit, isSubmitting, isEmpty } = useCompleteCheckin();
+    const [showPositiveCard, setShowPositiveCard] = useState(false);
 
     const save = async () => {
+        // Capturar antes de submit: submit() resetea el store.
+        const wasPositive = draft.pregnancyTestResult === "positive";
         const ok = await submit();
         if (ok) {
-            Alert.alert(tCommon("feedback.success"), t("review.savedToast"));
-            onSaved();
+            if (wasPositive) {
+                setShowPositiveCard(true);
+            } else {
+                Alert.alert(tCommon("feedback.success"), t("review.savedToast"));
+                onSaved();
+            }
         }
+    };
+
+    const handlePositiveDismiss = () => {
+        setShowPositiveCard(false);
+        onSaved();
     };
 
     const lines: { label: string; value: string | null }[] = [];
@@ -45,11 +62,58 @@ export default function ReviewScreen({ onSaved }: Props) {
             value: t(`feelings.mood.level.${draft.mood}` as never),
         });
     }
+    const bodyParts: string[] = [];
+    if (draft.cervicalMucus !== null) {
+        bodyParts.push(`${t("body.mucus.title")}: ${t(`body.mucus.level.${draft.cervicalMucus}` as never)}`);
+    }
+    if (draft.cervicalPosition !== null) {
+        bodyParts.push(`${t("body.cervix.title")}: ${t(`body.cervix.level.${draft.cervicalPosition}` as never)}`);
+    }
+    if (draft.basalBodyTempC !== null) {
+        bodyParts.push(`${t("body.bbt.title")}: ${draft.basalBodyTempC} ${t("body.bbt.unit")}`);
+    }
+    if (draft.libido !== null) {
+        bodyParts.push(`${t("body.libido.title")}: ${t(`body.libido.level.${draft.libido}` as never)}`);
+    }
+    if (draft.weightKg !== null) {
+        bodyParts.push(`${t("body.weight.title")}: ${draft.weightKg} ${t("body.weight.unit")}`);
+    }
+    if (draft.morningSickness !== null) {
+        bodyParts.push(
+            `${t("body.morningSickness.title")}: ${t(`body.morningSickness.level.${draft.morningSickness}` as never)}`,
+        );
+    }
+    if (draft.fetalMovement !== null) {
+        bodyParts.push(
+            `${t("body.fetalMovement.title")}: ${t(`body.fetalMovement.level.${draft.fetalMovement}` as never)}`,
+        );
+    }
+    if (bodyParts.length > 0) {
+        lines.push({ label: t("review.sectionBody"), value: bodyParts.join(" · ") });
+    }
     if (draft.symptoms.length > 0) {
         lines.push({
             label: t("review.sectionSymptoms"),
             value: t("symptomStep.selectedCount_other", { count: draft.symptoms.length }),
         });
+    }
+    const fertilityParts: string[] = [];
+    if (draft.pregnancyTestResult) {
+        fertilityParts.push(
+            `${t("fertility.pregnancyTest.title")}: ${t(`fertility.pregnancyTest.${draft.pregnancyTestResult}` as never)}`,
+        );
+    }
+    if (draft.opkResult) {
+        fertilityParts.push(`${t("fertility.opk.title")}: ${t(`fertility.opk.${draft.opkResult}` as never)}`);
+    }
+    if (draft.intercourse !== null) {
+        const intercourseLabel = draft.intercourse.isProtected
+            ? t("fertility.intercourse.protected")
+            : t("fertility.intercourse.had");
+        fertilityParts.push(`${t("fertility.intercourse.title")}: ${intercourseLabel}`);
+    }
+    if (fertilityParts.length > 0) {
+        lines.push({ label: t("review.sectionFertility"), value: fertilityParts.join(" · ") });
     }
     if (draft.medications.length > 0) {
         lines.push({
@@ -88,6 +152,8 @@ export default function ReviewScreen({ onSaved }: Props) {
                     ))}
                 </View>
             )}
+
+            <PositiveTestCard visible={showPositiveCard} onDismiss={handlePositiveDismiss} />
         </CheckinScreen>
     );
 }

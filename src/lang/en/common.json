@@ -5,10 +5,12 @@
         "save": "Save",
         "notNow": "Not now",
         "start": "Start",
-        "startApp": "Start using Rea"
+        "startApp": "Start using Rea",
+        "ok": "OK"
     },
     "feedback": {
-        "success": "Success"
+        "success": "Success",
+        "comingSoon": "Coming soon"
     },
     "accessibility": {
         "decrease": "Decrease",
