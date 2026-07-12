@@ -45,7 +45,7 @@ export function SegmentedControl<T extends string | number>({ options, value, on
                         {Icon ? (
                             <Icon
                                 size={theme.sizing.iconSm}
-                                color={active ? theme.colors.primary : theme.colors.textMuted}
+                                color={active ? theme.colors.text : theme.colors.textMuted}
                                 strokeWidth={2.2}
                             />
                         ) : null}

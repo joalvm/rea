@@ -5,32 +5,26 @@ import { View } from "react-native";
 import { useTheme } from "@/theme/useTheme";
 
 type Props = {
-    /** Número de columnas del grid. Default 2. */
-    columns?: 2 | 3;
     /** Hijos; normalmente una lista de `ChoiceCard`. */
     children: ReactNode;
 };
 
 /**
- * Contenedor grid para `ChoiceCard`. Envuelve cada hijo en un `View` con
- * `flexBasis` porcentual para forzar el número de columnas; el espacio entre
- * tarjetas se resuelve con `gap` (RN 0.71+). Es el espejo RN de `.choice-grid`
- * / `.choice-grid.three` del design-system HTML.
+ * Contenedor grid para `ChoiceCard`. Una sola fila horizontal: cada hijo
+ * toma `flex: 1` y se reparte el ancho disponible sin wrap. Pensado para
+ * que todas las opciones quepan en una línea compacta (espejo denso del
+ * design-system). El número de columnas lo define la cantidad de hijos.
  */
-export function ChoiceGrid({ columns = 2, children }: Props) {
+export function ChoiceGrid({ children }: Props) {
     const theme = useTheme();
-    const basis = `${Math.floor(100 / columns)}%` as `${number}%`;
+    const items = Children.toArray(children);
 
     return (
-        <View
-            style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: theme.spacing.md,
-            }}
-        >
-            {Children.map(children, (child) => (
-                <View style={{ flexBasis: basis, flexGrow: 1, flexShrink: 0 }}>{child}</View>
+        <View style={{ flexDirection: "row", gap: theme.spacing.xs + 1 }}>
+            {items.map((child, index) => (
+                <View key={index} style={{ flex: 1 }}>
+                    {child}
+                </View>
             ))}
         </View>
     );

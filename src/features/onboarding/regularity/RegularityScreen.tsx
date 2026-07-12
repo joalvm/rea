@@ -10,7 +10,7 @@ import { getRegularitySelection } from "@/features/onboarding/shared/utils/getRe
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
-import { SelectableCard } from "../shared/components/selectable-card/SelectableCard";
+import { SelectableCard } from "@/components/selectable-card/SelectableCard";
 import { regularitySchema } from "./schemas/regularitySchema";
 import { useRegularityStyles } from "./RegularityStyle";
 

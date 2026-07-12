@@ -17,6 +17,12 @@ type Props = {
     testID?: string;
 };
 
+/**
+ * Tarjeta de selección horizontal y reutilizable: icono a la izquierda en una
+ * burbuja, título y subtítulo a la derecha, y un badge de check al seleccionar.
+ * Neutral al dominio: sirve para onboarding, check-in o cualquier flujo que
+ * necesite elegir una opción de una lista.
+ */
 export function SelectableCard({ title, subtitle, Icon, extra, selected, onPress, testID }: Props) {
     const theme = useTheme();
     const styles = useSelectableCardStyles();

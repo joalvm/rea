@@ -14,9 +14,11 @@ import { useTheme } from "@/theme/useTheme";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
 import { useMedicationsStyles } from "./MedicationsStyle";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 
 import type { DraftMedication } from "../shared/types/CheckinDraft";
 import { useCheckinStore } from "../shared/stores/useCheckinStore";
@@ -43,6 +45,7 @@ export default function MedicationsScreen({ onContinue }: Props) {
     const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
     const styles = useMedicationsStyles();
+    const screenStyles = useCheckinScreenStyles();
     const database = useDatabase();
     const { profile } = useLocalProfile();
     const medications = useCheckinStore((state) => state.draft.medications);
@@ -109,7 +112,7 @@ export default function MedicationsScreen({ onContinue }: Props) {
                     placeholderTextColor={theme.colors.placeholder}
                 />
 
-                <ChoiceGrid columns={3}>
+                <ChoiceGrid>
                     {RELIEF_OPTIONS.map((option) => (
                         <ChoiceCard
                             key={option.value}
@@ -130,7 +133,7 @@ export default function MedicationsScreen({ onContinue }: Props) {
     };
 
     return (
-        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+        <CheckinScreen>
             <CheckinHeader Icon={Pill} title={tCheckin("medications.title")} lead={tCheckin("medications.hint")} />
 
             {/* Alta manual */}
@@ -157,7 +160,7 @@ export default function MedicationsScreen({ onContinue }: Props) {
             {catalog && catalog.length > 0 ? (
                 <>
                     <SectionTitle hint={tCheckin("medications.empty")}>{tCheckin("medications.title")}</SectionTitle>
-                    <ChoiceGrid columns={2}>
+                    <ChoiceGrid>
                         {catalog.map((med) => (
                             <ChoiceCard
                                 key={med.id}
@@ -172,6 +175,10 @@ export default function MedicationsScreen({ onContinue }: Props) {
 
             {/* Medicamentos ya en el borrador (manuales + catálogo), con dosis + alivio */}
             {medications.length > 0 ? <View style={styles.medList}>{medications.map(renderMed)}</View> : null}
+
+            <View style={screenStyles.footer}>
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+            </View>
         </CheckinScreen>
     );
 }

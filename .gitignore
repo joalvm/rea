@@ -43,5 +43,6 @@ yarn-error.*
 __legacy__
 .claude/
 .skills/
+.zcode/
 skills-*
 docs/plans/

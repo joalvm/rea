@@ -1,18 +1,18 @@
 import type { LucideIcon } from "lucide-react-native";
 import {
+    Check,
+    CircleDot,
+    CircleOff,
     CloudDrizzle,
     CloudRain,
-    CircleOff,
     Droplet,
     Droplets,
     Grip,
     Minus,
-    CircleDot,
-    Play,
-    Square,
-    RefreshCw,
+    Waves,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import type { PeriodStatusSignal } from "@/db/enums/checkin";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
@@ -20,8 +20,14 @@ import { CheckinScreen } from "@/features/checkin/shared/components/checkin-scre
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
+import {
+    SegmentedControl,
+    type SegmentedOption,
+} from "@/features/checkin/shared/components/segmented-control/SegmentedControl";
 
 import { useCheckinStore } from "../shared/stores/useCheckinStore";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 
 type BleedingOption = {
     value: number;
@@ -50,16 +56,14 @@ const CLOT_OPTIONS: readonly ClotOption[] = [
     { value: 3, Icon: Grip, labelKey: "bleeding.clots.level.3" },
 ];
 
-type SignalOption = {
-    value: PeriodStatusSignal;
-    Icon: LucideIcon;
+type SignalOption = SegmentedOption<PeriodStatusSignal> & {
     labelKey: "bleeding.periodSignal.started" | "bleeding.periodSignal.ongoing" | "bleeding.periodSignal.ended";
 };
 
 const SIGNAL_OPTIONS: readonly SignalOption[] = [
-    { value: "started", Icon: Play, labelKey: "bleeding.periodSignal.started" },
-    { value: "ongoing", Icon: RefreshCw, labelKey: "bleeding.periodSignal.ongoing" },
-    { value: "ended", Icon: Square, labelKey: "bleeding.periodSignal.ended" },
+    { value: "started", label: "", labelKey: "bleeding.periodSignal.started", Icon: Droplet },
+    { value: "ongoing", label: "", labelKey: "bleeding.periodSignal.ongoing", Icon: Waves },
+    { value: "ended", label: "", labelKey: "bleeding.periodSignal.ended", Icon: Check },
 ];
 
 type Props = {
@@ -74,13 +78,21 @@ export default function BleedingScreen({ onContinue }: Props) {
     const bleedingIntensity = useCheckinStore((state) => state.draft.bleedingIntensity);
     const clots = useCheckinStore((state) => state.draft.clots);
     const periodStatusSignal = useCheckinStore((state) => state.draft.periodStatusSignal);
+    const screenStyles = useCheckinScreenStyles();
 
     return (
-        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+        <CheckinScreen>
             <CheckinHeader Icon={Droplet} title={t("bleeding.title")} lead={t("bleeding.hint")} />
 
+            <SectionTitle>{t("bleeding.periodSignal.title")}</SectionTitle>
+            <SegmentedControl
+                options={SIGNAL_OPTIONS.map((option) => ({ ...option, label: t(option.labelKey) }))}
+                value={periodStatusSignal}
+                onChange={(value) => set({ periodStatusSignal: value })}
+            />
+
             <SectionTitle>{t("bleeding.title")}</SectionTitle>
-            <ChoiceGrid columns={2}>
+            <ChoiceGrid>
                 {BLEEDING_OPTIONS.map((option) => (
                     <ChoiceCard
                         key={option.value}
@@ -97,7 +109,7 @@ export default function BleedingScreen({ onContinue }: Props) {
             </ChoiceGrid>
 
             <SectionTitle>{t("bleeding.clots.title")}</SectionTitle>
-            <ChoiceGrid columns={3}>
+            <ChoiceGrid>
                 {CLOT_OPTIONS.map((option) => (
                     <ChoiceCard
                         key={option.value}
@@ -109,22 +121,9 @@ export default function BleedingScreen({ onContinue }: Props) {
                 ))}
             </ChoiceGrid>
 
-            <SectionTitle>{t("bleeding.periodSignal.title")}</SectionTitle>
-            <ChoiceGrid columns={3}>
-                {SIGNAL_OPTIONS.map((option) => (
-                    <ChoiceCard
-                        key={option.value}
-                        Icon={option.Icon}
-                        label={t(option.labelKey)}
-                        selected={periodStatusSignal === option.value}
-                        onPress={() =>
-                            set({
-                                periodStatusSignal: periodStatusSignal === option.value ? null : option.value,
-                            })
-                        }
-                    />
-                ))}
-            </ChoiceGrid>
+            <View style={screenStyles.footer}>
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+            </View>
         </CheckinScreen>
     );
 }

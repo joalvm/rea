@@ -1,16 +1,19 @@
 import { Heart, ShieldCheck, TrendingUp, TriangleAlert, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Fragment } from "react";
+import { View } from "react-native";
 
 import type { QualitativeTestResult } from "@/db/enums/checkin";
 import type { ReproductiveMode } from "@/db/enums/reproductiveMode";
 import { useActiveIntent } from "@/domain/hooks/useActiveIntent";
 import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
 import { ToggleRow } from "@/components/toggle-row/ToggleRow";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { fertilitySectionsFor } from "@/features/checkin/shared/bodySections";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import {
     SegmentedControl,
     type SegmentedOption,
@@ -77,6 +80,7 @@ export default function FertilityScreen({ onContinue }: Props) {
     const { t } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
     useFertilityStyles();
+    const screenStyles = useCheckinScreenStyles();
     const set = useCheckinStore((state) => state.set);
     const { profile } = useLocalProfile();
     const { intent } = useActiveIntent(profile?.id ?? "");
@@ -94,7 +98,7 @@ export default function FertilityScreen({ onContinue }: Props) {
     const isProtected = intercourse?.isProtected ?? false;
 
     return (
-        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+        <CheckinScreen>
             <CheckinHeader Icon={Heart} title={t("fertility.title")} lead={undefined} />
 
             {TEST_DEFS.filter((def) => (def.kind === "opk" ? sections.opk : sections.pregnancyTest)).map((def) => {
@@ -137,6 +141,10 @@ export default function FertilityScreen({ onContinue }: Props) {
                     ) : null}
                 </>
             ) : null}
+
+            <View style={screenStyles.footer}>
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+            </View>
         </CheckinScreen>
     );
 }

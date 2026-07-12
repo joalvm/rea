@@ -37,9 +37,9 @@ export function ChoiceCard({ Icon, label, description, selected, onPress, testID
             {Icon ? (
                 <View style={[styles.iconBubble, selected && styles.iconBubbleOn]}>
                     <Icon
-                        size={theme.sizing.iconMd}
+                        size={theme.sizing.iconXs}
                         color={selected ? theme.colors.onPrimary : theme.colors.link}
-                        strokeWidth={2.2}
+                        strokeWidth={2}
                     />
                 </View>
             ) : null}

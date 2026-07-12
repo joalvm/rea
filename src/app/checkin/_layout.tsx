@@ -9,6 +9,7 @@ export default function CheckinLayout() {
         <Stack
             screenOptions={{
                 headerShown: true,
+                headerShadowVisible: false,
                 animation: "slide_from_right",
             }}
         >

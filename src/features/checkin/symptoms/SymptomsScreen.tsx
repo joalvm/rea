@@ -13,8 +13,10 @@ import { useDatabase } from "@/db/useDatabase";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { useSymptomsStyles } from "./SymptomsStyle";
 import { MultiChip } from "@/features/checkin/shared/components/multi-chip/MultiChip";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 
 import { useCheckinStore } from "../shared/stores/useCheckinStore";
 
@@ -39,6 +41,7 @@ export default function SymptomsScreen({ onContinue }: Props) {
     const { t: tCheckin } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
     const styles = useSymptomsStyles();
+    const screenStyles = useCheckinScreenStyles();
     const database = useDatabase();
     const { profile } = useLocalProfile();
     const { intent } = useActiveIntent(profile?.id ?? "");
@@ -71,7 +74,7 @@ export default function SymptomsScreen({ onContinue }: Props) {
     const intensityOf = (key: string) => draftSymptoms.find((s) => s.symptomKey === key)?.intensity ?? 0;
 
     return (
-        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+        <CheckinScreen>
             <CheckinHeader Icon={Sparkles} title={tCheckin("symptomStep.title")} lead={tCheckin("symptomStep.hint")} />
 
             {activeSymptoms.length === 0 ? (
@@ -129,6 +132,10 @@ export default function SymptomsScreen({ onContinue }: Props) {
                     </View>
                 ))
             )}
+
+            <View style={screenStyles.footer}>
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+            </View>
         </CheckinScreen>
     );
 }

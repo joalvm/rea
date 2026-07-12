@@ -1,13 +1,13 @@
 {
     "intro": {
-        "title": "How do you feel today?",
-        "lead": "Log your day. Takes less than a minute.",
-        "quick": "Quick check-in",
-        "quickHint": "The essentials in seconds",
-        "complete": "Full check-in",
-        "completeHint": "Everything you want to note",
+        "title": "How do you feel right now?",
+        "lead": "Capture this moment. You can log as many times as you want through the day.",
+        "quick": "The essentials",
+        "quickHint": "Bleeding, mood and symptoms. Done in seconds.",
+        "complete": "Full entry",
+        "completeHint": "Everything you want to note about this moment: body, fertility, medications and a note.",
         "nothingToReport": "Nothing to report",
-        "nothingHint": "Save a quiet day with no details"
+        "nothingHint": "A quiet moment, nothing to jot down. Saved empty."
     },
     "steps": {
         "bleeding": "Bleeding",

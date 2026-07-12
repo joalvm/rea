@@ -26,8 +26,10 @@ import { bodySectionsFor, type BodySections } from "@/features/checkin/shared/bo
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { useCheckinStore } from "@/features/checkin/shared/stores/useCheckinStore";
 import type { CheckinDraft } from "@/features/checkin/shared/types/CheckinDraft";
 
@@ -41,7 +43,6 @@ type ScaleDef = {
     section: ScaleSection;
     titleKey: string;
     levelsKey: string;
-    columns: 2 | 3;
     /** Icono específico por nivel (regla design-system: icono = identidad, no número). */
     levelIcons: readonly LucideIcon[];
 };
@@ -58,7 +59,6 @@ const SCALES: readonly ScaleDef[] = [
         section: "mucus",
         titleKey: "body.mucus.title",
         levelsKey: "body.mucus.level",
-        columns: 2,
         levelIcons: MUCUS_ICONS,
     },
     {
@@ -66,7 +66,6 @@ const SCALES: readonly ScaleDef[] = [
         section: "cervix",
         titleKey: "body.cervix.title",
         levelsKey: "body.cervix.level",
-        columns: 3,
         levelIcons: CERVIX_ICONS,
     },
     {
@@ -74,7 +73,6 @@ const SCALES: readonly ScaleDef[] = [
         section: "libido",
         titleKey: "body.libido.title",
         levelsKey: "body.libido.level",
-        columns: 3,
         levelIcons: LIBIDO_ICONS,
     },
     {
@@ -82,7 +80,6 @@ const SCALES: readonly ScaleDef[] = [
         section: "morningSickness",
         titleKey: "body.morningSickness.title",
         levelsKey: "body.morningSickness.level",
-        columns: 3,
         levelIcons: SICKNESS_ICONS,
     },
     {
@@ -90,7 +87,6 @@ const SCALES: readonly ScaleDef[] = [
         section: "fetalMovement",
         titleKey: "body.fetalMovement.title",
         levelsKey: "body.fetalMovement.level",
-        columns: 3,
         levelIcons: MOVEMENT_ICONS,
     },
 ];
@@ -115,6 +111,7 @@ export default function BodyScreen({ onContinue }: Props) {
     const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
     const styles = useBodyStyles();
+    const screenStyles = useCheckinScreenStyles();
     const set = useCheckinStore((state) => state.set);
     const { profile } = useLocalProfile();
     const { intent } = useActiveIntent(profile?.id ?? "");
@@ -139,7 +136,7 @@ export default function BodyScreen({ onContinue }: Props) {
     };
 
     return (
-        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+        <CheckinScreen>
             <CheckinHeader Icon={Thermometer} title={t("steps.body")} lead={undefined} />
 
             {SCALES.filter((def) => sections[def.section]).map((def) => {
@@ -147,7 +144,7 @@ export default function BodyScreen({ onContinue }: Props) {
                 return (
                     <Fragment key={def.field}>
                         <SectionTitle>{t(def.titleKey as never)}</SectionTitle>
-                        <ChoiceGrid columns={def.columns}>
+                        <ChoiceGrid>
                             {def.levelIcons.map((LevelIcon, value) => (
                                 <ChoiceCard
                                     key={value}
@@ -223,6 +220,10 @@ export default function BodyScreen({ onContinue }: Props) {
                     </View>
                 </>
             ) : null}
+
+            <View style={screenStyles.footer}>
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+            </View>
         </CheckinScreen>
     );
 }

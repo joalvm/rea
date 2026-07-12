@@ -8,7 +8,7 @@ import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboa
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ScreenHeader } from "../shared/components/screen-header/ScreenHeader";
-import { SelectableCard } from "../shared/components/selectable-card/SelectableCard";
+import { SelectableCard } from "@/components/selectable-card/SelectableCard";
 import { useIntentStyles } from "./IntentStyle";
 
 type MasterKey = "cycle" | "pregnancy";

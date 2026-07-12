@@ -7,6 +7,8 @@ import { useReviewStyles } from "./ReviewStyle";
 import { PositiveTestCard } from "@/features/checkin/shared/components/positive-test-card/PositiveTestCard";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { useCompleteCheckin } from "@/features/checkin/shared/hooks/useCompleteCheckin";
 import { useCheckinStore } from "@/features/checkin/shared/stores/useCheckinStore";
 
@@ -26,6 +28,7 @@ export default function ReviewScreen({ onSaved }: Props) {
     const { t } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
     const styles = useReviewStyles();
+    const screenStyles = useCheckinScreenStyles();
     const draft = useCheckinStore((state) => state.draft);
     const { submit, isSubmitting, isEmpty } = useCompleteCheckin();
     const [showPositiveCard, setShowPositiveCard] = useState(false);
@@ -129,14 +132,7 @@ export default function ReviewScreen({ onSaved }: Props) {
     }
 
     return (
-        <CheckinScreen
-            cta={{
-                label: t("review.save"),
-                onPress: save,
-                disabled: isSubmitting || isEmpty,
-                Icon: Check,
-            }}
-        >
+        <CheckinScreen>
             <CheckinHeader Icon={Check} title={t("review.title")} lead={t("review.hint")} />
 
             {isEmpty ? (
@@ -154,6 +150,15 @@ export default function ReviewScreen({ onSaved }: Props) {
             )}
 
             <PositiveTestCard visible={showPositiveCard} onDismiss={handlePositiveDismiss} />
+
+            <View style={screenStyles.footer}>
+                <PrimaryButton
+                    label={t("review.save")}
+                    onPress={save}
+                    disabled={isSubmitting || isEmpty}
+                    Icon={Check}
+                />
+            </View>
         </CheckinScreen>
     );
 }

@@ -17,13 +17,16 @@ import {
     Zap,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
+import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
 import type { CheckinDraft } from "@/features/checkin/shared/types/CheckinDraft";
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 
 import { useCheckinStore } from "../shared/stores/useCheckinStore";
 
@@ -88,6 +91,7 @@ export default function FeelingsScreen({ onContinue }: Props) {
     const mood = useCheckinStore((state) => state.draft.mood);
     const energy = useCheckinStore((state) => state.draft.energy);
     const stressLevel = useCheckinStore((state) => state.draft.stressLevel);
+    const screenStyles = useCheckinScreenStyles();
 
     const renderScale = (
         title: string,
@@ -97,7 +101,7 @@ export default function FeelingsScreen({ onContinue }: Props) {
     ) => (
         <>
             <SectionTitle>{title}</SectionTitle>
-            <ChoiceGrid columns={2}>
+            <ChoiceGrid>
                 {options.map((option) => (
                     <ChoiceCard
                         key={option.value}
@@ -116,12 +120,16 @@ export default function FeelingsScreen({ onContinue }: Props) {
     );
 
     return (
-        <CheckinScreen cta={{ label: tCommon("action.continue"), onPress: onContinue }}>
+        <CheckinScreen>
             <CheckinHeader Icon={Smile} title={t("feelings.mood.title")} lead={undefined} />
 
             {renderScale(t("feelings.mood.title"), MOOD_OPTIONS, mood, "mood")}
             {renderScale(t("feelings.energy.title"), ENERGY_OPTIONS, energy, "energy")}
             {renderScale(t("feelings.stress.title"), STRESS_OPTIONS, stressLevel, "stressLevel")}
+
+            <View style={screenStyles.footer}>
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+            </View>
         </CheckinScreen>
     );
 }

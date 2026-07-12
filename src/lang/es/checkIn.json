@@ -1,13 +1,13 @@
 {
     "intro": {
-        "title": "¿Cómo te sientes hoy?",
-        "lead": "Registra tu día. Tarda menos de un minuto.",
-        "quick": "Registro rápido",
-        "quickHint": "Lo esencial en segundos",
+        "title": "¿Cómo te sientes ahora?",
+        "lead": "Anota este momento. Puedes registrar cuantas veces quieras a lo largo del día.",
+        "quick": "Lo esencial",
+        "quickHint": "Sangrado, ánimo y síntomas. Listo en segundos.",
         "complete": "Registro completo",
-        "completeHint": "Todo lo que quieres apuntar",
+        "completeHint": "Todo lo que quieras apuntar de este momento: cuerpo, fertilidad, medicamentos y nota.",
         "nothingToReport": "Nada que reportar",
-        "nothingHint": "Guarda un día tranquilo sin detalles"
+        "nothingHint": "Un momento tranquilo, sin nada que anotar. Se guarda vacío."
     },
     "steps": {
         "bleeding": "Sangrado",
