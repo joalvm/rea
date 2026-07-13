@@ -1,5 +1,15 @@
-import { Pressable, ScrollView, Text } from "react-native";
+import { Plus } from "lucide-react-native";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 
+import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
+import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
+import { formatLongDate } from "@/shared/utils/formatDate";
+
+import { CheckinTimelineItem } from "./components/CheckinTimelineItem";
+import { useCheckinsOfDay } from "./hooks/useCheckinsOfDay";
+import { summarizeDay } from "./utils/summarizeDay";
 import { useDiaryEntryStyles } from "./DiaryEntryStyle";
 
 type Props = {
@@ -7,23 +17,105 @@ type Props = {
     onStartCheckin: () => void;
 };
 
-/** Detalle de día (diary/[date]): lectura del día + acceso a registrar.   */
+/**
+ * Detalle de día (`diary/[date]`): línea de tiempo de los registros del día +
+ * mini-resumen calculado en memoria + CTA "Nuevo registro". Fase 1: solo
+ * lectura. La edición llega en la Fase 2.
+ */
 export default function DiaryEntryScreen({ date, onStartCheckin }: Props) {
     const styles = useDiaryEntryStyles();
+    const { t } = useTranslation();
+    const { profile } = useLocalProfile();
+    const { details, loading } = useCheckinsOfDay(profile?.id, date);
+    const summary = useMemo(() => summarizeDay(details), [details]);
+
+    const hasSummary = summary.moodAvg != null || summary.energyAvg != null || summary.symptomCount > 0 || summary.medicationCount > 0 || summary.bleedingMax != null;
 
     return (
-        <ScrollView style={styles.screen} contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{"Registro del día"}</Text>
-            <Text
-                style={styles.description}
-            >{`Detalle del ${date}: fase estimada del día, check-ins, síntomas, medicación, relaciones y consejo. Desde aquí se edita o se añade un registro.`}</Text>
+        <View style={styles.screen}>
+            <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+                <View style={styles.header}>
+                    <Text style={styles.dateTitle}>{formatLongDate(t, date)}</Text>
+                </View>
 
-            <Pressable
-                style={({ pressed }) => [styles.button, styles.primary, pressed && styles.pressed]}
-                onPress={onStartCheckin}
-            >
-                <Text style={styles.primaryText}>{"Hacer check-in"}</Text>
-            </Pressable>
-        </ScrollView>
+                {loading ? (
+                    <View style={styles.loading}>
+                        <ActivityIndicator color="#7cd9f9" />
+                        <Text style={styles.loadingText}>{t("diary:detail.loading")}</Text>
+                    </View>
+                ) : details.length === 0 ? (
+                    <View style={styles.empty}>
+                        <Text style={styles.emptyText}>{t("diary:detail.noEntries")}</Text>
+                        <PrimaryButton
+                            label={t("diary:detail.startCheckin")}
+                            onPress={onStartCheckin}
+                            Icon={Plus}
+                            testID="diary-entry-start"
+                        />
+                    </View>
+                ) : (
+                    <>
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>{t("diary:detail.timelineTitle")}</Text>
+                            <View style={styles.timeline}>
+                                {details.map((detail) => (
+                                    <CheckinTimelineItem
+                                        key={detail.id}
+                                        detail={detail}
+                                        t={t}
+                                        testID={`diary-entry-timeline-${detail.id}`}
+                                    />
+                                ))}
+                            </View>
+                        </View>
+
+                        {hasSummary ? (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>{t("diary:detail.summaryTitle")}</Text>
+                                <View style={styles.summaryCard}>
+                                    {summary.moodAvg != null ? (
+                                        <SummaryRow label={t("diary:detail.moodAvg")} value={summary.moodAvg.toFixed(1)} styles={styles} />
+                                    ) : null}
+                                    {summary.energyAvg != null ? (
+                                        <SummaryRow label={t("diary:detail.energyAvg")} value={summary.energyAvg.toFixed(1)} styles={styles} />
+                                    ) : null}
+                                    {summary.bleedingMax != null ? (
+                                        <SummaryRow label={t("diary:detail.bleedingMax")} value={String(summary.bleedingMax)} styles={styles} />
+                                    ) : null}
+                                    <SummaryRow label={t("diary:detail.symptomCount")} value={String(summary.symptomCount)} styles={styles} />
+                                    <SummaryRow label={t("diary:detail.medicationCount")} value={String(summary.medicationCount)} styles={styles} />
+                                </View>
+                            </View>
+                        ) : null}
+                    </>
+                )}
+            </ScrollView>
+
+            {!loading && details.length > 0 ? (
+                <View style={styles.footer}>
+                    <PrimaryButton
+                        label={t("diary:detail.startCheckin")}
+                        onPress={onStartCheckin}
+                        Icon={Plus}
+                        testID="diary-entry-start"
+                    />
+                </View>
+            ) : null}
+        </View>
+    );
+}
+
+type SummaryRowProps = {
+    label: string;
+    value: string;
+    styles: ReturnType<typeof useDiaryEntryStyles>;
+};
+
+function SummaryRow({ label, value, styles }: SummaryRowProps) {
+    return (
+        <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>{label}</Text>
+            <Text style={styles.summaryValue}>{value}</Text>
+        </View>
     );
 }

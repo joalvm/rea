@@ -1,7 +1,7 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useDiaryStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography, sizing, borderWidth } = theme;
 
     return {
         screen: {
@@ -10,74 +10,69 @@ export const useDiaryStyles = createStyles((theme) => {
         },
         container: {
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
+            paddingHorizontal: spacing.lg,
+            paddingTop: spacing.lg,
+            paddingBottom: spacing["3xl"],
+            gap: spacing.lg,
+        },
+        header: {
+            gap: spacing.xs,
         },
         title: {
             ...typography.variant.h1,
             color: colors.text,
-            textAlign: "center",
         },
-        description: {
+        subtitle: {
             ...typography.variant.body,
             color: colors.textSecondary,
+        },
+        monthBar: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: spacing.sm,
+        },
+        monthNavButton: {
+            width: sizing.minTouch,
+            height: sizing.minTouch,
+            borderRadius: radius.pill,
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        monthLabel: {
+            ...typography.variant.title,
+            color: colors.text,
+            textTransform: "capitalize",
+        },
+        todayChip: {
+            backgroundColor: colors.primarySubtle,
+            borderRadius: radius.pill,
+            paddingHorizontal: spacing.md,
+            paddingVertical: spacing.xs,
+        },
+        todayChipText: {
+            ...typography.variant.caption,
+            color: colors.primary,
+            fontFamily: typography.families.heading,
+        },
+        listWrap: {
+            gap: spacing.md,
+        },
+        empty: {
+            paddingVertical: spacing["4xl"],
+            alignItems: "center",
+            gap: spacing.md,
+        },
+        emptyText: {
+            ...typography.variant.body,
+            color: colors.textMuted,
             textAlign: "center",
             maxWidth: sizing.readableMaxWidth,
         },
-        links: {
-            alignSelf: "stretch",
-            gap: spacing.sm,
-            marginTop: spacing.sm,
-        },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
-            color: colors.textMuted,
-        },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
-        },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
+        sectionDivider: {
+            height: borderWidth.hairline,
+            backgroundColor: colors.divider,
+            marginVertical: spacing.sm,
         },
     };
 });

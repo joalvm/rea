@@ -1,0 +1,69 @@
+{
+    "tab": {
+        "title": "Diario",
+        "subtitle": "Tu historial de registros día a día."
+    },
+    "month": {
+        "today": "Hoy",
+        "prev": "Mes anterior",
+        "next": "Mes siguiente"
+    },
+    "list": {
+        "empty": "Aún no hay registros en este mes.",
+        "entryCount_one": "{{count}} registro",
+        "entryCount_other": "{{count}} registros",
+        "excludedBadge": "No cuenta",
+        "bleedingPreview_none": "Sin sangrado",
+        "bleedingPreview_light": "Sangrado leve",
+        "bleedingPreview_moderate": "Sangrado moderado",
+        "bleedingPreview_heavy": "Sangrado abundante",
+        "lastAt": "Último a las {{time}}",
+        "notePreview": "Nota: \"{{note}}\""
+    },
+    "detail": {
+        "timelineTitle": "Línea de tiempo",
+        "summaryTitle": "Resumen del día",
+        "noteLabel": "Nota",
+        "noEntries": "No hay registros este día todavía.",
+        "startCheckin": "Nuevo registro",
+        "moodAvg": "Ánimo promedio",
+        "energyAvg": "Energía promedio",
+        "symptomCount": "Síntomas",
+        "medicationCount": "Medicamentos",
+        "bleedingMax": "Sangrado máximo",
+        "symptomsCount_one": "{{count}} síntoma",
+        "symptomsCount_other": "{{count}} síntomas",
+        "medicationsCount_one": "{{count}} medicamento",
+        "medicationsCount_other": "{{count}} medicamentos",
+        "loading": "Cargando…"
+    },
+    "bleedingLabel": {
+        "none": "Sin sangrado",
+        "light": "Sangrado leve",
+        "moderate": "Sangrado moderado",
+        "heavy": "Sangrado abundante"
+    },
+    "months": {
+        "1": "enero",
+        "2": "febrero",
+        "3": "marzo",
+        "4": "abril",
+        "5": "mayo",
+        "6": "junio",
+        "7": "julio",
+        "8": "agosto",
+        "9": "septiembre",
+        "10": "octubre",
+        "11": "noviembre",
+        "12": "diciembre"
+    },
+    "weekdays": {
+        "0": "domingo",
+        "1": "lunes",
+        "2": "martes",
+        "3": "miércoles",
+        "4": "jueves",
+        "5": "viernes",
+        "6": "sábado"
+    }
+}

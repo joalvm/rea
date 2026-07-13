@@ -18,7 +18,7 @@ iniciado / ❌ ausente, deuda declarada). Ver práctica de actualización más a
 | 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             |   ✅   | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
 | 04  | [Hoy](04-hoy.md)                                       | M3             |   🔲   | La pantalla que responde "¿dónde estoy y qué viene?"                     |
 | 05  | [Calendario](05-calendario.md)                         | M3             |   🔲   | Vista de mes con observado ≠ estimado y detalle de día                   |
-| 06  | [Diario](06-diario.md)                                 | M2             |   🔲   | Editar, borrar y excluir registros; higiene estadística                  |
+| 06  | [Diario](06-diario.md)                                 | M2             |   🚧   | Editar, borrar y excluir registros; higiene estadística                  |
 | 07  | [Estadísticas](07-estadisticas.md)                     | M4             |   🔲   | Cada dato capturado devuelto como aprendizaje, con gates de datos        |
 | 08  | [Fertilidad y TTC](08-fertilidad-ttc.md)               | M5             |   🔲   | BBT, OPK, timing; modo evitar con marco conservador                      |
 | 09  | [Embarazo](09-embarazo.md)                             | M3 + M6        |   🔲   | Semana a semana; desenlaces dignos; posparto sin predicciones falsas     |

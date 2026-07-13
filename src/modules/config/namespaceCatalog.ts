@@ -3,6 +3,6 @@
  * `src/lang/<idioma>/<namespace>.json`. i18next carga estos `ns`; el tipado de
  * claves vive en la augmentación de `i18next` (`modules/i18n/i18next.d.ts`).
  */
-export const NAMESPACES = ["common", "checkIn", "exception", "onboarding", "period", "preview", "validation"] as const;
+export const NAMESPACES = ["common", "checkIn", "diary", "exception", "onboarding", "period", "preview", "validation"] as const;
 
 export type Namespace = (typeof NAMESPACES)[number];

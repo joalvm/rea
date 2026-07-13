@@ -1,0 +1,69 @@
+{
+    "tab": {
+        "title": "Diary",
+        "subtitle": "Your day-by-day record history."
+    },
+    "month": {
+        "today": "Today",
+        "prev": "Previous month",
+        "next": "Next month"
+    },
+    "list": {
+        "empty": "No entries this month yet.",
+        "entryCount_one": "{{count}} entry",
+        "entryCount_other": "{{count}} entries",
+        "excludedBadge": "Excluded",
+        "bleedingPreview_none": "No bleeding",
+        "bleedingPreview_light": "Light bleeding",
+        "bleedingPreview_moderate": "Moderate bleeding",
+        "bleedingPreview_heavy": "Heavy bleeding",
+        "lastAt": "Last at {{time}}",
+        "notePreview": "Note: \"{{note}}\""
+    },
+    "detail": {
+        "timelineTitle": "Timeline",
+        "summaryTitle": "Day summary",
+        "noteLabel": "Note",
+        "noEntries": "No entries for this day yet.",
+        "startCheckin": "New entry",
+        "moodAvg": "Average mood",
+        "energyAvg": "Average energy",
+        "symptomCount": "Symptoms",
+        "medicationCount": "Medications",
+        "bleedingMax": "Max bleeding",
+        "symptomsCount_one": "{{count}} symptom",
+        "symptomsCount_other": "{{count}} symptoms",
+        "medicationsCount_one": "{{count}} medication",
+        "medicationsCount_other": "{{count}} medications",
+        "loading": "Loading…"
+    },
+    "bleedingLabel": {
+        "none": "No bleeding",
+        "light": "Light bleeding",
+        "moderate": "Moderate bleeding",
+        "heavy": "Heavy bleeding"
+    },
+    "months": {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+    },
+    "weekdays": {
+        "0": "Sunday",
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday"
+    }
+}

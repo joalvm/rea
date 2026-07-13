@@ -1,83 +1,88 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useDiaryEntryStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+    const { colors, spacing, radius, typography, sizing, shadows, borderWidth } = theme;
 
     return {
         screen: {
             flex: 1,
             backgroundColor: colors.background,
         },
-        container: {
+        scroll: {
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
+            paddingHorizontal: spacing.lg,
+            paddingTop: spacing.lg,
+            paddingBottom: spacing["5xl"],
+            gap: spacing.xl,
         },
-        title: {
-            ...typography.variant.h1,
+        header: {
+            gap: spacing.xs,
+        },
+        dateTitle: {
+            ...typography.variant.h2,
             color: colors.text,
-            textAlign: "center",
+            textTransform: "capitalize",
         },
-        description: {
+        section: {
+            gap: spacing.md,
+        },
+        sectionTitle: {
+            ...typography.variant.h3,
+            color: colors.text,
+        },
+        timeline: {
+            gap: spacing.md,
+        },
+        summaryCard: {
+            backgroundColor: colors.surface,
+            borderRadius: radius.lg,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.border,
+            paddingHorizontal: spacing.lg,
+            paddingVertical: spacing.md,
+            gap: spacing.sm,
+            ...shadows[1],
+        },
+        summaryRow: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+        },
+        summaryLabel: {
             ...typography.variant.body,
             color: colors.textSecondary,
+        },
+        summaryValue: {
+            ...typography.variant.bodyStrong,
+            color: colors.text,
+            fontVariant: ["tabular-nums"] as const,
+        },
+        empty: {
+            paddingVertical: spacing["4xl"],
+            alignItems: "center",
+            gap: spacing.lg,
+        },
+        emptyText: {
+            ...typography.variant.body,
+            color: colors.textMuted,
             textAlign: "center",
             maxWidth: sizing.readableMaxWidth,
         },
-        links: {
-            alignSelf: "stretch",
-            gap: spacing.sm,
-            marginTop: spacing.sm,
+        loading: {
+            paddingVertical: spacing["3xl"],
+            alignItems: "center",
         },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
+        loadingText: {
+            ...typography.variant.body,
             color: colors.textMuted,
         },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
-        },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
+        footer: {
+            paddingHorizontal: spacing.lg,
+            paddingTop: spacing.md,
+            paddingBottom: spacing.lg,
+            backgroundColor: colors.background,
+            borderTopWidth: borderWidth.hairline,
+            borderTopColor: colors.divider,
         },
     };
 });

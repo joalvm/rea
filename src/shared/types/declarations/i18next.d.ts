@@ -2,6 +2,7 @@ import "i18next";
 
 import type checkIn from "@/lang/es/checkIn.json";
 import type common from "@/lang/es/common.json";
+import type diary from "@/lang/es/diary.json";
 import type exception from "@/lang/es/exception.json";
 import type onboarding from "@/lang/es/onboarding.json";
 import type period from "@/lang/es/period.json";
@@ -18,6 +19,7 @@ declare module "i18next" {
         resources: {
             common: typeof common;
             checkIn: typeof checkIn;
+            diary: typeof diary;
             exception: typeof exception;
             preview: typeof preview;
             onboarding: typeof onboarding;

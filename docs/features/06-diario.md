@@ -1,6 +1,6 @@
 # 06 · Diario
 
-> **Hito:** M2 · **Depende de:** 02 (check-in) · **Estado:** 🔲 stub. En la
+> **Hito:** M2 · **Depende de:** 02 (check-in) · **Estado:** 🚧 Fase 1 ✅. En la
 > arquitectura de información propuesta, el diario vive como **lista cronológica dentro
 > de Calendario** y como detalle de día (`diary/[date]`); este plan define la lógica sea
 > cual sea el tab final.
@@ -36,7 +36,7 @@ que no la representan.
 
 ## Fases
 
-### [ ] Fase 1: Lista + detalle
+### [x] Fase 1: Lista + detalle
 
 - **Objetivo:** ver todo lo registrado, ordenado y legible.
 - **Cambios:** mockup (`docs/design-system/screens/diario.html`); lista cronológica con

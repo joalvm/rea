@@ -1,5 +1,6 @@
 import checkInEn from "@/lang/en/checkIn.json";
 import commonEn from "@/lang/en/common.json";
+import diaryEn from "@/lang/en/diary.json";
 import exceptionEn from "@/lang/en/exception.json";
 import onboardingEn from "@/lang/en/onboarding.json";
 import periodEn from "@/lang/en/period.json";
@@ -7,6 +8,7 @@ import previewEn from "@/lang/en/preview.json";
 import validationEn from "@/lang/en/validation.json";
 import checkInEs from "@/lang/es/checkIn.json";
 import commonEs from "@/lang/es/common.json";
+import diaryEs from "@/lang/es/diary.json";
 import exceptionEs from "@/lang/es/exception.json";
 import onboardingEs from "@/lang/es/onboarding.json";
 import periodEs from "@/lang/es/period.json";
@@ -21,6 +23,7 @@ export const resources = {
     es: {
         common: commonEs,
         checkIn: checkInEs,
+        diary: diaryEs,
         exception: exceptionEs,
         preview: previewEs,
         onboarding: onboardingEs,
@@ -30,6 +33,7 @@ export const resources = {
     en: {
         common: commonEn,
         checkIn: checkInEn,
+        diary: diaryEn,
         exception: exceptionEn,
         preview: previewEn,
         onboarding: onboardingEn,
