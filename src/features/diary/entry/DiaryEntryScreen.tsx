@@ -6,28 +6,33 @@ import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
 import { formatLongDate } from "@/shared/utils/formatDate";
+import { todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
 import { CheckinTimelineItem } from "./components/CheckinTimelineItem";
 import { useCheckinsOfDay } from "./hooks/useCheckinsOfDay";
+import { useDeleteCheckin } from "./hooks/useDeleteCheckin";
 import { summarizeDay } from "./utils/summarizeDay";
 import { useDiaryEntryStyles } from "./DiaryEntryStyle";
 
 type Props = {
     date: string;
     onStartCheckin: () => void;
+    onEdit: (checkinId: string) => void;
 };
 
 /**
  * Detalle de día (`diary/[date]`): línea de tiempo de los registros del día +
- * mini-resumen calculado en memoria + CTA "Nuevo registro". Fase 1: solo
- * lectura. La edición llega en la Fase 2.
+ * mini-resumen calculado en memoria + CTA "Nuevo registro". Fase 2: cada ítem
+ * puede borrarse (con deshacer) y, si es de hoy, editarse.
  */
-export default function DiaryEntryScreen({ date, onStartCheckin }: Props) {
+export default function DiaryEntryScreen({ date, onStartCheckin, onEdit }: Props) {
     const styles = useDiaryEntryStyles();
     const { t } = useTranslation();
     const { profile } = useLocalProfile();
-    const { details, loading } = useCheckinsOfDay(profile?.id, date);
+    const { details, loading, reload } = useCheckinsOfDay(profile?.id, date);
+    const { confirmAndRemove } = useDeleteCheckin(reload);
     const summary = useMemo(() => summarizeDay(details), [details]);
+    const isToday = date === ymdToISO(todayYMD());
 
     const hasSummary = summary.moodAvg != null || summary.energyAvg != null || summary.symptomCount > 0 || summary.medicationCount > 0 || summary.bleedingMax != null;
 
@@ -63,6 +68,9 @@ export default function DiaryEntryScreen({ date, onStartCheckin }: Props) {
                                         key={detail.id}
                                         detail={detail}
                                         t={t}
+                                        canEdit={isToday}
+                                        onEdit={() => onEdit(detail.id)}
+                                        onDelete={() => confirmAndRemove(detail.id)}
                                         testID={`diary-entry-timeline-${detail.id}`}
                                     />
                                 ))}

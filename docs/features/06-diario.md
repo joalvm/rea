@@ -1,6 +1,6 @@
 # 06 · Diario
 
-> **Hito:** M2 · **Depende de:** 02 (check-in) · **Estado:** 🚧 Fase 1 ✅. En la
+> **Hito:** M2 · **Depende de:** 02 (check-in) · **Estado:** 🚧 Fase 2 ✅. En la
 > arquitectura de información propuesta, el diario vive como **lista cronológica dentro
 > de Calendario** y como detalle de día (`diary/[date]`); este plan define la lógica sea
 > cual sea el tab final.
@@ -46,16 +46,21 @@ que no la representan.
 - **Cierre:** registro nuevo aparece en la lista al instante (live query); scroll fluido
   con 6 meses de datos seed.
 
-### [ ] Fase 2: Editar y borrar
+### [x] Fase 2: Editar y borrar
 
-- **Objetivo:** cualquier check-in pasado se corrige en el mismo wizard.
-- **Cambios:** mutación `updateCheckin` transaccional (diff de síntomas/medicamentos
-  N:M incluido) + precarga del draft; `deleteCheckin` soft con undo; ambos recalculan el
-  rango.
-- **No hacer:** editar la fecha del registro moviéndolo de día (borrar y re-crear es más
-  honesto que re-fechar).
-- **Cierre:** test de integración — editar sangrado de un día pasado reproyecta
-  `daily_summary` y ajusta la racha si corresponde; undo restaura todo.
+- **Objetivo:** la usuaria puede borrar cualquier registro y editar el del día actual
+  reusando el wizard de check-in. Editar el pasado no está permitido (el dato histórico
+  es inmutable; para corregir, borrar y re-crear).
+- **Cambios:** mutación `updateCheckin` transaccional (soft-delete + re-insert de
+  síntomas/medicamentos) + `getCheckinById` + ruta puente `checkin/edit/[id]` (today-guard
+  + hidrata el draft en modo edición); `deleteCheckin` + `restoreCheckin` soft en las tres
+  tablas (`checkins`, `checkin_symptoms`, `checkin_medications`) con snackbar global de
+  deshacer; ambos recalculan el rango desde la fecha tocada.
+- **No hacer:** editar la fecha del registro moviéndolo de día; editar relaciones
+  (`intercourse_log`, entidad first-class sin FK al checkin); editar registros pasados.
+- **Cierre:** `deleteCheckin` marca las 3 tablas y `listCheckinsOfDay` lo excluye;
+  `restoreCheckin` revierte y vuelve a aparecer; `updateCheckin` preserva `recordedAt`/
+  `createdAt`, reemplaza síntomas/meds y recalcula (tests de integración).
 
 ### [ ] Fase 3: Exclusión estadística
 

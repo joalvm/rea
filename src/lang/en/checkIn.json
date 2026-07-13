@@ -313,6 +313,7 @@
         "empty": "You didn't note anything. You can save anyway.",
         "editHint": "Tap any step to edit it.",
         "save": "Save",
+        "saveEdit": "Save changes",
         "sectionBleeding": "Bleeding",
         "sectionFeelings": "Mood",
         "sectionBody": "Body",

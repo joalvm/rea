@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Rea · Diario (plan 06, Fase 1)</title>
+        <title>Rea · Diario (plan 06, Fase 2)</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -398,6 +398,107 @@
                 border-left: 2px solid var(--celeste);
                 padding-left: 9px;
             }
+            .tl-actions {
+                display: flex;
+                gap: 6px;
+                margin-top: 4px;
+                padding-top: 8px;
+                border-top: 1px solid var(--line);
+            }
+            .phone.dark .tl-actions {
+                border-top-color: #1d3a45;
+            }
+            .ghost-btn {
+                flex: 1;
+                height: 36px;
+                border-radius: 999px;
+                background: transparent;
+                border: 1px solid var(--line);
+                color: var(--ink2);
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 12.5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+                cursor: pointer;
+            }
+            .ghost-btn:hover {
+                background: var(--c50);
+            }
+            .phone.dark .ghost-btn {
+                border-color: #1d3a45;
+                color: var(--ink2);
+            }
+            .phone.dark .ghost-btn:hover {
+                background: #0a2f3e;
+            }
+            .ghost-btn .gicon {
+                font-size: 14px;
+                line-height: 1;
+            }
+            .ghost-btn.danger {
+                color: var(--rose-t);
+            }
+            .phone.dark .ghost-btn.danger {
+                color: var(--rose);
+            }
+            .ghost-btn.disabled {
+                opacity: 0.35;
+                cursor: not-allowed;
+            }
+
+            /* Snackbar (undo) */
+            .snackbar-wrap {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 86px;
+                display: flex;
+                justify-content: center;
+                padding: 0 14px;
+                pointer-events: none;
+                z-index: 50;
+            }
+            .snackbar {
+                background: var(--ink);
+                color: var(--bg);
+                border-radius: 12px;
+                padding: 12px 14px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                box-shadow: 0 8px 24px rgba(16, 55, 75, 0.25);
+                max-width: 280px;
+                width: 100%;
+                pointer-events: auto;
+            }
+            .phone.dark .snackbar {
+                background: #e9f4ff;
+                color: #07182a;
+            }
+            .snackbar-msg {
+                font-size: 13px;
+                font-weight: 600;
+                line-height: 1.35;
+            }
+            .snackbar-action {
+                background: none;
+                border: none;
+                color: var(--celeste);
+                font-family: "Quicksand";
+                font-weight: 700;
+                font-size: 13px;
+                cursor: pointer;
+                flex-shrink: 0;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+            }
+            .phone.dark .snackbar-action {
+                color: var(--celeste-500);
+            }
 
             /* Summary card (detalle) */
             .sum-card {
@@ -461,11 +562,11 @@
     <body>
         <div class="page">
             <div class="lead-hero">
-                <div class="eyebrow">Plan 06 · Fase 1</div>
+                <div class="eyebrow">Plan 06 · Fase 2</div>
                 <h1>Diario</h1>
                 <p>
-                    Lista cronológica de registros agrupados por día con selector de mes, y detalle de día con línea de
-                    tiempo + mini-resumen en memoria. Solo lectura en Fase 1; editar y borrar llegan en Fase 2.
+                    Editar y borrar registros desde el detalle del día. Editar solo aplica al día actual (reutiliza el
+                    wizard de registro); borrar aplica a cualquiera, con snackbar de deshacer.
                 </p>
             </div>
 
@@ -569,6 +670,14 @@
                                     <div class="tl-body">Sangrado moderado</div>
                                     <div class="tl-extras">2 síntomas · 1 medicamento</div>
                                     <div class="tl-note">día pesado, mucho dolor</div>
+                                    <div class="tl-actions">
+                                        <button class="ghost-btn">
+                                            <span class="gicon">✎</span> Editar
+                                        </button>
+                                        <button class="ghost-btn danger">
+                                            <span class="gicon">✕</span> Borrar
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div class="tl-item">
@@ -577,6 +686,14 @@
                                     </div>
                                     <div class="tl-body">Sangrado leve</div>
                                     <div class="tl-extras">1 síntoma</div>
+                                    <div class="tl-actions">
+                                        <button class="ghost-btn disabled" disabled>
+                                            <span class="gicon">✎</span> Editar
+                                        </button>
+                                        <button class="ghost-btn danger">
+                                            <span class="gicon">✕</span> Borrar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -604,6 +721,13 @@
                                         <span class="sum-value">1</span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="snackbar-wrap">
+                            <div class="snackbar">
+                                <span class="snackbar-msg">Registro borrado.</span>
+                                <button class="snackbar-action">Deshacer</button>
                             </div>
                         </div>
 

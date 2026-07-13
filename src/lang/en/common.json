@@ -10,7 +10,9 @@
     },
     "feedback": {
         "success": "Success",
-        "comingSoon": "Coming soon"
+        "comingSoon": "Coming soon",
+        "error": "Something went wrong. Please try again.",
+        "undo": "Undo"
     },
     "accessibility": {
         "decrease": "Decrease",

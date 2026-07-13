@@ -10,7 +10,9 @@
     },
     "feedback": {
         "success": "Éxito",
-        "comingSoon": "Próximamente"
+        "comingSoon": "Próximamente",
+        "error": "Algo salió mal. Inténtalo de nuevo.",
+        "undo": "Deshacer"
     },
     "accessibility": {
         "decrease": "Disminuir",

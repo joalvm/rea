@@ -30,7 +30,7 @@ export default function ReviewScreen({ onSaved }: Props) {
     const styles = useReviewStyles();
     const screenStyles = useCheckinScreenStyles();
     const draft = useCheckinStore((state) => state.draft);
-    const { submit, isSubmitting, isEmpty } = useCompleteCheckin();
+    const { submit, isSubmitting, isEmpty, isEditing } = useCompleteCheckin();
     const [showPositiveCard, setShowPositiveCard] = useState(false);
 
     const save = async () => {
@@ -153,7 +153,7 @@ export default function ReviewScreen({ onSaved }: Props) {
 
             <View style={screenStyles.footer}>
                 <PrimaryButton
-                    label={t("review.save")}
+                    label={isEditing ? t("review.saveEdit") : t("review.save")}
                     onPress={save}
                     disabled={isSubmitting || isEmpty}
                     Icon={Check}

@@ -6,6 +6,10 @@ import type { CheckinSnapshot } from "../services/getLastCheckinOfDay";
 
 type CheckinState = {
     draft: CheckinDraft;
+    /** Id del registro en edición (`null` = flujo de creación normal). */
+    editingId: string | null;
+    /** `localDate` original del registro en edición (para recalcular el rango). */
+    editingPreviousLocalDate: string | null;
     /** Mezcla un parche plano en el borrador. */
     set: (patch: Partial<CheckinDraft>) => void;
     /** Marca o desmarca un síntoma (toggle). Al marcar usa intensidad por defecto 2. */
@@ -22,7 +26,15 @@ type CheckinState = {
      * el `localDate` del snapshot se ignora. `activeStep` se reinicia a 0.
      */
     hydrate: (snapshot: CheckinSnapshot) => void;
-    /** Vuelve al borrador inicial. */
+    /**
+     * Hidrata el borrador para editar un registro existente. A diferencia de
+     * `hydrate`, **preserva el `localDate`** del registro original (no fuerza
+     * hoy) y marca el store en modo edición (`editingId`).
+     */
+    hydrateForEdit: (params: { id: string; localDate: string; snapshot: CheckinSnapshot }) => void;
+    /** Sale del modo edición sin tocar el borrador (lo limpia `reset`). */
+    clearEditMode: () => void;
+    /** Vuelve al borrador inicial y sale del modo edición. */
     reset: () => void;
 };
 
@@ -38,6 +50,8 @@ function medKey(med: DraftMedication): string {
  */
 export const useCheckinStore = create<CheckinState>((set) => ({
     draft: INITIAL_CHECKIN_DRAFT,
+    editingId: null,
+    editingPreviousLocalDate: null,
     set: (patch) => set((state) => ({ draft: { ...state.draft, ...patch } })),
     toggleSymptom: (symptomKey) =>
         set((state) => {
@@ -84,5 +98,18 @@ export const useCheckinStore = create<CheckinState>((set) => ({
                 activeStep: 0,
             },
         })),
-    reset: () => set({ draft: INITIAL_CHECKIN_DRAFT }),
+    hydrateForEdit: ({ id, localDate, snapshot }) =>
+        set(() => ({
+            draft: {
+                ...INITIAL_CHECKIN_DRAFT,
+                ...snapshot,
+                // Modo edición: respetamos la fecha original del registro.
+                localDate,
+                activeStep: 0,
+            },
+            editingId: id,
+            editingPreviousLocalDate: localDate,
+        })),
+    clearEditMode: () => set({ editingId: null, editingPreviousLocalDate: null }),
+    reset: () => set({ draft: INITIAL_CHECKIN_DRAFT, editingId: null, editingPreviousLocalDate: null }),
 }));

@@ -1,5 +1,6 @@
+import { Pencil, Trash2 } from "lucide-react-native";
 import type { TFunction } from "i18next";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { useTheme } from "@/theme/useTheme";
 import { bleedingKey } from "@/shared/utils/bleedingLabel";
@@ -10,15 +11,21 @@ import type { CheckinDetail } from "../services/listCheckinsOfDay";
 type Props = {
     detail: CheckinDetail;
     t: TFunction;
+    /** Callback de edición (solo se ofrece cuando `canEdit === true`). */
+    onEdit?: () => void;
+    /** Callback de borrado. Siempre disponible. */
+    onDelete: () => void;
+    /** Si el registro puede editarse (es de hoy). */
+    canEdit: boolean;
     testID?: string;
 };
 
 /**
  * Ítem de la línea de tiempo del detalle del diario: hora, cuerpo (sangrado +
- * síntomas + medicamentos) y nota opcional. No es tappable en la Fase 1 (solo
- * lectura); la edición llega en la Fase 2.
+ * síntomas + medicamentos), nota opcional y fila de acciones (editar / borrar).
+ * Editar solo se ofrece si `canEdit` (día actual); borrar siempre.
  */
-export function CheckinTimelineItem({ detail, t, testID }: Props) {
+export function CheckinTimelineItem({ detail, t, onEdit, onDelete, canEdit, testID }: Props) {
     const theme = useTheme();
     const hasSymptoms = detail.symptoms.length > 0;
     const hasMedications = detail.medications.length > 0;
@@ -72,6 +79,55 @@ export function CheckinTimelineItem({ detail, t, testID }: Props) {
                     {detail.note}
                 </Text>
             ) : null}
+
+            <View style={{ flexDirection: "row", gap: theme.spacing.sm, marginTop: theme.spacing.xs, paddingTop: theme.spacing.sm, borderTopWidth: theme.borderWidth.hairline, borderTopColor: theme.colors.divider }}>
+                {canEdit && onEdit ? (
+                    <Pressable
+                        onPress={onEdit}
+                        accessibilityRole="button"
+                        accessibilityLabel={t("diary:detail.editLabel")}
+                        style={({ pressed }) => ({
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: theme.spacing.xs,
+                            height: 36,
+                            borderRadius: theme.radius.pill,
+                            borderWidth: theme.borderWidth.thin,
+                            borderColor: theme.colors.border,
+                            opacity: pressed ? 0.6 : 1,
+                        })}
+                    >
+                        <Pencil size={14} color={theme.colors.textSecondary} strokeWidth={2.2} />
+                        <Text style={{ ...theme.typography.variant.caption, color: theme.colors.textSecondary }}>
+                            {t("diary:detail.editLabel")}
+                        </Text>
+                    </Pressable>
+                ) : null}
+                <Pressable
+                    onPress={onDelete}
+                    accessibilityRole="button"
+                    accessibilityLabel={t("diary:detail.deleteLabel")}
+                    style={({ pressed }) => ({
+                        flex: 1,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: theme.spacing.xs,
+                        height: 36,
+                        borderRadius: theme.radius.pill,
+                        borderWidth: theme.borderWidth.thin,
+                        borderColor: theme.colors.border,
+                        opacity: pressed ? 0.6 : 1,
+                    })}
+                >
+                    <Trash2 size={14} color={theme.colors.dangerText} strokeWidth={2.2} />
+                    <Text style={{ ...theme.typography.variant.caption, color: theme.colors.dangerText }}>
+                        {t("diary:detail.deleteLabel")}
+                    </Text>
+                </Pressable>
+            </View>
         </View>
     );
 }

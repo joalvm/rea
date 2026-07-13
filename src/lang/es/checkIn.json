@@ -313,6 +313,7 @@
         "empty": "No anotaste nada. Puedes guardar igual.",
         "editHint": "Toca cualquier paso para editarlo.",
         "save": "Guardar",
+        "saveEdit": "Guardar cambios",
         "sectionBleeding": "Sangrado",
         "sectionFeelings": "Ánimo",
         "sectionBody": "Cuerpo",

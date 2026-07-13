@@ -9,6 +9,8 @@ export type UseCheckinsOfDayResult = {
     details: CheckinDetail[];
     loading: boolean;
     error: Error | null;
+    /** Fuerza una recarga manual (tras borrar/restaurar). */
+    reload: () => void;
 };
 
 /**
@@ -20,6 +22,9 @@ export type UseCheckinsOfDayResult = {
  * agrupa post-query, algo que no encaja en `useLiveQuery`. Volumen bajo (un día),
  * y la pantalla se recarga al volver del wizard de check-in o al cambiar de día.
  *
+ * Expone `reload()` para forzar la recarga tras una mutación local (borrar /
+ * restaurar) sin esperar a que cambien las deps.
+ *
  * Si `profileId` es nulo/undefined no consulta y devuelve `details: []`.
  */
 export function useCheckinsOfDay(
@@ -30,6 +35,7 @@ export function useCheckinsOfDay(
     const [details, setDetails] = useState<CheckinDetail[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
+    const [reloadSignal, setReloadSignal] = useState(0);
 
     useEffect(() => {
         if (profileId == null) {
@@ -62,7 +68,7 @@ export function useCheckinsOfDay(
         return () => {
             active = false;
         };
-    }, [database, profileId, localDate]);
+    }, [database, profileId, localDate, reloadSignal]);
 
-    return { details, loading, error };
+    return { details, loading, error, reload: () => setReloadSignal((n) => n + 1) };
 }

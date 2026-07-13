@@ -14,6 +14,7 @@ export default function CheckinLayout() {
             }}
         >
             <Stack.Screen name="index" options={{ title: t("intro.title") }} />
+            <Stack.Screen name="edit/[id]" options={{ headerShown: false, animation: "none" }} />
             <Stack.Screen name="bleeding" options={{ title: t("steps.bleeding") }} />
             <Stack.Screen name="feelings" options={{ title: t("steps.feelings") }} />
             <Stack.Screen name="body" options={{ title: t("steps.body") }} />

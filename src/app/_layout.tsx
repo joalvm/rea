@@ -12,6 +12,7 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 
 import { DatabaseProvider } from "@/db/DatabaseProvider";
+import { Snackbar } from "@/components/snackbar/Snackbar";
 import { ThemeProvider } from "@/theme/ThemeProvider";
 import { useTheme } from "@/theme/useTheme";
 
@@ -58,6 +59,7 @@ function RootNavigator() {
                 <Stack.Screen name="settings/about" options={{ headerShown: true, title: "Acerca de Rea" }} />
                 <Stack.Screen name="+not-found" />
             </Stack>
+            <Snackbar />
         </>
     );
 }

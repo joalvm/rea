@@ -8,6 +8,7 @@ import { useDatabase } from "@/db/useDatabase";
 import { hasCheckinContent } from "../types/CheckinDraft";
 import { useCheckinStore } from "../stores/useCheckinStore";
 import { createCheckin } from "../services/createCheckin";
+import { updateCheckin } from "../services/updateCheckin";
 import { logCheckinSummary } from "../dev/checkinMetrics";
 
 /**
@@ -15,12 +16,17 @@ import { logCheckinSummary } from "../dev/checkinMetrics";
  * haya contenido que persistir, ejecuta la mutación transaccional y, al
  * success, resetea el borrador. Expone `isSubmitting` para deshabilitar el CTA
  * durante el guardado y `isEmpty` cuando el borrador no tiene nada que guardar.
+ *
+ * Si el store está en modo edición (`editingId`), persiste vía `updateCheckin`
+ * en lugar de `createCheckin`.
  */
 export function useCompleteCheckin() {
     const { t } = useTranslation("exception");
     const database = useDatabase();
     const { profile } = useLocalProfile();
     const draft = useCheckinStore((state) => state.draft);
+    const editingId = useCheckinStore((state) => state.editingId);
+    const editingPreviousLocalDate = useCheckinStore((state) => state.editingPreviousLocalDate);
     const reset = useCheckinStore((state) => state.reset);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -40,7 +46,16 @@ export function useCompleteCheckin() {
         setIsSubmitting(true);
 
         try {
-            await createCheckin(database, { profileId: profile.id, draft });
+            if (editingId !== null) {
+                await updateCheckin(database, {
+                    profileId: profile.id,
+                    checkinId: editingId,
+                    previousLocalDate: editingPreviousLocalDate ?? draft.localDate,
+                    draft,
+                });
+            } else {
+                await createCheckin(database, { profileId: profile.id, draft });
+            }
             logCheckinSummary();
             reset();
             return true;
@@ -56,5 +71,7 @@ export function useCompleteCheckin() {
         submit,
         isSubmitting,
         isEmpty,
+        /** `true` si el wizard está editando un registro existente. */
+        isEditing: editingId !== null,
     };
 }

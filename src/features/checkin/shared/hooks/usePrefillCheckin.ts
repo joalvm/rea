@@ -30,6 +30,7 @@ export function usePrefillCheckin(): { hasTodayCheckin: boolean; loading: boolea
     const { profile } = useLocalProfile();
     const hydrate = useCheckinStore((state) => state.hydrate);
     const reset = useCheckinStore((state) => state.reset);
+    const editingId = useCheckinStore((state) => state.editingId);
 
     const [hasTodayCheckin, setHasTodayCheckin] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -38,6 +39,13 @@ export function usePrefillCheckin(): { hasTodayCheckin: boolean; loading: boolea
         let cancelled = false;
 
         async function load() {
+            // Modo edición: la ruta `checkin/edit/[id]` ya hidrató el borrador.
+            // No tocamos el store para no pisar los valores cargados.
+            if (editingId !== null) {
+                setLoading(false);
+                return;
+            }
+
             if (!profile) {
                 if (!cancelled) {
                     setLoading(false);
@@ -72,7 +80,7 @@ export function usePrefillCheckin(): { hasTodayCheckin: boolean; loading: boolea
         return () => {
             cancelled = true;
         };
-    }, [database, profile, hydrate, reset]);
+    }, [database, profile, hydrate, reset, editingId]);
 
     return { hasTodayCheckin, loading };
 }
