@@ -5,12 +5,14 @@ import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
+import { useTheme } from "@/theme/useTheme";
 import { formatLongDate } from "@/shared/utils/formatDate";
 import { todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
 import { CheckinTimelineItem } from "./components/CheckinTimelineItem";
 import { useCheckinsOfDay } from "./hooks/useCheckinsOfDay";
 import { useDeleteCheckin } from "./hooks/useDeleteCheckin";
+import { useToggleExclusion } from "./hooks/useToggleExclusion";
 import { summarizeDay } from "./utils/summarizeDay";
 import { useDiaryEntryStyles } from "./DiaryEntryStyle";
 
@@ -27,10 +29,12 @@ type Props = {
  */
 export default function DiaryEntryScreen({ date, onStartCheckin, onEdit }: Props) {
     const styles = useDiaryEntryStyles();
+    const theme = useTheme();
     const { t } = useTranslation();
     const { profile } = useLocalProfile();
     const { details, loading, reload } = useCheckinsOfDay(profile?.id, date);
     const { confirmAndRemove } = useDeleteCheckin(reload);
+    const { toggle: toggleExclusion } = useToggleExclusion(reload);
     const summary = useMemo(() => summarizeDay(details), [details]);
     const isToday = date === ymdToISO(todayYMD());
 
@@ -45,7 +49,7 @@ export default function DiaryEntryScreen({ date, onStartCheckin, onEdit }: Props
 
                 {loading ? (
                     <View style={styles.loading}>
-                        <ActivityIndicator color="#7cd9f9" />
+                        <ActivityIndicator color={theme.colors.primary} />
                         <Text style={styles.loadingText}>{t("diary:detail.loading")}</Text>
                     </View>
                 ) : details.length === 0 ? (
@@ -71,6 +75,7 @@ export default function DiaryEntryScreen({ date, onStartCheckin, onEdit }: Props
                                         canEdit={isToday}
                                         onEdit={() => onEdit(detail.id)}
                                         onDelete={() => confirmAndRemove(detail.id)}
+                                        onToggleExclusion={(next) => toggleExclusion(detail.id, next)}
                                         testID={`diary-entry-timeline-${detail.id}`}
                                     />
                                 ))}

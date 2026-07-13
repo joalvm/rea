@@ -42,7 +42,9 @@
         "symptomsCount_other": "{{count}} symptoms",
         "medicationsCount_one": "{{count}} medication",
         "medicationsCount_other": "{{count}} medications",
-        "loading": "Loading…"
+        "loading": "Loading…",
+        "excludeTitle": "Exclude from stats",
+        "excludeSubtitle": "Stays in your diary but doesn't affect your averages."
     },
     "bleedingLabel": {
         "none": "No bleeding",

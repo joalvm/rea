@@ -1,6 +1,6 @@
 # 06 · Diario
 
-> **Hito:** M2 · **Depende de:** 02 (check-in) · **Estado:** 🚧 Fase 2 ✅. En la
+> **Hito:** M2 · **Depende de:** 02 (check-in) · **Estado:** ✅. En la
 > arquitectura de información propuesta, el diario vive como **lista cronológica dentro
 > de Calendario** y como detalle de día (`diary/[date]`); este plan define la lógica sea
 > cual sea el tab final.
@@ -62,15 +62,17 @@ que no la representan.
   `restoreCheckin` revierte y vuelve a aparecer; `updateCheckin` preserva `recordedAt`/
   `createdAt`, reemplaza síntomas/meds y recalcula (tests de integración).
 
-### [ ] Fase 3: Exclusión estadística
+### [x] Fase 3: Exclusión estadística
 
-- **Objetivo:** "este día no me representa" sin perder el dato.
-- **Cambios:** toggle de exclusión en el detalle (con explicación de una línea del
-  efecto); proyector y estadísticas ignoran excluidos (ya contratado en el plan 01);
-  marcador visual en lista y detalle.
+- **Objetivo:** "este registro no me representa" sin perder el dato.
+- **Cambios:** toggle de exclusión por registro en el detalle (`ToggleRow` + chip
+  "No cuenta"); servicio `setCheckinExclusion` idempotente que recalcula desde la fecha
+  del registro; `summarizeDay` ignora excluidos (coherencia con el proyector, que ya los
+  filtraba).
 - **No hacer:** exclusión masiva por rango (criterio de entrada: alguien la pide).
-- **Cierre:** excluir un check-in cambia las medias del día en `daily_summary` (test);
-  el diario lo sigue mostrando marcado.
+- **Cierre:** excluir un check-in baja el `checkinCount` del día en `daily_summary` y
+  cambia las medias del resumen en memoria; el diario lo sigue mostrando marcado (test de
+  integración).
 
 ## Riesgos y preguntas abiertas
 

@@ -1,7 +1,8 @@
-import { Pencil, Trash2 } from "lucide-react-native";
+import { EyeOff, Pencil, Trash2 } from "lucide-react-native";
 import type { TFunction } from "i18next";
 import { Pressable, Text, View } from "react-native";
 
+import { ToggleRow } from "@/components/toggle-row/ToggleRow";
 import { useTheme } from "@/theme/useTheme";
 import { bleedingKey } from "@/shared/utils/bleedingLabel";
 import { extractTime } from "@/shared/utils/formatDate";
@@ -15,6 +16,8 @@ type Props = {
     onEdit?: () => void;
     /** Callback de borrado. Siempre disponible. */
     onDelete: () => void;
+    /** Alterna la exclusión estadística del registro. */
+    onToggleExclusion: (nextExcluded: boolean) => void;
     /** Si el registro puede editarse (es de hoy). */
     canEdit: boolean;
     testID?: string;
@@ -22,10 +25,11 @@ type Props = {
 
 /**
  * Ítem de la línea de tiempo del detalle del diario: hora, cuerpo (sangrado +
- * síntomas + medicamentos), nota opcional y fila de acciones (editar / borrar).
- * Editar solo se ofrece si `canEdit` (día actual); borrar siempre.
+ * síntomas + medicamentos), nota opcional, fila de acciones (editar / borrar) y
+ * toggle de exclusión estadística al pie. Editar solo se ofrece si `canEdit`
+ * (día actual); borrar y excluir siempre.
  */
-export function CheckinTimelineItem({ detail, t, onEdit, onDelete, canEdit, testID }: Props) {
+export function CheckinTimelineItem({ detail, t, onEdit, onDelete, onToggleExclusion, canEdit, testID }: Props) {
     const theme = useTheme();
     const hasSymptoms = detail.symptoms.length > 0;
     const hasMedications = detail.medications.length > 0;
@@ -128,6 +132,15 @@ export function CheckinTimelineItem({ detail, t, onEdit, onDelete, canEdit, test
                     </Text>
                 </Pressable>
             </View>
+
+            <ToggleRow
+                title={t("diary:detail.excludeTitle")}
+                subtitle={t("diary:detail.excludeSubtitle")}
+                Icon={EyeOff}
+                value={detail.excludedFromSummary === 1}
+                onChange={onToggleExclusion}
+                accent={theme.colors.warning}
+            />
         </View>
     );
 }

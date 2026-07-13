@@ -4,6 +4,9 @@ import type { CheckinDetail } from "../services/listCheckinsOfDay";
  * Mini-resumen de un día calculado en memoria a partir de los detalles de los
  * check-ins del día. **No** consulta la tabla `daily_summary` (Plan 07): es una
  * agregación ligera pensada para el detalle del diario, con redondeo a 1 decimal.
+ *
+ * Los check-ins con `excludedFromSummary === 1` se ignoran (no cuentan para las
+ * medias del día), igual que hace el proyector en `daily_summary`.
  */
 export type DaySummary = {
     /** Promedio de `mood` (1-5) sobre los check-ins con `mood` no nulo. */
@@ -38,6 +41,9 @@ export function summarizeDay(details: CheckinDetail[]): DaySummary {
     let medicationCount = 0;
 
     for (const detail of details) {
+        if (detail.excludedFromSummary === 1) {
+            continue;
+        }
         if (detail.mood != null) {
             moods.push(detail.mood);
         }

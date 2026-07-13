@@ -42,7 +42,9 @@
         "symptomsCount_other": "{{count}} síntomas",
         "medicationsCount_one": "{{count}} medicamento",
         "medicationsCount_other": "{{count}} medicamentos",
-        "loading": "Cargando…"
+        "loading": "Cargando…",
+        "excludeTitle": "No cuenta para tus estadísticas",
+        "excludeSubtitle": "Se conserva en tu diario pero no afecta tus promedios."
     },
     "bleedingLabel": {
         "none": "Sin sangrado",

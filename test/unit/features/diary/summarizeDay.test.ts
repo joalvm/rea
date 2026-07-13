@@ -83,4 +83,16 @@ describe("summarizeDay", () => {
         expect(summary.symptomCount).toBe(3);
         expect(summary.medicationCount).toBe(1);
     });
+
+    it("ignora los check-ins con excludedFromSummary === 1", () => {
+        const summary = summarizeDay([
+            makeDetail({ mood: 2, energy: 2, bleedingIntensity: 1 }),
+            makeDetail({ mood: 4, energy: 4, bleedingIntensity: 3, excludedFromSummary: 1 }),
+        ]);
+
+        // Solo el primer check-in cuenta.
+        expect(summary.moodAvg).toBe(2);
+        expect(summary.energyAvg).toBe(2);
+        expect(summary.bleedingMax).toBe(1);
+    });
 });
