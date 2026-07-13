@@ -5,5 +5,10 @@ import MedicationsScreen from "@/features/checkin/medications/MedicationsScreen"
 export default function MedicationsRoute() {
     const router = useRouter();
 
-    return <MedicationsScreen onContinue={() => router.push("/checkin/note")} />;
+    return (
+        <MedicationsScreen
+            onContinue={() => router.push("/checkin/note")}
+            onSaved={() => router.replace("/(tabs)")}
+        />
+    );
 }

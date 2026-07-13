@@ -12,6 +12,7 @@ import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { fertilitySectionsFor } from "@/features/checkin/shared/bodySections";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { CheckinSaveButton } from "@/features/checkin/shared/components/checkin-screen/CheckinSaveButton";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/features/checkin/shared/components/segmented-control/SegmentedControl";
 import { useCheckinStore } from "@/features/checkin/shared/stores/useCheckinStore";
 import type { CheckinDraft } from "@/features/checkin/shared/types/CheckinDraft";
+import { useCheckinStepMetric } from "@/features/checkin/shared/dev/useCheckinStepMetric";
 
 import { useFertilityStyles } from "./FertilityStyle";
 
@@ -67,6 +69,7 @@ const TEST_DEFS: readonly TestDef[] = [
 
 type Props = {
     onContinue: () => void;
+    onSaved: () => void;
 };
 
 /**
@@ -76,9 +79,10 @@ type Props = {
  * etiqueta por opción, tap para seleccionar, tap de nuevo para deseleccionar).
  * Las relaciones usan `ToggleRow` (switch nativo), no tarjetas.
  */
-export default function FertilityScreen({ onContinue }: Props) {
+export default function FertilityScreen({ onContinue, onSaved }: Props) {
     const { t } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
+    useCheckinStepMetric("fertility");
     useFertilityStyles();
     const screenStyles = useCheckinScreenStyles();
     const set = useCheckinStore((state) => state.set);
@@ -144,6 +148,7 @@ export default function FertilityScreen({ onContinue }: Props) {
 
             <View style={screenStyles.footer}>
                 <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>
     );

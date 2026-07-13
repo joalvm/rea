@@ -8,6 +8,7 @@ import { useDatabase } from "@/db/useDatabase";
 import { hasCheckinContent } from "../types/CheckinDraft";
 import { useCheckinStore } from "../stores/useCheckinStore";
 import { createCheckin } from "../services/createCheckin";
+import { logCheckinSummary } from "../dev/checkinMetrics";
 
 /**
  * Hook de guardado del check-in. Lee el borrador del store efímero, valida que
@@ -40,6 +41,7 @@ export function useCompleteCheckin() {
 
         try {
             await createCheckin(database, { profileId: profile.id, draft });
+            logCheckinSummary();
             reset();
             return true;
         } catch {

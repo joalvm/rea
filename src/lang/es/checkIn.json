@@ -2,12 +2,11 @@
     "intro": {
         "title": "¿Cómo te sientes ahora?",
         "lead": "Anota este momento. Puedes registrar cuantas veces quieras a lo largo del día.",
-        "quick": "Lo esencial",
-        "quickHint": "Sangrado, ánimo y síntomas. Listo en segundos.",
-        "complete": "Registro completo",
-        "completeHint": "Todo lo que quieras apuntar de este momento: cuerpo, fertilidad, medicamentos y nota.",
-        "nothingToReport": "Nada que reportar",
-        "nothingHint": "Un momento tranquilo, sin nada que anotar. Se guarda vacío."
+        "quickSection": "Captura rápida",
+        "continuingToday": "Continuando tu registro de hoy",
+        "noQuickOptions": "No hay opciones rápidas configuradas para tu modo.",
+        "startFull": "Empezar registro",
+        "saveNow": "Guardar ahora"
     },
     "steps": {
         "bleeding": "Sangrado",

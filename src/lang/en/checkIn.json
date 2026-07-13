@@ -2,12 +2,11 @@
     "intro": {
         "title": "How do you feel right now?",
         "lead": "Capture this moment. You can log as many times as you want through the day.",
-        "quick": "The essentials",
-        "quickHint": "Bleeding, mood and symptoms. Done in seconds.",
-        "complete": "Full entry",
-        "completeHint": "Everything you want to note about this moment: body, fertility, medications and a note.",
-        "nothingToReport": "Nothing to report",
-        "nothingHint": "A quiet moment, nothing to jot down. Saved empty."
+        "quickSection": "Quick capture",
+        "continuingToday": "Continuing today's entry",
+        "noQuickOptions": "No quick options configured for your mode.",
+        "startFull": "Start full entry",
+        "saveNow": "Save now"
     },
     "steps": {
         "bleeding": "Bleeding",

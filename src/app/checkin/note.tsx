@@ -5,5 +5,10 @@ import NoteScreen from "@/features/checkin/note/NoteScreen";
 export default function NoteRoute() {
     const router = useRouter();
 
-    return <NoteScreen onContinue={() => router.push("/checkin/review")} />;
+    return (
+        <NoteScreen
+            onContinue={() => router.push("/checkin/review")}
+            onSaved={() => router.replace("/(tabs)")}
+        />
+    );
 }

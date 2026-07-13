@@ -1,7 +1,7 @@
 # 02 · Check-in (captura diaria)
 
 > **Hito:** M2 · **Depende de:** 01 (motor), 03 (señal de periodo), esquema v3 ·
-> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fase 2 ✅ (wizard funcional). Fase 3 ✅ (cuerpo, fertilidad y puente de test). Fase 4 pendiente.
+> **Estado:** 🚧 Fase 1 ✅ (mockup + catálogo + i18n). Fase 2 ✅ (wizard funcional). Fase 3 ✅ (cuerpo, fertilidad y puente de test). Fase 4 ✅ (velocidad: quick-options, prefill, guardar en cualquier paso).
 
 ## Contexto
 
@@ -97,15 +97,24 @@ Objetivo de producto: **registrar un día normal toma menos de 60 segundos**, y 
 - **Cierre:** QA por modo — cada modo ve exactamente sus pasos; test positivo en modo
   evitar muestra la tarjeta neutra; copy es/en revisado.
 
-### [ ] Fase 4: Velocidad
+### [x] Fase 4: Velocidad
 
 - **Objetivo:** <60 s un día normal; <15 s un día vacío.
-- **Cambios:** quick-options del catálogo (`is_quick_option`) arriba; valores del último
-  check-in del día como punto de partida al reabrir; deep link `rea://checkin` (lo usará
-  la notificación diaria del plan 12); métricas de pasos saltados en dev para medir.
+- **Cambios:** quick-options del catálogo (`is_quick_option`) arriba en el intro;
+  valores del último check-in del día como punto de partida al reabrir (prefill del
+  draft vía `getLastCheckinOfDay` + `hydrate` del store); "Guardar" accesible desde
+  cualquier paso del wizard (`CheckinSaveButton` en cada pantalla); deep link
+  `rea://checkin` (lo usará la notificación diaria del plan 12); métricas de pasos
+  en dev (`checkinMetrics`) para medir los presupuestos de tiempo durante QA.
+- **Deep link:** el scheme `rea` ya está en `app.json`; Expo Router enruta
+  automáticamente `rea://checkin` → `/checkin`. No requiere código custom. La
+  notificación del plan 12 lo abrirá con `Linking.openURL("rea://checkin")`.
 - **No hacer:** gamificación, rachas de "días seguidos registrando" (presionan, no
-  acompañan).
+  acompañan); navegación condicional por `periodStatusSignal` (O-03 — diferida a
+  revisión final).
 - **Cierre:** cronómetro real en dispositivo: los dos presupuestos de tiempo se cumplen.
+  Tests de integración cubren `getLastCheckinOfDay` y `getQuickOptions`; test unitario
+  cubre `hydrate`/`reset`/`toggleSymptom` del store.
 
 ## Riesgos y preguntas abiertas
 

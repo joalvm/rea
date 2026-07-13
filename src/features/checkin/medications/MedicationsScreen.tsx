@@ -13,10 +13,12 @@ import { useDatabase } from "@/db/useDatabase";
 import { useTheme } from "@/theme/useTheme";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { CheckinSaveButton } from "@/features/checkin/shared/components/checkin-screen/CheckinSaveButton";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
+import { useCheckinStepMetric } from "@/features/checkin/shared/dev/useCheckinStepMetric";
 import { useMedicationsStyles } from "./MedicationsStyle";
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 
@@ -37,12 +39,14 @@ const RELIEF_OPTIONS: readonly ReliefOption[] = [
 
 type Props = {
     onContinue: () => void;
+    onSaved: () => void;
 };
 
 /** Check-in paso 6: medicamentos tomados (catálogo personal + alta manual). */
-export default function MedicationsScreen({ onContinue }: Props) {
+export default function MedicationsScreen({ onContinue, onSaved }: Props) {
     const { t: tCheckin } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
+    useCheckinStepMetric("medications");
     const theme = useTheme();
     const styles = useMedicationsStyles();
     const screenStyles = useCheckinScreenStyles();
@@ -178,6 +182,7 @@ export default function MedicationsScreen({ onContinue }: Props) {
 
             <View style={screenStyles.footer}>
                 <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>
     );

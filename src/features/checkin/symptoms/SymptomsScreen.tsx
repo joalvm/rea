@@ -12,34 +12,28 @@ import { useActiveIntent } from "@/domain/hooks/useActiveIntent";
 import { useDatabase } from "@/db/useDatabase";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { CheckinSaveButton } from "@/features/checkin/shared/components/checkin-screen/CheckinSaveButton";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { useSymptomsStyles } from "./SymptomsStyle";
 import { MultiChip } from "@/features/checkin/shared/components/multi-chip/MultiChip";
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
+import { resolveLabel } from "@/features/checkin/shared/services/resolveLabel";
+import { useCheckinStepMetric } from "@/features/checkin/shared/dev/useCheckinStepMetric";
 
 import { useCheckinStore } from "../shared/stores/useCheckinStore";
 
-type TFunc = ReturnType<typeof useTranslation>["t"];
-
-/** Traduce un `labelKey` del catálogo (formato `namespace:resto`) a texto. */
-function resolveLabel(labelKey: string, t: TFunc): string {
-    const [ns, ...rest] = labelKey.split(":");
-    if (!ns || rest.length === 0) {
-        return labelKey;
-    }
-    return String(t(rest.join(":"), { ns } as never));
-}
-
 type Props = {
     onContinue: () => void;
+    onSaved: () => void;
 };
 
 /** Check-in paso 4: síntomas del catálogo con intensidad (multiselección). */
-export default function SymptomsScreen({ onContinue }: Props) {
+export default function SymptomsScreen({ onContinue, onSaved }: Props) {
     const { t } = useTranslation();
     const { t: tCheckin } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
+    useCheckinStepMetric("symptoms");
     const styles = useSymptomsStyles();
     const screenStyles = useCheckinScreenStyles();
     const database = useDatabase();
@@ -135,6 +129,7 @@ export default function SymptomsScreen({ onContinue }: Props) {
 
             <View style={screenStyles.footer}>
                 <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>
     );

@@ -14,7 +14,7 @@ iniciado / ❌ ausente, deuda declarada). Ver práctica de actualización más a
 | --- | ------------------------------------------------------ | -------------- | :----: | ------------------------------------------------------------------------ |
 | 00  | [Onboarding — ajustes](00-onboarding.md)               | M1             |   ✅   | Deja de escribir datos falsos; permiso JIT; anticoncepción por método    |
 | 01  | [Motor de ciclo](01-motor-de-ciclo.md)                 | M1             |   ✅   | Predicción honesta, proyección diaria, historial de ciclos y precisión   |
-| 02  | [Check-in](02-check-in.md)                             | M2             |   🚧   | Captura diaria <60 s, adaptada al modo, con test de embarazo en todos    |
+| 02  | [Check-in](02-check-in.md)                             | M2             |   ✅   | Captura diaria <60 s, adaptada al modo, con test de embarazo en todos    |
 | 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             |   ✅   | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
 | 04  | [Hoy](04-hoy.md)                                       | M3             |   🔲   | La pantalla que responde "¿dónde estoy y qué viene?"                     |
 | 05  | [Calendario](05-calendario.md)                         | M3             |   🔲   | Vista de mes con observado ≠ estimado y detalle de día                   |

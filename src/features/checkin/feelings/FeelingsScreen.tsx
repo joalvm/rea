@@ -21,10 +21,12 @@ import { View } from "react-native";
 
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { CheckinSaveButton } from "@/features/checkin/shared/components/checkin-screen/CheckinSaveButton";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
+import { useCheckinStepMetric } from "@/features/checkin/shared/dev/useCheckinStepMetric";
 import type { CheckinDraft } from "@/features/checkin/shared/types/CheckinDraft";
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 
@@ -81,12 +83,14 @@ const STRESS_OPTIONS: readonly (Option & { labelKey: StressKey })[] = [
 
 type Props = {
     onContinue: () => void;
+    onSaved: () => void;
 };
 
 /** Check-in paso 2: ánimo, energía y estrés (escalas graduables con iconos). */
-export default function FeelingsScreen({ onContinue }: Props) {
+export default function FeelingsScreen({ onContinue, onSaved }: Props) {
     const { t } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
+    useCheckinStepMetric("feelings");
     const set = useCheckinStore((state) => state.set);
     const mood = useCheckinStore((state) => state.draft.mood);
     const energy = useCheckinStore((state) => state.draft.energy);
@@ -129,6 +133,7 @@ export default function FeelingsScreen({ onContinue }: Props) {
 
             <View style={screenStyles.footer}>
                 <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>
     );

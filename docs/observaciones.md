@@ -10,26 +10,26 @@ cuajaron del todo y conviene tener a la vista.
 
 ## Check-in (plan 02)
 
-### O-01 · Las 3 tarjetas de modo del intro son UI muerta
+### O-01 · Las 3 tarjetas de modo del intro son UI muerta — ✅ RESUELTO
 
 **Dónde:** `src/features/checkin/intro/CheckinIntroScreen.tsx`
-**Qué pasa:** `mode` es un `useState` local (`"quick" | "complete" | "nothing" | null`).
-Solo hace dos cosas: resaltar la `SelectableCard` elegida y mantener
-`disabled={mode === null}` en "Empezar". No se persiste (sin columna DB, sin
-campo en `CheckinDraft`, sin campo en `useCheckinStore`), no se propaga a la
+**Qué pasa:** `mode` era un `useState` local (`"quick" | "complete" | "nothing" | null`).
+Solo hacía dos cosas: resaltar la `SelectableCard` elegida y mantener
+`disabled={mode === null}` en "Empezar". No se persistía (sin columna DB, sin
+campo en `CheckinDraft`, sin campo en `useCheckinStore`), no se propagaba a la
 navegación (`onStart` siempre empuja `/checkin/bleeding`), ninguna pantalla ni
-servicio lo lee. Se descarta al navegar.
-**Mentira en el código:** el comentario de `start()` dice "nada que reportar →
-review directo" pero `start()` siempre llama `onStart()` → siempre va a bleeding.
+servicio lo leía. Se descartaba al navegar.
+**Mentira en el código:** el comentario de `start()` decía "nada que reportar →
+review directo" pero `start()` siempre llamaba `onStart()` → siempre iba a bleeding.
 **Triada sin respaldo:** el plan 02 NO define 3 modos de captura
 (rápido/completo/nada). Su "modo" = modo reproductivo
 (`tracking_only`/`avoid`/`ttc`/`pregnancy`), que SÍ funciona vía `useActiveIntent`.
-**Decisión:** dejar así por ahora; la velocidad real llega en Fase 4 vía
-quick-options del catálogo + prefill, no vía un toggle de modo declarado. Si al
-cerrar Fase 4 las tarjetas siguen sin función, eliminarlas (intro = hero + lead
-+ botón Empezar siempre activo).
+**Resolución (Fase 4):** intro reescrito. Eliminadas las 3 `SelectableCard` y el
+`useState<IntroMode>`. Ahora: hero + grid de quick-options del catálogo + selector
+de intensidad + "Empezar registro" (siempre activo) + "Guardar ahora" (guarda
+directo y sale). Cerrado en commit de Fase 4.
 
-### O-02 · "Guardar accesible desde cualquier paso" no implementado
+### O-02 · "Guardar accesible desde cualquier paso" no implementado — ✅ RESUELTO
 
 **Dónde:** `src/features/checkin/shared/components/checkin-screen/CheckinScreen.tsx`
 **Qué pasa:** `CheckinScreen` es un contenedor puro (`SafeAreaView` + `ScrollView`).
@@ -37,10 +37,13 @@ No pinta footer ni CTA de guardado. Cada paso renderiza su propio botón
 "Continuar". Solo `ReviewScreen` tiene "Guardar".
 **Promesa rota:** Fase 2 del plan 02 dice textualmente "«guardar» accesible desde
 cualquier paso". Hoy no lo está.
-**Decisión:** entra en Fase 4 (velocidad): un día vacío < 15 s requiere poder
-guardar desde el primer paso sin recorrer todo el wizard.
+**Resolución (Fase 4):** añadido `CheckinSaveButton` (componente reutilizable que
+usa `useCompleteCheckin`) en el footer de las 8 pantallas del wizard
+(intro + bleeding + feelings + body + symptoms + fertility + medications + note).
+Cada ruta pasa `onSaved={() => router.replace("/(tabs)")}`. Cerrado en commit de
+Fase 4.
 
-### O-03 · Navegación condicional por `periodStatusSignal` no existe
+### O-03 · Navegación condicional por `periodStatusSignal` no existe — DIFERIDA
 
 **Dónde:** `src/app/checkin/_layout.tsx` (Stack estático de 9 rutas en orden fijo)
 **Qué pasa:** si la usuaria marca "Terminó" (mi regla) en Bleeding, el wizard
@@ -49,9 +52,9 @@ avanza por los 9 pasos sin saltar nada. Ninguna pantalla lee `periodStatusSignal
 para ocultar/mostrar controles.
 **Insight válido del usuario:** "si marca ya terminó mi regla, no tiene sentido
 pedir cuanto sangrado tiene o cuánto coágulo".
-**Decisión:** navegación condicional por señal es territorio Fase 4. Hoy la
-señal solo se persiste como auditoría (no abre/cierra rachas — eso vive en el
-plan 03).
+**Decisión:** diferida a revisión final. El stack de 9 rutas se mantiene estático.
+La señal solo se persiste como auditoría (no abre/cierra rachas — eso vive en el
+plan 03). Se revaluará al cerrar todos los planes.
 
 ### O-04 · Columnas huérfanas en `checkins`
 

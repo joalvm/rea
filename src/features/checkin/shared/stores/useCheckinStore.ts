@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 import type { CheckinDraft, DraftMedication, DraftSymptom } from "../types/CheckinDraft";
 import { INITIAL_CHECKIN_DRAFT } from "../types/CheckinDraft";
+import type { CheckinSnapshot } from "../services/getLastCheckinOfDay";
 
 type CheckinState = {
     draft: CheckinDraft;
@@ -15,6 +16,12 @@ type CheckinState = {
     upsertMedication: (med: DraftMedication) => void;
     /** Quita un medicamento del borrador (por medicationId o name). */
     removeMedication: (key: { medicationId?: string; name?: string }) => void;
+    /**
+     * Carga un snapshot del último check-in del día como punto de partida del
+     * borrador (Fase 4: prefill al reabrir). Siempre respeta la fecha de hoy:
+     * el `localDate` del snapshot se ignora. `activeStep` se reinicia a 0.
+     */
+    hydrate: (snapshot: CheckinSnapshot) => void;
     /** Vuelve al borrador inicial. */
     reset: () => void;
 };
@@ -64,6 +71,17 @@ export const useCheckinStore = create<CheckinState>((set) => ({
                     (m) =>
                         (key.medicationId && m.medicationId !== key.medicationId) || (key.name && m.name !== key.name),
                 ),
+            },
+        })),
+    hydrate: (snapshot) =>
+        set(() => ({
+            draft: {
+                ...INITIAL_CHECKIN_DRAFT,
+                ...snapshot,
+                // El draft siempre vive en hoy; el snapshot puede venir de otra
+                // sesión pero el wizard reabre para registrar un momento nuevo.
+                localDate: INITIAL_CHECKIN_DRAFT.localDate,
+                activeStep: 0,
             },
         })),
     reset: () => set({ draft: INITIAL_CHECKIN_DRAFT }),

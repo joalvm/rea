@@ -25,10 +25,12 @@ import { useTheme } from "@/theme/useTheme";
 import { bodySectionsFor, type BodySections } from "@/features/checkin/shared/bodySections";
 import { CheckinHeader } from "@/features/checkin/shared/components/checkin-screen/CheckinHeader";
 import { CheckinScreen } from "@/features/checkin/shared/components/checkin-screen/CheckinScreen";
+import { CheckinSaveButton } from "@/features/checkin/shared/components/checkin-screen/CheckinSaveButton";
 import { SectionTitle } from "@/features/checkin/shared/components/checkin-screen/SectionTitle";
 import { useCheckinScreenStyles } from "@/features/checkin/shared/components/checkin-screen/CheckinScreenStyle";
 import { ChoiceCard } from "@/features/checkin/shared/components/choice-card/ChoiceCard";
 import { ChoiceGrid } from "@/features/checkin/shared/components/choice-card/ChoiceGrid";
+import { useCheckinStepMetric } from "@/features/checkin/shared/dev/useCheckinStepMetric";
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
 import { useCheckinStore } from "@/features/checkin/shared/stores/useCheckinStore";
 import type { CheckinDraft } from "@/features/checkin/shared/types/CheckinDraft";
@@ -93,6 +95,7 @@ const SCALES: readonly ScaleDef[] = [
 
 type Props = {
     onContinue: () => void;
+    onSaved: () => void;
 };
 
 /**
@@ -106,9 +109,10 @@ type Props = {
  * `.choice-grid`). BBT y peso usan display grande (`bbt-val` 34px) con unidad
  * al lado, no un TextInput chico.
  */
-export default function BodyScreen({ onContinue }: Props) {
+export default function BodyScreen({ onContinue, onSaved }: Props) {
     const { t } = useTranslation("checkIn");
     const { t: tCommon } = useTranslation("common");
+    useCheckinStepMetric("body");
     const theme = useTheme();
     const styles = useBodyStyles();
     const screenStyles = useCheckinScreenStyles();
@@ -223,6 +227,7 @@ export default function BodyScreen({ onContinue }: Props) {
 
             <View style={screenStyles.footer}>
                 <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>
     );
