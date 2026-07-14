@@ -16,6 +16,8 @@ type Props = {
      * `false`: en los pasos intermedios no tiene sentido guardar sin contenido.
      */
     allowEmpty?: boolean;
+    /** Identificador para tests E2E (Maestro). Por defecto `checkin-save`. */
+    testID?: string;
 };
 
 /**
@@ -27,7 +29,7 @@ type Props = {
  * Se coloca dentro del `<View style={screenStyles.footer}>` de cada paso,
  * debajo del botón "Continuar".
  */
-export function CheckinSaveButton({ onSaved, disabled, allowEmpty = false }: Props) {
+export function CheckinSaveButton({ onSaved, disabled, allowEmpty = false, testID = "checkin-save" }: Props) {
     const { t } = useTranslation("checkIn");
     const { submit, isSubmitting, isEmpty } = useCompleteCheckin();
 
@@ -45,6 +47,7 @@ export function CheckinSaveButton({ onSaved, disabled, allowEmpty = false }: Pro
             disabled={disabled || isSubmitting || (isEmpty && !allowEmpty)}
             variant="secondary"
             Icon={Check}
+            testID={testID}
         />
     );
 }

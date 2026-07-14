@@ -140,6 +140,7 @@ export function CheckinTimelineItem({ detail, t, onEdit, onDelete, onToggleExclu
                 value={detail.excludedFromSummary === 1}
                 onChange={onToggleExclusion}
                 accent={theme.colors.warning}
+                testID="diary-toggle-exclusion"
             />
         </View>
     );

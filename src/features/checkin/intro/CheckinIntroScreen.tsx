@@ -109,7 +109,7 @@ export default function CheckinIntroScreen({ onStart, onSaved }: Props) {
             ) : null}
 
             <View style={screenStyles.footer}>
-                <PrimaryButton label={tCheckin("intro.startFull")} onPress={onStart} Icon={Sparkles} />
+                <PrimaryButton label={tCheckin("intro.startFull")} onPress={onStart} Icon={Sparkles} testID="checkin-start" />
                 <CheckinSaveButton onSaved={onSaved} allowEmpty />
             </View>
         </CheckinScreen>

@@ -1,0 +1,7 @@
+# Helper: deja la app lista en /(tabs) con onboarding completo.
+# Corre el flow de onboarding y aterriza en las tabs.
+# Uso: - runFlow: ./00-app-onboarded.yaml
+appId: com.joalvm.rea
+---
+- runFlow: ../onboarding/01-onboarding-completo.yaml
+# Al final ya estamos en /(tabs) con tab-home visible.

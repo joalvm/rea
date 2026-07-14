@@ -132,7 +132,7 @@ export default function FeelingsScreen({ onContinue, onSaved }: Props) {
             {renderScale(t("feelings.stress.title"), STRESS_OPTIONS, stressLevel, "stressLevel")}
 
             <View style={screenStyles.footer}>
-                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} testID="checkin-next" />
                 <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>

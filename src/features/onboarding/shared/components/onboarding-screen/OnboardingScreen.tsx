@@ -13,6 +13,7 @@ export type OnboardingCta = {
     onPress: () => void;
     disabled?: boolean;
     Icon?: LucideIcon;
+    testID?: string;
 };
 
 type Props = {
@@ -58,6 +59,7 @@ export function OnboardingScreen({ step, total, accent, cta, secondaryCta, foote
                                 disabled={cta.disabled}
                                 accent={accent}
                                 Icon={cta.Icon}
+                                testID={cta.testID ?? "onboarding-cta-primary"}
                             />
                         ) : null}
                         {secondaryCta ? (
@@ -66,6 +68,7 @@ export function OnboardingScreen({ step, total, accent, cta, secondaryCta, foote
                                 onPress={secondaryCta.onPress}
                                 disabled={secondaryCta.disabled}
                                 variant="secondary"
+                                testID={secondaryCta.testID ?? "onboarding-cta-secondary"}
                             />
                         ) : null}
                     </>

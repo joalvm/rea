@@ -157,6 +157,7 @@ export default function ReviewScreen({ onSaved }: Props) {
                     onPress={save}
                     disabled={isSubmitting || isEmpty}
                     Icon={Check}
+                    testID="checkin-save"
                 />
             </View>
         </CheckinScreen>

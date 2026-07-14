@@ -46,6 +46,7 @@ export default function DiaryScreen() {
                     onPress={prev}
                     accessibilityRole="button"
                     accessibilityLabel={t("diary:month.prev")}
+                    testID="diary-month-prev"
                     style={({ pressed }) => [styles.monthNavButton, pressed && { opacity: 0.5 }]}
                 >
                     <ChevronLeft size={theme.sizing.iconMd} color={theme.colors.text} strokeWidth={2.4} />
@@ -69,6 +70,7 @@ export default function DiaryScreen() {
                     onPress={next}
                     accessibilityRole="button"
                     accessibilityLabel={t("diary:month.next")}
+                    testID="diary-month-next"
                     style={({ pressed }) => [styles.monthNavButton, pressed && { opacity: 0.5 }]}
                 >
                     <ChevronRight size={theme.sizing.iconMd} color={theme.colors.text} strokeWidth={2.4} />

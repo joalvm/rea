@@ -1,0 +1,4 @@
+# Config compartido por todos los flows de Maestro.
+# appId = android.package definido en app.json.
+appId: com.joalvm.rea
+---

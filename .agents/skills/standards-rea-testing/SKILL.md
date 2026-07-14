@@ -41,10 +41,13 @@ test/
     i18n/
     ui/
   db-migrations/
-  e2e/
-    flows/
-    fixtures/
   utils/
+
+maestro/                  # E2E con Maestro — ver sección "Pruebas E2E"
+  config.yaml
+  README.md
+  flows/
+    <feature>/
 ```
 
 Reglas:
@@ -52,7 +55,7 @@ Reglas:
 - `unit/` contiene pruebas puras o con doubles mínimos.
 - `integration/` contiene pruebas que combinan módulos reales o runtime real.
 - `db-migrations/` contiene solo lifecycle, reset, versionado y contratos de migración.
-- `e2e/` contiene recorridos de usuario completos en emulador o dispositivo.
+- Los flujos E2E (Maestro) viven en `maestro/flows/`, **no** en `test/e2e/`.
 - `seeders/` se usa solo para persistir datos reales en integración DB.
 - `fixtures/` se usa para objetos de entrada, payloads o recursos estáticos no persistidos.
 - No crear carpetas vacías. Se crean cuando aparece el primer caso real.
@@ -342,25 +345,41 @@ describe("Inicialización de base de datos", () => {
 
 ### Pruebas E2E
 
-Usa `test/e2e/` cuando el riesgo solo se demuestra en el recorrido completo del usuario.
+**Herramienta:** Maestro (YAML declarativo, corre sobre emulador Android). La
+carpeta es `maestro/` en la raíz del repo — **no** `test/e2e/`, porque Maestro
+vive fuera de Jest y no comparte su runner.
+
+**Filosofía:** verificación visual bajo demanda. Se corre cuando un cambio toca
+diseño, colores, interacción o navegación — **no** en cada commit. Los tests
+Jest (unit + integration) siguen siendo la red de regresión automática.
 
 Sujetos típicos:
 
 - onboarding completo
 - crear registro y verlo reflejado en varias pantallas
-- restauración o importación
 - navegación entre features críticas
+- validar que una pantalla calza con su mockup HTML
 
 Reglas:
 
-- un flujo E2E debe validar un objetivo de negocio, no una colección de clicks
-- si el runner no usa `describe` e `it`, los nombres de flujo y de pasos visibles también van en español
+- un flujo E2E debe validar un objetivo de negocio o una verificación visual, no una colección de clicks
+- los nombres de flujo (archivo) y los pasos visibles van en español
+- prioriza selectores por `testID` (`id:`) sobre texto — el texto depende del idioma del device
 - un flujo E2E no reemplaza pruebas unitarias ni de integración; solo protege el camino final
+- antes de escribir un flow, verifica que los `testID` necesarios existan; si faltan, añádelos al componente
 
-Ejemplo conceptual de nombre:
+Convenciones de nombres:
 
-- `test/e2e/flows/onboarding/completa-onboarding.flow.yaml`
-- título del flujo: `Completa onboarding y entra al inicio`
+- archivo: `maestro/flows/<feature>/NN-descripción.yaml` (cero-padding para orden estable)
+- helpers (setup reutilizable): `maestro/flows/<feature>/00-*.yaml`, se incluyen con `runFlow`
+- prefijos de testID por feature: `onboarding-`, `tab-`, `diary-`, `checkin-`
+
+Ejemplos:
+
+- `maestro/flows/onboarding/01-onboarding-completo.yaml`
+- `maestro/flows/diario/02-diario-detalle.yaml`
+
+Cómo correr: ver `maestro/README.md`.
 
 ## Cómo pensar por sujeto
 

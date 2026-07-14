@@ -2,6 +2,12 @@ import { TabIcon } from "@/components/tab-icon/TabIcon";
 import { useTheme } from "@/theme/useTheme";
 import { Tabs } from "expo-router";
 import { CalendarDaysIcon, ChartSplineIcon, HouseIcon, NotebookTabsIcon, Settings2Icon } from "lucide-react-native";
+import { Pressable } from "react-native";
+
+/** Wrapper del botón de tab que inyecta un `testID` estable para Maestro. */
+function tabButtonWithTestID(testID: string) {
+    return (props: any) => <Pressable {...props} testID={testID} />;
+}
 
 export default function TabLayout() {
     const theme = useTheme();
@@ -27,6 +33,7 @@ export default function TabLayout() {
                 name="index"
                 options={{
                     title: "Inicio",
+                    tabBarButton: tabButtonWithTestID("tab-home"),
                     tabBarIcon: ({ color, focused }) => <TabIcon Icon={HouseIcon} color={color} focused={focused} />,
                 }}
             />
@@ -34,6 +41,7 @@ export default function TabLayout() {
                 name="diary"
                 options={{
                     title: "Diario",
+                    tabBarButton: tabButtonWithTestID("tab-diary"),
                     tabBarIcon: ({ color, focused }) => (
                         <TabIcon Icon={NotebookTabsIcon} color={color} focused={focused} />
                     ),
@@ -43,6 +51,7 @@ export default function TabLayout() {
                 name="calendar"
                 options={{
                     title: "Calendario",
+                    tabBarButton: tabButtonWithTestID("tab-calendar"),
                     tabBarIcon: ({ color, focused }) => (
                         <TabIcon Icon={CalendarDaysIcon} color={color} focused={focused} />
                     ),
@@ -52,6 +61,7 @@ export default function TabLayout() {
                 name="stats"
                 options={{
                     title: "Estadísticas",
+                    tabBarButton: tabButtonWithTestID("tab-stats"),
                     tabBarIcon: ({ color, focused }) => (
                         <TabIcon Icon={ChartSplineIcon} color={color} focused={focused} />
                     ),
@@ -61,6 +71,7 @@ export default function TabLayout() {
                 name="settings"
                 options={{
                     title: "Configuración",
+                    tabBarButton: tabButtonWithTestID("tab-settings"),
                     tabBarIcon: ({ color, focused }) => (
                         <TabIcon Icon={Settings2Icon} color={color} focused={focused} />
                     ),

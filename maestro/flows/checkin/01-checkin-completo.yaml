@@ -1,0 +1,74 @@
+# Check-in completo: wizard de principio a fin desde el botón "Empezar registro"
+# en la intro, avanzando por todos los pasos hasta guardar en review.
+appId: com.joalvm.rea
+---
+- runFlow: ../diario/00-app-onboarded.yaml
+
+# 1) Intro → "Empezar registro".
+- tapOn:
+    id: tab-home
+- tapOn:
+    id: checkin-start
+
+# 2) Bleeding.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-01-bleeding
+- tapOn:
+    id: checkin-next
+
+# 3) Feelings.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-02-feelings
+- tapOn:
+    id: checkin-next
+
+# 4) Body.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-03-body
+- tapOn:
+    id: checkin-next
+
+# 5) Symptoms.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-04-symptoms
+- tapOn:
+    id: checkin-next
+
+# 6) Fertility.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-05-fertility
+- tapOn:
+    id: checkin-next
+
+# 7) Medications.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-06-medications
+- tapOn:
+    id: checkin-next
+
+# 8) Note.
+- assertVisible:
+    id: checkin-next
+- takeScreenshot: checkin-07-note
+- tapOn:
+    id: checkin-next
+
+# 9) Review → guardar.
+- assertVisible:
+    id: checkin-save
+- takeScreenshot: checkin-08-review
+- tapOn:
+    id: checkin-save
+
+# Vuelve a las tabs.
+- extendedWaitUntil:
+    visible:
+      id: tab-home
+    timeout: 15000
+- takeScreenshot: checkin-final-guardado

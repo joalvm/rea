@@ -126,7 +126,7 @@ export default function BleedingScreen({ onContinue, onSaved }: Props) {
             </ChoiceGrid>
 
             <View style={screenStyles.footer}>
-                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} testID="checkin-next" />
                 <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>

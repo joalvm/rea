@@ -40,6 +40,13 @@ yarn-error.*
 /ios
 /android
 
+# Maestro — artifacts de las corridas e2e (screenshots, reportes, cache)
+# La carpeta screenshots/ se versiona (estructura) pero su contenido se ignora.
+maestro/output/
+maestro/.maestro/
+maestro/screenshots/*
+!maestro/screenshots/.gitkeep
+
 __legacy__
 .claude/
 .skills/

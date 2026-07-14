@@ -1,0 +1,83 @@
+# Onboarding completo: welcome → profile → intent → last-period → cycle →
+# regularity → contraception → pregnancy-setup (opcional) → notifications →
+# complete → aterriza en /(tabs).
+# Captura un screenshot por paso para validación visual contra los mockups HTML.
+appId: com.joalvm.rea
+---
+- runFlow: ./00-abrir-app-limpia.yaml
+
+# 1) Welcome
+- takeScreenshot: onboarding-01-welcome
+- tapOn:
+    id: onboarding-cta-primary
+
+# 2) Profile — nombre obligatorio
+- assertVisible:
+    id: profile-name
+- takeScreenshot: onboarding-02-profile
+- tapOn:
+    id: profile-name
+- inputText: Rea
+- hideKeyboard
+- tapOn:
+    id: onboarding-cta-primary
+
+# 3) Intent — default tracking_only deja el CTA habilitado
+- assertVisible:
+    id: intent-master-cycle
+- takeScreenshot: onboarding-03-intent
+- tapOn:
+    id: onboarding-cta-primary
+
+# 4) Last period — fecha default ya cargada
+- assertVisible:
+    id: last-period-start
+- takeScreenshot: onboarding-04-last-period
+- tapOn:
+    id: onboarding-cta-primary
+
+# 5) Cycle
+- assertVisible:
+    id: cycle-period
+- takeScreenshot: onboarding-05-cycle
+- tapOn:
+    id: onboarding-cta-primary
+
+# 6) Regularity — requiere seleccionar una opción
+- assertVisible:
+    id: regularity-regular
+- takeScreenshot: onboarding-06-regularity
+- tapOn:
+    id: regularity-regular
+- tapOn:
+    id: onboarding-cta-primary
+
+# 7) Contraception — sin método (default, solo visible si modo = cycle)
+- assertVisible:
+    id: onboarding-cta-primary
+- takeScreenshot: onboarding-07-contraception
+- tapOn:
+    id: onboarding-cta-primary
+
+# 8) Notifications
+- assertVisible:
+    id: notifications-enable
+- takeScreenshot: onboarding-08-notifications
+- tapOn:
+    id: onboarding-cta-secondary
+
+# 9) Complete → aterriza en /(tabs)
+- extendedWaitUntil:
+    visible:
+      id: onboarding-cta-primary
+    timeout: 15000
+- takeScreenshot: onboarding-09-complete
+- tapOn:
+    id: onboarding-cta-primary
+
+# Verifica llegada a las tabs.
+- extendedWaitUntil:
+    visible:
+      id: tab-home
+    timeout: 15000
+- takeScreenshot: onboarding-final-tabs

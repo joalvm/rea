@@ -20,6 +20,7 @@
             "backgroundColor": "#7CD9F9"
         },
         "android": {
+            "package": "com.joalvm.rea",
             "adaptiveIcon": {
                 "backgroundColor": "#7CD9F9",
                 "foregroundImage": "./assets/images/branding/adaptive-foreground.png",

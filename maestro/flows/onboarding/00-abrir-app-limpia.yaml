@@ -1,0 +1,15 @@
+# Helper reutilizable: arranca la app con estado limpio (DB nueva) y espera
+# a que aparezca el primer paso del onboarding.
+# Uso: - runFlow: ./00-abrir-app-limpia.yaml
+appId: com.joalvm.rea
+---
+# clearState borra datos de la app (incluida la SQLite local) → onboarding parte de cero.
+- clearState: com.joalvm.rea
+- launchApp:
+    appId: com.joalvm.rea
+    clearState: true
+# Espera el botón primario del welcome (primer paso).
+- extendedWaitUntil:
+    visible:
+      id: onboarding-cta-primary
+    timeout: 30000

@@ -128,7 +128,7 @@ export default function SymptomsScreen({ onContinue, onSaved }: Props) {
             )}
 
             <View style={screenStyles.footer}>
-                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} />
+                <PrimaryButton label={tCommon("action.continue")} onPress={onContinue} testID="checkin-next" />
                 <CheckinSaveButton onSaved={onSaved} />
             </View>
         </CheckinScreen>
