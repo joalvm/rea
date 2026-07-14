@@ -6,6 +6,7 @@ type SettingsLink = {
     label: string;
     onPress: () => void;
     hint?: string;
+    testID?: string;
 };
 
 type Props = {
@@ -25,6 +26,7 @@ export default function SettingsScreen({ links }: Props) {
                 {links.map((link) => (
                     <Pressable
                         key={link.label}
+                        testID={link.testID}
                         style={({ pressed }) => [styles.linkRow, pressed && styles.pressed]}
                         onPress={link.onPress}
                     >

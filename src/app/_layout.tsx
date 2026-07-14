@@ -57,6 +57,7 @@ function RootNavigator() {
                 <Stack.Screen name="settings/pregnancy" options={{ headerShown: true, title: "Modo embarazo" }} />
                 <Stack.Screen name="settings/sources" options={{ headerShown: true, title: "Fuentes revisadas" }} />
                 <Stack.Screen name="settings/about" options={{ headerShown: true, title: "Acerca de Rea" }} />
+                <Stack.Screen name="dev/seed" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
             </Stack>
             <Snackbar />

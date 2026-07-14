@@ -1,29 +1,22 @@
-# Diario — detalle: crea un registro rápido desde el tab Inicio, abre el día,
-# captura el detalle y prueba el toggle de exclusión (Fase 3).
+# Diario — detalle: abre un día con check-in sembrado, captura el detalle y
+# prueba el toggle de exclusión (Fase 3). Depende del helper de sembrado para
+# tener entradas que abrir (el seed crea check-ins en los últimos días).
 appId: com.joalvm.rea
 ---
 - runFlow: ./00-app-onboarded.yaml
 
-# 1) Crea un registro rápido (intro → "Guardar ahora" con quick-option).
-- tapOn:
-    id: tab-home
-- tapOn:
-    id: quick-option-.*
-- tapOn:
-    id: checkin-save
-
-# 2) Abre el tab Diario y entra al día con el registro recién creado.
+# 1) Abre el tab Diario y entra al día de hoy (tiene check-in sembrado).
 - tapOn:
     id: tab-diary
 - tapOn:
     id: diary-day-.*
 
-# 3) Detalle del día.
+# 2) Detalle del día.
 - assertVisible:
     id: diary-entry-start
 - takeScreenshot: diario-detalle
 
-# 4) Scroll hasta el toggle de exclusión y actívalo.
+# 3) Scroll hasta el toggle de exclusión y actívalo.
 - scrollUntilVisible:
     element:
       id: diary-toggle-exclusion
@@ -33,7 +26,7 @@ appId: com.joalvm.rea
     id: diary-toggle-exclusion
 - takeScreenshot: diario-detalle-toggle-activo
 
-# 5) Re-incluye el registro (reversible).
+# 4) Re-incluye el registro (reversible).
 - tapOn:
     id: diary-toggle-exclusion
 - takeScreenshot: diario-detalle-toggle-restaurado

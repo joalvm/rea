@@ -23,6 +23,17 @@ export default function SettingsRoute() {
                 },
                 { label: "Fuentes revisadas", onPress: () => router.push("/settings/sources") },
                 { label: "Acerca de Rea", onPress: () => router.push("/settings/about") },
+                // Solo en desarrollo: siembra datos demo para verificación visual con Maestro.
+                ...(typeof __DEV__ !== "undefined" && __DEV__
+                    ? [
+                          {
+                              label: "Sembrar datos demo",
+                              hint: "Restablece y carga datos de prueba",
+                              testID: "dev-seed-trigger",
+                              onPress: () => router.push("/dev/seed"),
+                          },
+                      ]
+                    : []),
             ]}
         />
     );

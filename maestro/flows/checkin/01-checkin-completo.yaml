@@ -1,5 +1,10 @@
 # Check-in completo: wizard de principio a fin desde el botón "Empezar registro"
 # en la intro, avanzando por todos los pasos hasta guardar en review.
+#
+# NOTA: el paso de entrada (tab-home → checkin-start) depende de que la
+# pantalla Home real exponga el botón de registro. Mientras Home sea un
+# placeholder temporal, este flow documenta el flujo destino pero no corre
+# limpio; los pasos internos del wizard sí están listos (checkin-next/save).
 appId: com.joalvm.rea
 ---
 - runFlow: ../diario/00-app-onboarded.yaml

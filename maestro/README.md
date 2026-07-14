@@ -46,13 +46,25 @@ npm run e2e
 ```
 
 Los screenshots caen en `maestro/screenshots/captures_<DD_MM_YY_HH_MM_SS>/`
-(gitignored). Cada corrida crea una carpeta nueva con timestamp. **Antes de
-una nueva corrida borra las carpetas `captures_*` viejas** para que no se
-acumulen (están fuera de git pero ocupan disco):
+(gitignored). Cada corrida crea una carpeta nueva con timestamp y **borra las
+anteriores automáticamente** (`run.sh` limpia `captures_*` antes de cada run).
 
-```bash
-rm -rf maestro/screenshots/captures_*
-```
+## Sembrado de datos de demo (`__DEV__`)
+
+Para validar pantallas que requieren datos (diario, detalle, checkin) sin
+conducir todo el onboarding a mano, existe una ruta de desarrollo que siembra
+datos de demo:
+
+- **Ruta:** `/dev/seed` (solo en builds `__DEV__`, nunca en producción).
+- **Entrada:** botón "Sembrar datos demo" en la pantalla de bienvenida del
+  onboarding (`testID="dev-seed-trigger"`).
+- **Qué hace:** restablece la DB y crea un perfil con onboarding cerrado, un
+  periodo en curso y varios check-ins en los últimos días (con síntomas, notas
+  y sangrado). Tras sembrar redirige a `/(tabs)`.
+- **Implementación:** `src/modules/dev/seedDemoData.ts` + `DevSeedScreen.tsx`.
+
+Los flows de diario/checkin reusan esto vía el helper
+`maestro/flows/dev/00-seed.yaml`.
 
 ## Estructura
 
@@ -64,13 +76,27 @@ maestro/
     onboarding/
       00-abrir-app-limpia.yaml         # helper: clearState + launch
       01-onboarding-completo.yaml      # welcome → complete → tabs
+    dev/
+      00-seed.yaml                     # helper: siembra datos demo y aterriza en /(tabs)
     diario/
-      00-app-onboarded.yaml            # helper: deja app lista en /(tabs)
+      00-app-onboarded.yaml            # helper: siembra y deja app lista en /(tabs)
       01-diario-lista.yaml             # tab Diario + navegación meses
       02-diario-detalle.yaml           # detalle + toggle exclusión
     checkin/
       01-checkin-completo.yaml         # wizard completo hasta guardar
 ```
+
+### Estado de los flows
+
+| Flow | Estado | Nota |
+|------|--------|------|
+| `onboarding/00-abrir-app-limpia` | ✓ corre | Helper de lanzamiento limpio |
+| `onboarding/01-onboarding-completo` | ⚠ pendiente | `inputText` no escribe en API 36 |
+| `dev/00-seed` | ✓ corre | Workaround del bug `inputText` |
+| `diario/00-app-onboarded` | ✓ corre | Helper que reusa el seed |
+| `diario/01-diario-lista` | ✓ corre | Validado con datos sembrados |
+| `diario/02-diario-detalle` | ✓ corre | Validado con datos sembrados |
+| `checkin/01-checkin-completo` | ⚠ aspiracional | Requiere Home real (no placeholder) |
 
 ## Convenciones
 
@@ -85,7 +111,7 @@ maestro/
 - **Screenshots:** `takeScreenshot: <nombre>` genera PNG con ese nombre en
   `maestro/screenshots/captures_<timestamp>/` (creada por `--debug-output`).
   Un screenshot por estado relevante. Las capturas **no se versionan** en git
-  (ver `.gitignore`); bórralas antes de una nueva corrida para evitar acumular.
+  (ver `.gitignore`).
 
 ## testID necesarios
 
@@ -97,6 +123,7 @@ Maestro selecciona elementos por `testID`. Convención de prefijos por feature:
 | `tab-`        | Tab bar       | `tab-home`, `tab-diary`    |
 | `diary-`      | Diario        | `diary-day-*`, `diary-month-prev` |
 | `checkin-`    | Check-in      | `checkin-start`, `checkin-next`, `checkin-save` |
+| `dev-`        | Desarrollo    | `dev-seed-trigger` |
 
 Antes de añadir un flow nuevo, verifica que los selectores existan en el
 componente (`grep testID src/`). Si faltan, añádelos — es preferible tocar el
@@ -105,8 +132,8 @@ componente con un testID estable antes que seleccionar por texto traducido.
 ## Añadir un flow nuevo
 
 1. Decide el feature y crea `maestro/flows/<feature>/NN-descripción.yaml`.
-2. Si necesitas estado previo (app limpia, onboarding hecho), reusa un helper
-   con `runFlow`.
+2. Si necesitas estado previo (app limpia, onboarding hecho, datos sembrados),
+   reusa un helper con `runFlow`.
 3. Usa `id:` para todos los taps. Si el `testID` no existe, añádelo al
    componente.
 4. Termina con `takeScreenshot: <nombre-descriptivo>` para cada estado
@@ -127,19 +154,8 @@ escribe en `TextInput` controlados de React Native: el campo recibe foco pero
 `onChangeText` no dispara y el store no se actualiza. Bloquea flows que
 requieran tipear (onboarding `profile`, edición de notas, etc.).
 
-Flujos afectados: `onboarding/01-onboarding-completo.yaml` se cae en el paso
-Profile. Los flujos de Diario y Checkin dependen de haber completado onboarding,
-así que también quedan pendientes hasta resolver esto.
-
-Workarounds pendientes de evaluar:
-
-- `adb shell input text` via `runScript` con un archivo JS puente.
-- Modo "test seed" en la app: deep link `rea://test-seed` que pre-cargue datos
-  vía Drizzle, saltando onboarding y dejando checkins/listos para validar.
-- Build de release con TextInput nativo sin controlar (poco práctico).
-
-Lo que **sí** se puede validar hoy con los flows existentes:
-
-- Welcome screen (primer paso del onboarding).
-- Pantallas que carguen con datos preexistentes (si se siembra la DB manualmente).
-- Navegación, tab bar, y cualquier interacción que no requiera escribir texto.
+**Solución adoptada:** el helper de sembrado (`dev/00-seed.yaml`) inserta datos
+directamente en la DB vía Drizzle, saltando el onboarding y dejando check-ins
+listos. Los flows de diario usan este helper y corren limpio. El flow de
+onboarding completo queda pendiente hasta resolver el bug o implementar una
+alternativa para tipear.

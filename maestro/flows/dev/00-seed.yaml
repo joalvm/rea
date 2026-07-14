@@ -1,0 +1,27 @@
+appId: com.joalvm.rea
+---
+# Sembrado de datos de demo para verificación visual.
+# Restablece la DB y crea un perfil con onboarding cerrado + varios check-ins
+# en días distintos. Necesario porque `inputText` de Maestro no escribe en
+# `TextInput` controlado de RN en el emulador API 36 (bug conocido).
+#
+# El deep link `rea://dev/seed` no se procesa fiablemente con expo-dev-client,
+# así que se siembra navegando desde el botón "Sembrar datos demo" en la
+# pantalla de bienvenida (gated __DEV__).
+#
+# Tras sembrar, la pantalla /dev/seed redirige sola a /(tabs).
+- launchApp:
+    appId: com.joalvm.rea
+    clearState: true
+# Espera a que la pantalla de bienvenida esté lista.
+- extendedWaitUntil:
+    visible:
+      id: "dev-seed-trigger"
+    timeout: 20000
+- tapOn:
+    id: "dev-seed-trigger"
+# La pantalla de sembrado redirige sola a /(tabs); damos margen para reset + inserts.
+- extendedWaitUntil:
+    visible:
+      id: "tab-home"
+    timeout: 25000

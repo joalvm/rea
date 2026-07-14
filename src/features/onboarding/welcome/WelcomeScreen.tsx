@@ -5,7 +5,7 @@ import { Text, View } from "react-native";
 import LogoHorizontal from "@assets/images/branding/logo-horizontal.svg";
 import { useTheme } from "@/theme/useTheme";
 
-import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
+import { OnboardingScreen, type OnboardingCta } from "../shared/components/onboarding-screen/OnboardingScreen";
 import { ReaIllustration } from "../shared/components/rea-illustration/ReaIllustration";
 import { ScreenLead } from "../shared/components/screen-lead/ScreenLead";
 import { ScreenTitle } from "../shared/components/screen-title/ScreenTitle";
@@ -25,12 +25,19 @@ export default function WelcomeScreen({ onPush }: Props) {
     const theme = useTheme();
     const styles = useWelcomeStyles();
 
+    // En desarrollo, atajo para sembrar datos demo (verificación visual con Maestro).
+    const devSeedCta: OnboardingCta | undefined =
+        typeof __DEV__ !== "undefined" && __DEV__
+            ? { label: "Sembrar datos demo", onPress: () => onPush("/dev/seed"), testID: "dev-seed-trigger" }
+            : undefined;
+
     return (
         <OnboardingScreen
             step={1}
             total={9}
             center
             cta={{ label: tCommon("action.start"), onPress: () => onPush("/(onboarding)/profile") }}
+            secondaryCta={devSeedCta}
         >
             <View style={styles.brand}>
                 <LogoHorizontal width={LOGO_WIDTH} height={LOGO_WIDTH * LOGO_RATIO} color={theme.colors.primary} />
