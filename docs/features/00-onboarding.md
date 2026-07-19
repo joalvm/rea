@@ -65,7 +65,7 @@ FPP (se la dio su médica), no su última regla.
   NULL; completar en evitar con "píldora" persiste `contraception_method = 'pill'`;
   typecheck/lint/tests verdes.
 
-### [ ] Fase 2 (con plan 12, M2): Permiso just-in-time
+### [x] Fase 2 (con plan 12, M2): Permiso just-in-time
 
 - **Objetivo:** los recordatorios prometidos piden permiso en el momento honesto.
 - **Cambios:** paso `complete` solicita permiso de notificaciones solo si

@@ -1,0 +1,34 @@
+{
+    "screen": {
+        "title": "Recordatorios",
+        "lead": "Rea te recuerda tu check-in a la hora que elijas. Todo es local y discreto por defecto.",
+        "master": {
+            "title": "Recordatorios diarios",
+            "subtitle": "Un nudge suave para no olvidar tu check-in."
+        },
+        "windowLabel": "Ventana horaria",
+        "intervalLabel": "Frecuencia",
+        "dailyCheckin": {
+            "title": "Recordatorio de check-in",
+            "subtitle": "El nudge diario dentro de la ventana."
+        },
+        "discreet": {
+            "title": "Modo discreto",
+            "subtitle": "El aviso dice «Rea · tienes un recordatorio», sin revelar contenido íntimo."
+        },
+        "permissionDenied": {
+            "title": "Permiso de notificaciones desactivado",
+            "subtitle": "Toca para volver a pedirlo desde los ajustes del sistema.",
+            "action": "Abrir ajustes"
+        }
+    },
+    "dailyCheckin": {
+        "title": "Rea",
+        "body": "Tienes un recordatorio"
+    },
+    "interval": {
+        "3h": "Cada 3 h",
+        "6h": "Cada 6 h",
+        "12h": "Cada 12 h"
+    }
+}

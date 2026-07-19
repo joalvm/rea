@@ -1,0 +1,34 @@
+{
+    "screen": {
+        "title": "Reminders",
+        "lead": "Rea nudges your check-in at the time you choose. Everything is local and discreet by default.",
+        "master": {
+            "title": "Daily reminders",
+            "subtitle": "A gentle nudge so your check-in doesn't slip."
+        },
+        "windowLabel": "Time window",
+        "intervalLabel": "Frequency",
+        "dailyCheckin": {
+            "title": "Check-in reminder",
+            "subtitle": "The daily nudge within your window."
+        },
+        "discreet": {
+            "title": "Discreet mode",
+            "subtitle": "The alert says «Rea · you have a reminder», never intimate content."
+        },
+        "permissionDenied": {
+            "title": "Notification permission off",
+            "subtitle": "Tap to request it again from system settings.",
+            "action": "Open settings"
+        }
+    },
+    "dailyCheckin": {
+        "title": "Rea",
+        "body": "You have a reminder"
+    },
+    "interval": {
+        "3h": "Every 3 h",
+        "6h": "Every 6 h",
+        "12h": "Every 12 h"
+    }
+}

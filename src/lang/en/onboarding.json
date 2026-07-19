@@ -131,6 +131,9 @@
         "tagline": "all set",
         "title": "Thank you for letting us join you",
         "lead": "From here, Rea learns with you.",
-        "disclaimer": "Rea does not diagnose and is not a contraceptive method. Its estimates are based on what you log."
+        "disclaimer": "Rea does not diagnose and is not a contraceptive method. Its estimates are based on what you log.",
+        "permissionTitle": "Turn on reminders",
+        "permissionBody": "Rea will nudge you at your chosen time so your daily check-in doesn't slip. In the next step you can allow or decline notifications.",
+        "permissionRequesting": "Requesting permission…"
     }
 }

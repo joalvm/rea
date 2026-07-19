@@ -9,6 +9,7 @@ export const NAMESPACES = [
     "checkIn",
     "diary",
     "exception",
+    "notifications",
     "onboarding",
     "period",
     "preview",

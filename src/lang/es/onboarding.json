@@ -131,6 +131,9 @@
         "tagline": "todo listo",
         "title": "Gracias por dejarnos acompañarte",
         "lead": "A partir de aquí, Rea aprende contigo.",
-        "disclaimer": "Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo que registres."
+        "disclaimer": "Rea no diagnostica ni es un método anticonceptivo. Sus estimaciones se basan en lo que registres.",
+        "permissionTitle": "Activa los recordatorios",
+        "permissionBody": "Rea te avisará a la hora que elegiste para no olvidar tu check-in. En el siguiente paso puedes permitir o rechazar las notificaciones.",
+        "permissionRequesting": "Pidiendo permiso…"
     }
 }

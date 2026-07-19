@@ -1,9 +1,10 @@
-import { Info } from "lucide-react-native";
+import { BellRing, Info } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { useCompleteStyles } from "@/features/onboarding/complete/CompleteStyle";
 import { useCompleteOnboarding } from "@/features/onboarding/complete/hooks/useCompleteOnboarding";
+import { useOnboardingStore } from "@/features/onboarding/shared/stores/useOnboardingStore";
 import { useTheme } from "@/theme/useTheme";
 
 import { OnboardingScreen } from "../shared/components/onboarding-screen/OnboardingScreen";
@@ -21,6 +22,7 @@ export default function CompleteScreen({ onReplace }: Props) {
     const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
     const styles = useCompleteStyles();
+    const remindersEnabled = useOnboardingStore((state) => state.draft.remindersEnabled);
     const { submitCompleteOnboarding, isSubmitting } = useCompleteOnboarding();
 
     async function handleStartApp() {
@@ -51,6 +53,16 @@ export default function CompleteScreen({ onReplace }: Props) {
                 <Info size={18} color={theme.colors.link} strokeWidth={2.2} />
                 <Text style={styles.disclaimerText}>{t("complete.disclaimer")}</Text>
             </View>
+
+            {remindersEnabled ? (
+                <View style={styles.disclaimerBox}>
+                    <BellRing size={18} color={theme.colors.link} strokeWidth={2.2} />
+                    <View>
+                        <Text style={styles.disclaimerText}>{t("complete.permissionTitle")}</Text>
+                        <Text style={styles.disclaimerText}>{t("complete.permissionBody")}</Text>
+                    </View>
+                </View>
+            ) : null}
         </OnboardingScreen>
     );
 }
