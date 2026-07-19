@@ -5,6 +5,7 @@ import type calendar from "@/lang/es/calendar.json";
 import type common from "@/lang/es/common.json";
 import type diary from "@/lang/es/diary.json";
 import type exception from "@/lang/es/exception.json";
+import type notifications from "@/lang/es/notifications.json";
 import type onboarding from "@/lang/es/onboarding.json";
 import type period from "@/lang/es/period.json";
 import type preview from "@/lang/es/preview.json";
@@ -23,6 +24,7 @@ declare module "i18next" {
             checkIn: typeof checkIn;
             diary: typeof diary;
             exception: typeof exception;
+            notifications: typeof notifications;
             preview: typeof preview;
             onboarding: typeof onboarding;
             period: typeof period;

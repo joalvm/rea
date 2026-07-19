@@ -5,7 +5,9 @@
     "period": {
         "mutation": "No se pudo guardar el cambio. Inténtalo de nuevo."
     },
-    "settings": {},
+    "settings": {
+        "notifications": "No se pudo actualizar el recordatorio. Inténtalo de nuevo."
+    },
     "checkin": {
         "save": "No se pudo guardar el check-in. Inténtalo de nuevo."
     }

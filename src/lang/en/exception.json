@@ -5,7 +5,9 @@
     "period": {
         "mutation": "We couldn't save the change. Please try again."
     },
-    "settings": {},
+    "settings": {
+        "notifications": "We couldn't update the reminder. Please try again."
+    },
     "checkin": {
         "save": "We couldn't save your check-in. Please try again."
     }

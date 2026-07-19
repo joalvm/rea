@@ -8,76 +8,87 @@ export const useSettingsNotificationsStyles = createStyles((theme) => {
             flex: 1,
             backgroundColor: colors.background,
         },
-        container: {
+        scroll: {
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
+            gap: spacing.lg,
+            paddingHorizontal: spacing.xl,
+            paddingVertical: spacing["2xl"],
         },
         title: {
             ...typography.variant.h1,
             color: colors.text,
-            textAlign: "center",
         },
-        description: {
+        lead: {
             ...typography.variant.body,
             color: colors.textSecondary,
-            textAlign: "center",
             maxWidth: sizing.readableMaxWidth,
         },
-        links: {
-            alignSelf: "stretch",
-            gap: spacing.sm,
-            marginTop: spacing.sm,
-        },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
+        notice: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: spacing.md,
+            padding: spacing.lg,
             borderRadius: radius.lg,
             backgroundColor: colors.surface,
             borderWidth: borderWidth.thin,
             borderColor: colors.border,
             ...shadows[1],
         },
-        linkLabel: {
-            ...typography.variant.title,
+        noticeBody: {
+            flex: 1,
+            gap: spacing.xs,
+        },
+        noticeTitle: {
+            ...typography.variant.bodyStrong,
             color: colors.text,
         },
-        linkHint: {
+        noticeText: {
             ...typography.variant.footnote,
-            color: colors.textMuted,
+            color: colors.textSecondary,
         },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
+        noticeAction: {
+            ...typography.variant.caption,
+            color: colors.link,
+            marginTop: spacing.xs,
+        },
+        detail: {
+            gap: spacing.lg,
+        },
+        windowGroup: {
             gap: spacing.sm,
         },
-        pressed: {
-            opacity: 0.85,
+        intervalGroup: {
+            gap: spacing.sm,
         },
-        primary: {
+        fieldLabel: {
+            ...typography.variant.bodyStrong,
+            color: colors.text,
+        },
+        segmented: {
+            flexDirection: "row",
+            gap: spacing.xs,
+        },
+        segment: {
+            flex: 1,
+            paddingVertical: spacing.md,
+            paddingHorizontal: spacing.md,
+            borderRadius: radius.md,
+            backgroundColor: colors.surface,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.border,
+            alignItems: "center",
+        },
+        segmentActive: {
             backgroundColor: colors.primary,
-            ...shadows[2],
+            borderColor: colors.primary,
         },
-        primaryText: {
+        segmentText: {
+            ...typography.variant.subhead,
+            color: colors.textSecondary,
+        },
+        segmentTextActive: {
             ...typography.variant.bodyStrong,
             color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
         },
     };
 });
