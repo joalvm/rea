@@ -35,6 +35,12 @@ export const appSettings = sqliteTable(
         reminderIntervalHours: integer("reminder_interval_hours").notNull().default(defaults.reminderIntervalHours),
         reminderWindowStart: text("reminder_window_start").notNull().default(defaults.reminderWindowStart),
         reminderWindowEnd: text("reminder_window_end").notNull().default(defaults.reminderWindowEnd),
+        notifyDailyCheckin: integer("notify_daily_checkin", { mode: "boolean" })
+            .notNull()
+            .default(defaults.notifyDailyCheckin),
+        discreetNotifications: integer("discreet_notifications", { mode: "boolean" })
+            .notNull()
+            .default(defaults.discreetNotifications),
         theme: text("theme", { enum: appThemeValues }).notNull().default(defaults.theme),
         temperatureUnit: text("temperature_unit", { enum: temperatureUnitValues })
             .notNull()
@@ -60,6 +66,8 @@ export const appSettings = sqliteTable(
             sql`${table.reminderWindowEnd} >= ${table.reminderWindowStart}`,
         ),
         check("app_settings_theme_check", sql`${table.theme} IN ('system', 'light', 'dark')`),
+        check("app_settings_notify_daily_checkin_check", sql`${table.notifyDailyCheckin} IN (0, 1)`),
+        check("app_settings_discreet_notifications_check", sql`${table.discreetNotifications} IN (0, 1)`),
         check("app_settings_temperature_unit_check", sql`${table.temperatureUnit} IN ('celsius', 'fahrenheit')`),
     ],
 );

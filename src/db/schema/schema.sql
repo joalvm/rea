@@ -1,5 +1,5 @@
 -- ============================================================================
--- REA - Esquema SQLite v4 (ARCHIVO MAESTRO)
+-- REA - Esquema SQLite v6 (ARCHIVO MAESTRO)
 -- Contrato local-first para datos normalizados de seguimiento menstrual,
 -- intento de embarazo (TTC) y embarazo.
 --
@@ -51,6 +51,8 @@ CREATE TABLE IF NOT EXISTS app_settings (
                               ),
     theme                      TEXT NOT NULL DEFAULT 'system' CHECK (theme IN ('system', 'light', 'dark')),
     temperature_unit           TEXT NOT NULL DEFAULT 'celsius' CHECK (temperature_unit IN ('celsius', 'fahrenheit')),
+    notify_daily_checkin       INTEGER NOT NULL DEFAULT 1 CHECK (notify_daily_checkin IN (0, 1)),
+    discreet_notifications     INTEGER NOT NULL DEFAULT 1 CHECK (discreet_notifications IN (0, 1)),
     onboarding_completed_at    TEXT, -- Fecha de finalización del onboarding (NULL si no se completó).
     created_at                 TEXT NOT NULL,
     updated_at                 TEXT NOT NULL,
@@ -559,4 +561,4 @@ VALUES (4, 'schema_v4_cycle_engine', strftime('%Y-%m-%dT%H:%M:%SZ', 'now'));
 
 COMMIT;
 
-PRAGMA user_version = 4;
+PRAGMA user_version = 6;

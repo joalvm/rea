@@ -5,4 +5,6 @@ export const defaultReminderSettings = {
     reminderIntervalHours: 6,
     reminderWindowStart: "09:00",
     reminderWindowEnd: "22:00",
+    notifyDailyCheckin: true,
+    discreetNotifications: true,
 } as const;

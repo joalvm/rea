@@ -12,6 +12,8 @@ describe("Esquema de appSettings", () => {
             "reminder_interval_hours",
             "reminder_window_start",
             "reminder_window_end",
+            "notify_daily_checkin",
+            "discreet_notifications",
             "theme",
             "temperature_unit",
             "onboarding_completed_at",
@@ -26,6 +28,8 @@ describe("Esquema de appSettings", () => {
         expect(appSettings.reminderIntervalHours.default).toBe(6);
         expect(appSettings.reminderWindowStart.default).toBe("09:00");
         expect(appSettings.reminderWindowEnd.default).toBe("22:00");
+        expect(appSettings.notifyDailyCheckin.default).toBe(true);
+        expect(appSettings.discreetNotifications.default).toBe(true);
         expect(appSettings.theme.default).toBe("system");
         expect(appSettings.temperatureUnit.default).toBe("celsius");
         expect(appSettings.version.default).toBe(1);
@@ -36,6 +40,8 @@ describe("Esquema de appSettings", () => {
             "app_settings_reminder_window_end_check",
             "app_settings_reminder_window_order_check",
             "app_settings_theme_check",
+            "app_settings_notify_daily_checkin_check",
+            "app_settings_discreet_notifications_check",
             "app_settings_temperature_unit_check",
         ]);
         expect(foreignKeys(appSettings)).toEqual([
