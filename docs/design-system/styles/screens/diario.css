@@ -1,4 +1,6 @@
-:root {
+/* Las variables propias de la pantalla se scopean a .page para no pisar las
+   del chrome global (sidebar/topbar), que vive fuera de .page. */
+.page {
     --celeste: #7cd9f9;
     --celeste-400: #45c8f1;
     --celeste-500: #18aedd;
@@ -25,29 +27,25 @@
     --lilac: #b6a7ff;
     --sh: 0 2px 8px rgba(16, 55, 75, 0.05);
     --sh-btn: 0 3px 10px rgba(24, 174, 221, 0.22);
+    max-width: 1280px;
+    margin: 0 auto;
 }
-* {
+.page * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-body {
+.page {
     font-family: "Nunito Sans", sans-serif;
-    background: #eaf6fb;
     color: var(--ink);
-    padding: 40px 24px 80px;
     -webkit-font-smoothing: antialiased;
 }
-h1,
-h2,
-h3,
-h4,
-.q {
+.page h1,
+.page h2,
+.page h3,
+.page h4,
+.page .q {
     font-family: "Quicksand", sans-serif;
-}
-.page {
-    max-width: 1280px;
-    margin: 0 auto;
 }
 .lead-hero {
     margin-bottom: 32px;

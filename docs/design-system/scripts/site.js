@@ -49,29 +49,32 @@ function renderChrome() {
     const title = document.body.dataset.title || "Sistema de diseno";
     const sidebar = document.getElementById("siteSidebar");
     const topbar = document.getElementById("siteTopbar");
+    // Base relativa segun ubicacion del doc: los screens viven en ./screens/,
+    // por lo que sus enlaces deben resolver contra "../"; el index, contra ".".
+    const base = location.pathname.includes("/screens/") ? ".." : ".";
     const pages = [
-        ["index", "./index.html", "Fundamentos"],
-        ["color", "./color.html", "Color"],
-        ["typography", "./typography.html", "Tipografia"],
-        ["icons", "./icons.html", "Iconos"],
-        ["space", "./space.html", "Forma y espacio"],
-        ["components", "./components.html", "Componentes"],
-        ["hero", "./hero.html", "Hero"],
-        ["calendar", "./calendar.html", "Calendario"],
+        ["index", `${base}/index.html`, "Fundamentos"],
+        ["color", `${base}/color.html`, "Color"],
+        ["typography", `${base}/typography.html`, "Tipografia"],
+        ["icons", `${base}/icons.html`, "Iconos"],
+        ["space", `${base}/space.html`, "Forma y espacio"],
+        ["components", `${base}/components.html`, "Componentes"],
+        ["hero", `${base}/hero.html`, "Hero"],
+        ["calendar", `${base}/calendar.html`, "Calendario"],
     ];
     const screens = [
-        ["onboarding", "./screens/onboarding.html", "Onboarding"],
-        ["checkin", "./screens/checkin.html", "Check-in"],
-        ["diario", "./screens/diario.html", "Diario"],
-        ["period", "./screens/period.html", "Periodo"],
+        ["onboarding", `${base}/screens/onboarding.html`, "Onboarding"],
+        ["checkin", `${base}/screens/checkin.html`, "Check-in"],
+        ["diario", `${base}/screens/diario.html`, "Diario"],
+        ["period", `${base}/screens/period.html`, "Periodo"],
     ];
     const quickLinks = [
-        ["./index.html#marca", "Marca"],
-        ["./index.html#contenido-producto", "Contenido"],
-        ["./color.html#roles-interfaz", "Roles de interfaz"],
-        ["./color.html#fases-y-estados", "Fases del ciclo"],
-        ["./components.html#checkin", "Check-in"],
-        ["./components.html#navegacion-mobile", "Navegacion mobile"],
+        [`${base}/index.html#marca`, "Marca"],
+        [`${base}/index.html#contenido-producto`, "Contenido"],
+        [`${base}/color.html#roles-interfaz`, "Roles de interfaz"],
+        [`${base}/color.html#fases-y-estados`, "Fases del ciclo"],
+        [`${base}/components.html#checkin`, "Check-in"],
+        [`${base}/components.html#navegacion-mobile`, "Navegacion mobile"],
     ];
     const activeScreenKey = screens.find(([key]) => key === page)?.[0];
 
