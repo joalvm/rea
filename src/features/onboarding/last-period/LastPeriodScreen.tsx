@@ -75,7 +75,7 @@ export default function LastPeriodScreen({ onPush }: Props) {
                 maxYear={today.year}
                 max={today}
                 onChange={(value) => set({ lastPeriodStart: ymdToISO(value) })}
-                testID="last-period-start"
+                testID="onboarding-last-period-start"
             />
 
             <ToggleRow
@@ -83,7 +83,7 @@ export default function LastPeriodScreen({ onPush }: Props) {
                 subtitle={t("lastPeriod.ongoingSubtitle")}
                 value={draft.lastPeriodOngoing}
                 onChange={(value) => set({ lastPeriodOngoing: value })}
-                testID="last-period-ongoing"
+                testID="onboarding-last-period-ongoing"
             />
 
             {!draft.lastPeriodOngoing ? (
@@ -96,7 +96,7 @@ export default function LastPeriodScreen({ onPush }: Props) {
                         maxYear={today.year}
                         max={today}
                         onChange={(value) => set({ lastPeriodEnd: ymdToISO(value) })}
-                        testID="last-period-end"
+                        testID="onboarding-last-period-end"
                     />
                 </View>
             ) : null}

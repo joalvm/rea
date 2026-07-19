@@ -51,7 +51,7 @@ export default function ContraceptionScreen({ onPush }: Props) {
                 accessibilityState={{ selected: method === null }}
                 accessibilityLabel={t("contraception.preferNotToSay")}
                 style={[styles.preferNotToSay, method === null && styles.preferNotToSayOn]}
-                testID="contraception-prefer-not-to-say"
+                testID="onboarding-contraception-prefer-not-to-say"
             >
                 <Text style={[styles.preferNotToSayText, method === null && styles.preferNotToSayTextOn]}>
                     {t("contraception.preferNotToSay")}
@@ -69,7 +69,7 @@ export default function ContraceptionScreen({ onPush }: Props) {
                             accessibilityState={{ selected }}
                             accessibilityLabel={t(`contraception.method.${value}`)}
                             style={[styles.chip, selected && styles.chipOn]}
-                            testID={`contraception-method-${value}`}
+                            testID={`onboarding-contraception-method-${value}`}
                         >
                             <Text style={[styles.chipText, selected && styles.chipTextOn]}>
                                 {t(`contraception.method.${value}`)}

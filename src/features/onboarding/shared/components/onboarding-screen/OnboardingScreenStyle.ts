@@ -1,16 +1,17 @@
 import { createStyles } from "@/theme/createStyles";
 
 export const useOnboardingScreenStyles = createStyles((theme) => {
-    const { colors, spacing } = theme;
+    const { colors, spacing, sizing } = theme;
 
     return {
         screen: {
             flex: 1,
             backgroundColor: colors.background,
         },
-        // Respiro superior (sin botón de atrás): el chrome lo aporta la safe-area.
-        topSpacer: {
-            height: spacing.lg,
+        topBar: {
+            minHeight: sizing.minTouch,
+            paddingHorizontal: spacing.xl,
+            alignItems: "flex-start",
         },
         bodyContent: {
             paddingHorizontal: spacing.xl,

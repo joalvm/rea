@@ -100,7 +100,7 @@ export default function PregnancySetupScreen({ onPush }: Props) {
                 ]}
                 value={datingBasis}
                 onChange={(value) => set({ pregnancyDatingBasis: value })}
-                testID="pregnancy-basis-seg"
+                testID="onboarding-pregnancy-basis"
             />
 
             {datingBasis === "lmp" ? (
@@ -113,7 +113,7 @@ export default function PregnancySetupScreen({ onPush }: Props) {
                         maxYear={today.year}
                         max={today}
                         onChange={(value) => set({ pregnancyLmp: ymdToISO(value) })}
-                        testID="pregnancy-lmp"
+                        testID="onboarding-pregnancy-lmp"
                     />
                     <HelpText>
                         {t("pregnancySetup.derivedDueDate", { date: formatDate(estimateDueDate(lmpParts), "long") })}
@@ -128,7 +128,7 @@ export default function PregnancySetupScreen({ onPush }: Props) {
                         minYear={today.year}
                         maxYear={today.year + 1}
                         onChange={(value) => set({ pregnancyDueDate: ymdToISO(value) })}
-                        testID="pregnancy-due"
+                        testID="onboarding-pregnancy-due"
                     />
                     <HelpText>
                         {t("pregnancySetup.derivedLmp", { date: formatDate(estimateLmpFromDueDate(dueParts), "long") })}

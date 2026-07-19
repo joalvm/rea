@@ -1,4 +1,7 @@
 {
+    "progress": {
+        "label": "Step {{current}} of {{total}}"
+    },
     "welcome": {
         "wordmark": "Rea",
         "tagline": "your cycle, in calm",

@@ -101,7 +101,7 @@ export default function IntentScreen({ onPush }: Props) {
                         Icon={Icon}
                         selected={master === key}
                         onPress={() => selectMaster(key)}
-                        testID={`intent-master-${key}`}
+                        testID={`onboarding-intent-master-${key}`}
                     />
                 ))}
             </View>
@@ -119,7 +119,7 @@ export default function IntentScreen({ onPush }: Props) {
                                 Icon={Icon}
                                 selected={selectedModifier === reproductiveMode}
                                 onPress={() => selectModifier(reproductiveMode)}
-                                testID={`intent-mod-${key}`}
+                                testID={`onboarding-intent-modifier-${key}`}
                             />
                         ))}
                     </View>

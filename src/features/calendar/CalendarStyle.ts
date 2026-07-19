@@ -1,83 +1,96 @@
 import { createStyles } from "@/theme/createStyles";
 
-export const useCalendarStyles = createStyles((theme) => {
-    const { colors, spacing, radius, typography, shadows, borderWidth, sizing } = theme;
+const MAX_CONTENT_WIDTH = 560;
 
-    return {
-        screen: {
-            flex: 1,
-            backgroundColor: colors.background,
-        },
-        container: {
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: spacing.md,
-            paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
-        },
-        title: {
-            ...typography.variant.h1,
-            color: colors.text,
-            textAlign: "center",
-        },
-        description: {
-            ...typography.variant.body,
-            color: colors.textSecondary,
-            textAlign: "center",
-            maxWidth: sizing.readableMaxWidth,
-        },
-        links: {
-            alignSelf: "stretch",
-            gap: spacing.sm,
-            marginTop: spacing.sm,
-        },
-        linkRow: {
-            gap: spacing.xs,
-            paddingVertical: spacing.lg,
-            paddingHorizontal: spacing.lg,
-            borderRadius: radius.lg,
-            backgroundColor: colors.surface,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            ...shadows[1],
-        },
-        linkLabel: {
-            ...typography.variant.title,
-            color: colors.text,
-        },
-        linkHint: {
-            ...typography.variant.footnote,
-            color: colors.textMuted,
-        },
-        button: {
-            marginTop: spacing.sm,
-            minHeight: sizing.controlMd,
-            paddingHorizontal: spacing.xl,
-            borderRadius: radius.pill,
-            minWidth: 240,
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            gap: spacing.sm,
-        },
-        pressed: {
-            opacity: 0.85,
-        },
-        primary: {
-            backgroundColor: colors.primary,
-            ...shadows[2],
-        },
-        primaryText: {
-            ...typography.variant.bodyStrong,
-            color: colors.onPrimary,
-        },
-        secondary: {
-            backgroundColor: "transparent",
-        },
-        secondaryText: {
-            ...typography.variant.subhead,
-            color: colors.link,
-        },
-    };
-});
+export const useCalendarStyles = createStyles((theme) => ({
+    screen: {
+        backgroundColor: theme.colors.background,
+        flex: 1,
+    },
+    container: {
+        alignSelf: "center",
+        gap: theme.spacing.lg,
+        maxWidth: MAX_CONTENT_WIDTH,
+        paddingBottom: theme.spacing["4xl"],
+        paddingHorizontal: theme.spacing.xl,
+        paddingTop: theme.spacing["3xl"],
+        width: "100%",
+    },
+    header: {
+        gap: theme.spacing.xs,
+    },
+    title: {
+        ...theme.typography.variant.h1,
+        color: theme.colors.text,
+    },
+    description: {
+        ...theme.typography.variant.body,
+        color: theme.colors.textSecondary,
+    },
+    monthHeader: {
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    monthTitleWrap: {
+        alignItems: "center",
+        gap: theme.spacing.xs,
+    },
+    monthTitle: {
+        ...theme.typography.variant.h3,
+        color: theme.colors.text,
+        textTransform: "capitalize",
+    },
+    todayAction: {
+        minHeight: theme.sizing.minTouch,
+        paddingHorizontal: theme.spacing.sm,
+        paddingVertical: theme.spacing.md,
+    },
+    todayActionLabel: {
+        ...theme.typography.variant.subhead,
+        color: theme.colors.link,
+    },
+    calendarCard: {
+        backgroundColor: theme.colors.surface,
+        borderColor: theme.colors.border,
+        borderRadius: theme.radius.xl,
+        borderWidth: theme.borderWidth.thin,
+        padding: theme.spacing.md,
+        ...theme.shadows[1],
+    },
+    legend: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: theme.spacing.md,
+    },
+    legendItem: {
+        alignItems: "center",
+        flexDirection: "row",
+        gap: theme.spacing.xs,
+    },
+    legendMark: {
+        borderRadius: theme.radius.full,
+        height: theme.spacing.md,
+        width: theme.spacing.md,
+    },
+    legendMenstruation: {
+        backgroundColor: theme.colors.dangerSurface,
+        borderColor: theme.colors.danger,
+        borderWidth: theme.borderWidth.thin,
+    },
+    legendFertile: {
+        backgroundColor: theme.colors.warningSurface,
+        borderColor: theme.colors.warning,
+        borderWidth: theme.borderWidth.thin,
+    },
+    legendRecord: {
+        backgroundColor: theme.colors.primary,
+    },
+    legendLabel: {
+        ...theme.typography.variant.footnote,
+        color: theme.colors.textSecondary,
+    },
+    pressed: {
+        opacity: theme.state.pressedOpacity,
+    },
+}));

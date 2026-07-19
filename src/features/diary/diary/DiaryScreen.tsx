@@ -5,10 +5,10 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 
 import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
+import { useMonthCursor } from "@/shared/hooks/useMonthCursor";
 import { useTheme } from "@/theme/useTheme";
 
 import { DayCard } from "./components/DayCard";
-import { useMonthCursor } from "./hooks/useMonthCursor";
 import { useCheckins } from "./hooks/useCheckins";
 import { groupByDay } from "./utils/groupByDay";
 import { useDiaryStyles } from "./DiaryStyle";
@@ -24,11 +24,11 @@ export default function DiaryScreen() {
     const { t } = useTranslation();
     const router = useRouter();
     const { profile } = useLocalProfile();
-    const { range, label, prev, next, reset, isCurrent } = useMonthCursor();
+    const { cursor, range, prev, next, reset, isCurrent } = useMonthCursor();
     const { items } = useCheckins(profile?.id, range);
     const groups = useMemo(() => groupByDay(items), [items]);
 
-    const monthLabel = `${t(`diary:months.${label.month}`)} ${label.year}`;
+    const monthLabel = `${t(`diary:months.${cursor.month}`)} ${cursor.year}`;
 
     const handleOpenDay = (localDate: string) => {
         router.push(`/diary/${localDate}`);

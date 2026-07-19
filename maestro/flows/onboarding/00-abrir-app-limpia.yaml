@@ -2,14 +2,27 @@
 # a que aparezca el primer paso del onboarding.
 # Uso: - runFlow: ./00-abrir-app-limpia.yaml
 appId: com.joalvm.rea
+name: Abrir aplicación limpia
+tags:
+    - helper
+    - onboarding
 ---
 # clearState borra datos de la app (incluida la SQLite local) → onboarding parte de cero.
 - clearState: com.joalvm.rea
 - launchApp:
-    appId: com.joalvm.rea
-    clearState: true
+      appId: com.joalvm.rea
 # Espera el botón primario del welcome (primer paso).
 - extendedWaitUntil:
-    visible:
-      id: onboarding-cta-primary
-    timeout: 30000
+      visible:
+          id: onboarding-cta-primary
+      timeout: 30000
+
+# El dev client de Expo puede mostrar un warning flotante sobre el footer.
+# Solo lo cerramos cuando existe; asi no tocamos la CTA real por coordenadas.
+- runFlow:
+      when:
+          visible:
+              text: Open debugger to view warnings.
+      commands:
+          - tapOn:
+                point: "92%, 89%"

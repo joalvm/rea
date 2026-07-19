@@ -29,7 +29,13 @@ export default function HomeScreen({ onStartCheckin, onOpenDiary }: Props) {
 
     return (
         <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-            <PhaseHero phase={phase} dayOfCycle={12} statusLabel={t("hero.statusMedium")} onPressCta={onStartCheckin} />
+            <PhaseHero
+                phase={phase}
+                dayOfCycle={12}
+                statusLabel={t("hero.statusMedium")}
+                onPressCta={onStartCheckin}
+                ctaTestID="checkin-start"
+            />
 
             <View style={styles.body}>
                 <View style={styles.card}>

@@ -77,7 +77,7 @@ export default function RegularityScreen({ onPush }: Props) {
                         Icon={option.Icon}
                         selected={selectedKey === option.key}
                         onPress={() => choose(option)}
-                        testID={`regularity-${option.key}`}
+                        testID={`onboarding-regularity-${option.key}`}
                     />
                 ))}
             </View>

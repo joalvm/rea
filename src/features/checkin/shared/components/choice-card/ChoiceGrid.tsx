@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Children } from "react";
 import { View } from "react-native";
 
-import { useTheme } from "@/theme/useTheme";
+import { useChoiceGridStyles } from "./ChoiceGridStyle";
 
 type Props = {
     /** Hijos; normalmente una lista de `ChoiceCard`. */
@@ -16,13 +16,13 @@ type Props = {
  * design-system). El número de columnas lo define la cantidad de hijos.
  */
 export function ChoiceGrid({ children }: Props) {
-    const theme = useTheme();
+    const styles = useChoiceGridStyles();
     const items = Children.toArray(children);
 
     return (
-        <View style={{ flexDirection: "row", gap: theme.spacing.xs + 1 }}>
+        <View style={styles.grid}>
             {items.map((child, index) => (
-                <View key={index} style={{ flex: 1 }}>
+                <View key={index} style={styles.item}>
                     {child}
                 </View>
             ))}

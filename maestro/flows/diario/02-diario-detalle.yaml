@@ -2,31 +2,38 @@
 # prueba el toggle de exclusión (Fase 3). Depende del helper de sembrado para
 # tener entradas que abrir (el seed crea check-ins en los últimos días).
 appId: com.joalvm.rea
+name: Consultar detalle del diario
+tags:
+    - diario
+    - journey
+    - visual
 ---
 - runFlow: ./00-app-onboarded.yaml
 
 # 1) Abre el tab Diario y entra al día de hoy (tiene check-in sembrado).
 - tapOn:
-    id: tab-diary
+      id: tab-diary
+- assertVisible:
+      id: "diary-day-.*"
 - tapOn:
-    id: diary-day-.*
+      id: "diary-day-.*"
 
 # 2) Detalle del día.
 - assertVisible:
-    id: diary-entry-start
+      id: diary-entry-start
 - takeScreenshot: diario-detalle
 
 # 3) Scroll hasta el toggle de exclusión y actívalo.
 - scrollUntilVisible:
-    element:
-      id: diary-toggle-exclusion
-    direction: DOWN
+      element:
+          id: diary-toggle-exclusion
+      direction: DOWN
 - takeScreenshot: diario-detalle-toggle-inactivo
 - tapOn:
-    id: diary-toggle-exclusion
+      id: diary-toggle-exclusion
 - takeScreenshot: diario-detalle-toggle-activo
 
 # 4) Re-incluye el registro (reversible).
 - tapOn:
-    id: diary-toggle-exclusion
+      id: diary-toggle-exclusion
 - takeScreenshot: diario-detalle-toggle-restaurado

@@ -1,0 +1,40 @@
+{
+    "title": "Calendar",
+    "description": "View your cycle, entries, and day-by-day estimates.",
+    "actions": {
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month",
+        "today": "Return to today"
+    },
+    "notice": {
+        "title": "How to read it",
+        "body": "Your period and entries reflect saved data. The fertile window is an estimate and may change with new information."
+    },
+    "weekdays": {
+        "sun": "S",
+        "mon": "M",
+        "tue": "T",
+        "wed": "W",
+        "thu": "T",
+        "fri": "F",
+        "sat": "S"
+    },
+    "day": {
+        "accessibility": "{{date}}. {{status}}",
+        "none": "No data",
+        "menstruation": "Recorded period",
+        "fertile": "Estimated fertile window",
+        "estimated": "Estimate available",
+        "recorded": "Entry available"
+    },
+    "legend": {
+        "menstruation": "Period",
+        "fertile": "Estimated fertile window",
+        "record": "Has entry"
+    },
+    "empty": {
+        "title": "There are no entries this month yet",
+        "description": "Log how you feel to start seeing your information here.",
+        "action": "Log today"
+    }
+}

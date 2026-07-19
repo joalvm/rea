@@ -1,0 +1,40 @@
+{
+    "title": "Calendario",
+    "description": "Observa tu ciclo, registros y estimaciones por día.",
+    "actions": {
+        "previousMonth": "Mes anterior",
+        "nextMonth": "Mes siguiente",
+        "today": "Volver a hoy"
+    },
+    "notice": {
+        "title": "Cómo leerlo",
+        "body": "El periodo y los registros reflejan datos guardados. La ventana fértil es una estimación y puede cambiar con nueva información."
+    },
+    "weekdays": {
+        "sun": "D",
+        "mon": "L",
+        "tue": "M",
+        "wed": "X",
+        "thu": "J",
+        "fri": "V",
+        "sat": "S"
+    },
+    "day": {
+        "accessibility": "{{date}}. {{status}}",
+        "none": "Sin datos",
+        "menstruation": "Menstruación registrada",
+        "fertile": "Ventana fértil estimada",
+        "estimated": "Estimación disponible",
+        "recorded": "Registro disponible"
+    },
+    "legend": {
+        "menstruation": "Menstruación",
+        "fertile": "Ventana fértil estimada",
+        "record": "Tiene registro"
+    },
+    "empty": {
+        "title": "Aún no hay registros este mes",
+        "description": "Registra cómo te sientes para empezar a ver tu información aquí.",
+        "action": "Registrar hoy"
+    }
+}

@@ -1,21 +1,28 @@
-# Diario — lista: abre el tab Diario, captura la lista vacía y prueba la
-# navegación de meses (‹ ›).
+# Diario — lista: abre el tab Diario, captura datos sembrados y prueba la
+# navegación de meses.
 appId: com.joalvm.rea
+name: Consultar lista del diario
+tags:
+    - diario
+    - journey
+    - visual
 ---
 - runFlow: ./00-app-onboarded.yaml
 
 - tapOn:
-    id: tab-diary
+      id: tab-diary
+- assertVisible:
+      id: diary-month-prev
 - takeScreenshot: diario-lista
 
 # Navega al mes anterior.
 - tapOn:
-    id: diary-month-prev
+      id: diary-month-prev
 - takeScreenshot: diario-mes-anterior
 
 # Vuelve dos meses adelante (al siguiente del actual).
 - tapOn:
-    id: diary-month-next
+      id: diary-month-next
 - tapOn:
-    id: diary-month-next
+      id: diary-month-next
 - takeScreenshot: diario-mes-siguiente

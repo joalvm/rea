@@ -1,9 +1,13 @@
 import type { LucideIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
+import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { IconButton } from "@/components/icon-button/IconButton";
 import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
+import { ChevronLeft } from "lucide-react-native";
 
 import { StepDots } from "../step-dots/StepDots";
 import { useOnboardingScreenStyles } from "./OnboardingScreenStyle";
@@ -29,17 +33,28 @@ type Props = {
 };
 
 /**
- * Lienzo común del onboarding. Sin botón de "atrás" propio: la navegación hacia
- * atrás la resuelve el gesto/botón del dispositivo (stack de expo-router), lo que
- * libera el espacio superior para que cada paso respire.
+ * Lienzo común del onboarding. Mantiene gesto/botón del sistema y expone un
+ * control visual de vuelta cuando hay historial, para evitar un callejón sin salida.
  */
 export function OnboardingScreen({ step, total, accent, cta, secondaryCta, footer, center, children }: Props) {
+    const { t } = useTranslation("common");
+    const router = useRouter();
     const styles = useOnboardingScreenStyles();
     const showDots = typeof step === "number" && typeof total === "number" && total > 1;
+    const showBack = router.canGoBack() && step !== 1 && step !== total;
 
     return (
         <SafeAreaView edges={["top", "bottom"]} style={styles.screen}>
-            <View style={styles.topSpacer} />
+            <View style={styles.topBar}>
+                {showBack ? (
+                    <IconButton
+                        Icon={ChevronLeft}
+                        accessibilityHint={t("accessibility.backHint")}
+                        accessibilityLabel={t("action.back")}
+                        onPress={router.back}
+                    />
+                ) : null}
+            </View>
 
             <ScrollView
                 contentContainerStyle={[styles.bodyContent, center && styles.bodyCenter]}

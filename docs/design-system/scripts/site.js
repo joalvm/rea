@@ -56,9 +56,14 @@ function renderChrome() {
         ["icons", "./icons.html", "Iconos"],
         ["space", "./space.html", "Forma y espacio"],
         ["components", "./components.html", "Componentes"],
-        ["onboarding", "./screens/onboarding.html", "Onboarding"],
         ["hero", "./hero.html", "Hero"],
         ["calendar", "./calendar.html", "Calendario"],
+    ];
+    const screens = [
+        ["onboarding", "./screens/onboarding.html", "Onboarding"],
+        ["checkin", "./screens/checkin.html", "Check-in"],
+        ["diario", "./screens/diario.html", "Diario"],
+        ["period", "./screens/period.html", "Periodo"],
     ];
     const quickLinks = [
         ["./index.html#marca", "Marca"],
@@ -68,6 +73,7 @@ function renderChrome() {
         ["./components.html#checkin", "Check-in"],
         ["./components.html#navegacion-mobile", "Navegacion mobile"],
     ];
+    const activeScreenKey = screens.find(([key]) => key === page)?.[0];
 
     if (sidebar) {
         sidebar.innerHTML = `
@@ -80,6 +86,15 @@ function renderChrome() {
                     <div class="nav-label">Sistema mobile</div>
                     ${pages.map(([key, href, labelText]) => `<a data-nav="${key}" href="${href}">${labelText}</a>`).join("")}
                 </div>
+                <details class="nav-submenu"${activeScreenKey ? " open" : ""}>
+                    <summary class="nav-label nav-submenu-toggle">
+                        <span>Pantallas</span>
+                        <i class="icon sm" data-lucide="chevron-down" aria-hidden="true"></i>
+                    </summary>
+                    <div class="nav-submenu-items">
+                        ${screens.map(([key, href, labelText]) => `<a data-nav="${key}" href="${href}">${labelText}</a>`).join("")}
+                    </div>
+                </details>
                 <div class="nav-group">
                     <div class="nav-label">Referencia rapida</div>
                     ${quickLinks.map(([href, labelText]) => `<a href="${href}">${labelText}</a>`).join("")}

@@ -1,12 +1,28 @@
 # DESIGN.md
 
-Fuente de verdad en markdown para las decisiones visuales y de interacción de Rea. Es **autoritativa**:
-si el HTML o el código discrepan, esto manda. Las tres fuentes deben decir lo mismo.
+Fuente de verdad para las decisiones visuales y de interacción de Rea. El sistema tiene tres capas con una jerarquía
+explícita; no compiten entre sí.
 
-- `src/theme/*` → tokens de código (light/dark) que se consumen con `createStyles((theme) => …)`.
-- `docs/design-system/*.html` → referencia visual interactiva. El onboarding rediseñado vive en
-  `docs/design-system/onboarding-redesign.html`.
-- Este `DESIGN.md` → decisiones y contratos de componente, legibles en una sola pasada.
+1. `DESIGN.md` define intención, contratos y reglas de uso.
+2. `src/theme/*` y `src/components/*` son la implementación ejecutable de esos contratos. Si difieren en un valor
+   concreto, gana el token de código y se corrige este documento en el mismo cambio.
+3. `docs/design-system/` documenta y valida visualmente el sistema. Nunca introduce tokens, componentes o pantallas nuevos.
+
+## 0. Gobernanza del sistema
+
+- Una pantalla HTML canónica usa `styles/global.css`, su CSS de área en `styles/pages/`, `scripts/site.js` y, cuando
+  corresponde, su script de área en `scripts/pages/`. No incluye estilos ni scripts inline, ni colores, sombras o
+  tipografías nuevos.
+- Un mockup que no cumple esa regla es exploratorio: no se usa para construir producto ni para aprobar UI. Los mockups
+  legacy se revisan o se retiran antes de reutilizarlos.
+- El trabajo parte de un contrato existente: token → componente compartido → screen. Un screen no crea una variante
+  visual por conveniencia.
+- Antes de añadir UI se comprueba `docs/design-system/governance/index.html`, se actualiza el contrato correspondiente y se
+  ejecuta `npm run design:audit` junto con typecheck/lint.
+- Cada ficha de `docs/design-system/screens/` declara si la screen es canónica, está en integración o sigue por
+  construir. Un stub no puede pasar a referencia canónica por tener un mock bonito.
+- Cada componente interactivo define: reposo, pressed, selected cuando aplique, disabled, error/feedback y semántica
+  accesible. Las pantallas de producto no dependen de color solo para comunicar estado.
 
 > **Dirección actual: “Rea Soft”** (jun 2026). Suave, aireada y luminosa. Reemplaza por completo la
 > dirección anterior “outlined seria” (botones huecos, bordes gruesos, cero sombra, cero ilustración).
@@ -14,13 +30,17 @@ si el HTML o el código discrepan, esto manda. Las tres fuentes deben decir lo m
 
 ## 1. Principios
 
-- **Mobile-first 375px**: controles al alcance del pulgar, touch target mínimo `sizing.minTouch` (44pt).
+- **Mobile-first 375px**: alcance actual = teléfono vertical. Controles al alcance del pulgar, touch target mínimo
+  `sizing.minTouch` (44pt); controles Android nuevos apuntan a 48dp. iPad se habilita solo con layout por size class y
+  evidencia de multitarea.
 - **Suave y luminosa**: blancos amplios, formas redondeadas, color que respira. La calma comunica “local-first”.
 - **Privacidad visible**: superficies limpias, avisos sin ruido.
 - **Predicción honesta**: se distingue observado, estimado y baja confianza; nunca diagnóstico.
 - **Color con tarea**: el celeste identifica la marca y la acción; las fases dan contexto; los estados dan feedback.
 - **Un CTA primario por vista**, anclado abajo.
 - **Voz**: trato de “tú”, frases breves, sin alarmar, con tildes correctas.
+- **Nativo antes que decorativo**: navegación de plataforma, safe areas, Back predictivo y targets de 44/48pt no se
+  sacrifican por un mockup.
 
 ## 2. Decisiones de diseño
 
@@ -92,6 +112,15 @@ si el HTML o el código discrepan, esto manda. Las tres fuentes deben decir lo m
 | Disabled               | `opacity state.disabledOpacity` (0.45); CTA → fondo `surfaceSunken`     |
 | Error                  | borde `danger`, texto `dangerText` (sin halo)                           |
 | Aviso                  | tarjeta de tinte (`warningSurface` / `primarySubtle`) sin borde + ícono |
+
+### 2.9.1 Familia de selección
+
+- `SelectableCard`: una decisión de navegación o configuración en lista. Puede explicar una opción; usa burbuja de
+  icono, borde seleccionado y check.
+- `ChoiceCard`: escala breve dentro de un check-in. Es densa por intención, se usa solo en grids de 2–3 opciones y
+  mantiene el mismo activo `primary` / `onPrimary` que `SelectableCard`.
+- `MultiChip`: selección múltiple no excluyente. No sustituye una tarjeta de decisión ni una escala ordinal.
+- La diferencia de densidad es semántica, no una licencia para introducir otro estado seleccionado.
 
 ### 2.10 Modo oscuro
 

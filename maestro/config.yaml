@@ -1,4 +1,21 @@
-# Config compartido por todos los flows de Maestro.
-# appId = android.package definido en app.json.
-appId: com.joalvm.rea
+# Workspace Maestro único para Rea.
+# Maestro 2.6.1 lee appId desde cada flow, no desde config.yaml.
+
+# Descubre flows reales dentro de subcarpetas; helpers quedan fuera de la suite
+# mediante excludeTags y solo se ejecutan cuando otro flow los incluye.
+flows:
+    - "flows/**"
+
+excludeTags:
+    - helper
+
+# Una falla corta suite completa. Evita ruido y estado inútil en emulador único.
+executionOrder:
+    continueOnFailure: false
+    flowsOrder:
+        - onboarding/01-onboarding-completo
+        - diario/01-diario-lista
+        - diario/02-diario-detalle
+        - checkin/01-checkin-completo
+        - calendar/01-calendario-mensual
 ---

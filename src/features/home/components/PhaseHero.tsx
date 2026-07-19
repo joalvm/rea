@@ -4,6 +4,7 @@ import Animated, {
     FadeIn,
     interpolateColor,
     useAnimatedStyle,
+    useReducedMotion,
     useSharedValue,
     withTiming,
 } from "react-native-reanimated";
@@ -25,6 +26,8 @@ type Props = {
     statusLabel?: string;
     /** CTA principal del Hero. */
     ctaLabel?: string;
+    /** Identificador estable para automatización del CTA del feature dueño. */
+    ctaTestID?: string;
     onPressCta?: () => void;
 };
 
@@ -36,11 +39,12 @@ type Props = {
  * Presentacional: recibe `phase` por props (el color lo da el tema y la copia el
  * feature). La fase real (motor de predicción) se conectará en `Home`.
  */
-export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta }: Props) {
+export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, ctaTestID, onPressCta }: Props) {
     const { t } = useTranslation("preview");
     const theme = useTheme();
     const styles = useHeroStyles();
     const insets = useSafeAreaInsets();
+    const shouldReduceMotion = useReducedMotion();
     const visual = theme.phases[phase];
     const Icon = PHASE_ICONS[phase];
     const label = t(`phases.${phase}.label`);
@@ -57,10 +61,10 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta
         toColor.value = visual.surface;
         progress.value = 0;
         progress.value = withTiming(1, {
-            duration: theme.motion.duration.phase,
+            duration: shouldReduceMotion ? 0 : theme.motion.duration.phase,
             easing: theme.motion.easing.standard,
         });
-    }, [visual.surface, fromColor, toColor, progress, theme.motion]);
+    }, [visual.surface, fromColor, toColor, progress, shouldReduceMotion, theme.motion]);
 
     const animatedBackground = useAnimatedStyle(() => ({
         backgroundColor: interpolateColor(progress.value, [0, 1], [fromColor.value, toColor.value]),
@@ -78,7 +82,10 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta
                 style={[styles.blob, styles.blobBottom, { backgroundColor: visual.accentSubtle }]}
             />
 
-            <Animated.View key={`${phase}-${theme.mode}`} entering={FadeIn.duration(theme.motion.duration.phase)}>
+            <Animated.View
+                key={`${phase}-${theme.mode}`}
+                entering={shouldReduceMotion ? undefined : FadeIn.duration(theme.motion.duration.phase)}
+            >
                 <View style={styles.headerRow}>
                     <View style={[styles.iconBubble, { backgroundColor: visual.elevatedSurface }]}>
                         <Icon size={22} color={visual.accent} strokeWidth={2} />
@@ -109,6 +116,7 @@ export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, onPressCta
                         onPress={onPressCta}
                         accessibilityRole="button"
                         accessibilityLabel={cta}
+                        testID={ctaTestID}
                         style={({ pressed }) => [
                             styles.cta,
                             { backgroundColor: visual.solid },

@@ -1,0 +1,23 @@
+# Calendario: valida tab, navegación de mes y captura la jerarquía visual con datos demo.
+appId: com.joalvm.rea
+name: Abrir calendario mensual
+tags:
+    - calendar
+    - journey
+    - visual
+---
+- runFlow: ../diario/00-app-onboarded.yaml
+- tapOn:
+      id: tab-calendar
+- extendedWaitUntil:
+      visible:
+          id: calendar-month-prev
+      timeout: 30000
+- takeScreenshot: calendar-01-current-month
+- tapOn:
+      id: calendar-month-prev
+- takeScreenshot: calendar-02-previous-month
+- tapOn:
+      id: calendar-month-next
+- assertVisible:
+      id: calendar-month-next

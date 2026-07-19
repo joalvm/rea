@@ -73,7 +73,7 @@ export default function NotificationsScreen({ onPush }: Props) {
                 subtitle={t("notifications.enableSubtitle")}
                 value={draft.remindersEnabled}
                 onChange={(value) => set({ remindersEnabled: value })}
-                testID="notifications-enable"
+                testID="onboarding-notifications-enable"
             />
 
             {draft.remindersEnabled ? (
@@ -88,7 +88,7 @@ export default function NotificationsScreen({ onPush }: Props) {
                                     onChange={(index) =>
                                         set({ reminderWindowStart: `${String(index).padStart(2, "0")}:00` })
                                     }
-                                    testID="notifications-window-start"
+                                    testID="onboarding-notifications-window-start"
                                 />
                             </View>
                             <View style={styles.timeColumn}>
@@ -98,7 +98,7 @@ export default function NotificationsScreen({ onPush }: Props) {
                                     onChange={(index) =>
                                         set({ reminderWindowEnd: `${String(index).padStart(2, "0")}:00` })
                                     }
-                                    testID="notifications-window-end"
+                                    testID="onboarding-notifications-window-end"
                                 />
                             </View>
                         </WheelGroup>
@@ -114,7 +114,7 @@ export default function NotificationsScreen({ onPush }: Props) {
                             ]}
                             value={draft.reminderIntervalHours}
                             onChange={(value) => set({ reminderIntervalHours: value })}
-                            testID="notifications-interval"
+                            testID="onboarding-notifications-interval"
                         />
                     </View>
                 </>

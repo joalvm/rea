@@ -1,0 +1,15 @@
+# Ejecutar dos veces: tema oscuro y tamaño de fuente grande configurados en Android.
+# Maestro captura evidencia; el sistema operativo controla ambas preferencias.
+appId: com.joalvm.rea
+name: Verificar apariencia y texto grande
+tags:
+    - visual
+    - accessibility
+---
+- runFlow: ../onboarding/00-abrir-app-limpia.yaml
+- takeScreenshot: accessibility-01-welcome
+- tapOn:
+      id: onboarding-cta-primary
+- assertVisible:
+      id: onboarding-profile-name
+- takeScreenshot: accessibility-02-profile

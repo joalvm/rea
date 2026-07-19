@@ -50,7 +50,7 @@ export default function CycleScreen({ onPush }: Props) {
                         max={15}
                         unit={t("cycle.days")}
                         onChange={(value) => set({ periodLength: value })}
-                        testID="cycle-period"
+                        testID="onboarding-cycle-period"
                     />
                 </View>
                 <View style={styles.divider} />
@@ -62,7 +62,7 @@ export default function CycleScreen({ onPush }: Props) {
                         max={90}
                         unit={t("cycle.days")}
                         onChange={(value) => set({ cycleLength: value })}
-                        testID="cycle-length"
+                        testID="onboarding-cycle-length"
                     />
                 </View>
             </View>

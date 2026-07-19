@@ -16,6 +16,7 @@
     },
     "accessibility": {
         "decrease": "Decrease",
-        "increase": "Increase"
+        "increase": "Increase",
+        "backHint": "Returns to the previous step"
     }
 }

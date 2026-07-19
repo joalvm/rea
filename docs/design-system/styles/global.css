@@ -311,17 +311,17 @@ code {
     flex: none;
 }
 .logo-mark {
-    --logo-src: url("../../assets/images/logo-mark.svg");
+    --logo-src: url("../../../assets/images/branding/logo-mark.svg");
     width: 42px;
     height: 42px;
 }
 .logo-horizontal {
-    --logo-src: url("../../assets/images/logo-horizontal.svg");
+    --logo-src: url("../../../assets/images/branding/logo-horizontal.svg");
     width: 138px;
     height: 58px;
 }
 .logo-vertical {
-    --logo-src: url("../../assets/images/logo-vertical.svg");
+    --logo-src: url("../../../assets/images/branding/logo-vertical.svg");
     width: 118px;
     height: 150px;
 }
@@ -388,6 +388,34 @@ code {
 .nav a.active {
     background: var(--primary-subtle);
     color: var(--link);
+}
+.nav-submenu {
+    margin-top: 16px;
+}
+.nav-submenu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+.nav-submenu-toggle::-webkit-details-marker {
+    display: none;
+}
+.nav-submenu-toggle .icon {
+    transition: transform 0.18s ease;
+    color: var(--text-muted);
+}
+.nav-submenu[open] .nav-submenu-toggle .icon {
+    transform: rotate(180deg);
+}
+.nav-submenu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+    padding-left: 8px;
 }
 
 .main {

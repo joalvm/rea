@@ -2,11 +2,14 @@ import { TabIcon } from "@/components/tab-icon/TabIcon";
 import { useTheme } from "@/theme/useTheme";
 import { Tabs } from "expo-router";
 import { CalendarDaysIcon, ChartSplineIcon, HouseIcon, NotebookTabsIcon, Settings2Icon } from "lucide-react-native";
+import type { PressableProps } from "react-native";
 import { Pressable } from "react-native";
 
 /** Wrapper del botón de tab que inyecta un `testID` estable para Maestro. */
 function tabButtonWithTestID(testID: string) {
-    return (props: any) => <Pressable {...props} testID={testID} />;
+    return function MaestroTabButton({ href: _href, ...props }: PressableProps & { href?: string }) {
+        return <Pressable {...props} testID={testID} />;
+    };
 }
 
 export default function TabLayout() {

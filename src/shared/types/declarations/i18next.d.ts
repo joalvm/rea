@@ -1,6 +1,7 @@
 import "i18next";
 
 import type checkIn from "@/lang/es/checkIn.json";
+import type calendar from "@/lang/es/calendar.json";
 import type common from "@/lang/es/common.json";
 import type diary from "@/lang/es/diary.json";
 import type exception from "@/lang/es/exception.json";
@@ -17,6 +18,7 @@ import type validation from "@/lang/es/validation.json";
 declare module "i18next" {
     interface CustomTypeOptions {
         resources: {
+            calendar: typeof calendar;
             common: typeof common;
             checkIn: typeof checkIn;
             diary: typeof diary;

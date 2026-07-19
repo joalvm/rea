@@ -52,7 +52,11 @@ function DevSeedRunner() {
     // Auto-ejecuta al montar para que el deep link `rea://dev/seed` siembre y
     // redirija sin intervención táctil (ideal para Maestro).
     useEffect(() => {
-        void run();
+        const timer = setTimeout(() => {
+            void run();
+        }, 0);
+
+        return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

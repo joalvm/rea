@@ -39,12 +39,12 @@ export const useChoiceCardStyles = createStyles((theme) => {
             width: 32,
             height: 32,
             borderRadius: radius.sm,
-            backgroundColor: colors.background,
+            backgroundColor: colors.primaryTint,
             alignItems: "center",
             justifyContent: "center",
         },
         iconBubbleOn: {
-            backgroundColor: colors.primarySubtle,
+            backgroundColor: colors.primary,
         },
         label: {
             fontFamily: typography.families.heading,

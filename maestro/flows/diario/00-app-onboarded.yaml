@@ -1,9 +1,13 @@
 # Helper: deja la app lista en /(tabs) con datos de demo sembrados.
 # Restablece la DB, completa onboarding y crea varios check-ins, de modo que
-# diario y registros muestren datos realistas sin conducir el onboarding con
-# `inputText` (que no escribe en `TextInput` controlado en API 36).
+# diario y registros muestren datos realistas sin conducir el onboarding en
+# cada caso.
 # Uso: - runFlow: ./00-app-onboarded.yaml
 appId: com.joalvm.rea
+name: Preparar aplicación con datos demo
+tags:
+    - helper
+    - diario
 ---
 - runFlow: ../dev/00-seed.yaml
 # Al final ya estamos en /(tabs) con tab-home visible.

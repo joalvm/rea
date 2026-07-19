@@ -63,7 +63,8 @@ export default function ProfileScreen({ onPush }: Props) {
                     value={name}
                     onChangeText={(value) => set({ name: value })}
                     placeholder={t("profile.namePlaceholder")}
-                    testID="profile-name"
+                    accessibilityLabel={t("profile.nameLabel")}
+                    testID="onboarding-profile-name"
                 />
             </View>
 
@@ -74,7 +75,7 @@ export default function ProfileScreen({ onPush }: Props) {
                         items={BIRTH_YEAR_OPTIONS}
                         valueIndex={yearIndex}
                         onChange={(index) => set({ birthYear: MIN_BIRTH_YEAR + index })}
-                        testID="profile-year"
+                        testID="onboarding-profile-year"
                     />
                 </WheelGroup>
                 <HelpText>{t("profile.yearHelp")}</HelpText>

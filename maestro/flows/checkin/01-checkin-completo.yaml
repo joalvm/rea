@@ -1,79 +1,97 @@
 # Check-in completo: wizard de principio a fin desde el botón "Empezar registro"
 # en la intro, avanzando por todos los pasos hasta guardar en review.
-#
-# NOTA: el paso de entrada (tab-home → checkin-start) depende de que la
-# pantalla Home real exponga el botón de registro. Mientras Home sea un
-# placeholder temporal, este flow documenta el flujo destino pero no corre
-# limpio; los pasos internos del wizard sí están listos (checkin-next/save).
+# El CTA del Home usa testID="checkin-start"; el flow valida el journey real,
+# no una entrada interna del wizard.
 appId: com.joalvm.rea
+name: Completar check-in
+tags:
+    - checkin
+    - journey
+    - visual
 ---
 - runFlow: ../diario/00-app-onboarded.yaml
 
 # 1) Intro → "Empezar registro".
 - tapOn:
-    id: tab-home
+      id: tab-home
+- assertVisible:
+      id: checkin-start
 - tapOn:
-    id: checkin-start
+      id: checkin-start
+
+# Home abre la intro; la intro inicia el wizard completo con la segunda CTA.
+- assertVisible:
+      id: checkin-start
+- tapOn:
+      id: checkin-start
 
 # 2) Bleeding.
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-01-bleeding
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 3) Feelings.
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-02-feelings
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 4) Body.
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-03-body
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 5) Symptoms.
+- scrollUntilVisible:
+      element:
+          id: checkin-next
+      direction: DOWN
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-04-symptoms
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 6) Fertility.
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-05-fertility
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 7) Medications.
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-06-medications
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 8) Note.
 - assertVisible:
-    id: checkin-next
+      id: checkin-next
 - takeScreenshot: checkin-07-note
 - tapOn:
-    id: checkin-next
+      id: checkin-next
 
 # 9) Review → guardar.
 - assertVisible:
-    id: checkin-save
+      id: checkin-save
 - takeScreenshot: checkin-08-review
 - tapOn:
-    id: checkin-save
+      id: checkin-save
+
+# El guardado confirma con un Alert nativo antes de volver a tabs.
+- assertVisible: "Done, day saved"
+- tapOn: "OK"
 
 # Vuelve a las tabs.
 - extendedWaitUntil:
-    visible:
-      id: tab-home
-    timeout: 15000
+      visible:
+          id: tab-home
+      timeout: 15000
 - takeScreenshot: checkin-final-guardado
