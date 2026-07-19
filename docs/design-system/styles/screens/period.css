@@ -1,32 +1,32 @@
-/* Las variables propias de la pantalla se scopean a .page para no pisar las
-   del chrome global (sidebar/topbar), que vive fuera de .page. */
+/* Las variables de la pantalla son ALIAS de los tokens canonicos de global.css
+   (single source of truth). Se scopean a .page para no afectar el chrome global. */
 .page {
-    --celeste: #7cd9f9;
-    --celeste-400: #45c8f1;
+    --celeste: var(--primary);
+    --celeste-400: var(--primary-pressed);
     --celeste-500: #18aedd;
-    --celeste-deep: #076583;
+    --celeste-deep: var(--link);
     --celeste-700: #0a4f68;
-    --c50: #f0fcff;
-    --c100: #ddf7fe;
+    --c50: var(--primary-subtle);
+    --c100: var(--primary-tint);
     --c200: #b9eefc;
-    --ink: #102631;
-    --ink2: #2c4e5b;
-    --ink3: #4f7482;
-    --ink4: #79aabd;
-    --btn-text: #06323f;
-    --bg: #fbfeff;
-    --line: #e2eef2;
-    --field: #cde2ea;
-    --amber: #ffd166;
-    --amber-s: #fff4d6;
-    --amber-t: #7a4b00;
+    --ink: var(--text);
+    --ink2: var(--icon-strong);
+    --ink3: var(--text-muted);
+    --ink4: var(--placeholder);
+    --btn-text: var(--on-primary);
+    --bg: var(--surface);
+    --line: var(--border);
+    --field: var(--border-strong);
+    --amber: var(--warning);
+    --amber-s: var(--warning-surface);
+    --amber-t: var(--warning-text);
     --rose: #ff9cb6;
     --rose-s: #ffedf2;
     --rose-t: #b23a5c;
     --mint: #7fe0c2;
     --lilac: #b6a7ff;
-    --sh: 0 2px 8px rgba(16, 55, 75, 0.05);
-    --sh-btn: 0 3px 10px rgba(24, 174, 221, 0.22);
+    --sh: var(--shadow-1);
+    --sh-btn: var(--shadow-2);
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -208,7 +208,7 @@
 .title {
     font-family: "Quicksand";
     font-weight: 700;
-    font-size: 23px;
+    font-size: 22px;
     color: var(--ink);
     letter-spacing: -0.3px;
     line-height: 1.15;
@@ -229,7 +229,7 @@
     color: var(--btn-text);
     font-family: "Quicksand";
     font-weight: 700;
-    font-size: 16.5px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
