@@ -9,6 +9,7 @@
     --surface-alt: #e8f5f9;
     --surface-sunken: #ddeef4;
     --surface-glass: rgba(255, 255, 255, 0.78);
+    --surface-accent: #ddf7fe;
     --overlay: rgba(7, 26, 34, 0.46);
     --border: #cfe6ee;
     --border-strong: #a9d2de;
@@ -53,6 +54,7 @@
     --surface-alt: #16314f;
     --surface-sunken: #051324;
     --surface-glass: rgba(14, 39, 64, 0.72);
+    --surface-accent: #11506b;
     --overlay: rgba(4, 12, 24, 0.6);
     --border: #28567a;
     --border-strong: #3a6e99;

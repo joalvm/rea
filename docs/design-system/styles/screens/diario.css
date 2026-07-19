@@ -1,5 +1,6 @@
 /* Las variables de la pantalla son ALIAS de los tokens canonicos de global.css
-   (single source of truth). Se scopean a .page para no afectar el chrome global. */
+   (single source of truth). Se scopean a .page para no afectar el chrome global.
+   El modo oscuro no se reescribe aqui: se hereda via [data-theme="dark"] de global. */
 .page {
     --celeste: var(--primary);
     --celeste-400: var(--primary-pressed);
@@ -8,9 +9,9 @@
     --celeste-700: #0a4f68;
     --c50: var(--primary-subtle);
     --c100: var(--primary-tint);
-    --c200: #b9eefc;
+    --c200: var(--surface-accent);
     --ink: var(--text);
-    --ink2: var(--icon-strong);
+    --ink2: var(--text-secondary);
     --ink3: var(--text-muted);
     --ink4: var(--placeholder);
     --btn-text: var(--on-primary);
@@ -56,7 +57,7 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     font-size: 12px;
-    color: var(--celeste-deep);
+    color: var(--celeste);
 }
 .lead-hero h1 {
     font-size: 30px;
@@ -88,20 +89,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid #fff;
-}
-.phone.dark {
-    --bg: #07182a;
-    --ink: #e9f4ff;
-    --ink2: #a6cce6;
-    --ink3: #7aa0c2;
-    --ink4: #5e89a8;
-    --line: #1d3a45;
-    --field: #28567a;
-    --c50: #0a2f3e;
-    --c100: #0e3447;
-    --c200: #11506b;
-    --sh: 0 2px 10px rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--border);
 }
 .cap {
     font-family: "Quicksand";
@@ -161,7 +149,7 @@
     width: 40px;
     height: 40px;
     border-radius: 999px;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
@@ -169,10 +157,6 @@
     color: var(--ink2);
     font-size: 20px;
     flex-shrink: 0;
-}
-.phone.dark .back {
-    background: #0e2740;
-    border-color: #1d3a45;
 }
 .body {
     flex: 1;
@@ -195,19 +179,15 @@
     width: 44px;
     height: 44px;
     border-radius: 999px;
-    background: var(--c100);
+    background: var(--surface-accent);
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--celeste-deep);
+    color: var(--celeste);
     font-size: 20px;
     font-weight: 700;
     cursor: pointer;
-}
-.phone.dark .month-arrow {
-    background: #11506b;
-    color: var(--celeste);
 }
 .month-label {
     font-family: "Quicksand";
@@ -217,18 +197,14 @@
     text-transform: capitalize;
 }
 .today-chip {
-    background: var(--c100);
+    background: var(--surface-accent);
     border-radius: 999px;
     padding: 3px 10px;
     font-family: "Quicksand";
     font-weight: 700;
     font-size: 11px;
-    color: var(--celeste-deep);
-    margin-left: 6px;
-}
-.phone.dark .today-chip {
-    background: #11506b;
     color: var(--celeste);
+    margin-left: 6px;
 }
 
 /* Day card (lista) */
@@ -238,16 +214,12 @@
     gap: 10px;
 }
 .daycard {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 18px;
     padding: 14px 16px;
     box-shadow: var(--sh);
     position: relative;
-}
-.phone.dark .daycard {
-    background: #0e2740;
-    border-color: #1d3a45;
 }
 .daycard-head {
     display: flex;
@@ -276,20 +248,12 @@
     font-size: 11px;
 }
 .badge.count {
-    background: var(--c100);
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
 }
 .badge.excluded {
     background: var(--amber-s);
     color: var(--amber-t);
-}
-.phone.dark .badge.count {
-    background: #11506b;
-    color: var(--celeste);
-}
-.phone.dark .badge.excluded {
-    background: #3a2a00;
-    color: var(--amber);
 }
 .daycard-preview {
     font-size: 13.5px;
@@ -335,7 +299,7 @@
 
 /* Timeline item (detalle) */
 .tl-item {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 12px 14px;
@@ -344,26 +308,18 @@
     gap: 6px;
     box-shadow: var(--sh);
 }
-.phone.dark .tl-item {
-    background: #0e2740;
-    border-color: #1d3a45;
-}
 .tl-top {
     display: flex;
     gap: 6px;
     align-items: center;
 }
 .tl-time {
-    background: var(--c100);
+    background: var(--surface-accent);
     border-radius: 999px;
     padding: 2px 9px;
     font-family: "Quicksand";
     font-weight: 700;
     font-size: 12px;
-    color: var(--ink);
-}
-.phone.dark .tl-time {
-    background: #11506b;
     color: var(--celeste);
 }
 .tl-body {
@@ -390,9 +346,6 @@
     padding-top: 8px;
     border-top: 1px solid var(--line);
 }
-.phone.dark .tl-actions {
-    border-top-color: #1d3a45;
-}
 .ghost-btn {
     flex: 1;
     height: 36px;
@@ -412,22 +365,12 @@
 .ghost-btn:hover {
     background: var(--c50);
 }
-.phone.dark .ghost-btn {
-    border-color: #1d3a45;
-    color: var(--ink2);
-}
-.phone.dark .ghost-btn:hover {
-    background: #0a2f3e;
-}
 .ghost-btn .gicon {
     font-size: 14px;
     line-height: 1;
 }
 .ghost-btn.danger {
-    color: var(--rose-t);
-}
-.phone.dark .ghost-btn.danger {
-    color: var(--rose);
+    color: var(--danger-text);
 }
 .ghost-btn.disabled {
     opacity: 0.35;
@@ -446,10 +389,6 @@
     background: var(--amber-s);
     color: var(--amber-t);
 }
-.phone.dark .tl-chip.excluded {
-    background: #3a2a00;
-    color: var(--amber);
-}
 .tl-exclude {
     display: flex;
     align-items: center;
@@ -457,9 +396,6 @@
     margin-top: 4px;
     padding-top: 8px;
     border-top: 1px solid var(--line);
-}
-.phone.dark .tl-exclude {
-    border-top-color: #1d3a45;
 }
 .tl-exclude-text {
     flex: 1;
@@ -496,7 +432,7 @@
     width: 18px;
     height: 18px;
     border-radius: 999px;
-    background: #fff;
+    background: var(--surface);
     box-shadow: 0 1px 3px rgba(16, 55, 75, 0.25);
     transition: transform 0.16s ease;
 }
@@ -506,14 +442,6 @@
 }
 .tl-toggle.on::after {
     transform: translateX(16px);
-}
-.phone.dark .tl-toggle {
-    background: #28567a;
-    border-color: #1d3a45;
-}
-.phone.dark .tl-toggle.on {
-    background: var(--amber);
-    border-color: var(--amber);
 }
 
 /* Snackbar (undo) */
@@ -542,10 +470,6 @@
     width: 100%;
     pointer-events: auto;
 }
-.phone.dark .snackbar {
-    background: #e9f4ff;
-    color: #07182a;
-}
 .snackbar-msg {
     font-size: 13px;
     font-weight: 600;
@@ -563,13 +487,10 @@
     text-transform: uppercase;
     letter-spacing: 0.4px;
 }
-.phone.dark .snackbar-action {
-    color: var(--celeste-500);
-}
 
 /* Summary card (detalle) */
 .sum-card {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 14px 16px;
@@ -577,10 +498,6 @@
     flex-direction: column;
     gap: 8px;
     box-shadow: var(--sh);
-}
-.phone.dark .sum-card {
-    background: #0e2740;
-    border-color: #1d3a45;
 }
 .sum-row {
     display: flex;

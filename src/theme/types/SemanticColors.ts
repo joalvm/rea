@@ -17,6 +17,8 @@ export type SemanticColors = {
     surfaceSunken: string;
     /** Superficie translúcida sobre fotos/heros (glass). */
     surfaceGlass: string;
+    /** Superficie opaca tintada de marca: opción activa de segmented, burbuja de icono. */
+    surfaceAccent: string;
     /** Velo para modales / sheets. */
     overlay: string;
 

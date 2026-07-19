@@ -1,5 +1,6 @@
 /* Las variables de la pantalla son ALIAS de los tokens canonicos de global.css
-   (single source of truth). Se scopean a .page para no afectar el chrome global. */
+   (single source of truth). Se scopean a .page para no afectar el chrome global.
+   El modo oscuro no se reescribe aqui: se hereda via [data-theme="dark"] de global. */
 .page {
     --celeste: var(--primary);
     --celeste-400: var(--primary-pressed);
@@ -8,9 +9,9 @@
     --celeste-700: #0a4f68;
     --c50: var(--primary-subtle);
     --c100: var(--primary-tint);
-    --c200: #b9eefc;
+    --c200: var(--surface-accent);
     --ink: var(--text);
-    --ink2: var(--icon-strong);
+    --ink2: var(--text-secondary);
     --ink3: var(--text-muted);
     --ink4: var(--placeholder);
     --btn-text: var(--on-primary);
@@ -80,7 +81,7 @@
     margin: 24px 0 40px;
 }
 .gcard {
-    background: #fff;
+    background: var(--surface);
     border-radius: 22px;
     padding: 22px;
     border: 1px solid var(--line);
@@ -173,20 +174,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid #fff;
-}
-.phone.dark {
-    --bg: #07182a;
-    --ink: #e9f4ff;
-    --ink2: #a6cce6;
-    --ink3: #7aa0c2;
-    --ink4: #5e89a8;
-    --line: #1d3a45;
-    --field: #28567a;
-    --c50: #0a2f3e;
-    --c100: #0e3447;
-    --c200: #11506b;
-    --sh: 0 2px 10px rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--border);
 }
 .cap {
     font-family: "Quicksand";
@@ -230,17 +218,13 @@
     width: 40px;
     height: 40px;
     border-radius: 999px;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--ink2);
     font-size: 20px;
-}
-.phone.dark .back {
-    background: #0e2740;
-    border-color: #1d3a45;
 }
 .body {
     flex: 1;
@@ -264,9 +248,6 @@
     line-height: 1.15;
 }
 .title .em {
-    color: var(--celeste-deep);
-}
-.phone.dark .title .em {
     color: var(--celeste);
 }
 .lead {
@@ -377,7 +358,7 @@
 .input {
     height: 54px;
     border-radius: 16px;
-    background: #fff;
+    background: var(--surface);
     border: 1.6px solid var(--field);
     display: flex;
     align-items: center;
@@ -385,9 +366,6 @@
     font-size: 16px;
     color: var(--ink);
     font-weight: 600;
-}
-.phone.dark .input {
-    background: #0e2740;
 }
 .input.focus {
     border: 2px solid var(--celeste-500);
@@ -401,16 +379,12 @@
 /* WHEEL — fondo casi blanco, borde de control fino, columnas juntas, selbar fina */
 .wheel {
     border-radius: 16px;
-    background: #fcfeff;
+    background: var(--surface-sunken);
     border: 1px solid var(--line);
     padding: 4px 0;
     margin-top: 2px;
     position: relative;
     overflow: hidden;
-}
-.phone.dark .wheel {
-    background: #0b2034;
-    border-color: #1b3344;
 }
 .wheel.row {
     display: flex;
@@ -433,12 +407,9 @@
     font-weight: 600;
 }
 .wheel .r.on {
-    color: var(--celeste-deep);
+    color: var(--celeste);
     font-weight: 700;
     font-size: 17.5px;
-}
-.phone.dark .wheel .r.on {
-    color: var(--celeste);
 }
 .wheel .selbar {
     position: absolute;
@@ -454,7 +425,7 @@
 
 .choice {
     border-radius: 20px;
-    background: #fff;
+    background: var(--surface);
     border: 1.5px solid var(--line);
     box-shadow: var(--sh);
     padding: 17px;
@@ -464,9 +435,6 @@
     gap: 14px;
     position: relative;
 }
-.phone.dark .choice {
-    background: #0e2740;
-}
 .choice.sel {
     border: 2px solid var(--celeste);
     background: var(--c50);
@@ -475,20 +443,16 @@
     width: 46px;
     height: 46px;
     border-radius: 14px;
-    background: var(--c100);
+    background: var(--c200);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--celeste-deep);
-    flex: 0 0 auto;
-}
-.phone.dark .choice .ci {
-    background: #11506b;
     color: var(--celeste);
+    flex: 0 0 auto;
 }
 .choice.sel .ci {
     background: var(--celeste);
-    color: #06323f;
+    color: var(--btn-text);
 }
 .choice .tt {
     font-family: "Quicksand";
@@ -513,7 +477,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #06323f;
+    color: var(--btn-text);
 }
 .sectlabel {
     font-family: "Quicksand";
@@ -526,13 +490,10 @@
 .seg {
     height: 54px;
     border-radius: 999px;
-    background: var(--c100);
+    background: var(--surface-sunken);
     padding: 5px;
     display: flex;
     margin-top: 6px;
-}
-.phone.dark .seg {
-    background: #0e3447;
 }
 .seg .o {
     flex: 1;
@@ -546,11 +507,7 @@
     border-radius: 999px;
 }
 .seg .o.on {
-    background: #fff;
-    color: var(--celeste-deep);
-}
-.phone.dark .seg .o.on {
-    background: #11506b;
+    background: var(--surface-accent);
     color: var(--celeste);
 }
 
@@ -571,10 +528,7 @@
     background: var(--c50);
 }
 .note.info .nt {
-    color: var(--celeste-deep);
-}
-.phone.dark .note.info {
-    background: #0e2740;
+    color: var(--celeste);
 }
 
 .toggle {
@@ -609,7 +563,7 @@
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background: #fff;
+    background: var(--surface);
     top: 3px;
     right: 3px;
 }
@@ -637,18 +591,14 @@
     width: 42px;
     height: 42px;
     border-radius: 14px;
-    background: var(--c100);
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     font-family: "Quicksand";
     font-weight: 700;
-}
-.phone.dark .stepbtn {
-    background: #11506b;
-    color: var(--celeste);
 }
 .stepval {
     font-family: "Quicksand";

@@ -16,6 +16,7 @@ export const lightTheme: Theme = {
         surfaceAlt: mist[100],
         surfaceSunken: "#DDEEF4",
         surfaceGlass: "rgba(255,255,255,0.78)",
+        surfaceAccent: aqua[100],
         overlay: "rgba(7,26,34,0.46)",
 
         border: mist[200],

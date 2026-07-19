@@ -37,6 +37,7 @@ export const darkTheme: Theme = {
         surfaceAlt: "#16314F",
         surfaceSunken: "#051324",
         surfaceGlass: "rgba(14,39,64,0.72)",
+        surfaceAccent: "#11506B",
         overlay: "rgba(4,12,24,0.6)",
 
         border: "#28567A",

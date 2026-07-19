@@ -1,5 +1,6 @@
 /* Las variables de la pantalla son ALIAS de los tokens canonicos de global.css
-   (single source of truth). Se scopean a .page para no afectar el chrome global. */
+   (single source of truth). Se scopean a .page para no afectar el chrome global.
+   El modo oscuro no se reescribe aqui: se hereda via [data-theme="dark"] de global. */
 .page {
     --celeste: var(--primary);
     --celeste-400: var(--primary-pressed);
@@ -8,9 +9,9 @@
     --celeste-700: #0a4f68;
     --c50: var(--primary-subtle);
     --c100: var(--primary-tint);
-    --c200: #b9eefc;
+    --c200: var(--surface-accent);
     --ink: var(--text);
-    --ink2: var(--icon-strong);
+    --ink2: var(--text-secondary);
     --ink3: var(--text-muted);
     --ink4: var(--placeholder);
     --btn-text: var(--on-primary);
@@ -156,21 +157,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid #fff;
-}
-
-.phone.dark {
-    --bg: #07182a;
-    --ink: #e9f4ff;
-    --ink2: #a6cce6;
-    --ink3: #7aa0c2;
-    --ink4: #5e89a8;
-    --line: #1d3a45;
-    --field: #28567a;
-    --c50: #0a2f3e;
-    --c100: #0e3447;
-    --c200: #11506b;
-    --sh: 0 2px 10px rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--border);
 }
 
 .cap {
@@ -233,7 +220,7 @@
     width: 40px;
     height: 40px;
     border-radius: 999px;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
@@ -242,19 +229,10 @@
     font-size: 20px;
 }
 
-.phone.dark .back {
-    background: #0e2740;
-    border-color: #1d3a45;
-}
-
 .save-link {
     font-family: "Quicksand";
     font-weight: 700;
     font-size: 14px;
-    color: var(--celeste-deep);
-}
-
-.phone.dark .save-link {
     color: var(--celeste);
 }
 
@@ -328,15 +306,10 @@
 }
 
 .btn.ghost {
-    background: var(--c100);
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
     box-shadow: none;
     margin-top: 10px;
-}
-
-.phone.dark .btn.ghost {
-    background: #11506b;
-    color: var(--celeste);
 }
 
 .btn.muted {
@@ -349,15 +322,11 @@
 /* --- Segmented control (categorical exclusive: period signal, sleep, test) --- */
 .seg {
     display: flex;
-    background: var(--c50);
+    background: var(--surface-sunken);
     border-radius: 14px;
     padding: 4px;
     margin-top: 10px;
     gap: 4px;
-}
-
-.phone.dark .seg {
-    background: #0a2336;
 }
 
 .seg .opt {
@@ -381,14 +350,9 @@
 }
 
 .seg .opt.on {
-    background: #fff;
+    background: var(--surface-accent);
     color: var(--ink);
     box-shadow: var(--sh);
-}
-
-.phone.dark .seg .opt.on {
-    background: #11506b;
-    color: var(--ink);
 }
 
 /* --- Choice cards (icon + human label + hint) — REPLACES numeric scale --- */
@@ -406,7 +370,7 @@
 .choice-card {
     border: 1.5px solid var(--line);
     border-radius: 16px;
-    background: #fff;
+    background: var(--surface);
     padding: 12px 8px 10px;
     display: flex;
     flex-direction: column;
@@ -417,28 +381,19 @@
     justify-content: flex-start;
 }
 
-.phone.dark .choice-card {
-    background: #0b2034;
-    border-color: var(--line);
-}
-
 .choice-card.on {
     border-color: var(--celeste-400);
-    background: var(--c50);
+    background: var(--surface-sunken);
     border-width: 2px;
     padding: 11px 7px 9px;
-}
-
-.phone.dark .choice-card.on {
-    background: #0e3447;
-    border-color: var(--celeste-400);
 }
 
 .choice-icon {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -450,17 +405,7 @@
     height: 22px;
 }
 
-.phone.dark .choice-icon {
-    background: #11506b;
-    color: var(--celeste);
-}
-
 .choice-card.on .choice-icon {
-    background: var(--celeste);
-    color: var(--btn-text);
-}
-
-.phone.dark .choice-card.on .choice-icon {
     background: var(--celeste);
     color: var(--btn-text);
 }
@@ -524,16 +469,10 @@
     border-radius: 999px;
     border: 1.5px solid var(--line);
     color: var(--ink2);
-    background: #fff;
+    background: var(--surface);
     display: inline-flex;
     align-items: center;
     gap: 5px;
-}
-
-.phone.dark .schip {
-    background: #0b2034;
-    border-color: var(--line);
-    color: var(--ink2);
 }
 
 .schip svg {
@@ -544,12 +483,7 @@
 
 .schip.on {
     border-color: var(--celeste-400);
-    background: var(--c50);
-    color: var(--celeste-deep);
-}
-
-.phone.dark .schip.on {
-    background: #0e3447;
+    background: var(--surface-sunken);
     color: var(--celeste);
 }
 
@@ -577,26 +511,17 @@
     font-size: 11.5px;
     text-transform: uppercase;
     letter-spacing: 1.3px;
-    color: var(--celeste-deep);
-    margin: 4px 0 8px;
-}
-
-.phone.dark .quick-title {
     color: var(--celeste);
+    margin: 4px 0 8px;
 }
 
 /* --- Medication card --- */
 .med-card {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 14px;
     margin-top: 10px;
-}
-
-.phone.dark .med-card {
-    background: #0b2034;
-    border-color: var(--line);
 }
 
 .med-head {
@@ -609,17 +534,12 @@
     width: 34px;
     height: 34px;
     border-radius: 10px;
-    background: var(--c100);
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-}
-
-.phone.dark .med-head .mi {
-    background: #11506b;
-    color: var(--celeste);
 }
 
 .med-head .mi svg {
@@ -673,25 +593,17 @@
     color: var(--mint-t);
 }
 
-.phone.dark .med-relief .r.on {
-    background: #0e3a2e;
-}
-
 .add-link {
     font-family: "Quicksand";
     font-weight: 700;
     font-size: 14px;
-    color: var(--celeste-deep);
+    color: var(--celeste);
     margin-top: 14px;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-}
-
-.phone.dark .add-link {
-    color: var(--celeste);
 }
 
 .add-link svg {
@@ -701,7 +613,7 @@
 
 /* --- Note textarea mock --- */
 .note-field {
-    background: #fff;
+    background: var(--surface);
     border: 1.5px solid var(--line);
     border-radius: 16px;
     padding: 14px;
@@ -710,12 +622,6 @@
     font-size: 14px;
     color: var(--ink4);
     line-height: 1.5;
-}
-
-.phone.dark .note-field {
-    background: #0b2034;
-    border-color: var(--line);
-    color: var(--ink4);
 }
 
 /* --- Review summary --- */
@@ -761,8 +667,8 @@
     font-size: 11.5px;
     padding: 5px 10px;
     border-radius: 999px;
-    background: var(--c50);
-    color: var(--celeste-deep);
+    background: var(--surface-sunken);
+    color: var(--celeste);
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -771,11 +677,6 @@
 .rev-chips .rc svg {
     width: 12px;
     height: 12px;
-}
-
-.phone.dark .rev-chips .rc {
-    background: #0e3447;
-    color: var(--celeste);
 }
 
 /* --- Test positive card (neutral) --- */
@@ -788,26 +689,16 @@
     text-align: center;
 }
 
-.phone.dark .test-card {
-    background: #0e3447;
-    border-color: #11506b;
-}
-
 .test-card .test-icon {
     width: 48px;
     height: 48px;
     border-radius: 16px;
-    background: #fff;
+    background: var(--surface);
     color: var(--ink2);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 10px;
-}
-
-.phone.dark .test-card .test-icon {
-    background: #0a2336;
-    color: var(--ink2);
 }
 
 .test-card .test-icon svg {
@@ -923,7 +814,7 @@
     width: 22px;
     height: 22px;
     border-radius: 999px;
-    background: #fff;
+    background: var(--surface);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -935,7 +826,7 @@
 /* --- Intro mode cards --- */
 .mode-card {
     width: 100%;
-    background: #fff;
+    background: var(--surface);
     border: 1.5px solid var(--line);
     border-radius: 18px;
     padding: 15px;
@@ -945,35 +836,21 @@
     gap: 14px;
 }
 
-.phone.dark .mode-card {
-    background: #0b2034;
-    border-color: var(--line);
-}
-
 .mode-card.on {
     border-color: var(--celeste-400);
-    background: var(--c50);
-}
-
-.phone.dark .mode-card.on {
-    background: #0e3447;
+    background: var(--surface-sunken);
 }
 
 .mode-icon {
     width: 44px;
     height: 44px;
     border-radius: 14px;
-    background: var(--c100);
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-}
-
-.phone.dark .mode-icon {
-    background: #11506b;
-    color: var(--celeste);
 }
 
 .mode-card.on .mode-icon {
@@ -1014,8 +891,8 @@
 }
 
 .mode-badge.tracking {
-    background: var(--c100);
-    color: var(--celeste-deep);
+    background: var(--surface-accent);
+    color: var(--celeste);
 }
 
 .mode-badge.avoid {
@@ -1038,16 +915,11 @@
     height: 80px;
     border-radius: 26px;
     background: linear-gradient(150deg, var(--c200), var(--c100));
-    color: var(--celeste-deep);
+    color: var(--celeste);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 14px;
-}
-
-.phone.dark .intro-hero {
-    background: linear-gradient(150deg, #11506b, #0e3447);
-    color: var(--celeste);
 }
 
 .intro-hero svg {
