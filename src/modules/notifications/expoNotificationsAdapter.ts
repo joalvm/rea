@@ -16,6 +16,8 @@ export function loadNotificationsModule(): Promise<NotificationsModule | null> {
         return Promise.resolve(null);
     }
 
-    notificationsModulePromise ??= import("expo-notifications").catch(() => null);
+    notificationsModulePromise ??= Promise.resolve()
+        .then(() => require("expo-notifications") as NotificationsModule)
+        .catch(() => null);
     return notificationsModulePromise;
 }
