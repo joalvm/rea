@@ -13,12 +13,8 @@
         "entryCount_one": "{{count}} registro",
         "entryCount_other": "{{count}} registros",
         "excludedBadge": "No cuenta",
-        "bleedingPreview_none": "Sin sangrado",
-        "bleedingPreview_light": "Sangrado leve",
-        "bleedingPreview_moderate": "Sangrado moderado",
-        "bleedingPreview_heavy": "Sangrado abundante",
         "lastAt": "Último a las {{time}}",
-        "notePreview": "Nota: \"{{note}}\""
+        "noteSummary": "Nota: \"{{note}}\""
     },
     "detail": {
         "timelineTitle": "Línea de tiempo",

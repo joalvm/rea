@@ -1,0 +1,21 @@
+{
+    "title": "Statistics",
+    "description": "Learnings built from your own entries.",
+    "insights": "Your signals",
+    "cycleLength": "Cycle length",
+    "periodLength": "Period length",
+    "accuracy": "Rea accuracy",
+    "series": "Your cycle by day",
+    "checkins": "Total entries",
+    "days": "days",
+    "cycles": "cycles",
+    "error": "average error",
+    "notEnough": "You need {{count}} more cycles for this learning.",
+    "recordMore": "Log your cycles and we will return with a more personal reading.",
+    "noData": "There are not enough entries yet.",
+    "accuracyBody": "We compare each issued prediction with the actual cycle start. A larger number is not your fault: it describes how much your pattern varies.",
+    "mood": "Mood",
+    "energy": "Energy",
+    "pain": "Pain",
+    "seriesDay": "Day {{day}}"
+}

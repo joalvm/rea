@@ -41,11 +41,13 @@ export const appSettings = sqliteTable(
         discreetNotifications: integer("discreet_notifications", { mode: "boolean" })
             .notNull()
             .default(defaults.discreetNotifications),
+        discreetCalendar: integer("discreet_calendar", { mode: "boolean" }).notNull().default(false),
         theme: text("theme", { enum: appThemeValues }).notNull().default(defaults.theme),
         temperatureUnit: text("temperature_unit", { enum: temperatureUnitValues })
             .notNull()
             .default(defaults.temperatureUnit),
         onboardingCompletedAt: text("onboarding_completed_at"),
+        lastBackupAt: text("last_backup_at"),
         createdAt: text("created_at").notNull(),
         updatedAt: text("updated_at").notNull(),
         version: integer("version").notNull().default(defaults.version),
@@ -68,6 +70,7 @@ export const appSettings = sqliteTable(
         check("app_settings_theme_check", sql`${table.theme} IN ('system', 'light', 'dark')`),
         check("app_settings_notify_daily_checkin_check", sql`${table.notifyDailyCheckin} IN (0, 1)`),
         check("app_settings_discreet_notifications_check", sql`${table.discreetNotifications} IN (0, 1)`),
+        check("app_settings_discreet_calendar_check", sql`${table.discreetCalendar} IN (0, 1)`),
         check("app_settings_temperature_unit_check", sql`${table.temperatureUnit} IN ('celsius', 'fahrenheit')`),
     ],
 );

@@ -328,6 +328,7 @@
         "lead": "Es un momento importante. No hay prisa por decidir nada ahora.",
         "activatePregnancy": "Activar modo embarazo",
         "stayAsIs": "Seguir como estoy",
-        "hint": "Puedes cambiar de modo cuando quieras en ajustes."
+        "hint": "Puedes cambiar de modo cuando quieras en ajustes.",
+        "activated": "Tu historial se conserva y las predicciones de ciclo quedan pausadas. Puedes ajustar la fecha desde Ajustes."
     }
 }

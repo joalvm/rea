@@ -21,6 +21,7 @@
         },
         "android": {
             "package": "com.joalvm.rea",
+            "blockedPermissions": ["android.permission.INTERNET"],
             "adaptiveIcon": {
                 "backgroundColor": "#7CD9F9",
                 "foregroundImage": "./assets/images/branding/adaptive-foreground.png",
@@ -56,8 +57,20 @@
                 }
             ],
             "expo-notifications",
-            "expo-sqlite",
-            "expo-localization"
+            [
+                "expo-sqlite",
+                {
+                    "useSQLCipher": true
+                }
+            ],
+            "expo-localization",
+            "expo-sharing",
+            [
+                "expo-secure-store",
+                {
+                    "faceIDPermission": "Rea usa Face ID para proteger tus datos íntimos."
+                }
+            ]
         ],
         "experiments": {
             "typedRoutes": true,

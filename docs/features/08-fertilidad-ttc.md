@@ -1,8 +1,8 @@
 # 08 · Fertilidad y TTC (buscar embarazo)
 
 > **Hito:** M5 · **Depende de:** 01 (motor), 02 (captura de BBT/OPK/moco/relaciones),
-> 07 (primitivas de gráfica) · **Estado:** 🔲 sin superficie propia; vive como sección
-> de Estadísticas + tarjetas en Hoy.
+> 07 (primitivas de gráfica) · **Estado:** 🚧 superficie de predicción y señales base;
+> falta la gráfica BBT.
 
 ## Contexto
 

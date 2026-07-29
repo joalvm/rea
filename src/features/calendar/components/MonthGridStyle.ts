@@ -42,6 +42,10 @@ export const useMonthGridStyles = createStyles((theme) => ({
     today: {
         borderColor: theme.colors.primaryPressed,
     },
+    estimated: {
+        borderColor: theme.colors.primary,
+        borderStyle: "dashed",
+    },
     pressed: {
         opacity: theme.state.pressedOpacity,
         transform: [{ scale: theme.state.pressedScale }],

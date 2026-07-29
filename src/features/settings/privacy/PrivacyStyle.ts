@@ -10,11 +10,10 @@ export const usePrivacyStyles = createStyles((theme) => {
         },
         container: {
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            alignItems: "stretch",
             gap: spacing.md,
             paddingHorizontal: spacing["2xl"],
-            paddingVertical: spacing["4xl"],
+            paddingVertical: spacing["3xl"],
         },
         title: {
             ...typography.variant.h1,

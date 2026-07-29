@@ -8,12 +8,14 @@ import { EmptyState } from "@/components/empty-state/EmptyState";
 import { IconButton } from "@/components/icon-button/IconButton";
 import { InlineNotice } from "@/components/inline-notice/InlineNotice";
 import { useDailySummary } from "@/domain/hooks/useDailySummary";
+import { useCurrentPrediction } from "@/domain/hooks/useCurrentPrediction";
 import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
 import { formatDate } from "@/modules/l10n/formatDate";
 import { useMonthCursor } from "@/shared/hooks/useMonthCursor";
 import { todayYMD, ymdToISO } from "@/shared/utils/ymd";
 
 import { MonthGrid } from "./components/MonthGrid";
+import { CalendarLegend } from "./components/CalendarLegend";
 import { useCalendarStyles } from "./CalendarStyle";
 
 /** Tab Calendario: fuente visual de daily_summary; distingue hechos y estimaciones antes de abrir el detalle diario. */
@@ -24,6 +26,7 @@ export default function CalendarScreen() {
     const { profile } = useLocalProfile();
     const { cursor, range, prev, next, reset, isCurrent } = useMonthCursor();
     const { summaries } = useDailySummary(profile?.id ?? "", range);
+    const { prediction } = useCurrentPrediction(profile?.id ?? "");
     const [selectedDate, setSelectedDate] = useState(() => ymdToISO(todayYMD()));
     const monthLabel = formatDate(range.from, "monthYear");
 
@@ -75,13 +78,14 @@ export default function CalendarScreen() {
                     onPressDay={handleOpenDay}
                     selectedDate={selectedDate}
                     summaries={summaries}
+                    prediction={prediction}
                 />
             </View>
 
             <View style={styles.legend}>
-                <LegendItem color="danger" label={t("legend.menstruation")} />
-                <LegendItem color="warning" label={t("legend.fertile")} />
-                <LegendItem color="primary" label={t("legend.record")} />
+                <CalendarLegend color="danger" label={t("legend.menstruation")} />
+                <CalendarLegend color="warning" label={t("legend.fertile")} />
+                <CalendarLegend color="primary" label={t("legend.record")} />
             </View>
 
             {summaries.length === 0 ? (
@@ -98,26 +102,5 @@ export default function CalendarScreen() {
                 />
             ) : null}
         </ScrollView>
-    );
-}
-
-type LegendItemProps = {
-    color: "danger" | "warning" | "primary";
-    label: string;
-};
-
-function LegendItem({ color, label }: LegendItemProps) {
-    const styles = useCalendarStyles();
-    const palette = {
-        danger: styles.legendMenstruation,
-        primary: styles.legendRecord,
-        warning: styles.legendFertile,
-    };
-
-    return (
-        <View accessibilityLabel={label} style={styles.legendItem}>
-            <View style={[styles.legendMark, palette[color]]} />
-            <Text style={styles.legendLabel}>{label}</Text>
-        </View>
     );
 }

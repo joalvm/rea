@@ -1,0 +1,16 @@
+{
+    "title": "Predictions",
+    "description": "Engine estimates built from your entries.",
+    "nextPeriod": "Next period",
+    "fertileWindow": "Fertile window",
+    "ovulation": "Estimated ovulation",
+    "confidence": "Confidence: {{value}}",
+    "noPrediction": "There is not enough data for a prediction yet.",
+    "fertilityTitle": "Observed signals",
+    "bbt": "Basal temperatures: {{count}}",
+    "mucus": "Fertile-mucus entries: {{count}}",
+    "opk": "Positive OPKs: {{count}}",
+    "ttcNote": "These signals describe what you recorded; we do not calculate a pregnancy probability.",
+    "avoidNote": "The fertile window is an estimate and is not a contraceptive method.",
+    "disclaimer": "Predictions can change as you add data. They are not a clinical guarantee."
+}

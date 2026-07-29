@@ -1,0 +1,46 @@
+{
+    "hero": {
+        "overline": "Your status today",
+        "cta": "How are you feeling today?",
+        "cycleDay": "Day {{day}} of your cycle",
+        "pregnancyWeek": "Week {{week}}",
+        "confidence": {
+            "low": "Low confidence",
+            "medium": "Medium confidence",
+            "high": "High confidence"
+        },
+        "unknown": "There is not enough information yet",
+        "delay": "Late: day {{day}}",
+        "pregnancyCaption": "Cycle prediction is paused"
+    },
+    "phases": {
+        "unknown": { "label": "Phase to estimate", "caption": "Log a few days to refine your prediction" },
+        "menstrual": { "label": "Menstruation", "caption": "Days for care and rest" },
+        "follicular": { "label": "Follicular phase", "caption": "Your energy is on the rise" },
+        "fertile_window": { "label": "Fertile window", "caption": "Higher chance of pregnancy" },
+        "estimated_ovulation": { "label": "Estimated ovulation", "caption": "Peak fertility in the cycle" },
+        "luteal": { "label": "Luteal phase", "caption": "The body prepares and slows down" },
+        "pregnancy": { "label": "Pregnancy", "caption": "Cycle prediction is paused" }
+    },
+    "greeting": "Hi, {{name}}",
+    "summary": {
+        "title": "Today's summary",
+        "empty": "You have not logged today yet.",
+        "checkins": "{{count}} entries",
+        "symptoms": "{{count}} symptoms",
+        "medications": "Medication",
+        "openDiary": "Open today's diary",
+        "start": "Log how I feel",
+        "next": "Coming up",
+        "nextPeriod": "Estimated next period: {{date}}",
+        "nextFertile": "Estimated fertile window: {{date}}",
+        "nextPregnancy": "Follow your week and log how you feel",
+        "noPrediction": "There is no reliable date yet. Log a few cycles to refine it."
+    },
+    "proposal": {
+        "title": "There is a period detail to review",
+        "body": "Rea found a signal that may adjust your history. You decide how it counts.",
+        "action": "Review proposal"
+    },
+    "disclaimer": "Estimates show their basis and can change with new entries. They are not medical advice or contraception."
+}

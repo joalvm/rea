@@ -5,6 +5,10 @@ Cubre: esquema de base de datos, código de aplicación, cumplimiento de los pri
 declarados y documentación. Cada hallazgo lleva severidad y propuesta; las propuestas de
 esquema se consolidan en la [sección 5](#5-esquema-v3--regeneración-del-maestro).
 
+> Este documento conserva el snapshot previo a la implementación de los planes. El
+> estado vigente de cada plan está en [`docs/features/README.md`](features/README.md);
+> no usar las tablas históricas de esta auditoría como inventario actual.
+
 > Alcance: esquema SQL completo, flujo de onboarding, seeders, `initializeDatabase`,
 > `app.json`, dependencias, estructura de features y estándares de `.agents/skills`.
 

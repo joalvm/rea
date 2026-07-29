@@ -16,6 +16,10 @@ export const useHomeStyles = createStyles((theme) => {
             gap: spacing.lg,
             marginTop: spacing.xl,
         },
+        greeting: {
+            ...typography.variant.h3,
+            color: colors.text,
+        },
         card: {
             backgroundColor: colors.surface,
             borderRadius: radius.xl,
@@ -25,6 +29,28 @@ export const useHomeStyles = createStyles((theme) => {
             gap: spacing.sm,
             ...shadows[1],
         },
+        proposalCard: {
+            backgroundColor: colors.warningSurface,
+            borderRadius: radius.xl,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.warning,
+            padding: spacing.xl,
+            gap: spacing.sm,
+        },
+        contentCard: {
+            backgroundColor: colors.primarySubtle,
+            borderRadius: radius.xl,
+            borderWidth: borderWidth.thin,
+            borderColor: colors.primary,
+            padding: spacing.xl,
+            gap: spacing.sm,
+        },
+        contentEyebrow: {
+            ...typography.variant.caption,
+            color: colors.link,
+            textTransform: "uppercase",
+            letterSpacing: 0.8,
+        },
         cardTitle: {
             ...typography.variant.h3,
             color: colors.text,
@@ -32,6 +58,21 @@ export const useHomeStyles = createStyles((theme) => {
         cardText: {
             ...typography.variant.callout,
             color: colors.textSecondary,
+        },
+        chips: {
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: spacing.sm,
+        },
+        chip: {
+            paddingHorizontal: spacing.md,
+            paddingVertical: spacing.xs,
+            borderRadius: radius.pill,
+            backgroundColor: colors.primaryTint,
+        },
+        chipText: {
+            ...typography.variant.caption,
+            color: colors.text,
         },
         secondaryBtn: {
             minHeight: sizing.controlMd,
@@ -46,30 +87,10 @@ export const useHomeStyles = createStyles((theme) => {
             ...typography.variant.bodyStrong,
             color: colors.link,
         },
-        previewBlock: {
-            marginTop: spacing.sm,
-            gap: spacing.sm,
-        },
-        previewLabel: {
-            ...typography.variant.overline,
+        disclaimer: {
+            ...typography.variant.caption,
             color: colors.textMuted,
-        },
-        previewChips: {
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: spacing.sm,
-        },
-        previewChip: {
-            paddingHorizontal: spacing.md,
-            paddingVertical: spacing.sm,
-            borderRadius: radius.pill,
-            borderWidth: borderWidth.thin,
-            borderColor: colors.border,
-            backgroundColor: colors.surfaceAlt,
-        },
-        previewChipText: {
-            ...typography.variant.subhead,
-            color: colors.textSecondary,
+            lineHeight: 18,
         },
         pressed: {
             opacity: 0.85,

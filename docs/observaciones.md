@@ -80,15 +80,12 @@ i18n pero ni siquiera tiene columna — ver O-05.
 **Decisión:** limpiar junto con O-04 al cerrar el plan, o poblar si Fase 4/07
 les da uso.
 
-### O-06 · `medications.pregnancySafety.*` sin implementar
+### O-06 · `medications.pregnancySafety.*` — ✅ RESUELTO
 
 **Dónde:** `src/lang/{es,en}/checkIn.json` + `src/features/checkin/medications/MedicationsScreen.tsx`
-**Qué pasa:** la promesa Fase 3 del plan 02 dice "medicamentos en embarazo
-muestran su `pregnancy_safety` (aviso neutro si `caution`, nada si `unknown`)".
-`MedicationsScreen` NO lee `pregnancy_safety` del catálogo ni muestra aviso. Las
-claves i18n `medications.pregnancySafety.caution/unknown` existen sin consumidor.
-**Decisión:** deuda de Fase 3. Implementar el aviso o bajar la promesa del plan.
-Revisar al cerrar plan 02.
+**Resolución:** `MedicationsScreen` lee el catálogo activo cuando el modo es
+embarazo y muestra un aviso neutral para medicamentos declarados como no seguros o
+sin clasificación. Los medicamentos declarados seguros no añaden ruido visual.
 
 ### O-07 · `review.empty` contradice el botón deshabilitado
 

@@ -25,7 +25,8 @@
         "menstruation": "Menstruación registrada",
         "fertile": "Ventana fértil estimada",
         "estimated": "Estimación disponible",
-        "recorded": "Registro disponible"
+        "recorded": "Registro disponible",
+        "predictedPeriod": "Próxima regla estimada"
     },
     "legend": {
         "menstruation": "Menstruación",

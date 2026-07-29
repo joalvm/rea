@@ -1,8 +1,8 @@
 # 10 · Transiciones de modo reproductivo
 
 > **Hito:** fase 1 (puente a embarazo) en **M3**; matriz completa en M5 · **Depende
-> de:** 01 (motor), 09 (episodios) · **Estado:** 🔲 no existe; el modo solo se fija en
-> onboarding.
+> de:** 01 (motor), 09 (episodios) · **Estado:** 🚧 puente a embarazo y ciclo ↔ ciclo
+> vivos; falta la entrada dedicada desde Hoy.
 
 ## Contexto
 

@@ -1,7 +1,7 @@
 # 05 · Calendario
 
-> **Hito:** M3 · **Depende de:** 01 (motor), 03 (edición de periodo) · **Estado:** 🔲
-> stub.
+> **Hito:** M3 · **Depende de:** 01 (motor), 03 (edición de periodo) · **Estado:** 🚧
+> grid vivo con leyenda; falta el detalle de día como sheet.
 
 ## Contexto
 

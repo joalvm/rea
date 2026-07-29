@@ -6,13 +6,19 @@
 export const NAMESPACES = [
     "calendar",
     "common",
+    "content",
     "checkIn",
     "diary",
     "exception",
+    "home",
     "notifications",
     "onboarding",
     "period",
-    "preview",
+    "privacy",
+    "pregnancy",
+    "predictions",
+    "statistics",
+    "settings",
     "validation",
 ] as const;
 

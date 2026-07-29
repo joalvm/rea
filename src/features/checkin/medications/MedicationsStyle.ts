@@ -34,6 +34,15 @@ export const useMedicationsStyles = createStyles((theme) => {
             backgroundColor: colors.surface,
             marginBottom: spacing.sm,
         },
+        safetyNotice: {
+            padding: spacing.sm,
+            borderRadius: radius.md,
+            backgroundColor: colors.warningSurface,
+        },
+        safetyText: {
+            ...typography.variant.caption,
+            color: colors.warningText,
+        },
         addBtn: {
             width: 44,
             height: 44,

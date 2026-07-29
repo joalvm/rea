@@ -8,6 +8,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 
 import type { Database } from "@/db/client";
 import { medicationCatalog } from "@/db/schema/medicationCatalog";
+import { useActiveIntent } from "@/domain/hooks/useActiveIntent";
 import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
 import { useDatabase } from "@/db/useDatabase";
 import { useTheme } from "@/theme/useTheme";
@@ -52,6 +53,7 @@ export default function MedicationsScreen({ onContinue, onSaved }: Props) {
     const screenStyles = useCheckinScreenStyles();
     const database = useDatabase();
     const { profile } = useLocalProfile();
+    const { intent } = useActiveIntent(profile?.id ?? "");
     const medications = useCheckinStore((state) => state.draft.medications);
     const upsertMedication = useCheckinStore((state) => state.upsertMedication);
     const removeMedication = useCheckinStore((state) => state.removeMedication);
@@ -92,6 +94,8 @@ export default function MedicationsScreen({ onContinue, onSaved }: Props) {
         const key = med.medicationId ?? med.name ?? "";
         const currentRelief = reliefOf(key);
         const identity = med.medicationId ? { medicationId: med.medicationId } : { name: med.name };
+        const isPregnancyMode = intent?.reproductiveMode === "pregnancy_tracking";
+        const isPregnancySafe = catalog?.find((item) => item.id === med.medicationId)?.isPregnancySafe;
         return (
             <View key={key} style={styles.medCard}>
                 <View style={styles.medHead}>
@@ -115,6 +119,18 @@ export default function MedicationsScreen({ onContinue, onSaved }: Props) {
                     placeholder={tCheckin("medications.dosePlaceholder")}
                     placeholderTextColor={theme.colors.placeholder}
                 />
+
+                {isPregnancyMode && isPregnancySafe !== true ? (
+                    <View style={styles.safetyNotice}>
+                        <Text style={styles.safetyText}>
+                            {tCheckin(
+                                isPregnancySafe === false
+                                    ? "medications.pregnancySafety.caution"
+                                    : "medications.pregnancySafety.unknown",
+                            )}
+                        </Text>
+                    </View>
+                ) : null}
 
                 <ChoiceGrid>
                     {RELIEF_OPTIONS.map((option) => (

@@ -1,8 +1,8 @@
 # 09 · Embarazo
 
 > **Hito:** fase 1 en **M3**, completo en M6 · **Depende de:** 01 (proyección diaria),
-> 10 (transiciones), 11 (contenido semanal) · **Estado:** 🔲 solo el setup del
-> onboarding existe.
+> 10 (transiciones), 11 (contenido semanal) · **Estado:** 🚧 semana, progreso y
+> desenlaces básicos vivos; falta el flujo completo posparto.
 
 ## Contexto
 
@@ -54,7 +54,7 @@ quien más apoyo necesita.
 
 ### [ ] Fase 1 (M3): Semanas + hero
 
-- **Objetivo:** la usuaria embarazada abre REA y ve su semana, no un stub.
+- **Objetivo:** la usuaria embarazada abre REA y ve su semana, no una pantalla vacía.
 - **Cambios:** `src/domain/pregnancy/` (semana/trimestre/proyección + tests); hero de
   embarazo en Hoy (plan 04); banda de semanas en calendario (plan 05); corpus semanal
   mínimo conectado (plan 11 fase 1).

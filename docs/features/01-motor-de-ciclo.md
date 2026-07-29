@@ -3,7 +3,7 @@
 > **Hito:** M1 · **Depende de:** esquema v4 (`cycle_records`, bordes de ventana fértil)
 > · **Estado:** ✅ Fases 1-4 implementadas en `src/domain/` (dominio puro, proyector,
 > orquestador, read hooks). Disparadores documentados en `recalculate.ts`; ningún
-> feature los invoca todavía (check-in/periodo/embarazo son pantallas placeholder).
+> feature lo invoca desde sus mutaciones de check-in, periodo y embarazo.
 
 ## Contexto
 

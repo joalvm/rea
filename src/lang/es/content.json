@@ -1,0 +1,62 @@
+{
+    "title": "Aprender",
+    "description": "Lecturas breves, con fuente y sin diagnósticos.",
+    "empty": "Todavía no hay contenido disponible.",
+    "source": "Fuente",
+    "reviewed": "Revisado {{date}}",
+    "disclaimer": "Esta información acompaña tus registros; no sustituye la valoración de un profesional.",
+    "detailNotFound": "No encontramos esta pieza de contenido.",
+    "open": "Leer más",
+    "sources": {
+        "pregnancy": {
+            "label": "Educación clínica sobre embarazo",
+            "reference": "Revisado por el equipo editorial de Rea"
+        }
+    },
+    "items": {
+        "pregnancy_01_04": {
+            "title": "Semanas 1–4",
+            "body": "En estas primeras semanas las fechas pueden sentirse inciertas. Rea muestra la semana a partir de la fecha que declaraste y deja visible su procedencia."
+        },
+        "pregnancy_05_08": {
+            "title": "Semanas 5–8",
+            "body": "El desarrollo temprano cambia rápido. Registra cómo te sientes sin convertir una señal aislada en una conclusión."
+        },
+        "pregnancy_09_12": {
+            "title": "Semanas 9–12",
+            "body": "El primer trimestre está llegando a su cierre. Una conversación con tu profesional puede ayudarte a resolver dudas sobre tus controles."
+        },
+        "pregnancy_13_16": {
+            "title": "Semanas 13–16",
+            "body": "El segundo trimestre comienza para muchas personas con cambios de energía, apetito y sueño que pueden variar mucho."
+        },
+        "pregnancy_17_20": {
+            "title": "Semanas 17–20",
+            "body": "Los controles y la ecografía se viven de maneras distintas. Tus registros sirven para conversar, no para diagnosticar."
+        },
+        "pregnancy_21_24": {
+            "title": "Semanas 21–24",
+            "body": "Puedes seguir anotando síntomas y bienestar sin perseguir una curva perfecta. La variación individual es esperable."
+        },
+        "pregnancy_25_28": {
+            "title": "Semanas 25–28",
+            "body": "Algunas sensaciones se vuelven más presentes. Si algo te preocupa, consulta a tu profesional aunque la app no marque una alerta."
+        },
+        "pregnancy_29_32": {
+            "title": "Semanas 29–32",
+            "body": "El descanso y el movimiento pueden cambiar. Rea ayuda a recordar lo vivido y no reemplaza una consulta."
+        },
+        "pregnancy_33_36": {
+            "title": "Semanas 33–36",
+            "body": "La preparación para el nacimiento puede traer preguntas prácticas y emocionales. Elige qué quieres registrar."
+        },
+        "pregnancy_37_40": {
+            "title": "Semanas 37–40",
+            "body": "La fecha probable es una referencia, no una promesa. Cada embarazo tiene su propio ritmo."
+        },
+        "pregnancy_41_42": {
+            "title": "Semanas 41–42",
+            "body": "Si la fecha probable ya pasó, habla con tu profesional sobre el seguimiento que corresponda; Rea no intenta apresurarte."
+        }
+    }
+}

@@ -21,13 +21,3 @@ export function bleedingKey(intensity: number | null | undefined): string {
     }
     return "bleedingLabel.heavy";
 }
-
-/**
- * Devuelve la clave de preview para la lista del diario
- * (`list.bleedingPreview_*`), equivalente a `bleedingKey` pero en el bloque
- * `list`. Existe porque el copy del preview de la lista es más corto.
- */
-export function bleedingPreviewKey(intensity: number | null | undefined): string {
-    const base = bleedingKey(intensity).replace("bleedingLabel.", "");
-    return `list.bleedingPreview_${base}`;
-}

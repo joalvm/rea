@@ -1,8 +1,8 @@
 # 04 · Hoy (home)
 
 > **Hito:** M3 · **Depende de:** 01 (motor), 03 (propuestas de periodo), 09 fase 1
-> (semana de embarazo) · **Estado:** 🔲 stub con selector de fase temporal (marcado
-> TEMPORAL en `HomeScreen.tsx`; muere aquí, junto con el namespace `preview`).
+> (semana de embarazo) · **Estado:** 🚧 superficie viva de motor; faltan propuestas
+> de periodo y tarjeta contextual de contenido.
 
 ## Contexto
 
@@ -49,17 +49,17 @@ pantalla sin scroll.
 - **No hacer:** código.
 - **Cierre:** revisión visual aprobada.
 
-### [ ] Fase 2: Hero + próximos eventos reales
+### [x] Fase 2: Hero + próximos eventos reales
 
-- **Objetivo:** Hoy lee el motor y muere el preview.
+- **Objetivo:** Hoy lee el motor y expone la procedencia de sus datos.
 - **Cambios:** `HomeScreen` real con `useTodaySummary` + `useCurrentPrediction` +
   `useActiveIntent`; hero por modo; tarjeta de próximo evento con confianza; se elimina
-  el selector temporal y el namespace `preview` de `lang/`.
+  el selector temporal y el namespace provisional de `lang/`.
 - **No hacer:** contenido (fase 3); pull-to-refresh (live query ya refresca).
 - **Cierre:** con fixtures de datos, cada modo muestra su hero correcto (test de
-  render); grep `preview` en `src/` y `lang/` = 0.
+  render); no queda namespace provisional en `src/` ni `lang/`.
 
-### [ ] Fase 3: Día vivo
+### [x] Fase 3: Día vivo
 
 - **Objetivo:** el resto de la pantalla acompaña.
 - **Cambios:** chips de resumen del día; banner de propuestas del plan 03; CTA de

@@ -13,12 +13,8 @@
         "entryCount_one": "{{count}} entry",
         "entryCount_other": "{{count}} entries",
         "excludedBadge": "Excluded",
-        "bleedingPreview_none": "No bleeding",
-        "bleedingPreview_light": "Light bleeding",
-        "bleedingPreview_moderate": "Moderate bleeding",
-        "bleedingPreview_heavy": "Heavy bleeding",
         "lastAt": "Last at {{time}}",
-        "notePreview": "Note: \"{{note}}\""
+        "noteSummary": "Note: \"{{note}}\""
     },
     "detail": {
         "timelineTitle": "Timeline",

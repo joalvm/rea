@@ -25,7 +25,8 @@
         "menstruation": "Recorded period",
         "fertile": "Estimated fertile window",
         "estimated": "Estimate available",
-        "recorded": "Entry available"
+        "recorded": "Entry available",
+        "predictedPeriod": "Estimated next period"
     },
     "legend": {
         "menstruation": "Period",

@@ -3,6 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Alert, Modal, Pressable, Text, View } from "react-native";
 
 import { useTheme } from "@/theme/useTheme";
+import { useDatabase } from "@/db/useDatabase";
+import { useLocalProfile } from "@/domain/hooks/useLocalProfile";
+import { transitionToPregnancy } from "@/domain/pregnancy/transitionToPregnancy";
+import { todayYMD, ymdToISO } from "@/shared/utils/ymd";
 import { usePositiveTestCardStyles } from "./PositiveTestCardStyle";
 
 type Props = {
@@ -15,8 +19,7 @@ type Props = {
  * Tarjeta post-guardado de test de embarazo positivo. Tono neutro y cuidadoso:
  * sin celebración ni drama. Para quien evita un embarazo, un positivo puede no
  * ser una buena noticia. Informa del resultado y ofrece dos salidas:
- *  - "Activar modo embarazo": puente del plan 10 (no implementado aún → Alert
- *    informativo de marcador, deja el hook listo).
+ *  - "Activar modo embarazo": transición local transaccional hacia el episodio.
  *  - "Seguir como estoy": cierra y vuelve al flujo normal.
  *
  * La tarjeta NO interpreta el test ni concluye nada clínico; solo informa y
@@ -27,13 +30,25 @@ export function PositiveTestCard({ visible, onDismiss }: Props) {
     const { t: tCommon } = useTranslation("common");
     const theme = useTheme();
     const styles = usePositiveTestCardStyles();
+    const database = useDatabase();
+    const { profile } = useLocalProfile();
 
-    const handleActivate = () => {
-        // Plan 10 (modo embarazo) no existe aún. Stub del puente: informa y
-        // deja el hook ready para cuando el flujo real esté disponible.
-        Alert.alert(t("testPositive.title"), tCommon("feedback.comingSoon"), [
-            { text: tCommon("action.ok"), onPress: onDismiss },
-        ]);
+    const handleActivate = async () => {
+        if (!profile) {
+            Alert.alert(tCommon("feedback.error"));
+            return;
+        }
+        try {
+            await transitionToPregnancy(database, {
+                profileId: profile.id,
+                effectiveFrom: ymdToISO(todayYMD()),
+            });
+            Alert.alert(t("testPositive.title"), t("testPositive.activated"), [
+                { text: tCommon("action.ok"), onPress: onDismiss },
+            ]);
+        } catch {
+            Alert.alert(tCommon("feedback.error"));
+        }
     };
 
     return (

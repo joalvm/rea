@@ -1,0 +1,16 @@
+{
+    "title": "Predicciones",
+    "description": "Estimaciones del motor a partir de tus registros.",
+    "nextPeriod": "Próxima regla",
+    "fertileWindow": "Ventana fértil",
+    "ovulation": "Ovulación estimada",
+    "confidence": "Confianza: {{value}}",
+    "noPrediction": "Aún no hay una predicción con datos suficientes.",
+    "fertilityTitle": "Señales observadas",
+    "bbt": "Temperaturas basales: {{count}}",
+    "mucus": "Registros de moco fértil: {{count}}",
+    "opk": "OPK positivos: {{count}}",
+    "ttcNote": "Estas señales describen lo registrado; no calculamos una probabilidad de embarazo.",
+    "avoidNote": "La ventana fértil es una estimación y no es un método anticonceptivo.",
+    "disclaimer": "Las predicciones pueden cambiar cuando agregas datos. No son una garantía clínica."
+}

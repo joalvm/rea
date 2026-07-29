@@ -22,7 +22,7 @@ type Props = {
  * Cada sección muestra el resumen del borrador; "Guardar" está siempre disponible.
  *
  * Si el test de embarazo dio positivo, tras guardar se muestra la tarjeta neutra
- * `PositiveTestCard` (puente al plan 10, aún en stub) en lugar del toast simple.
+ * `PositiveTestCard` como salida opcional hacia el modo embarazo en lugar del toast simple.
  */
 export default function ReviewScreen({ onSaved }: Props) {
     const { t } = useTranslation("checkIn");

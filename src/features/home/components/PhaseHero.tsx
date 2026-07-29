@@ -20,7 +20,7 @@ import { useHeroStyles } from "./PhaseHeroStyle";
 type Props = {
     /** Fase estimada actual. Vendrá de `daily_summary.estimated_phase`. */
     phase: PhaseKey;
-    /** Día del ciclo (placeholder hasta el motor de predicción). */
+    /** Día del ciclo cuando el modo actual tiene una proyección de ciclo. */
     dayOfCycle?: number;
     /** Texto de confianza/estado (p. ej. "Confianza media"). */
     statusLabel?: string;
@@ -40,15 +40,15 @@ type Props = {
  * feature). La fase real (motor de predicción) se conectará en `Home`.
  */
 export function PhaseHero({ phase, dayOfCycle, statusLabel, ctaLabel, ctaTestID, onPressCta }: Props) {
-    const { t } = useTranslation("preview");
+    const { t } = useTranslation("home");
     const theme = useTheme();
     const styles = useHeroStyles();
     const insets = useSafeAreaInsets();
     const shouldReduceMotion = useReducedMotion();
     const visual = theme.phases[phase];
     const Icon = PHASE_ICONS[phase];
-    const label = t(`phases.${phase}.label`);
-    const caption = t(`phases.${phase}.caption`);
+    const label = String(t(`phases.${phase}.label`));
+    const caption = String(t(`phases.${phase}.caption`));
     const cta = ctaLabel ?? t("hero.cta");
 
     // Transición de color de fondo entre fases.

@@ -1,9 +1,9 @@
 # 15 · Privacidad verificable
 
 > **Hito:** **M1** — antes que cualquier feature visible · **Depende de:** nada (es
-> fundacional; el esquema v3 se regenera junto con esto) · **Estado:** ❌ la privacidad
-> hoy es una promesa por costumbre: base de datos en texto plano y "cero red" sin
-> mecanismo que lo imponga (auditoría A3/A4).
+> fundacional; el esquema v3 se regenera junto con esto) · **Estado:** 🚧 SQLCipher,
+> SecureStore y verificación estática de red conectados; falta evidencia de build y
+> dispositivo.
 
 ## Contexto
 

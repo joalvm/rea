@@ -1,7 +1,7 @@
 # 07 · Estadísticas
 
 > **Hito:** M4 · **Depende de:** 01 (motor, `cycle_records`), 02 (captura) ·
-> **Estado:** 🔲 stub.
+> **Estado:** 🚧 métricas, gates y serie base vivos; faltan widgets avanzados.
 
 ## Contexto
 

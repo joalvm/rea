@@ -328,6 +328,7 @@
         "lead": "This is a big moment. There's no rush to decide anything right now.",
         "activatePregnancy": "Activate pregnancy mode",
         "stayAsIs": "Stay as I am",
-        "hint": "You can switch modes any time in settings."
+        "hint": "You can switch modes any time in settings.",
+        "activated": "Your history stays intact and cycle predictions are paused. You can adjust the date in Settings."
     }
 }

@@ -1,0 +1,21 @@
+{
+    "title": "Estadísticas",
+    "description": "Aprendizajes hechos con tus propios registros.",
+    "insights": "Tus señales",
+    "cycleLength": "Duración del ciclo",
+    "periodLength": "Duración del periodo",
+    "accuracy": "Precisión de Rea",
+    "series": "Tu ciclo por día",
+    "checkins": "Registros acumulados",
+    "days": "días",
+    "cycles": "ciclos",
+    "error": "error medio",
+    "notEnough": "Aún faltan {{count}} ciclos para mostrar este aprendizaje.",
+    "recordMore": "Registra tus ciclos y volveremos con una lectura más personal.",
+    "noData": "Todavía no hay suficientes registros.",
+    "accuracyBody": "Comparamos cada predicción emitida con el inicio real del ciclo. Un número mayor no es un fallo tuyo: describe cuánto varía tu patrón.",
+    "mood": "Ánimo",
+    "energy": "Energía",
+    "pain": "Dolor",
+    "seriesDay": "Día {{day}}"
+}

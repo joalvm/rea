@@ -27,6 +27,28 @@ export const usePregnancyStyles = createStyles((theme) => {
             textAlign: "center",
             maxWidth: sizing.readableMaxWidth,
         },
+        card: {
+            alignSelf: "stretch",
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+            borderRadius: radius.xl,
+            borderWidth: borderWidth.thin,
+            gap: spacing.sm,
+            padding: spacing.xl,
+            ...shadows[1],
+        },
+        cardTitle: {
+            ...typography.variant.h3,
+            color: colors.text,
+        },
+        metric: {
+            ...typography.variant.bodyStrong,
+            color: colors.text,
+        },
+        detail: {
+            ...typography.variant.footnote,
+            color: colors.textSecondary,
+        },
         links: {
             alignSelf: "stretch",
             gap: spacing.sm,

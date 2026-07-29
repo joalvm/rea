@@ -1,0 +1,62 @@
+{
+    "title": "Learn",
+    "description": "Short readings, with sources and no diagnoses.",
+    "empty": "There is no content available yet.",
+    "source": "Source",
+    "reviewed": "Reviewed {{date}}",
+    "disclaimer": "This information supports your records; it does not replace professional care.",
+    "detailNotFound": "We could not find this content.",
+    "open": "Read more",
+    "sources": {
+        "pregnancy": {
+            "label": "Clinical pregnancy education",
+            "reference": "Reviewed by the Rea editorial team"
+        }
+    },
+    "items": {
+        "pregnancy_01_04": {
+            "title": "Weeks 1–4",
+            "body": "Early dates can feel uncertain. Rea shows the week from the date you declared and keeps its basis visible."
+        },
+        "pregnancy_05_08": {
+            "title": "Weeks 5–8",
+            "body": "Early development changes quickly. Record how you feel without turning one signal into a conclusion."
+        },
+        "pregnancy_09_12": {
+            "title": "Weeks 9–12",
+            "body": "The first trimester is nearing its close. A conversation with your professional can help answer questions about care."
+        },
+        "pregnancy_13_16": {
+            "title": "Weeks 13–16",
+            "body": "For many people the second trimester brings changes in energy, appetite and sleep that can vary widely."
+        },
+        "pregnancy_17_20": {
+            "title": "Weeks 17–20",
+            "body": "Appointments and ultrasound can feel different for everyone. Your entries support a conversation, not a diagnosis."
+        },
+        "pregnancy_21_24": {
+            "title": "Weeks 21–24",
+            "body": "Keep noting symptoms and wellbeing without chasing a perfect curve. Individual variation is expected."
+        },
+        "pregnancy_25_28": {
+            "title": "Weeks 25–28",
+            "body": "Some sensations may become more noticeable. If something worries you, ask your professional even without an app alert."
+        },
+        "pregnancy_29_32": {
+            "title": "Weeks 29–32",
+            "body": "Rest and movement can change. Rea helps you remember what happened and does not replace care."
+        },
+        "pregnancy_33_36": {
+            "title": "Weeks 33–36",
+            "body": "Preparing for birth can bring practical and emotional questions. Choose what you want to record."
+        },
+        "pregnancy_37_40": {
+            "title": "Weeks 37–40",
+            "body": "The estimated due date is a reference, not a promise. Every pregnancy has its own rhythm."
+        },
+        "pregnancy_41_42": {
+            "title": "Weeks 41–42",
+            "body": "If the estimated date has passed, talk with your professional about appropriate follow-up; Rea will not rush you."
+        }
+    }
+}

@@ -1,8 +1,8 @@
 # 11 · Contenido (tips, educación, avisos)
 
 > **Hito:** fase 1 (embarazo mínimo) en **M3**; semanal completo en M6; corpus de ciclo
-> en M7 · **Depende de:** 01 (fase/confianza), 09 (semana) · **Estado:** 🔲 tablas
-> listas (`content_*`), cero items.
+> en M7 · **Depende de:** 01 (fase/confianza), 09 (semana) · **Estado:** 🚧 corpus
+> semanal mínimo, fuentes y evaluador AND conectados; faltan guardados y tarjeta en Hoy.
 
 ## Contexto
 

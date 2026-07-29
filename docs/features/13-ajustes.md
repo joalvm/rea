@@ -2,8 +2,8 @@
 
 > **Hito:** transversal (cada sección llega con su feature; consolidación en M7) ·
 > **Depende de:** 10 (modo), 12 (notificaciones), 14 (backup), 15 (cifrado/lock) ·
-> **Estado:** 🔲 stubs (8 rutas). Plan deliberadamente ligero: configuración, no
-> producto — el detalle vive en los planes dueños.
+> **Estado:** 🚧 rutas conectadas a datos locales; faltan editores completos de perfil
+> y notificaciones.
 
 ## Contexto
 

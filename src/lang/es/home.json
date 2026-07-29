@@ -1,0 +1,46 @@
+{
+    "hero": {
+        "overline": "Tu estado de hoy",
+        "cta": "¿Cómo te sientes hoy?",
+        "cycleDay": "Día {{day}} del ciclo",
+        "pregnancyWeek": "Semana {{week}}",
+        "confidence": {
+            "low": "Confianza baja",
+            "medium": "Confianza media",
+            "high": "Confianza alta"
+        },
+        "unknown": "Aún no hay suficiente información",
+        "delay": "Retraso: día {{day}}",
+        "pregnancyCaption": "La predicción de ciclo está en pausa"
+    },
+    "phases": {
+        "unknown": { "label": "Fase por estimar", "caption": "Registra unos días para afinar tu predicción" },
+        "menstrual": { "label": "Menstruación", "caption": "Días de cuidado y descanso" },
+        "follicular": { "label": "Fase folicular", "caption": "Tu energía va en aumento" },
+        "fertile_window": { "label": "Ventana fértil", "caption": "Mayor probabilidad de embarazo" },
+        "estimated_ovulation": { "label": "Ovulación estimada", "caption": "Pico de fertilidad del ciclo" },
+        "luteal": { "label": "Fase lútea", "caption": "El cuerpo se prepara y desacelera" },
+        "pregnancy": { "label": "Embarazo", "caption": "La predicción de ciclo está en pausa" }
+    },
+    "greeting": "Hola, {{name}}",
+    "summary": {
+        "title": "Resumen de hoy",
+        "empty": "Todavía no has registrado este día.",
+        "checkins": "{{count}} registros",
+        "symptoms": "{{count}} síntomas",
+        "medications": "Medicamentos",
+        "openDiary": "Abrir diario de hoy",
+        "start": "Registrar cómo me siento",
+        "next": "Lo próximo",
+        "nextPeriod": "Próxima regla estimada: {{date}}",
+        "nextFertile": "Ventana fértil estimada: {{date}}",
+        "nextPregnancy": "Sigue tu semana y registra cómo te sientes",
+        "noPrediction": "Aún no hay una fecha fiable. Registra algunos ciclos para afinarla."
+    },
+    "proposal": {
+        "title": "Hay algo que revisar sobre tu regla",
+        "body": "Rea encontró una señal que podría ajustar tu historial. Tú decides cómo contarla.",
+        "action": "Revisar propuesta"
+    },
+    "disclaimer": "Las estimaciones muestran su base y pueden cambiar con nuevos registros. No son diagnóstico ni anticoncepción."
+}

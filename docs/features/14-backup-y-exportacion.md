@@ -1,8 +1,8 @@
 # 14 · Backup y exportación
 
 > **Hito:** M7 · **Depende de:** esquema v3 estable, 15 (cifrado: interacción con el
-> archivo exportado) · **Estado:** ❌ ausente. El botón "restaurar copia" del welcome
-> llega con este plan.
+> archivo exportado) · **Estado:** 🚧 JSON versionado, CSV y restauración desde Ajustes
+> vivos; falta la entrada desde welcome y el preview de reemplazo.
 
 ## Contexto
 

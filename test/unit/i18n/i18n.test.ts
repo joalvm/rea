@@ -12,22 +12,22 @@ describe("Inicialización de i18n", () => {
         expect(i18n.isInitialized).toBe(true);
     });
 
-    it("resuelve una clave del namespace preview", () => {
-        expect(i18n.t("hero.overline", { ns: "preview" })).toBe("Tu fase de hoy");
+    it("resuelve una clave del namespace home", () => {
+        expect(i18n.t("hero.overline", { ns: "home" })).toBe("Tu estado de hoy");
     });
 
     it("interpela variables dentro de una cadena", () => {
-        expect(i18n.t("hero.cycleDay", { ns: "preview", day: 12 })).toBe("Día 12 del ciclo");
+        expect(i18n.t("hero.cycleDay", { ns: "home", day: 12 })).toBe("Día 12 del ciclo");
     });
 
-    it("resuelve el texto de onboarding desde el namespace preview", () => {
-        expect(i18n.t("welcome.title", { ns: "preview" })).toBe("Bienvenida a Rea");
+    it("resuelve el texto de onboarding desde su namespace", () => {
+        expect(i18n.t("welcome.title", { ns: "onboarding" })).toBe("Bienvenida a Rea");
     });
 
-    it("resuelve el texto de preview en inglés", async () => {
+    it("resuelve el texto de onboarding en inglés", async () => {
         await i18n.changeLanguage("en");
 
-        expect(i18n.t("welcome.title", { ns: "preview" })).toBe("Welcome to Rea");
+        expect(i18n.t("welcome.title", { ns: "onboarding" })).toBe("Welcome to Rea");
 
         await i18n.changeLanguage("es");
     });

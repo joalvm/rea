@@ -16,18 +16,18 @@ iniciado / ❌ ausente, deuda declarada). Ver práctica de actualización más a
 | 01  | [Motor de ciclo](01-motor-de-ciclo.md)                 | M1             |   ✅   | Predicción honesta, proyección diaria, historial de ciclos y precisión   |
 | 02  | [Check-in](02-check-in.md)                             | M2             |   ✅   | Captura diaria <60 s, adaptada al modo, con test de embarazo en todos    |
 | 03  | [Gestión de periodo](03-gestion-de-periodo.md)         | M1             |   ✅   | Ciclo de vida de la regla: abrir, cerrar, corregir, sin autocierres      |
-| 04  | [Hoy](04-hoy.md)                                       | M3             |   🔲   | La pantalla que responde "¿dónde estoy y qué viene?"                     |
-| 05  | [Calendario](05-calendario.md)                         | M3             |   🔲   | Vista de mes con observado ≠ estimado y detalle de día                   |
+| 04  | [Hoy](04-hoy.md)                                       | M3             |   🚧   | La pantalla que responde "¿dónde estoy y qué viene?"                     |
+| 05  | [Calendario](05-calendario.md)                         | M3             |   🚧   | Vista de mes con observado ≠ estimado y detalle de día                   |
 | 06  | [Diario](06-diario.md)                                 | M2             |   ✅   | Editar, borrar y excluir registros; higiene estadística                  |
-| 07  | [Estadísticas](07-estadisticas.md)                     | M4             |   🔲   | Cada dato capturado devuelto como aprendizaje, con gates de datos        |
-| 08  | [Fertilidad y TTC](08-fertilidad-ttc.md)               | M5             |   🔲   | BBT, OPK, timing; modo evitar con marco conservador                      |
-| 09  | [Embarazo](09-embarazo.md)                             | M3 + M6        |   🔲   | Semana a semana; desenlaces dignos; posparto sin predicciones falsas     |
-| 10  | [Transiciones de modo](10-transiciones-de-modo.md)     | M3 + M5        |   🔲   | Cambiar de intención sin perder datos; puente test+ desde cualquier modo |
-| 11  | [Contenido](11-contenido.md)                           | M3 + M6-M7     |   🔲   | Tips con fuente, reglas contextuales, corpus editorial                   |
+| 07  | [Estadísticas](07-estadisticas.md)                     | M4             |   🚧   | Cada dato capturado devuelto como aprendizaje, con gates de datos        |
+| 08  | [Fertilidad y TTC](08-fertilidad-ttc.md)               | M5             |   🚧   | BBT, OPK, timing; modo evitar con marco conservador                      |
+| 09  | [Embarazo](09-embarazo.md)                             | M3 + M6        |   🚧   | Semana a semana; desenlaces dignos; posparto sin predicciones falsas     |
+| 10  | [Transiciones de modo](10-transiciones-de-modo.md)     | M3 + M5        |   🚧   | Cambiar de intención sin perder datos; puente test+ desde cualquier modo |
+| 11  | [Contenido](11-contenido.md)                           | M3 + M6-M7     |   🚧   | Tips con fuente, reglas contextuales, corpus editorial                   |
 | 12  | [Notificaciones](12-notificaciones.md)                 | M2 + M4        |   🚧   | Recordatorios locales, discretos, idempotentes                           |
-| 13  | [Ajustes](13-ajustes.md)                               | transversal    |   🔲   | Configuración; re-anclaje de perfil; borrar todo                         |
-| 14  | [Backup y exportación](14-backup-y-exportacion.md)     | M7             |   ❌   | Sacar y restaurar los datos sin nube                                     |
-| 15  | [Privacidad verificable](15-privacidad-verificable.md) | **M1**         |   ❌   | Cifrado en reposo + cero-red impuesto por build, no por costumbre        |
+| 13  | [Ajustes](13-ajustes.md)                               | transversal    |   🚧   | Configuración; re-anclaje de perfil; borrar todo                         |
+| 14  | [Backup y exportación](14-backup-y-exportacion.md)     | M7             |   🚧   | Sacar y restaurar los datos sin nube                                     |
+| 15  | [Privacidad verificable](15-privacidad-verificable.md) | **M1**         |   🚧   | Cifrado en reposo + cero-red impuesto por build, no por costumbre        |
 
 ## Arquitectura de información (propuesta abierta)
 

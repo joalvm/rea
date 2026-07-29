@@ -8,10 +8,9 @@ import type { ChangedRange } from "./types/ChangedRange";
 import type { CycleEngineTransaction } from "./types/CycleEngineTransaction";
 
 /**
- * Recalcula el motor de ciclo tras una escritura relevante. Disparadores
- * documentados (hoy nadie los invoca todavía: check-in/periodo/embarazo son
- * pantallas placeholder — los features que dueñan cada mutación lo harán al
- * construir su escritura real):
+ * Recalcula el motor de ciclo tras una escritura relevante. Cada mutación de
+ * dominio que cambia hechos observables debe invocarlo desde su propia
+ * transacción mediante `recalculateInTransaction`:
  *
  * - Periodo: abrir, cerrar o editar un `period_run` (incluye excluirlo).
  * - Check-in: crear, editar o excluir un check-in (`excludedFromSummary`).
@@ -24,11 +23,13 @@ import type { CycleEngineTransaction } from "./types/CycleEngineTransaction";
  * siguiente y reproyectar `daily_summary` se confirman o revierten juntos.
  */
 export async function recalculate(database: Database, changedRange: ChangedRange): Promise<void> {
-    await database.transaction(async (tx) => {
-        const engineTx = tx as CycleEngineTransaction;
-        const facts = await loadCycleEngineFacts(engineTx, changedRange);
-        const { historicalCycles, openCycle } = await persistCycleRecords(engineTx, facts);
-        const prediction = await persistCyclePrediction(engineTx, facts, historicalCycles, openCycle);
-        await persistDailySummaries(engineTx, facts, historicalCycles, openCycle, prediction);
-    });
+    await database.transaction((tx) => recalculateInTransaction(tx as CycleEngineTransaction, changedRange));
+}
+
+/** Ejecuta la proyección usando una transacción ya abierta por la mutación dueña. */
+export async function recalculateInTransaction(tx: CycleEngineTransaction, changedRange: ChangedRange): Promise<void> {
+    const facts = await loadCycleEngineFacts(tx, changedRange);
+    const { historicalCycles, openCycle } = await persistCycleRecords(tx, facts);
+    const prediction = await persistCyclePrediction(tx, facts, historicalCycles, openCycle);
+    await persistDailySummaries(tx, facts, historicalCycles, openCycle, prediction);
 }

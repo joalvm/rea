@@ -3,7 +3,7 @@ import type { TFunction } from "i18next";
 import { Pressable, Text, View } from "react-native";
 
 import { useTheme } from "@/theme/useTheme";
-import { bleedingPreviewKey } from "@/shared/utils/bleedingLabel";
+import { bleedingKey } from "@/shared/utils/bleedingLabel";
 import { extractTime, formatShortDate } from "@/shared/utils/formatDate";
 
 import type { DayGroup } from "../utils/groupByDay";
@@ -17,7 +17,7 @@ type Props = {
 
 /**
  * Tarjeta de un día en la lista del diario. Muestra fecha legible, badge de
- * conteo de registros, preview del sangrado del último registro, nota truncada y
+ * conteo de registros, vista breve del sangrado del último registro, nota truncada y
  * hora del último registro. Tappable → abre el detalle del día.
  */
 export function DayCard({ group, onPress, t, testID }: Props) {
@@ -45,19 +45,40 @@ export function DayCard({ group, onPress, t, testID }: Props) {
                 pressed && { opacity: 0.85 },
             ]}
         >
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: theme.spacing.sm }}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: theme.spacing.sm,
+                }}
+            >
                 <Text style={{ ...theme.typography.variant.title, color: theme.colors.text }}>
                     {formatShortDate(t, group.localDate)}
                 </Text>
                 <View style={{ flexDirection: "row", gap: theme.spacing.xs, alignItems: "center" }}>
                     {isExcluded ? (
-                        <View style={{ backgroundColor: theme.colors.warningSurface, borderRadius: theme.radius.pill, paddingHorizontal: theme.spacing.sm, paddingVertical: theme.spacing.xs }}>
+                        <View
+                            style={{
+                                backgroundColor: theme.colors.warningSurface,
+                                borderRadius: theme.radius.pill,
+                                paddingHorizontal: theme.spacing.sm,
+                                paddingVertical: theme.spacing.xs,
+                            }}
+                        >
                             <Text style={{ ...theme.typography.variant.caption, color: theme.colors.warningText }}>
                                 {t("diary:list.excludedBadge")}
                             </Text>
                         </View>
                     ) : null}
-                    <View style={{ backgroundColor: theme.colors.primarySubtle, borderRadius: theme.radius.pill, paddingHorizontal: theme.spacing.sm, paddingVertical: theme.spacing.xs }}>
+                    <View
+                        style={{
+                            backgroundColor: theme.colors.primarySubtle,
+                            borderRadius: theme.radius.pill,
+                            paddingHorizontal: theme.spacing.sm,
+                            paddingVertical: theme.spacing.xs,
+                        }}
+                    >
                         <Text style={{ ...theme.typography.variant.caption, color: theme.colors.text }}>
                             {t("diary:list.entryCount", { count })}
                         </Text>
@@ -66,12 +87,9 @@ export function DayCard({ group, onPress, t, testID }: Props) {
             </View>
 
             <View style={{ marginTop: theme.spacing.xs, gap: theme.spacing.xs }}>
-                <Text
-                    style={{ ...theme.typography.variant.body, color: theme.colors.textSecondary }}
-                    numberOfLines={2}
-                >
-                    {t(bleedingPreviewKey(latest.bleedingIntensity))}
-                    {latest.note ? ` · ${t("diary:list.notePreview", { note: latest.note })}` : ""}
+                <Text style={{ ...theme.typography.variant.body, color: theme.colors.textSecondary }} numberOfLines={2}>
+                    {String(t(`diary:${bleedingKey(latest.bleedingIntensity)}`))}
+                    {latest.note ? ` · ${t("diary:list.noteSummary", { note: latest.note })}` : ""}
                 </Text>
                 <Text style={{ ...theme.typography.variant.footnote, color: theme.colors.textMuted }}>
                     {t("diary:list.lastAt", { time: extractTime(latest.recordedAt) })}

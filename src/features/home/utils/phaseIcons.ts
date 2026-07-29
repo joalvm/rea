@@ -13,7 +13,7 @@ import type { PhaseKey } from "@/theme/types/PhaseColors";
 
 /**
  * Icono de cada fase para el Home. Es PRESENTACIÓN del feature (el tema solo aporta
- * color). La copia de cada fase (label y caption) vive en i18n: `preview:phases.<fase>`.
+ * color). La copia de cada fase vive en el namespace `home`.
  */
 export const PHASE_ICONS: Record<PhaseKey, LucideIcon> = {
     unknown: SparkleIcon,
