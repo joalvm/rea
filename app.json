@@ -55,6 +55,7 @@
                     }
                 }
             ],
+            "expo-notifications",
             "expo-sqlite",
             "expo-localization"
         ],

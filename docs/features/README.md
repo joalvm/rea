@@ -24,7 +24,7 @@ iniciado / ❌ ausente, deuda declarada). Ver práctica de actualización más a
 | 09  | [Embarazo](09-embarazo.md)                             | M3 + M6        |   🔲   | Semana a semana; desenlaces dignos; posparto sin predicciones falsas     |
 | 10  | [Transiciones de modo](10-transiciones-de-modo.md)     | M3 + M5        |   🔲   | Cambiar de intención sin perder datos; puente test+ desde cualquier modo |
 | 11  | [Contenido](11-contenido.md)                           | M3 + M6-M7     |   🔲   | Tips con fuente, reglas contextuales, corpus editorial                   |
-| 12  | [Notificaciones](12-notificaciones.md)                 | M2 + M4        |   ❌   | Recordatorios locales, discretos, idempotentes                           |
+| 12  | [Notificaciones](12-notificaciones.md)                 | M2 + M4        |   🚧   | Recordatorios locales, discretos, idempotentes                           |
 | 13  | [Ajustes](13-ajustes.md)                               | transversal    |   🔲   | Configuración; re-anclaje de perfil; borrar todo                         |
 | 14  | [Backup y exportación](14-backup-y-exportacion.md)     | M7             |   ❌   | Sacar y restaurar los datos sin nube                                     |
 | 15  | [Privacidad verificable](15-privacidad-verificable.md) | **M1**         |   ❌   | Cifrado en reposo + cero-red impuesto por build, no por costumbre        |
@@ -75,7 +75,7 @@ detalle de día (deep-linkable desde notificaciones).
 | --------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | **M0 ✅** | Fundaciones: DB v2, i18n/l10n, theme, onboarding                                                                             | —                                                 |
 | **M1**    | **Confianza**: esquema v3 + cifrado en reposo + cero-red en CI + motor de ciclo + gestión de periodo + ajustes de onboarding | 15 · 01 ✅ · 03 ✅ · 00 ✅                        |
-| **M2**    | **Captura**: check-in por modos + diario + recordatorio diario                                                               | 02 · 06 · 12 (fase 1)                             |
+| **M2 🚧** | **Captura**: check-in por modos + diario + recordatorio diario                                                               | 02 · 06 · 12 (fase 1)                             |
 | **M3**    | **Superficies**: Hoy + calendario + semana de embarazo + corpus mínimo de embarazo + puente test+ → embarazo                 | 04 · 05 · 09 (fase 1) · 11 (fase 1) · 10 (fase 1) |
 | **M4**    | **Comprensión**: estadísticas con gates + notificaciones predictivas                                                         | 07 · 12 (fase 2)                                  |
 | **M5**    | **Fertilidad**: TTC completo (BBT, OPK, timing) + transiciones completas                                                     | 08 · 10                                           |

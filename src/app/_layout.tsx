@@ -13,6 +13,7 @@ import {
 
 import { DatabaseProvider } from "@/db/DatabaseProvider";
 import { Snackbar } from "@/components/snackbar/Snackbar";
+import { NotificationDeepLinkListener, NotificationHandler, useNotificationsBootstrap } from "@/modules/notifications";
 import { ThemeProvider } from "@/theme/ThemeProvider";
 import { useTheme } from "@/theme/useTheme";
 
@@ -32,9 +33,12 @@ SplashScreen.preventAutoHideAsync();
  */
 function RootNavigator() {
     const theme = useTheme();
+    useNotificationsBootstrap();
 
     return (
         <>
+            <NotificationHandler />
+            <NotificationDeepLinkListener />
             <StatusBar style={theme.mode === "dark" ? "light" : "dark"} />
             <Stack
                 screenOptions={{

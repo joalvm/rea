@@ -1,9 +1,8 @@
 # 12 · Notificaciones locales
 
 > **Hito:** fase 1 en M2 (recordatorio diario); fase 2 en M4 (predictivas) · **Depende
-> de:** 00 fase 2 (permiso JIT), 01 (predicciones) · **Estado:** ❌ ausentes —
-> `expo-notifications` es dependencia sin un solo import y el onboarding ya captura
-> preferencias que nadie cumple (auditoría A1). Deuda de promesa, prioridad de honra.
+> de:** 00 fase 2 (permiso JIT), 01 (predicciones) · **Estado:** 🚧 Fase 1
+> implementada; falta QA en dispositivo. Fase 2 pendiente.
 
 ## Contexto
 
