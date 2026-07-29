@@ -71,14 +71,15 @@ i18n pero ni siquiera tiene columna — ver O-05.
 
 **Dónde:** `src/lang/{es,en}/checkIn.json`
 **Qué pasa:** existen claves que ninguna pantalla consume:
+
 - `feelings.sleep.*` — no hay columna `sleep` en `checkins` (auditoría 4.1 la
   propuso como `sleep_quality` pero no entró). `FeelingsScreen` solo renderiza
   ánimo/energía/estrés.
 - `body.pain.*`, `body.interference.*`, `body.pms.*` — espejo de las columnas
   huérfanas O-04. Sin consumidor.
 - `body.breastTenderness.*` — ni columna ni pantalla.
-**Decisión:** limpiar junto con O-04 al cerrar el plan, o poblar si Fase 4/07
-les da uso.
+  **Decisión:** limpiar junto con O-04 al cerrar el plan, o poblar si Fase 4/07
+  les da uso.
 
 ### O-06 · `medications.pregnancySafety.*` — ✅ RESUELTO
 
@@ -124,14 +125,16 @@ por un modo. No puede haber un síntoma válido para dos modos a la vez.
 **Decisión:** deuda de modelado abierta (M1). Se decide al regenerar schema.
 Revisar si Fase 4 o plan 08 la necesita.
 
-### O-10 · Versión de DB sin documentar en este punto
+### O-10 · Versión de DB y migraciones incrementales · ✅ RESUELTO
 
-**Dónde:** `src/db/` (configuración de `DATABASE_VERSION`)
-**Qué pasa:** decisiones previas fijaron "migración completa, no se hacen
-migraciones hasta que exista release, todo se reconstruye desde cero". Cada
-cambio de schema bumpa `DATABASE_VERSION` y fuerza reset. Confirmar que el valor
-actual refleja todos los cambios acumulados antes de cualquier release.
-**Decisión:** verificar al cerrar M2 / antes de M3.
+**Dónde:** `src/db/migrations/`, `src/db/initializeDatabase.ts`
+**Resolución:** las instalaciones nuevas crean el esquema actual; las existentes
+ejecutan migraciones versionadas y transaccionales. Un cambio de versión ya no
+llama a `resetDatabase`, por lo que no elimina datos. La migración disponible es
+`v6 → v7`; versiones históricas anteriores a la primera release se bloquean con
+error explícito y conservan el archivo para recuperación, en lugar de resetearlo.
+El procedimiento futuro está documentado en
+[`docs/database-migrations.md`](database-migrations.md).
 
 ---
 

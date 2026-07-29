@@ -32,7 +32,7 @@ describe("Inicialización de la base de datos", () => {
         expect(executedStatements).toContainEqual(expect.stringContaining("UPDATE symptom_catalog"));
     });
 
-    it("reinicia el esquema cuando la versión guardada está desactualizada", async () => {
+    it("ejecuta una migración incremental cuando la versión guardada está desactualizada", async () => {
         const database = createDatabaseDouble(DATABASE_VERSION - 1);
 
         await initializeDatabase(database);
@@ -41,9 +41,32 @@ describe("Inicialización de la base de datos", () => {
 
         expect(executedStatements[0]).toBe("PRAGMA journal_mode = WAL;");
         expect(executedStatements[1]).toBe("PRAGMA foreign_keys = ON;");
-        expect(executedStatements).toContain("PRAGMA foreign_keys = OFF;");
+        expect(executedStatements).toContain("BEGIN IMMEDIATE;");
+        expect(executedStatements).toContainEqual(expect.stringContaining("ADD COLUMN discreet_calendar"));
+        expect(executedStatements).toContainEqual(expect.stringContaining("ADD COLUMN last_backup_at"));
         expect(executedStatements).toContain(`PRAGMA user_version = ${DATABASE_VERSION};`);
-        expect(executedStatements.at(-1)).toBe("PRAGMA foreign_keys = ON;");
+        expect(executedStatements).not.toContain("PRAGMA foreign_keys = OFF;");
+    });
+
+    it("bloquea un downgrade sin tocar el esquema", async () => {
+        const database = createDatabaseDouble(DATABASE_VERSION + 1);
+
+        await expect(initializeDatabase(database)).rejects.toThrow("solo soporta hasta");
+
+        const executedStatements = database.execAsync.mock.calls.map(([statement]) => statement);
+
+        expect(executedStatements).toEqual(["PRAGMA journal_mode = WAL;", "PRAGMA foreign_keys = ON;"]);
+    });
+
+    it("bloquea una versión histórica sin migración y no reinicia la base", async () => {
+        const database = createDatabaseDouble(DATABASE_VERSION - 2);
+
+        await expect(initializeDatabase(database)).rejects.toThrow("No existe una migración segura");
+
+        const executedStatements = database.execAsync.mock.calls.map(([statement]) => statement);
+
+        expect(executedStatements).toEqual(["PRAGMA journal_mode = WAL;", "PRAGMA foreign_keys = ON;"]);
+        expect(executedStatements.some((statement) => statement.includes("DROP TABLE"))).toBe(false);
     });
 });
 

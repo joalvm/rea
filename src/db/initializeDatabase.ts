@@ -1,4 +1,6 @@
 import { DATABASE_VERSION } from "./config";
+import { createFreshDatabase } from "./migrations/createFreshDatabase";
+import { runDatabaseMigrations } from "./migrations/runMigrations";
 import { runDatabaseSeeders } from "./seeders/runDatabaseSeeders";
 import { buildCreateSchemaStatements, buildDropSchemaStatements } from "./utils/buildSchemaSql";
 
@@ -38,10 +40,14 @@ export async function initializeDatabase(database: InitializeDatabaseConnection)
     const versionRow = await database.getFirstAsync("PRAGMA user_version");
     const currentVersion = versionRow?.user_version ?? 0;
 
-    // Proyecto nuevo: cambio de schema fuerza reset total hasta introducir migraciones.
-    if (currentVersion !== DATABASE_VERSION) {
-        await resetDatabase(database);
-        return;
+    if (currentVersion === 0) {
+        await createFreshDatabase(database);
+    } else if (currentVersion < DATABASE_VERSION) {
+        await runDatabaseMigrations(database, currentVersion);
+    } else if (currentVersion > DATABASE_VERSION) {
+        throw new Error(
+            `La base de datos está en la versión ${currentVersion}, pero esta app solo soporta hasta ${DATABASE_VERSION}.`,
+        );
     }
 
     await runDatabaseSeeders(database);

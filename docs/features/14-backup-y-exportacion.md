@@ -23,11 +23,12 @@ app_version, exported_at, tables: {…todas…}}` — restaurable sin pérdida. 
   lugar seguro". Cifrado con passphrase = v2 (criterio de entrada: petición real; no
   complicar el rescate de datos antes de tiempo).
 - **Restaurar = reemplazar, con verdad por delante:** validar formato e integridad →
-  `schema_version` debe ser **igual** a la actual (sin runner de migraciones no hay
-  forward-migrate; cuando el runner exista — primer release — se aceptarán versiones
-  anteriores) → preview ("contiene N ciclos, M check-ins, del año X al Y") → doble
-  confirmación mostrando qué se reemplaza → import transaccional (todo o nada) →
-  recálculo completo + reprogramación de notificaciones.
+  `schema_version` debe ser **igual** a la actual hasta implementar un migrador
+  específico del formato JSON. El runner de SQLite solo actualiza la base local; no
+  convierte automáticamente backups antiguos → preview ("contiene N ciclos, M
+  check-ins, del año X al Y") → doble confirmación mostrando qué se reemplaza →
+  import transaccional (todo o nada) → recálculo completo + reprogramación de
+  notificaciones.
 - **Restauración accesible desde welcome** ("Restaurar copia") y desde Ajustes.
 
 ## Señal → valor

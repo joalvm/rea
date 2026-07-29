@@ -7,8 +7,9 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
  * - `name`: Nombre legible y único del corte de esquema.
  * - `appliedAt`: Timestamp en que quedó registrada la aplicación del esquema.
  *
- * La tabla es append-only y sirve como bitácora mínima para resets hoy y
- * migraciones incrementales en el futuro.
+ * La tabla es append-only: registra el baseline de una instalación nueva y cada
+ * migración incremental aplicada a una instalación existente. Los resets quedan
+ * reservados para acciones explícitas de desarrollo, pruebas o borrado local.
  */
 export const schemaMigration = sqliteTable("schema_migrations", {
     version: integer("version").primaryKey().notNull(),
