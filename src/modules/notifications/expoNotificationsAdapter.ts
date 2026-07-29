@@ -17,6 +17,8 @@ export function loadNotificationsModule(): Promise<NotificationsModule | null> {
     }
 
     notificationsModulePromise ??= Promise.resolve()
+        // Expo Go puede lanzar al evaluar el módulo; la carga debe poder fallar sin tumbar la app.
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         .then(() => require("expo-notifications") as NotificationsModule)
         .catch(() => null);
     return notificationsModulePromise;
