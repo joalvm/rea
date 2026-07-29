@@ -1,4 +1,4 @@
-import * as Notifications from "expo-notifications";
+import { loadNotificationsModule } from "./expoNotificationsAdapter";
 
 /**
  * Pide permiso de notificaciones locales. Envoltorio fino sobre
@@ -10,7 +10,10 @@ import * as Notifications from "expo-notifications";
  * versiones menores conceden por defecto.
  */
 export async function requestNotificationPermission(): Promise<boolean> {
-    const result = await Notifications.requestPermissionsAsync();
+    const notifications = await loadNotificationsModule();
+    if (!notifications) return false;
+
+    const result = await notifications.requestPermissionsAsync();
     // `granted` ya agrega el caso iOS PROVISIONAL y AUTHORIZED en el binding;
     // el estado detallado (status) queda para diagnósticos, no para decidir.
     return Boolean(result.granted);
@@ -21,6 +24,9 @@ export async function requestNotificationPermission(): Promise<boolean> {
  * "permiso denegado, toca para volver a pedirlo" sin disparar el diálogo.
  */
 export async function getNotificationPermission(): Promise<boolean> {
-    const result = await Notifications.getPermissionsAsync();
+    const notifications = await loadNotificationsModule();
+    if (!notifications) return false;
+
+    const result = await notifications.getPermissionsAsync();
     return Boolean(result.granted);
 }

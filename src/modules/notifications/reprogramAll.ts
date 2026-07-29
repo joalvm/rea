@@ -6,6 +6,7 @@ import { profile } from "@/db/schema/profile";
 
 import { buildContent } from "./buildContent";
 import { computeReminderSlots, type ReminderIntervalHours } from "./computeSlots";
+import { canUseLocalNotifications } from "./notificationRuntime";
 import * as Scheduler from "./scheduler";
 import type { NotificationCopy, NotificationDeepLink, NotificationType } from "./types";
 
@@ -27,6 +28,8 @@ export async function reprogramAll(
         resolveCopy: (type: NotificationType) => NotificationCopy;
     },
 ): Promise<void> {
+    if (!canUseLocalNotifications()) return;
+
     const settings = await loadSettings(database);
 
     // Cancelar todo lo propio antes de reprogramar. `cancelAllScheduled` es del

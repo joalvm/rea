@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Linking } from "react-native";
 
-import * as Notifications from "expo-notifications";
-
 import { useLastNotificationResponse } from "./lastNotificationResponse";
+
+const DEFAULT_ACTION_IDENTIFIER = "expo.modules.notifications.actions.DEFAULT";
 
 /**
  * Escucha el tap en una notificación local y abre su deep link
@@ -24,7 +24,7 @@ export function NotificationDeepLinkListener() {
         if (!response) return;
 
         const url = response.notification.request.content.data?.url;
-        const tapped = response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER;
+        const tapped = response.actionIdentifier === DEFAULT_ACTION_IDENTIFIER;
         if (!tapped || typeof url !== "string") return;
 
         Linking.openURL(url).catch(() => {
